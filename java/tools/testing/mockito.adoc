@@ -1,6 +1,4 @@
 = Mockito
-:toc:
-:sectnums:
 
 == Mockito: что это такое и зачем нужно
 
