@@ -1,4 +1,4 @@
-= GIT, SSH и GPG
+= GitHub keys
 :imagesdir: ../assets/img/git-ssh-gpg
 
 == SSH key
@@ -7,50 +7,52 @@
 
 Для того чтобы использовать подключение с помощью протокола *SSH* необходимо сгенерировать *SSH-KEY*. В данном примере генерация происходит через *GIT GUI*.
 
-Для генерации заходим *GIT GUI HERE*.
+Для генерации заходим _Git GUI Here_.
 
 image:ssh-generate1.png[]
 
-В появившемся окне выбираем вкладку *Help* - *Show SSH Key*
+В появившемся окне выбираем вкладку _Help_ - _Show SSH Key_
 
 image:ssh-generate2.png[]
 
-Если, ключ не обнаружен, то производим генерацию ключа *Generate Key*
+Если, ключ не обнаружен, то производим генерацию ключа _Generate Key_
 
 image:ssh-generate3.png[]
 
 image:ssh-generate4.png[]
 
-После того как ключ был сгенерирован или уже имелся, его нужно скопировать для установки в профиле. Для этого в настройки вашего профиля (*setting*).
+После того как ключ был сгенерирован или уже имелся, его нужно скопировать для установки в профиле. Для этого в настройки вашего профиля (_setting_).
 
 image:ssh-install-git1.png[]
 
-Далее ищем вкладку *SSH and GPG keys*
+Далее ищем вкладку _SSH and GPG keys_
 
 image:ssh-install-git2.png[]
 
-Нажимаем *New SSH key*
+Нажимаем _New SSH key_
 
 image:ssh-install-git3.png[]
 
-Вставляем имеющийся ключ и добавляем *Add SSH key*
+Вставляем имеющийся ключ и добавляем _Add SSH key_
 
 image:ssh-install-git4.png[]
 
 == GPG key
 
-С помощью *GPG* или *S/MIME* можно подписывать теги и комиты. Эти теги или комиты помечаются как проверенные на *GitHub*, чтобы другие люди могли быть уверены, что изменения происходят из надежного источника.
+С помощью *GPG* или *S/MIME* можно подписывать теги и коммиты. Эти теги или коммиты помечаются как проверенные на *GitHub*, чтобы другие люди могли быть уверены, что изменения происходят из надежного источника.
 
 Сначала необходимо скачать и становить link:https://www.gnupg.org/download/[*Gpg4win*]
 
 Затем заходим в Git Bush и вводим команду:
-[source, cmd]
+
+[source, shell script]
 ----
 gpg --full-generate-key
 ----
+
 image:gpg-generate1.png[]
 
-Затем выбирая нужные настройки нажимаем *Enter* до тех пор, пока не попросит подтвердить корректность данных и если все верно подтверждаем *"Y"*
+Затем выбирая нужные настройки нажимаем _Enter_ до тех пор, пока не попросит подтвердить корректность данных и если все верно подтверждаем набрав `Y`
 
 image:gpg-generate2.png[]
 
@@ -58,7 +60,7 @@ image:gpg-generate2.png[]
 
 image:gpg-generate3.png[]
 
-Если все верно - подтверждаем введенные данные *"О"*.
+Если все верно - подтверждаем введенные данные набрав`О`.
 
 image:gpg-generate4.png[]
 
@@ -72,7 +74,7 @@ image:gpg-generate6.png[]
 
 Чтобы посмотреть открытый и закрытый ключи необходимо ввести следующую команду:
 
-[source, cmd]
+[source, shell script]
 ----
 gpg --list-secret-keys --keyid-format=long
 /Users/hubot/.gnupg/secring.gpg
@@ -81,28 +83,22 @@ sec   4096R/3AA5C34371567BD2 2016-03-10 [expires: 2017-03-10]
 uid                          Hubot
 ssb   4096R/42B317FD4BA89E7A 2016-03-10
 ----
+
 Далее введя команду *gpg --armor --export ...*, и подставив место ... свое значение получим
-[source, cmd]
+
+[source, shell script]
 ----
 gpg --armor --export 3AA5C34371567BD2
 ----
+
 image:gpg-install-git1.png[]
 
-После этого выделяем и копируем от *-----BEGIN PGP PUBLIC KEY BLOCK-----* до *-----END PGP PUBLIC KEY BLOCK-----*
+После этого выделяем и копируем от `-----BEGIN PGP PUBLIC KEY BLOCK-----` до `-----END PGP PUBLIC KEY BLOCK-----`
 
-Далее, как и при добавлении *SSH* ключей заходим в свой профиль, setting, *SSH and GPG keys* и выбираем уже *New GPG key*
+Далее, как и при добавлении *SSH* ключей заходим в свой профиль - _setting_ - _SSH and GPG keys_ и выбираем уже _New GPG key_
 
 image:gpg-install-git2.png[]
 
 И в появившемся окне вставляем скопированный ключ и добавляем его.
 
 image:gpg-install-git3.png[]
-
-
-
-
-
-
-
-
-
