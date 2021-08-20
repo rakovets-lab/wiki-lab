@@ -1,5 +1,5 @@
-= Консольные приложения
-:imagesdir: ../assets/img/console-application
+= Консольное приложение
+:imagesdir: ../assets/img/application-architecture/console-application
 
 *Консольное приложение* - это компьютерное приложение без графического интерфейса пользователя (*GUI*), предназначенное для работы исключительно с командами клавиатуры через текстовый компьютерный интерфейс. Многие ранние операционные системы работали исключительно в таких режимах, и только позже компании начали разрабатывать операционные системы с графическим интерфейсом для простоты использования. Можно запустить консольное приложение без графического интерфейса или запустить операционную систему в режиме консоли по диагностическим и другим причинам.
 
@@ -11,47 +11,41 @@
 
 В Windows командная строка является примером консольного приложения. Пользователь может открыть командную строку для редактирования системных файлов и для других целей. Когда он вводит команды, они прокручивают экран вверх вместе с ответами из приложения.
 
-* командная строка Windows
+* терминал *Linux*
+image:terminal-linux.png[]
 
-image:A_Windows_Console_Window.png[]
+* командная строка *Windows*
+image:terminal-windows.png[]
 
-* терминал macOS
-
-image:terminal_macOS.png[]
+* терминал *macOS*
+image:terminal-mac-os.png[]
 
 
 == Примеры консольных программ
+
 * Любая программа, осуществляющая получение данных от пользователя путём чтения *stdin* и отправку данных пользователю путём записи в *stdout*, по определению является консольной программой. Однако, такие программы могут обходиться и безо всякого пользователя, например обрабатывая данные из файлов.
 * Unix shell, а также все утилиты, предназначенные для работы в этой среде.
 * *Midnight Commander* (*UNIX*), *FAR Manager* (*Windows*) - это двухпанельный файловый менеджер для операционных систем.
-
-image:MidnightCommander.png[]
+image:example-midnight-commander.png[]
 
 * *Alpine* (клиент электронной почты)
-
-image:Alpine_email_client.png[]
+image:example-alpine-email-client.png[]
 
 * *Irssi* (IRC-клиент (Internet Relay Chat))
-
-image:Irssi.png[]
+image:example-irssi.png[]
 
 * *Lynx* (веб-браузер)
-
-image:LYNX.png[]
+image:example-lynx.png[]
 
 * *Music on Console* (аудиоплеер)
 * *Mutt* (клиент электронной почты)
-
-image:Mutt.png[]
+image:example-mutt.png[]
 
 * *VIM* (текстовый редактор)
-
-image:VIM.png[]
+image:example-vim.png[]
 
 * RTORRENT (ТОРРЕНТ КЛИЕНТ)
-
-image:rtorent.png[]
+image:example-rtorent.png[]
 
 * *newsbeuter* (RSS-ридер)
-
-image:NEWSBEUTER.png[]
+image:example-newsbeuter.png[]
