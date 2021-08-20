@@ -12,11 +12,13 @@ Wiki for lab.
 
 include::application-architecture/index.adoc[]
 
-include::annotations/annotations.adoc[]
-
-include::js/index.adoc[]
-
 include::sql/index.adoc[]
+
+include::java/tools/testing/index.adoc[]
+
+include::common/testing.adoc[]
+
+include::security/github-keys.adoc[]
 
 :leveloffset: -1
 
