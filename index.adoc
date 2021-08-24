@@ -18,5 +18,9 @@ include::js/index.adoc[]
 
 include::sql/index.adoc[]
 
+include::update-for-generics/update-for-generics.adoc[]
+
+include::update_for_collections/update_for_collections.adoc[]
+
 :leveloffset: -1
 
