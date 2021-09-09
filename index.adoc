@@ -14,6 +14,12 @@ include::application-architecture/index.adoc[]
 
 include::sql/index.adoc[]
 
+include::java/index.adoc[]
+
+include::common/testing.adoc[]
+
+include::security/github-keys.adoc[]
+
 include::java/collections.adoc[]
 
 include::java/generics.adoc[]
