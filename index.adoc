@@ -20,5 +20,9 @@ include::common/testing.adoc[]
 
 include::security/github-keys.adoc[]
 
+include::java/collections.adoc[]
+
+include::java/generics.adoc[]
+
 :leveloffset: -1
 
