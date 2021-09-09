@@ -1,7 +1,0 @@
-= Java: Interface
-
-:leveloffset: +1
-
-include::default-and-static-methods.adoc[]
-
-:leveloffset: -1
