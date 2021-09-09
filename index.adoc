@@ -12,15 +12,11 @@ Wiki for lab.
 
 include::application-architecture/index.adoc[]
 
-include::annotations/annotations.adoc[]
-
-include::js/index.adoc[]
-
 include::sql/index.adoc[]
 
-include::update-for-generics/update-for-generics.adoc[]
+include::java/collections.adoc[]
 
-include::update_for_collections/update_for_collections.adoc[]
+include::java/generics.adoc[]
 
 :leveloffset: -1
 
