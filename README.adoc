@@ -156,3 +156,42 @@ Workshop for theme 'AsciiDoc'
 ** Good
 
     `HEAD` – это указатель на коммит в репозитории, который станет родителем следующего коммита.
+
+* Написание interfaces, classes и т.д. в одном блоке кода
+
+** Bad
+
+    [source,java]
+    ----
+    interface A {
+        default void showDefault() {
+            System.out.println("A: default method show()");
+        }
+    }
+    // ...
+    public class B {
+        public void showDefault() {
+            System.out.println("B: method show()");
+        }
+    }
+    ----
+
+** Good
+
+    [source,java]
+    ----
+    interface A {
+        default void showDefault() {
+            System.out.println("A: default method show()");
+        }
+    }
+    ----
+
+    [source,java]
+    ----
+    public class B {
+        public void showDefault() {
+            System.out.println("B: method show()");
+        }
+    }
+    ----
