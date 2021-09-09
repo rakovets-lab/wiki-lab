@@ -6,8 +6,6 @@ include::collections.adoc[]
 
 include::generics.adoc[]
 
-include::interface/index.adoc[]
-
 include::tools/index.adoc[]
 
 :leveloffset: -1
