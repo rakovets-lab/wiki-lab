@@ -1,0 +1,11 @@
+= Java
+
+:leveloffset: +1
+
+include::collections.adoc[]
+
+include::generics.adoc[]
+
+include::tools/index.adoc[]
+
+:leveloffset: -1

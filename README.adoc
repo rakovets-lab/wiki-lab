@@ -5,7 +5,9 @@ Workshop for theme 'AsciiDoc'
 == Process
 
 1. Клонируем репозиторий.
-2. Создаем ветку согласно паттерну `feature-${surname}`, где `${surname}` - фамилия на английском языке.
+2. Создаем ветку согласно принятому подходу
+* если используется система управления проектами (или система отслеживания ошибок), тогда использовать паттерн `${PROJECT_CODE}-${NUMBER_TASK}`, где `${PROJECT_CODE}` - буквенный код проекта, `${NUMBER_TASK}` - номер задачи в проекте;
+* во всех остальных случаях использовать паттерн `feature-${SURNAME}`, где `${SURNAME}` - фамилия на английском языке.
 3. Создаем документацию по теме (adoc + images):
 * использовать заголовок первого уровня для названия темы статьи
 * выделяем определения или важные термины жирным шрифтом;
@@ -27,7 +29,7 @@ Workshop for theme 'AsciiDoc'
 * если кто-то указал на ошибку, то исправляем ее.
 12. Делаем слияние `feature` ветки в `develop`:
 * если возник конфликт слияние, то решаем его.
-13. Проверяем результат: https://workshop-asciidoc-gh.dmitryrakovets.com
+13. Проверяем результат, перейдя на развернутую страницу сайта.
 
 == Mistakes
 
@@ -154,3 +156,42 @@ Workshop for theme 'AsciiDoc'
 ** Good
 
     `HEAD` – это указатель на коммит в репозитории, который станет родителем следующего коммита.
+
+* Написание interfaces, classes и т.д. в одном блоке кода
+
+** Bad
+
+    [source,java]
+    ----
+    interface A {
+        default void showDefault() {
+            System.out.println("A: default method show()");
+        }
+    }
+    // ...
+    public class B {
+        public void showDefault() {
+            System.out.println("B: method show()");
+        }
+    }
+    ----
+
+** Good
+
+    [source,java]
+    ----
+    interface A {
+        default void showDefault() {
+            System.out.println("A: default method show()");
+        }
+    }
+    ----
+
+    [source,java]
+    ----
+    public class B {
+        public void showDefault() {
+            System.out.println("B: method show()");
+        }
+    }
+    ----
