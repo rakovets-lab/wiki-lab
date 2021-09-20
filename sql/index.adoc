@@ -14,4 +14,6 @@ include::designing-relational-databases.adoc[]
 
 include::advance-sql.adoc[]
 
+include::db-objects.adoc[]
+
 :leveloffset: -1
