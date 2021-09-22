@@ -1,6 +1,6 @@
-= workshop-asciidoc
+= wiki-lab
 
-Workshop for theme 'AsciiDoc'
+Wiki for Rakovets Lab
 
 == Process
 
