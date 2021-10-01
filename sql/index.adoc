@@ -18,4 +18,5 @@ include::db-objects.adoc[]
 
 include::analytical-functions.adoc[]
 
+include::recursion.adoc[]
 :leveloffset: -1
