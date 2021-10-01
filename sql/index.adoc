@@ -16,4 +16,6 @@ include::advance-sql.adoc[]
 
 include::db-objects.adoc[]
 
+include::analytical-functions.adoc[]
+
 :leveloffset: -1
