@@ -14,6 +14,8 @@ include::application-architecture/index.adoc[]
 
 include::sql/index.adoc[]
 
+include::data-persistence/index.adoc[]
+
 include::java/index.adoc[]
 
 include::common/testing.adoc[]
@@ -21,4 +23,3 @@ include::common/testing.adoc[]
 include::security/github-keys.adoc[]
 
 :leveloffset: -1
-
