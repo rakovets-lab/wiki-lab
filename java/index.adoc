@@ -1,0 +1,13 @@
+= Java
+
+:leveloffset: +1
+
+include::default-and-static-methods-in-interfaces.adoc[]
+
+include::collections.adoc[]
+
+include::generics.adoc[]
+
+include::tools/index.adoc[]
+
+:leveloffset: -1
