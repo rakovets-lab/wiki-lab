@@ -8653,102 +8653,26 @@ System.out.println(linkedHashMap);</code></pre>
 <div class="sect2">
 <h3 id="_generics">3.2. Generics</h3>
 <div class="sect3">
-<h4 id="_сырые_типы">3.2.1. Сырые типы</h4>
+<h4 id="_type_inference_вывод_типа">3.2.1. Type Inference (Вывод типа)</h4>
 <div class="paragraph">
-<p>Сырой тип - это имя <strong>generic</strong> класса или интерфейса без каких-либо аргументов типа. Например, возьмем обобщенный класс Box:</p>
+<p><strong>Вывод типа</strong> - это способность <strong>компилятора Java</strong> просматривать каждый <strong>вызов метода</strong> и соответствующее <strong>объявление</strong>, чтобы определить <strong>тип аргумента</strong> (или аргументов), которые делают вызов применимым. Алгоритм <strong>вывода типа</strong> определяет <strong>типы аргументов</strong> и, если они доступны, тип, которому <strong>присваивается</strong> или <strong>возвращается</strong> результат. Наконец, <strong>алгоритм вывода</strong> пытается найти <strong>наиболее конкретный тип</strong>, который работает со всеми аргументами.</p>
+</div>
+<div class="paragraph">
+<p>В следующем примере <strong>логический вывод типа</strong> определяет, что второй аргумент, передаваемый методу <code>pick()</code>, имеет тип <code>Serializable</code>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code data-lang="java">public class Box&lt;T&gt; {
-    public void set(T t) { /* ... */ }
-    // ...
-}</code></pre>
+<pre class="prettyprint highlight"><code data-lang="java">static &lt;T&gt; T pick(T a1, T a2) {
+    return a2;
+}
+Serializable s = pick("d", new ArrayList&lt;String&gt;());</code></pre>
 </div>
 </div>
+<div class="sect4">
+<h5 id="_вывод_типа_и_обобщенные_методы">Вывод типа и обобщенные методы</h5>
 <div class="paragraph">
-<p>Чтобы создать <strong>параметризованный тип</strong> <code>Box &lt;T&gt;</code>, подставляется конкретный <strong>аргумент типа</strong> для параметра типа <code>T</code>:</p>
+<p><strong>Вывод типа</strong>, позволяет вызывать <strong>обобщенный метод</strong>, как обычный метод, без указания типа в угловых скобках.</p>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="java">Box&lt;Integer&gt; intBox = new Box&lt;&gt;();</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Если конкретный <strong>аргумент типа</strong> опущен, создается <strong>сырой тип</strong> <code>Box &lt;T&gt;</code>:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="java">Box rawBox = new Box();</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Следовательно, <code>Box</code> является <strong>сырым типом</strong> <strong>универсального типа</strong> <code>Box &lt;T&gt;</code>. Однако <strong>не generic класс</strong> или <strong>интерфейс</strong> не является сырым типом.</p>
-</div>
-<div class="paragraph">
-<p><strong>Сырые типы</strong> встречаются в <strong>устаревшем коде</strong> (legacy code), потому что большинство <strong>API классов</strong> такие как <strong>Collections classes</strong> не использовали <strong>generics</strong> до <strong>JDK 5.0</strong>. При использовании <strong>сырых типов</strong> по сути получается поведение которое было распространено до <strong>generics</strong> - <code>Box</code> выдает <code>Object</code>. Для обратной совместимости позволяется присваивать <strong>сырым</strong> типам <strong>параметризованные</strong>:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="java">Box&lt;String&gt; stringBox = new Box&lt;&gt;();
-Box rawBox = stringBox; // OK</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Но если присвоить <strong>параметризованному</strong> типу <strong>сырой</strong> то компилятор выдаст <strong>предупреждение</strong>:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="java">Box rawBox = new Box(); // rawBox is a raw type of Box&lt;T&gt;
-Box&lt;Integer&gt; intBox = rawBox; // warning: unchecked conversion</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Также компилятор выдаст <strong>предупреждение</strong> если использовать <strong>сырой тип</strong> для вызова <strong>параметризованного метода</strong> определенного в соответствующем <strong>параметризованном классе</strong>:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="java">Box&lt;String&gt; stringBox = new Box&lt;&gt;();
-Box rawBox = stringBox;
-rawBox.set(8); // warning: unchecked invocation to set(T)</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Предупреждение показывает, что <strong>сырые типы</strong> обходят проверки <strong>универсального типа</strong>, откладывая обнаружение небезопасного кода до <strong>Runtime</strong>. Следовательно, следует избегать использования <strong>сырых типов</strong>.</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_множественное_ограничение">3.2.2. Множественное ограничение</h4>
-<div class="paragraph">
-<p><strong>Параметр типа</strong> может иметь несколько границ:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="java">&lt;T extends B1 &amp; B2 &amp; B3&gt;</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p><strong>Переменная типа</strong> с несколькими границами является <strong>подтипом</strong> всех типов, перечисленных в привязке. Если одна из границ является <strong>классом</strong>, она должна быть указана в <strong>первую очередь.</strong> Например:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="java">class A { /* ... */ }
-interface B { /* ... */ }
-interface C { /* ... */ }
-
-class D &lt;T extends A &amp; B &amp; C&gt; { /* ... */ }</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Если привязка <code>A</code> не указана <strong>первой</strong>, получится <strong>ошибка времени компиляции</strong>:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="java">class D &lt;T extends B &amp; A &amp; C&gt; { /* ... */ } // compile-time error</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_обобщенные_методы">3.2.3. Обобщенные методы</h4>
 <div class="paragraph">
 <p>Полный синтаксис для вызова этого метода:</p>
 </div>
@@ -8771,69 +8695,6 @@ boolean same = Util.compare(p1, p2);</code></pre>
 </div>
 <div class="paragraph">
 <p>Эта функция называется <strong>вывод типа</strong>, она позволяет вызывать <strong>обобщенный метод</strong> как <strong>обычный метод</strong> без указания типа в угловых скобках.</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_обобщенные_методы_с_ограниченным_обобщением">3.2.4. Обобщенные методы с ограниченным обобщением</h4>
-<div class="paragraph">
-<p><strong>Ограниченные обобщения</strong> в методах являются ключом к реализации универсальных алгоритмов. Рассмотрим следующий метод, который подсчитывает количество элементов в массиве <code>T[]</code> больше указанного элемента <code>elem</code>.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="java">public static &lt;T&gt; int countGreaterThan(T[] anArray, T elem) {
-    int count = 0;
-    for (T e : anArray)
-        if (e &gt; elem) // compiler error
-            // ++count;
-            // return count;
-}</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Реализация метода проста, но он не компилируется, потому что оператор больше <code>(&gt;)</code> применяется только к <strong>примитивным типам</strong>, таким как <code>short</code>, <code>int</code>, <code>double</code>, <code>long</code>, <code>float</code>, <code>byte</code> и <code>char</code>. Нельзя использовать оператор <code>&gt;</code> для сравнения <strong>объектов</strong>. Чтобы устранить проблему, можно использовать <strong>параметр типа</strong>, ограниченный интерфейсом <code>Comparable&lt;T&gt;</code> :</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="java">public interface Comparable&lt;T&gt; {
-    public int compareTo(T o);
-}</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>В результате получится такой код:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="java">public static &lt;T extends Comparable&lt;T&gt;&gt; int countGreaterThan(T[] anArray, T elem) {
-    int count = 0;
-    for (T e : anArray)
-        if (e.compareTo(elem) &gt; 0)
-            ++count;
-        return count;
-}</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_type_inference_вывод_типа">3.2.5. Type Inference (Вывод типа)</h4>
-<div class="paragraph">
-<p><strong>Вывод типа</strong> - это способность <strong>компилятора Java</strong> просматривать каждый <strong>вызов метода</strong> и соответствующее <strong>объявление</strong>, чтобы определить <strong>тип аргумента</strong> (или аргументов), которые делают вызов применимым. Алгоритм <strong>вывода типа</strong> определяет <strong>типы аргументов</strong> и, если они доступны, тип, которому <strong>присваивается</strong> или <strong>возвращается</strong> результат. Наконец, <strong>алгоритм вывода</strong> пытается найти <strong>наиболее конкретный тип</strong>, который работает со всеми аргументами.</p>
-</div>
-<div class="paragraph">
-<p>В следующем примере <strong>логический вывод типа</strong> определяет, что второй аргумент, передаваемый методу <code>pick()</code>, имеет тип <code>Serializable</code>:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="java">static &lt;T&gt; T pick(T a1, T a2) {
-    return a2;
-}
-Serializable s = pick("d", new ArrayList&lt;String&gt;());</code></pre>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_вывод_типа_и_обобщенные_методы">Вывод типа и обобщенные методы</h5>
-<div class="paragraph">
-<p><strong>Вывод типа</strong>, позволяет вызывать <strong>обобщенный метод</strong>, как обычный метод, без указания типа в угловых скобках.</p>
 </div>
 </div>
 <div class="sect4">
@@ -8974,7 +8835,7 @@ Serializable s = pick("d", new ArrayList&lt;String&gt;());</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_generics_наследование_и_подтипы">3.2.6. Generics, наследование и подтипы</h4>
+<h4 id="_generics_наследование_и_подтипы">3.2.2. Generics, наследование и подтипы</h4>
 <div class="paragraph">
 <p>Возможно присвоить объект одного типа объекту другого типа при условии, что типы совместимы. Например, можно типу <code>Object</code> присвоить <code>Integer</code>, поскольку <code>Object</code> является одним из суперклассов <code>Integer</code>:</p>
 </div>
@@ -9065,319 +8926,6 @@ PayloadList&lt;String,Exception&gt;
 <div class="content">
 <img src="../assets/img/generics/generics-payload-list-hierarchy.gif" alt="иерархия playLoadList">
 </div>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_wildcards">3.2.7. WildCards</h4>
-<div class="paragraph">
-<p>В обобщениях вопросительный знак (<code>?</code>), называемый <strong>подстановочным знаком</strong>, представляет <strong>неизвестный тип</strong>. <strong>Подстановочный знак</strong> можно использовать в различных ситуациях: как <strong>тип параметра</strong>, <strong>поля</strong> или <strong>локальной переменной</strong>; иногда как <strong>возвращаемый тип</strong> (хотя более конкретная практика программирования лучше). <strong>Подстановочный знак</strong> никогда не используется в качестве <strong>аргумента типа</strong> для вызова обобщенного метода, создания экземпляра обобщенного класса или супертипа.</p>
-</div>
-<div class="sect4">
-<h5 id="_подстановочные_знаки_с_ограничением_сверху_upper_bounded_wildcard">Подстановочные знаки с ограничением сверху (Upper bounded WildCard)</h5>
-<div class="paragraph">
-<p>Можно использовать <strong>ограниченный сверху подстановочный знак</strong>,  чтобы ослабить ограничения на переменную. Например, необходимо написать метод, который работает с <code>List &lt;Integer&gt;</code>, <code>List &lt;Double&gt;</code> и <code>List &lt;Number&gt;</code>; этого можно добиться, используя <strong>ограниченный сверху подстановочный знак</strong>.</p>
-</div>
-<div class="paragraph">
-<p>Чтобы объявить подстановочный знак с ограничением сверху, используется подстановочный знак <code>?</code>. За которым следует ключевое слово <code>extends</code>, за которым следует его <strong>верхняя граница</strong>. Обратите внимание, что в этом контексте <code>extends</code> используется в общем смысле и обозначает либо <code>extend</code> (как в классах), либо <code>implements</code> (как в интерфейсах).</p>
-</div>
-<div class="paragraph">
-<p>Чтобы написать метод, который работает со списками <code>Number</code> и подтипами <code>Number</code>, такими как <code>Integer</code>, <code>Double</code> и <code>Float</code>, необходимо указать <code>List &lt;? extends Number&gt;</code>. <code>List &lt;Number&gt;</code> является более строгим, чем <code>List &lt;? extends Number&gt;</code>, потому что первый соответствует только списку типа <code>Number</code>, тогда как последний соответствует списку типа <code>Number</code> или любому из его подклассов.</p>
-</div>
-<div class="paragraph">
-<p>Рассмотрим следующий метод <code>process()</code>:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="java">public static void process(List&lt;? extends Foo&gt; list){
-    /* ... */
-}</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Верхний ограниченный подстановочный знак, <code>&lt;? extends Foo&gt;</code>, где <code>Foo</code> - это любой тип, соответствует <code>Foo</code> и любому подтипу <code>Foo</code>. Метод <code>process()</code> может обращаться к элементам списка как к типу <code>Foo</code>:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="java">public static void process(List&lt;? extends Foo&gt; list) {
-    for (Foo elem : list) {
-        // ...
-    }
-}</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>В цикле <em>foreach</em> переменная <code>elem</code> выполняет итерацию по каждому элементу в списке. Любой метод, определенный в классе <code>Foo</code>, теперь можно использовать через <code>elem</code>.</p>
-</div>
-<div class="paragraph">
-<p>Метод <code>sumOfList()</code> возвращает сумму чисел в списке:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="java">public static double sumOfList(List&lt;? extends Number&gt; list) {
-    double s = 0.0;
-    for (Number n : list)
-        s += n.doubleValue();
-    return s;
-}</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Следующий код, используя список объектов <code>Integer</code>, выводит <code>sum = 6.0</code>:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="java">List&lt;Integer&gt; li = Arrays.asList(1, 2, 3);
-System.out.println("sum = " + sumOfList(li));</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Список значений <code>Double</code> может использовать тот же метод <code>sumOfList()</code>. Следующий код выводит <code>sum = 7.0</code>:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="java">List&lt;Double&gt; ld = Arrays.asList(1.2, 2.3, 3.5);
-System.out.println("sum = " + sumOfList(ld));</code></pre>
-</div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_неограниченные_подстановочные_знаки_unbounded_wildcard">Неограниченные подстановочные знаки (Unbounded WildCard)</h5>
-<div class="paragraph">
-<p>Тип <strong>неограниченного подстановочного знака</strong> указывается с помощью подстановочного знака <code>?</code>, Например <code>List &lt;?&gt;</code>. Это называется списком неизвестного типа. Есть два сценария, в которых неограниченный подстановочный знак является полезным подходом:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Если вы пишете метод, который можно реализовать с использованием методов, предоставляемых в классе <code>Object</code>.</p>
-</li>
-<li>
-<p>Когда код использует методы в обобщенном классе, которые не зависят от параметра типа. Например, <code>List.size</code> или <code>List.clear</code>. Фактически, <code>Class &lt;?&gt;</code> Так часто используется, потому что большинство методов в <code>Class &lt;T&gt;</code> не зависят от <code>T</code>.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Рассмотрим следующий метод <code>printList()</code>:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="java">public static void printList(List&lt;Object&gt; list) {
-    for (Object elem : list) {
-        System.out.println(elem + " ");
-    }
-    System.out.println();
-}</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Цель <code>printList()</code> - распечатать список любого типа, но он не достигает этой цели - он печатает только список экземпляров <code>Object</code>; он не может печатать <code>List &lt;Integer&gt;</code>, <code>List &lt;String&gt;</code>, <code>List &lt;Double&gt;</code> и так далее, потому что они не являются подтипами <code>List &lt;Object&gt;</code>. Чтобы написать общий метод <code>printList()</code>, используйте <code>List &lt;?&gt;</code>:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="java">public static void printList(List&lt;?&gt; list) {
-    for (Object elem: list) {
-        System.out.print(elem + " ");
-    }
-    System.out.println();
-}</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Поскольку для любого конкретного типа <code>A</code> <code>List &lt;A&gt;</code> является подтипом <code>List &lt;?&gt;</code>, можно использовать <code>printList()</code> для печати списка любого типа:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="java">List&lt;Integer&gt; li = Arrays.asList(1, 2, 3);
-List&lt;String&gt; ls = Arrays.asList("one", "two", "three");
-printList(li);
-printList(ls);</code></pre>
-</div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_подстановочные_знаки_с_ограничением_снизу_lower_bounded_wildcard">Подстановочные знаки с ограничением снизу (Lower Bounded WildCard)</h5>
-<div class="paragraph">
-<p>Аналогично <strong>подстановочным знакам с ограничением сверху</strong>  <strong>ограниченный снизу подстановочный знак</strong> ограничивает неизвестный тип определенным типом или супертипом этого типа.</p>
-</div>
-<div class="paragraph">
-<p><strong>Ограниченный снизу подстановочный знак</strong> выражается с помощью подстановочного символа <code>?</code>, за которым следует ключевое слово <code>super</code> и затем следует его нижняя граница: <code>&lt;? super А&gt;</code>.</p>
-</div>
-<div class="paragraph">
-<p>Допустим, необходимо написать метод, который помещает объекты <code>Integer</code> в список. Для максимальной гибкости необходимо, чтобы метод работал с <code>List &lt;Integer&gt;</code>, <code>List &lt;Number&gt;</code> и <code>List &lt;Object&gt;</code> - всем, что может содержать целочисленные значения.</p>
-</div>
-<div class="paragraph">
-<p>Чтобы написать метод, который работает со списками <code>Integer</code> и супертипами <code>Integer</code>, такими как <code>Integer</code>, <code>Number</code> и <code>Object</code>, необходимо указать <code>List &lt;? super Integer&gt;</code>. <code>List &lt;Integer&gt;</code> является более строгим, чем <code>List &lt;? super Integer&gt;</code>, потому что первый соответствует списку только типа <code>Integer</code>, тогда как последний соответствует списку любого типа, который является супертипом <code>Integer</code>.</p>
-</div>
-<div class="paragraph">
-<p>Следующий код добавляет числа от 1 до 10 в конец списка:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="java">public static void addNumbers(List&lt;? super Integer&gt; list) {
-    for (int i = 1; i &lt;= 10; i++) {
-        list.add(i);
-    }
-}</code></pre>
-</div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_подстановочные_знаки_и_подтипы">Подстановочные знаки и подтипы</h5>
-<div class="paragraph">
-<p><strong>Подстановочные знаки</strong> можно использовать для создания связи между универсальными классами или интерфейсами.</p>
-</div>
-<div class="paragraph">
-<p>Имея два обычных (неуниверсальных) класса:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="java">class A { /* ... */ }
-class B extends A { /* ... */ }</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Можно написать такой код:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="java">B b = new B();
-A a = b;</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Этот пример показывает, что наследование обычных классов следует правилу создания подтипов: класс <code>B</code> является подтипом класса <code>A</code>, если <code>B</code> расширяет <code>A</code>. Это не применяется к универсальным типам:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="java">List&lt;B&gt; lb = new ArrayList&lt;&gt;();
-List&lt;A&gt; la = lb;   // compile-time error</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Учитывая, что <code>Integer</code> является подтипом <code>Number</code>, какова связь между <code>List &lt;Integer&gt;</code> и <code>List &lt;Number&gt;</code>?</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="../assets/img/generics/generics-list-parant.gif" alt="связь list из примера">
-</div>
-</div>
-<div class="paragraph">
-<p>Хотя <code>Integer</code> является подтипом <code>Number</code>, <code>List &lt;Integer&gt;</code> не является подтипом <code>List &lt;Number&gt;</code> и, по сути, эти два типа не связаны. Общим родителем <code>List &lt;Number&gt;</code> и <code>List &lt;Integer&gt;</code> является <code>List &lt;?&gt;</code>.</p>
-</div>
-<div class="paragraph">
-<p>Чтобы создать связь между этими классами, чтобы код мог обращаться к методам <code>Number</code> через элементы <code>List &lt;Integer&gt;</code>, используйте <strong>подстановочный знак с ограничением сверху</strong>:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="java">List&lt;? extends Integer&gt; intList = new ArrayList&lt;&gt;();
-List&lt;? extends Number&gt;  numList = intList;  // OK. List&lt;? extends Integer&gt; is a subtype of List&lt;? extends Number&gt;</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Поскольку <code>Integer</code> является подтипом <code>Number</code>, а <code>numList</code> - списком объектов <code>Number</code>, теперь существует связь между <code>intList</code> (списком объектов <code>Integer</code>) и <code>numList</code>. На следующей диаграмме показаны отношения между несколькими классами <code>List</code>, объявленными с <strong>ограниченными сверху и снизу подстановочными знаками</strong>.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="../assets/img/generics/generics-wildcard-subtyping.gif" alt="подтипы с ограничением сверху и снизу">
-</div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_захват_подстановочных_знаков_и_вспомогательные_методы">Захват подстановочных знаков и вспомогательные методы.</h5>
-<div class="paragraph">
-<p>В некоторых случаях <strong>компилятор</strong> определяет тип <strong>подстановочного знака</strong>. Например, список может быть определен как <code>List &lt;?&gt;</code>, но при оценке выражения <strong>компилятор</strong> выводит <strong>конкретный</strong> тип из кода. Этот сценарий известен как <strong>захват подстановочного знака</strong>.</p>
-</div>
-<div class="paragraph">
-<p>По большей части не стоит беспокоиться о захвате подстановочных знаков, за исключением случаев, когда генерируется <strong>сообщение об ошибке</strong>, содержащее фразу «<strong>capture of</strong>».</p>
-</div>
-<div class="paragraph">
-<p>Пример <code>WildcardError</code> при компиляции вызывает ошибку захвата:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="java">import java.util.List;
-
-public class WildcardError {
-    void foo(List&lt;?&gt; i) {
-        i.set(0, i.get(0));
-    }
-}</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>В этом примере <strong>компилятор</strong> обрабатывает входной параметр <code>i</code> как имеющий тип <code>Object</code>. Когда метод <code>foo()</code> вызывает <code>List.set (int, E)</code>, компилятор не может подтвердить тип объекта, который вставляется в список, и возникает ошибка. Когда возникает этот тип ошибки, это обычно означает, что компилятор считает, что идет присваивание неправильного типа переменной. По этой причине в язык Java были добавлены generics - для обеспечения безопасности типов во время компиляции.</p>
-</div>
-<div class="paragraph">
-<p>Пример <code>WildcardError</code> генерирует следующую ошибку при компиляции javac-реализацией <strong>Oracle JDK 7</strong>:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>WildcardError.java:6: error: method set in interface List&lt;E&gt; cannot be applied to given types;
-i.set(0, i.get(0));
-^
-required: int,CAP#1
-found: int,Object
-reason: actual argument Object cannot be converted to CAP#1 by method invocation conversion
-where E is a type-variable:
-E extends Object declared in interface List
-where CAP#1 is a fresh type-variable:
-CAP#1 extends Object from capture of ?
-1 error</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Обойти ошибку компилятора можно написав частный <strong>вспомогательный метод</strong>, который <strong>захватывает</strong> подстановочный знак. Пример, создадим вспомогательный метод <code>fooHelper()</code>, в <code>WildcardFixed</code>:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="java">public class WildcardFixed {
-    void foo(List&lt;?&gt; i) {
-        fooHelper(i);
-    }
-
-    // Helper method created so that the wildcard can be captured
-    // through type inference.
-    private &lt;T&gt; void fooHelper(List&lt;T&gt; l) {
-        l.set(0, l.get(0));
-    }
-}</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Благодаря вспомогательному методу компилятор использует <strong>выведение типов</strong>, чтобы определить, что <code>T</code> является <code>CAP1</code>, переменной захвата, в вызове. Теперь пример успешно компилируется.</p>
-</div>
-<div class="paragraph">
-<p>По соглашению вспомогательные методы обычно называются <code>originalMethodNameHelper()</code>.</p>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_принцип_pecs">Принцип PECS</h5>
-<div class="paragraph">
-<p><strong>PECS</strong> - <strong>Producer Extends Consumer Super</strong>.</p>
-</div>
-<div class="paragraph">
-<p>Рассмотрим принцип <strong>PECS</strong> с точки зрения коллекции. Если необходимо только извлекать элементы из общей коллекции, это производитель, и необходимо использовать <code>extends</code>; если необходимо только добавлять элементы, это потребитель, и необходимо использовать <code>super</code>. Если необходимо осуществлять обе операции с одной коллекцией, не следует использовать <code>extends</code> или <code>super</code>.</p>
-</div>
-<div class="paragraph">
-<p>Предположим, есть метод, который принимает в качестве параметра <code>Collection</code> объектов <code>Thing</code>, но необходимо сделать его более гибким:</p>
-</div>
-<div class="paragraph">
-<p>Случай 1: Необходимо просмотреть коллекцию и произвести какие-то действия с каждым компонентом как с объектом <code>Thing</code>.</p>
-</div>
-<div class="paragraph">
-<p>Тогда список является <strong>producer</strong>, поэтому необходимо использовать <code>Collection&lt;? extends Thing&gt;</code>.</p>
-</div>
-<div class="paragraph">
-<p>Основная идея в том, что <code>Collection&lt;? extends Thing&gt;</code> может содержать любой подтип <code>Thing</code>, и, таким образом, каждый элемент будет вести себя как <code>Thing</code> при выполнении необходимой операции. На самом деле невозможно ничего добавить в <code>Collection&lt;? extends Thing&gt;</code>, потому что не возможно  знать во время выполнения, какой определенный подтип <code>Thing</code> содержится в коллекции.</p>
-</div>
-<div class="paragraph">
-<p>Случай 2: Необходимо добавлять вещи в коллекцию.</p>
-</div>
-<div class="paragraph">
-<p>Тогда список является <strong>consumer</strong>, поэтому необходимо использовать <code>Collection&lt;? super Thing&gt;</code>.</p>
-</div>
-<div class="paragraph">
-<p>Причиной здесь является то, что в отличие от <code>Collection&lt;? extends Thing&gt;</code>, <code>Collection&lt;? super Thing&gt;</code> всегда может содержать <code>Thing</code> независимо от того, что является фактическим параметризованным типом.</p>
 </div>
 </div>
 </div>
@@ -10738,7 +10286,7 @@ ssb   4096R/42B317FD4BA89E7A 2016-03-10</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-10-12 04:09:26 UTC
+Last updated 2021-10-15 01:34:15 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/run_prettify.min.js"></script>
