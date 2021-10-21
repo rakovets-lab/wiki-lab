@@ -462,25 +462,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_объекты_бд">2.7. Объекты БД</a></li>
 </ul>
 </li>
-<li><a href="#_java">3. Java</a>
+<li><a href="#_data_persistence_in_java">3. Data Persistence in Java</a>
 <ul class="sectlevel2">
-<li><a href="#_коллекции">3.1. Коллекции</a></li>
-<li><a href="#_generics">3.2. Generics</a></li>
-<li><a href="#_java_tools">3.3. Java: Tools</a></li>
-</ul>
-</li>
-<li><a href="#_тестирование">4. Тестирование</a>
-<ul class="sectlevel2">
-<li><a href="#_классификация_видов_тестирования">4.1. Классификация видов тестирования</a></li>
-<li><a href="#_уровни_тестирования">4.2. Уровни тестирования</a></li>
-<li><a href="#_динамический_и_статический_анализ_кода">4.3. Динамический и статический анализ кода</a></li>
-<li><a href="#_links_2">4.4. Links</a></li>
-</ul>
-</li>
-<li><a href="#_github_keys">5. GitHub keys</a>
-<ul class="sectlevel2">
-<li><a href="#_ssh_key">5.1. SSH key</a></li>
-<li><a href="#_gpg_key">5.2. GPG key</a></li>
+<li><a href="#_jdbc">3.1. JDBC</a></li>
+<li><a href="#_java">3.2. Java</a></li>
+<li><a href="#_тестирование">3.3. Тестирование</a></li>
+<li><a href="#_github_keys">3.4. GitHub keys</a></li>
 </ul>
 </li>
 </ul>
@@ -7845,9 +7832,6 @@ REFERENCES product_groups;</code></pre>
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>Unresolved directive in index.adoc - include::data-persistence/index.adoc[]</p>
-</div>
 </div>
 </div>
 </div>
@@ -7855,20 +7839,232 @@ REFERENCES product_groups;</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_java">3. Java</h2>
+<h2 id="_data_persistence_in_java">3. Data Persistence in Java</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>Dmitry Rakovets
+:source-highlighter: prettify
+:sectnums:
+:toc: left
+:toclevels: 2</p>
+</div>
+<div class="paragraph">
+<p>Wiki for course "Data Persistence in Java".</p>
+</div>
 <div class="sect2">
-<h3 id="_коллекции">3.1. Коллекции</h3>
+<h3 id="_jdbc">3.1. JDBC</h3>
 <div class="sect3">
-<h4 id="_иерархия_коллекций_абстрактные_классы_интерфейсы_и_классы">3.1.1. Иерархия коллекций: Абстрактные классы, Интерфейсы и Классы</h4>
+<h4 id="_callablestatement">3.1.1. <code>CallableStatement</code></h4>
+<div class="paragraph">
+<p>Подобно тому, как объект <code>Connection</code> создает объекты <code>Statement</code> и <code>PreparedStatement</code>, он также создает объект <code>CallableStatement</code>, который будет использоваться для выполнения вызова хранимой процедуры из базы данных. <strong>Хранимая процедура</strong> - последовательность команд, хранимых в <strong>БД</strong>.</p>
+</div>
+<div class="paragraph">
+<p>Синтаксис вызова хранимой процедуры в <code>JDBC</code> показан ниже. Квадратные скобки означают, что параметры необязательны и сами по себе не являются частью синтаксиса.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="java">{call имя_процедуры[(?, ?, ...)]}
+
+{? = call имя_процедуры[(?, ?, ...)]}
+
+{call имя_процедуры}</code></pre>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_создание_объекта_callablestatement">Создание объекта <code>CallableStatement</code></h5>
+<div class="paragraph">
+<p>Объекты <code>CallableStatement</code> создаются методом <code>prepareCall</code> объекта <code>Connection</code>. Пример, который создает экземпляр <code>CallableStatement</code>, содержащий вызов хранимой процедуры с двумя аргументами и без возвращаемого параметра:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="java">CallableStatement cstmt = con.prepareCall("{call procedure_name(?, ?)}");</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_входные_и_выходные_in_и_out_параметры">Входные и выходные <code>IN</code> и <code>OUT</code>-параметры</h5>
+<div class="paragraph">
+<p>Для передачи и получения значения из хранимой процедуры есть три типа параметров:  <code>IN</code>, <code>OUT</code> и <code>INOUT</code>. Объект <code>CallableStatement</code> может использовать все три.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Параметры</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Описание</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>IN</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Параметр, значение которого присваивается по умолчанию при создании оператора <code>SQL</code>. C помощью метода <code>setXXX()</code> можно установить входные значения с параметром <code>IN</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>OUT</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Параметр, значение которого предоставляется оператором <code>SQL</code>, который он возвращает. Извлечение значения из параметров <code>OUT</code> выполнется с помощью методов <code>getXXX()</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>INOUT</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Параметр, который предоставляет как входные, так и выходные значения. Можно связать переменные с помощью методов <code>setXXX()</code> и извлекаете значения с помощью методов <code>getXXX()</code>.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Передача значений входных парметров объекта <code>CallableStatement</code> осуществляется с помощью методов <code>setXXX</code>, унаследованных от <code>PreparedStatement</code>. Типы передаваемых значений определяются тем, какой из методов <code>setXXX</code> используется (<code>setString</code> для передачи значений типа <code>String</code>, <code>setInt</code> для передачи значений типа <code>int</code> и т.п.).</p>
+</div>
+<div class="paragraph">
+<p><code>JDBC</code>-типы всех <code>OUT</code>-параметров хранимых процедур должны быть зарегистрированы перед их вызовом. Регистрация типов данных выходного параметра производится методом <code>registerOutParameter</code>. Только в этом случае после вызова хранимой процедуры <code>CallableStatement.executeQuery()</code> можно получить результаты выполнения с помощью методов <code>getXXX</code>. Необходимо использовать подходящий по типу данных метод <code>getXXX</code> в соответствии с зарегистрированным <code>JDBC</code>-типом параметра.</p>
+</div>
+<div class="paragraph">
+<p>Другими словами, <code>registerOutParameter</code> использует <code>JDBC</code>-тип, который подходит к <code>JDBC</code>-типу возвращаемого из значения, а <code>getXXX</code> преобразует его в тип Java.</p>
+</div>
+<div class="paragraph">
+<p>Пример регистрации выходных параметров хранимой процедуры и чтение выходных значений.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="java">CallableStatement cstmt = con.prepareCall ("{call getData(?, ?)}");
+cstmt.registerOutParameter(1, java.sql.Types.TINYINT);
+cstmt.registerOutParameter(2, java.sql.Types.DECIMAL, 2);
+// Вызов хранимой процедуры
+cstmt.executeQuery();
+// Чтение выходных данных
+byte x = cstmt.getByte(1);
+java.math.BigDecimal n = cstmt.getBigDecimal(2, 2);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>В примере метод <code>getByte</code> извлекает байт из первого выходного параметра, а <code>getBigDecimal</code> возвращает объект <code>BigDecimal</code> (с двумя цифрами после десятичной точки) из второго выходного параметра.</p>
+</div>
+<div class="paragraph">
+<p>Если параметр является одновременно и входным, и выходным (<code>INOUT</code>), то необходимо вызывать как метод <code>setXXX</code>, так и метод <code>registerOutParameter</code>. Метод <code>setXXX</code> устанавливает входное значение параметра, а <code>registerOutParameter</code> регистрирует тип выходного значения.
+В следующий пример демонстрирует вызов хранимой процедуры с одним <code>INOUT</code>-параметром. Метод <code>setByte</code> устанавливает значение параметра в <code>25</code>, которое будет передано хранимой процедуре базе данных как <code>TINYINT</code>. Далее метод <code>registerOutParameter</code> регистрирует первый параметр как <code>TINYINT</code>. После выполнения хранимой процедуры возвращается значение типа <code>TINYINT</code>, которое будет считано методом <code>getByte</code> в виде типа <code>byte</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="java">CallableStatement cstmt = con.prepareCall("{call procedureName(?)}");
+// Определение значение параметра
+cstmt.setByte(1, 25);
+// Регистрация выходного параметра
+cstmt.registerOutParameter(1, java.sql.Types.TINYINT);
+cstmt.executeUpdate();
+// Чтение параметра
+byte x = cstmt.getByte(1);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Если хранимая процедура оформлена функцией, т.е возвращает значение не через параметры, а через оператор <code>RETURNS</code>, то для вызова используйте <code>execute</code> вместо <code>executeUpdate</code>.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_закрытие_объекта_callablestatement">Закрытие объекта <code>CallableStatement</code></h5>
+<div class="paragraph">
+<p>Так же, как нужно закрывать объект <code>Statement</code>, по той же причине необходимо закрывать объект <code>CallableStatement</code>.</p>
+</div>
+<div class="paragraph">
+<p>Простой вызов метода <code>close()</code> сделает эту работу. Если сначала закрыть объект <code>Connection</code>, он также закроет объект <code>CallableStatement</code>. Однако всегда нужно явно закрывать объект <code>CallableStatement</code>, чтобы обеспечить правильную очистку.</p>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_управление_транзакциями">3.1.2. Управление транзакциями</h4>
+<div class="paragraph">
+<p>Транзакции состоят из одного или более выражений, которые после выполнения либо фиксируются (<code>commit</code>),  либо откатываются назад (<code>rollback</code>).</p>
+</div>
+<div class="paragraph">
+<p>Для работы с танзакциями используют следующие методы:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>commit()</code> - делает окончательными все изменения в <strong>БД</strong>, проделанные <code>SQL</code>-выражением, и снимает все блокировки, установленные транзакцией.</p>
+</li>
+<li>
+<p><code>rollback()</code> - игнорирует изменения и откатывает изменения до предыдущего состояния.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>При вызове этих методов текущая транзакция заканчивается и начинается другая.</p>
+</div>
+<div class="paragraph">
+<p>Каждое новое соединение по умолчанию находится в режиме автофиксации, что означает автоматическую фиксацию транзакций после каждого запроса. В этом случае транзакция состоит из одного запроса. Однако, есть автофиксация запрещена, транзакция не заканчивается вполоть до явного вызовы <code>commit()</code> и <code>rollback()</code>, включая, таким образом, все выражения, выполненые с момента последего завершения транзакции.</p>
+</div>
+<div class="paragraph">
+<p>Рассмотрим следующий код:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="java">connection.setAutoCommit(false);
+
+//устанавливаем именнованную точку сохранения
+Savepoint svpt  = connection.setSavepoint("NewEmp");
+
+...
+
+Statement st = connection.createStatement();
+
+int rows = st.executeUpdate("INSERT INTO Employees " + (FirstName, LastName) VALUES " + "('Игорь','Цветков')");
+
+rows = st.executeUpdate("UPDATE Employees set Address = 'ул.Седых.19-34'" + "WHERE LastName = 'Цветков'");
+...
+
+// Запись о работнике вставлена, но адрес не обновлен.
+
+connection.commit(); // завершает транзакцию и подтверждаем все изменения.
+
+}catch(SQLException e){
+connection.rollback(svpt); // возвращаемся к предыдущему стабильному состоянию.
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Метод <code>connection.setAutoCommit(false)</code> позволяет снять автоматическое управление транзакциями. Это означает,
+что подтверждение (<code>commit</code>) и откат (<code>rollback</code>) теперь управляются в ручном режиме.</p>
+</div>
+<div class="paragraph">
+<p>C помощью <code>Savepoint svpt  = connection.setSavepoint("NewEmp");</code> устанавливаем точку сохранения. Такая точка позволяет запомнить состояние внутри  БД и выполнить <code>rollback</code> до этого момента.</p>
+</div>
+<div class="paragraph">
+<p>С помощью <code>connection.commit();</code> подтвеждаем завершение транзакции. Однако если во время выполнения транзакции произошел сбой, благодаря методу <code>connection.rollback();</code> находящемуся  в блоке <code>catch</code>, произойдет откат БД до предыдущего стабильного состояния. Сделать это можно так же указав точку сохранения внутри функции <code>connection.rollback(svpt)</code>, которых может быть множество.</p>
+</div>
+<div class="sect4">
+<h5 id="_batch_команды">BATCH-команды</h5>
+<div class="paragraph">
+<p>BATCH-команды позволяют запускать на исполнение в <strong>БД</strong> массив запросов <code>SQL</code> вместе как одну единицу. <strong>Пример</strong>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="java">st= com.createStatement();
+
+st.addBatch("INSERT INTO...");
+st.addBatch("INSERT INTO...");
+st.addBatch("INSERT INTO...");
+
+int[] updateCounts = st.executeBatch();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>С помощью функции <code>addBatch()</code> накапливаем <code>SQL</code>-запросы и отправляем на выполнение. Следует учесть, что при возникновении исключения мы не узнает на каком именно запросе произошла ошибка. Однако, с помощью блока <code>try-catch</code> и функции <code>rollback()</code> можно вернуться до предыдущего стабильного состояния.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_java">3.2. Java</h3>
+<div class="sect3">
+<h4 id="_коллекции">3.2.1. Коллекции</h4>
+<div class="sect4">
+<h5 id="_иерархия_коллекций_абстрактные_классы_интерфейсы_и_классы">Иерархия коллекций: Абстрактные классы, Интерфейсы и Классы</h5>
 <div class="imageblock">
 <div class="content">
 <img src="../assets/img/collections/collectios-hierarcy.gif" alt="иерархия коллекций">
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_структура_данных_arraylist">3.1.2. Структура данных <code>ArrayList</code></h4>
+<div class="sect4">
+<h5 id="_структура_данных_arraylist">Структура данных <code>ArrayList</code></h5>
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="java">ArrayList&lt;String&gt; list = new ArrayList&lt;String&gt;();</code></pre>
@@ -8085,8 +8281,8 @@ size++;</code></pre>
 <p>При удалении элементов текущая величина <code>capacity</code> <strong>не уменьшается</strong>, что может привести к своеобразным утечкам памяти. Поэтому не стоит пренебрегать методом <code>trimToSize()</code>.</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_структура_данных_linkedlist">3.1.3. Структура данных <code>LinkedList</code></h4>
+<div class="sect4">
+<h5 id="_структура_данных_linkedlist">Структура данных <code>LinkedList</code></h5>
 <div class="paragraph">
 <p><code>LinkedList</code> — класс, реализующий два интерфейса — <code>List</code> и <code>Deque</code>. Это обеспечивает возможность создания двунаправленной очереди из любых, в том числе и <code>null</code> элементов. Каждый объект, помещенный в связанный список, является <strong>узлом</strong> (<strong>node</strong>). Каждый узел содержит <strong>элемент</strong>, ссылку на <strong>предыдущий</strong> и <strong>следующий</strong> узел. Фактически связанный список состоит из последовательности узлов, каждый из которых предназначен для хранения объекта определенного при создании типа.</p>
 </div>
@@ -8095,8 +8291,8 @@ size++;</code></pre>
 <img src="../assets/img/collections/linkedList-view.jpg" alt="общий вид связанного списка">
 </div>
 </div>
-<div class="sect4">
-<h5 id="_создание_связанного_списка">Создание связанного списка</h5>
+<div class="sect5">
+<h6 id="_создание_связанного_списка">Создание связанного списка</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="java">LinkedList&lt;Integer&gt; numbers = new LinkedList&lt;&gt;();</code></pre>
@@ -8123,8 +8319,8 @@ transient Node&lt;E&gt; last;</code></pre>
 </div>
 </div>
 </div>
-<div class="sect4">
-<h5 id="_добавление_объекта_в_конец_связанного_списка">Добавление объекта в конец связанного списка</h5>
+<div class="sect5">
+<h6 id="_добавление_объекта_в_конец_связанного_списка">Добавление объекта в конец связанного списка</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="java">numbers.add(8);</code></pre>
@@ -8187,8 +8383,8 @@ transient Node&lt;E&gt; last;</code></pre>
 </div>
 </div>
 </div>
-<div class="sect4">
-<h5 id="_добавление_объекта_в_середину_связанного_списка">Добавление объекта в середину связанного списка</h5>
+<div class="sect5">
+<h6 id="_добавление_объекта_в_середину_связанного_списка">Добавление объекта в середину связанного списка</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="java">numbers.add(1, 13);</code></pre>
@@ -8223,8 +8419,8 @@ transient Node&lt;E&gt; last;</code></pre>
 </div>
 </div>
 </div>
-<div class="sect4">
-<h5 id="_удаление_объекта_из_списка">Удаление объекта из списка</h5>
+<div class="sect5">
+<h6 id="_удаление_объекта_из_списка">Удаление объекта из списка</h6>
 <div class="paragraph">
 <p>Рассмотрим удаление элемента из связанного списка по его значению. Удалим элемент со значением <code>5</code> из ниже представленного списка:</p>
 </div>
@@ -8267,10 +8463,10 @@ transient Node&lt;E&gt; last;</code></pre>
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_структура_данных_hashmap">3.1.4. Структура данных HashMap</h4>
 <div class="sect4">
-<h5 id="_создание_объекта">Создание объекта</h5>
+<h5 id="_структура_данных_hashmap">Структура данных HashMap</h5>
+<div class="sect5">
+<h6 id="_создание_объекта">Создание объекта</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="java">Map&lt;String, String&gt; hashmap = new HashMap&lt;String, String&gt;();</code></pre>
@@ -8321,25 +8517,25 @@ transient Node&lt;E&gt; last;</code></pre>
 <p>Теперь разберем как все это работает. Для начала рассмотрим процесс хеширования.</p>
 </div>
 </div>
-<div class="sect4">
-<h5 id="_хеширование">Хеширование</h5>
+<div class="sect5">
+<h6 id="_хеширование">Хеширование</h6>
 <div class="paragraph">
 <p><strong>Хеширование</strong> -это процесс преобразования <strong>объекта</strong> в <strong>целочисленную форму</strong>, выполняется с помощью метода <code>hashCode()</code>. Очень важно правильно реализовать метод <code>hashCode()</code> для обеспечения лучшей производительности класса <code>HashMap</code>.</p>
 </div>
-<div class="sect5">
-<h6 id="_метод_hashcode">Метод <code>hashCode()</code></h6>
+<div class="sect6">
+<h7 id="_метод_hashcode">Метод <code>hashCode()</code></h7>
 <div class="paragraph">
 <p>Метод <code>hashCode()</code> используется для получения хэш кода объекта. Метод <code>hashCode()</code> класса <code>Object</code> возвращает ссылку памяти объекта в целочисленной форме (<strong>идентификационный хеш</strong>/<strong>identity hash code</strong>). Сигнатура метода <code>public native hashCode()</code>. Это говорит о том, что метод реализован как нативный, поскольку в java нет какого-то метода позволяющего получить ссылку на объект. Допускается определять собственную реализацию метода <code>hashCode()</code>. В классе <code>HashMap</code> метод <code>hashCode()</code> используется для вычисления <strong>корзины</strong> (<strong>bucket</strong>) и, следовательно, вычисления индекса.</p>
 </div>
 </div>
-<div class="sect5">
-<h6 id="_метод_equals">Метод <code>equals()</code></h6>
+<div class="sect6">
+<h7 id="_метод_equals">Метод <code>equals()</code></h7>
 <div class="paragraph">
 <p>Метод <code>equals</code> используется для проверки двух объектов на равенство. Метод реализован в классе <code>Object</code>. Можно переопределить его в своем собственном классе. В классе <code>HashMap</code> метод <code>equals()</code> используется для проверки равенства ключей. В случае, если ключи равны, метод <code>equals()</code> возвращает <code>true</code>, иначе <code>false</code>.</p>
 </div>
 </div>
-<div class="sect5">
-<h6 id="_корзины_buckets">Корзины (Buckets)</h6>
+<div class="sect6">
+<h7 id="_корзины_buckets">Корзины (Buckets)</h7>
 <div class="paragraph">
 <p><strong>Bucket</strong> -это единственный элемент массива <code>HashMap</code>. Он используется для хранения <strong>узлов</strong> (Nodes). Два или более узла могут иметь один и тот-же <strong>bucket</strong>. В этом случае для связи узлов используется структура данных <strong>связанный список</strong>. <strong>Bucket</strong> различаются по ёмкости (свойство <code>capacity</code>). Отношение между <code>bucket</code> и <code>capacity</code> выглядит следующим образом:</p>
 </div>
@@ -8353,8 +8549,8 @@ transient Node&lt;E&gt; last;</code></pre>
 </div>
 </div>
 </div>
-<div class="sect4">
-<h5 id="_вычисление_индекса_в_hashmap">Вычисление индекса в <code>HashMap</code></h5>
+<div class="sect5">
+<h6 id="_вычисление_индекса_в_hashmap">Вычисление индекса в <code>HashMap</code></h6>
 <div class="paragraph">
 <p>Хэш код ключа может быть достаточно большим для создания массива. Сгенерированный хэш код может быть в диапазоне целочисленного типа и если создать массив такого размера, то легко получим исключение <code>outOfMemoryException</code>. Потому генерируется индекс для минимизации размера массива. По сути для вычисления индекса выполняется следующая операция:</p>
 </div>
@@ -8367,8 +8563,8 @@ transient Node&lt;E&gt; last;</code></pre>
 <p>Где n равна числу bucket или значению длины массива.</p>
 </div>
 </div>
-<div class="sect4">
-<h5 id="_вставка_пары_ключзначение_в_hashmap">Вставка пары ключ/значение в <code>HashMap</code></h5>
+<div class="sect5">
+<h6 id="_вставка_пары_ключзначение_в_hashmap">Вставка пары ключ/значение в <code>HashMap</code></h6>
 <div class="paragraph">
 <p>Изначально пустой <code>HashMap</code> выглядит так:</p>
 </div>
@@ -8418,8 +8614,8 @@ transient Node&lt;E&gt; last;</code></pre>
 </div>
 </div>
 </div>
-<div class="sect4">
-<h5 id="_возникновение_коллизий_при_вставке">Возникновение коллизий при вставке</h5>
+<div class="sect5">
+<h6 id="_возникновение_коллизий_при_вставке">Возникновение коллизий при вставке</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="java">map.put(new Key("vaibhav"), 40);</code></pre>
@@ -8465,8 +8661,8 @@ transient Node&lt;E&gt; last;</code></pre>
 </div>
 </div>
 </div>
-<div class="sect4">
-<h5 id="_получение_значения_по_ключу">Получение значения по ключу</h5>
+<div class="sect5">
+<h6 id="_получение_значения_по_ключу">Получение значения по ключу</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="java">map.get(new Key("vaibhav"));</code></pre>
@@ -8498,8 +8694,8 @@ transient Node&lt;E&gt; last;</code></pre>
 </ul>
 </div>
 </div>
-<div class="sect4">
-<h5 id="_изменения_в_java8">Изменения в Java8</h5>
+<div class="sect5">
+<h6 id="_изменения_в_java8">Изменения в Java8</h6>
 <div class="paragraph">
 <p>В случае возникновения коллизий объект <code>node</code> сохраняется в структуре данных "связанный список" и метод <code>equals()</code> используется для сравнения ключей. Это сравнения для поиска верного ключа в связанном списке - линейная операция и в худшем случае сложность равна <code>O(n)</code>.</p>
 </div>
@@ -8507,8 +8703,8 @@ transient Node&lt;E&gt; last;</code></pre>
 <p>Для исправления этой проблемы в <strong>Java 8</strong> после достижения определенного порога вместо <strong>связанных списков</strong> используются <strong>сбалансированные деревья</strong>. Это означает, что <code>HashMap</code> в начале сохраняет объекты в <strong>связанном списке</strong>, но после того, как количество элементов в хеше достигает определенного порога, происходит переход к <strong>сбалансированным деревьям</strong>. Что улучшает производительность в худшем случае с <code>O(n)</code> до <code>O(log n)</code>.</p>
 </div>
 </div>
-<div class="sect4">
-<h5 id="_основные_моменты">Основные моменты</h5>
+<div class="sect5">
+<h6 id="_основные_моменты">Основные моменты</h6>
 <div class="paragraph">
 <p>Сложность операций <code>get()</code> и <code>put()</code> практически константна до тех пор, пока не будет проведено повторное хеширование.</p>
 </div>
@@ -8526,8 +8722,8 @@ transient Node&lt;E&gt; last;</code></pre>
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_структура_данных_linkedhashmap">3.1.5. Структура данных LinkedHashMap</h4>
+<div class="sect4">
+<h5 id="_структура_данных_linkedhashmap">Структура данных LinkedHashMap</h5>
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="java">Map&lt;Integer, String&gt; linkedHashMap = new LinkedHashMap&lt;Integer, String&gt;();</code></pre>
@@ -8546,8 +8742,8 @@ transient Node&lt;E&gt; last;</code></pre>
 <img src="../assets/img/collections/linkedHashMap-empty.png" alt="пустой объект linkedHashMap">
 </div>
 </div>
-<div class="sect4">
-<h5 id="_добавление_элементов">Добавление элементов</h5>
+<div class="sect5">
+<h6 id="_добавление_элементов">Добавление элементов</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="java">linkedHashMap.put(1, "obj1");</code></pre>
@@ -8609,8 +8805,8 @@ linkedHashMap.put(4, "obj4")</code></pre>
 </div>
 </div>
 </div>
-<div class="sect4">
-<h5 id="_accessorder_true"><code>accessOrder == true</code></h5>
+<div class="sect5">
+<h6 id="_accessorder_true"><code>accessOrder == true</code></h6>
 <div class="paragraph">
 <p>А теперь давайте рассмотрим пример когда свойство <code>accessOrder</code> имеет значение <code>true</code>. В такой ситуации поведение <code>LinkedHashMap</code> меняется и при вызовах методов <code>get()</code> и <code>put()</code> порядок элементов будет изменен — элемент к которому обращаемся, будет помещен в конец.</p>
 </div>
@@ -8641,8 +8837,8 @@ System.out.println(linkedHashMap);</code></pre>
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_алгоритмическая_сложность_операций_в_коллекциях_java">3.1.6. Алгоритмическая сложность операций в коллекциях Java</h4>
+<div class="sect4">
+<h5 id="_алгоритмическая_сложность_операций_в_коллекциях_java">Алгоритмическая сложность операций в коллекциях Java</h5>
 <div class="imageblock">
 <div class="content">
 <img src="../assets/img/collections/algoritmic-difficulty.png" alt="алгоритмическая сложность">
@@ -8650,10 +8846,10 @@ System.out.println(linkedHashMap);</code></pre>
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_generics">3.2. Generics</h3>
 <div class="sect3">
-<h4 id="_type_inference_вывод_типа">3.2.1. Type Inference (Вывод типа)</h4>
+<h4 id="_generics">3.2.2. Generics</h4>
+<div class="sect4">
+<h5 id="_type_inference_вывод_типа">Type Inference (Вывод типа)</h5>
 <div class="paragraph">
 <p><strong>Вывод типа</strong> - это способность <strong>компилятора Java</strong> просматривать каждый <strong>вызов метода</strong> и соответствующее <strong>объявление</strong>, чтобы определить <strong>тип аргумента</strong> (или аргументов), которые делают вызов применимым. Алгоритм <strong>вывода типа</strong> определяет <strong>типы аргументов</strong> и, если они доступны, тип, которому <strong>присваивается</strong> или <strong>возвращается</strong> результат. Наконец, <strong>алгоритм вывода</strong> пытается найти <strong>наиболее конкретный тип</strong>, который работает со всеми аргументами.</p>
 </div>
@@ -8668,8 +8864,8 @@ System.out.println(linkedHashMap);</code></pre>
 Serializable s = pick("d", new ArrayList&lt;String&gt;());</code></pre>
 </div>
 </div>
-<div class="sect4">
-<h5 id="_вывод_типа_и_обобщенные_методы">Вывод типа и обобщенные методы</h5>
+<div class="sect5">
+<h6 id="_вывод_типа_и_обобщенные_методы">Вывод типа и обобщенные методы</h6>
 <div class="paragraph">
 <p><strong>Вывод типа</strong>, позволяет вызывать <strong>обобщенный метод</strong>, как обычный метод, без указания типа в угловых скобках.</p>
 </div>
@@ -8697,8 +8893,8 @@ boolean same = Util.compare(p1, p2);</code></pre>
 <p>Эта функция называется <strong>вывод типа</strong>, она позволяет вызывать <strong>обобщенный метод</strong> как <strong>обычный метод</strong> без указания типа в угловых скобках.</p>
 </div>
 </div>
-<div class="sect4">
-<h5 id="_вывод_типа_и_создание_экземпляров_обобщенных_классов">Вывод типа и создание экземпляров обобщенных классов</h5>
+<div class="sect5">
+<h6 id="_вывод_типа_и_создание_экземпляров_обобщенных_классов">Вывод типа и создание экземпляров обобщенных классов</h6>
 <div class="paragraph">
 <p>Можно заменить <strong>аргументы типа</strong>, необходимые для вызова конструктора обобщенного класса, пустым набором параметров типа <code>&lt;&gt;</code>, если компилятор может вывести аргументы типа из контекста. Эта пара угловых скобок неофициально называется <strong>diamond</strong>.</p>
 </div>
@@ -8727,8 +8923,8 @@ boolean same = Util.compare(p1, p2);</code></pre>
 </div>
 </div>
 </div>
-<div class="sect4">
-<h5 id="_выведение_типов_и_обобщенные_конструкторы_обобщенных_и_необобщенных_классов">Выведение типов и обобщенные конструкторы обобщенных и необобщенных классов</h5>
+<div class="sect5">
+<h6 id="_выведение_типов_и_обобщенные_конструкторы_обобщенных_и_необобщенных_классов">Выведение типов и обобщенные конструкторы обобщенных и необобщенных классов</h6>
 <div class="paragraph">
 <p>Конструкторы могут быть обобщенными (другими словами, объявлять свои собственные параметры обобщенного типа) как в обобщенных, так и в необобщенных  классах. Рассмотрим следующий пример:</p>
 </div>
@@ -8764,8 +8960,8 @@ boolean same = Util.compare(p1, p2);</code></pre>
 <p>В этом примере компилятор определяет тип <code>Integer</code> для параметра обобщенного типа <code>X</code> обобщенного класса <code>MyClass &lt;X&gt;</code>. Он определяет тип <code>String</code> для параметра формального типа <code>T</code> конструктора этого универсального класса.</p>
 </div>
 </div>
-<div class="sect4">
-<h5 id="_целевые_типы_target_types">Целевые типы (Target Types)</h5>
+<div class="sect5">
+<h6 id="_целевые_типы_target_types">Целевые типы (Target Types)</h6>
 <div class="paragraph">
 <p><strong>Компилятор Java</strong> использует <strong>целевую типизацию</strong> для вывода параметров типа вызова обобщенного метода. <strong>Целевой тип выражения</strong> - это тип данных, ожидаемый <strong>компилятором Java</strong> в зависимости от того, где находится выражение. Рассмотрим метод <code>Collections.emptyList()</code>, который объявлен следующим образом:</p>
 </div>
@@ -8834,8 +9030,8 @@ boolean same = Util.compare(p1, p2);</code></pre>
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_generics_наследование_и_подтипы">3.2.2. Generics, наследование и подтипы</h4>
+<div class="sect4">
+<h5 id="_generics_наследование_и_подтипы">Generics, наследование и подтипы</h5>
 <div class="paragraph">
 <p>Возможно присвоить объект одного типа объекту другого типа при условии, что типы совместимы. Например, можно типу <code>Object</code> присвоить <code>Integer</code>, поскольку <code>Object</code> является одним из суперклассов <code>Integer</code>:</p>
 </div>
@@ -8888,8 +9084,8 @@ box.add(new Double(10.1));  // OK</code></pre>
 <div class="paragraph">
 <p>Это распространенное заблуждение, когда дело доходит до программирования с использованием generics, но это важная концепция, которую нужно изучить.</p>
 </div>
-<div class="sect4">
-<h5 id="_обобщенные_классы_и_подтипы">Обобщенные классы и подтипы</h5>
+<div class="sect5">
+<h6 id="_обобщенные_классы_и_подтипы">Обобщенные классы и подтипы</h6>
 <div class="paragraph">
 <p>Можно создать подтипы общего класса или интерфейса, расширив или реализуя его. Отношения между параметрами типа одного класса или интерфейса и параметрами типа другого определяются ключевыми словами <code>extends</code> и <code>implements</code>.</p>
 </div>
@@ -8930,14 +9126,14 @@ PayloadList&lt;String,Exception&gt;
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_java_tools">3.3. Java: Tools</h3>
 <div class="sect3">
-<h4 id="_java_tools_testing">3.3.1. Java Tools: Testing</h4>
+<h4 id="_java_tools">3.2.3. Java: Tools</h4>
 <div class="sect4">
-<h5 id="_junit">JUnit.</h5>
+<h5 id="_java_tools_testing">Java Tools: Testing</h5>
 <div class="sect5">
-<h6 id="_введение">Введение</h6>
+<h6 id="_junit">JUnit.</h6>
+<div class="sect6">
+<h7 id="_введение">Введение</h7>
 <div class="paragraph">
 <p><strong>Тестирование</strong> – это процесс проверки функционала программы с целью подтверждения того, что она работает в соответствии с определёнными требованиями. Unit-тестирование – это тестирование, которые пишутся, непосредственно, на уровне разработчика (тестирование определённой сущности – метод или класс). Это крайне важный этап разработки ПО, который помогает создавать качественный продукт.</p>
 </div>
@@ -8990,8 +9186,8 @@ PayloadList&lt;String,Exception&gt;
 </tr>
 </tbody>
 </table>
-<div class="sect6">
-<h7 id="_junit_2">JUnit</h7>
+<div class="sect7">
+<h8 id="_junit_2">JUnit</h8>
 <div class="paragraph">
 <p><strong>JUnit</strong> – это фреймворк, разработанный для тестирования программ, написанных с использованием технологии <strong>Java</strong>. Он лежит в основе <strong>TDD</strong> (<strong>Test-Driven Development</strong>) и входит в семейство фрейморков для тестирования xUnit.</p>
 </div>
@@ -8999,8 +9195,8 @@ PayloadList&lt;String,Exception&gt;
 <p>Главная идея данного фреймворка – “сначала тесты, потом код”. Это означает, что сначала мы определяем, что должно получиться в результате работы того или иного куска кода и пишем тесты, которые проверяют идентичность результата с требуемым, после чего пишем сам кусок кода, который и будем тестировать. Данный подход увеличивает эффективность работы разработчика и позволяет писать более стабильный код. В результате этого мы получаем меньшее количество времени, которое затрачивается на отладку программы.</p>
 </div>
 </div>
-<div class="sect6">
-<h7 id="_свойства_junit">Свойства JUnit</h7>
+<div class="sect7">
+<h8 id="_свойства_junit">Свойства JUnit</h8>
 <div class="ulist">
 <ul>
 <li>
@@ -9027,8 +9223,8 @@ PayloadList&lt;String,Exception&gt;
 </ul>
 </div>
 </div>
-<div class="sect6">
-<h7 id="_тестовый_случай">Тестовый случай</h7>
+<div class="sect7">
+<h8 id="_тестовый_случай">Тестовый случай</h8>
 <div class="paragraph">
 <p><strong>Тестовый случай</strong> (Test Case) в <strong>юнит тестировании</strong> – это часть кода, которая проверяет, что другая часть кода  (в частности – метод) работает в соответствии с определёнными требованиями.</p>
 </div>
@@ -9040,8 +9236,8 @@ PayloadList&lt;String,Exception&gt;
 </div>
 </div>
 </div>
-<div class="sect5">
-<h6 id="_junit_5">JUnit 5</h6>
+<div class="sect6">
+<h7 id="_junit_5">JUnit 5</h7>
 <div class="paragraph">
 <p><strong>JUnit 5</strong> требует <strong>Java 8</strong> (или выше) во время выполнения. Однако вы все равно можете протестировать код, скомпилированный с предыдущими версиями <strong>JDK</strong>.</p>
 </div>
@@ -9085,8 +9281,8 @@ PayloadList&lt;String,Exception&gt;
 </li>
 </ul>
 </div>
-<div class="sect6">
-<h7 id="_аннотации">Аннотации</h7>
+<div class="sect7">
+<h8 id="_аннотации">Аннотации</h8>
 <div class="paragraph">
 <p><strong>JUnit Jupiter</strong> поддерживает следующие аннотации для настройки тестов и расширения фреймворка.</p>
 </div>
@@ -9186,8 +9382,8 @@ PayloadList&lt;String,Exception&gt;
 <p>Все основные аннотации находятся в <a href="https://junit-org.translate.goog/junit5/docs/current/api/org.junit.jupiter.api/org/junit/jupiter/api/package-summary.html?_x_tr_sl=en&amp;_x_tr_tl=ru&amp;_x_tr_hl=ru&amp;_x_tr_pto=ajax,elem,se"><strong>org.junit.jupiter.api</strong></a> пакете в <strong>junit-jupiter-api</strong> модуле.</p>
 </div>
 </div>
-<div class="sect6">
-<h7 id="_утверждения">Утверждения</h7>
+<div class="sect7">
+<h8 id="_утверждения">Утверждения</h8>
 <div class="paragraph">
 <p><strong>JUnit 5</strong> поставляется со многими стандартными утверждениями, которые можно найти в классе <a href="https://junit.org/junit5/docs/current/api/org.junit.jupiter.api/org/junit/jupiter/api/Assertions.html"><strong>org.junit.jupiter.api.Assertions</strong>.</a></p>
 </div>
@@ -9231,10 +9427,10 @@ PayloadList&lt;String,Exception&gt;
 </div>
 </div>
 </div>
-<div class="sect4">
-<h5 id="_mockito">Mockito</h5>
 <div class="sect5">
-<h6 id="_mockito_что_это_такое_и_зачем_нужно">Mockito: что это такое и зачем нужно</h6>
+<h6 id="_mockito">Mockito</h6>
+<div class="sect6">
+<h7 id="_mockito_что_это_такое_и_зачем_нужно">Mockito: что это такое и зачем нужно</h7>
 <div class="paragraph">
 <p>Говоря коротко, <strong>Mockito</strong> – фреймворк для работы с заглушками.</p>
 </div>
@@ -9275,8 +9471,8 @@ PayloadList&lt;String,Exception&gt;
 </ul>
 </div>
 </div>
-<div class="sect5">
-<h6 id="_mock_и_spy">Mock и Spy</h6>
+<div class="sect6">
+<h7 id="_mock_и_spy">Mock и Spy</h7>
 <div class="paragraph">
 <p>Центральный класс <strong>Mockito</strong>, через который предполагается обращаться к большей части функционала, — это, собственно, класс под названием <strong>Mockito</strong> (есть также класс <strong>BDDMockito</strong>, предоставляющий примерно те же возможности в форме, более подходящей для <a href="https://ru.wikipedia.org/wiki/BDD_(%D0%BF%D1%80%D0%BE%D0%B3%D1%80%D0%B0%D0%BC%D0%BC%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5)"><strong>BDD</strong></a>.
 Доступ к функционалу реализован через его <strong>статические методы</strong>.</p>
@@ -9322,8 +9518,8 @@ dataServiceSpy = Mockito.spy(dataService);</code></pre>
 И только если такого конструктора нет, произойдёт ошибка и тест не сработает.</p>
 </div>
 </div>
-<div class="sect5">
-<h6 id="_управление_поведением">Управление поведением</h6>
+<div class="sect6">
+<h7 id="_управление_поведением">Управление поведением</h7>
 <div class="paragraph">
 <p>В целом управление поведением <strong>mock-объекта</strong> сводится к одной очевидной концепции: когда на mock так-то воздействовали (то есть вызван такой-то метод с такими-то аргументами), он должен отреагировать так-то и так-то.
 У этой концепции существуют две реализации в рамках класса <strong>Mockito</strong> — основная, рекомендуемая разработчиками к использованию везде, где это возможно, и альтернативная, применяемая там, где основная не годится.</p>
@@ -9375,8 +9571,8 @@ Mockito.doReturn(data).when(dataService).getData()</code></pre>
 Эта разница всё и определяет.
 Связывание через <strong>Mockito.do&#8230;&#8203;</strong> никак не контролирует на стадии компиляции то, какой переопределяемый метод я вызову и совместим ли он по типу с заданным возвращаемым значением.</p>
 </div>
-<div class="sect6">
-<h7 id="_задание_условий_вызова">Задание условий вызова</h7>
+<div class="sect7">
+<h8 id="_задание_условий_вызова">Задание условий вызова</h8>
 <div class="paragraph">
 <p>Пример выше касается метода без параметров, и связанное с ним условие вызова возможно одно — сам факт вызова.
 Как только появляются параметры, ситуация становится сложнее.
@@ -9413,8 +9609,8 @@ Mockito.when(dataService.getDataItemById(Mockito.eq("idValue")))
 Используйте <strong>Mockito.eq</strong> или Mockito.same</p>
 </div>
 </div>
-<div class="sect6">
-<h7 id="_задание_результатов_вызова">Задание результатов вызова</h7>
+<div class="sect7">
+<h8 id="_задание_результатов_вызова">Задание результатов вызова</h8>
 <div class="paragraph">
 <p>После того, как метод <strong>mock-объекта</strong> вызван, объект должен отреагировать на вызов.
 Основные возможные последствия — возвращение результата и выбрасывание исключения, и именно на эти варианты в первую очередь рассчитан инструментарий <strong>Mockito</strong>.</p>
@@ -9486,8 +9682,8 @@ Mockito.when(dataService.getDataItemById(Mockito.eq("idValue")))
 </div>
 </div>
 </div>
-<div class="sect5">
-<h6 id="_слежение_за_вызовами_методов">Слежение за вызовами методов</h6>
+<div class="sect6">
+<h7 id="_слежение_за_вызовами_методов">Слежение за вызовами методов</h7>
 <div class="paragraph">
 <p>Метод <strong>verify</strong> позволяет проверить, была ли выполнена проверка с определенными параметрами.
 Если проверка не выполнялась или выполнялась с другими параметрами, то <strong>verify</strong> вызовет исключение.</p>
@@ -9528,8 +9724,8 @@ Mockito.when(dataService.getDataItemById(Mockito.eq("idValue")))
 </div>
 </div>
 </div>
-<div class="sect5">
-<h6 id="_mock_объекты_как_значения_полей_и_аннотации_mockito">Mock-объекты как значения полей и аннотации Mockito</h6>
+<div class="sect6">
+<h7 id="_mock_объекты_как_значения_полей_и_аннотации_mockito">Mock-объекты как значения полей и аннотации Mockito</h7>
 <div class="paragraph">
 <p>Если в классе теста есть поля, которым я хочу присвоить <strong>mock-объекты</strong> в качестве значений, это не обязательно делать вручную — достаточно снабдить его аннотацией <strong>@Mock</strong>.</p>
 </div>
@@ -9549,8 +9745,8 @@ Mockito.when(dataService.getDataItemById(Mockito.eq("idValue")))
 В целом это похоже на маленькую и простую (и всё равно не такую уж примитивную) реализацию <strong>dependency injection</strong>.</p>
 </div>
 </div>
-<div class="sect5">
-<h6 id="_откат_поведения_к_дефолтному_и_сессии_mockito">Откат поведения к дефолтному и сессии Mockito</h6>
+<div class="sect6">
+<h7 id="_откат_поведения_к_дефолтному_и_сессии_mockito">Откат поведения к дефолтному и сессии Mockito</h7>
 <div class="paragraph">
 <p>Чтобы привести все <strong>mock-объекты</strong> в состояние по умолчанию можно использовать методы <strong>Mockito.reset</strong> и <strong>Mockito.clearInvocations</strong>.
 Оба принимают <strong>varargs</strong>, и передавать им нужно соответствующие <strong>mock&#8217;и</strong>.</p>
@@ -9587,8 +9783,8 @@ public void afterMethod() {
 </div>
 </div>
 </div>
-<div class="sect5">
-<h6 id="_links">Links</h6>
+<div class="sect6">
+<h7 id="_links">Links</h7>
 <div class="ulist">
 <ul>
 <li>
@@ -9610,18 +9806,16 @@ public void afterMethod() {
 </div>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_тестирование">4. Тестирование</h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="_тестирование">3.3. Тестирование</h3>
 <div class="paragraph">
 <p><strong>Тестирование</strong> (<strong>testing</strong>) <strong>программного обеспечения</strong> (<strong>ПО</strong>) – это процесс исследования ПО с целью выявления ошибок и определения соответствия между реальным и ожидаемым поведением ПО, осуществляемый на основе набора тестов, выбранных определённым образом. В более широком смысле, <strong>тестирование ПО</strong> – это техника контроля качества программного продукта, включающая в себя проектирование тестов, выполнение тестирования и анализ полученных результатов.</p>
 </div>
 <div class="paragraph">
 <p>Очень часто современные программные продукты разрабатываются в сжатые сроки и при ограниченных бюджетах проектов. Программирование сегодня перешло из разряда искусства в разряд ремесел для многих миллионов специалистов. Но, к сожалению, в такой спешке разработчики зачастую игнорируют необходимость обеспечения защищённости своих продуктов, подвергая тем самым пользователей неоправданному риску. <strong>Контроль качества</strong> (<strong>тестирование</strong>) считается важным в <strong>процессе разработки ПО</strong>, потому что обеспечивает безопасность, надёжность, удобство создаваемого продукта. В настоящее время существует великое множество подходов и методик к решению задачи тестирования ПО, но эффективное тестирование сложных программных систем - процесс творческий, не сводящийся к следованию строгим и чётким правилам.</p>
 </div>
-<div class="sect2">
-<h3 id="_классификация_видов_тестирования">4.1. Классификация видов тестирования</h3>
+<div class="sect3">
+<h4 id="_классификация_видов_тестирования">3.3.1. Классификация видов тестирования</h4>
 <div class="paragraph">
 <p>Существует несколько признаков, по которым принято производить классификацию видов тестирования. Все <strong>виды тестирования</strong> программного обеспечения можно условно классифицировать по следующему виду:</p>
 </div>
@@ -9641,8 +9835,8 @@ public void afterMethod() {
 <div class="paragraph">
 <p><span class="image"><img src="../assets/img/common/testing/testing-diagram.png" alt="testing diagram"></span></p>
 </div>
-<div class="sect3">
-<h4 id="_по_степени_автоматизации">4.1.1. По степени автоматизации</h4>
+<div class="sect4">
+<h5 id="_по_степени_автоматизации">По степени автоматизации</h5>
 <div class="ulist">
 <ul>
 <li>
@@ -9701,8 +9895,8 @@ public void afterMethod() {
 <p>Конечно, автоматические тесты никогда не смогут заменить человека, но могут облегчить работу инженера-тестировщика ПО.</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_по_уровню_доступа">4.1.2. По уровню доступа</h4>
+<div class="sect4">
+<h5 id="_по_уровню_доступа">По уровню доступа</h5>
 <div class="ulist">
 <ul>
 <li>
@@ -9713,14 +9907,14 @@ public void afterMethod() {
 </li>
 </ul>
 </div>
-<div class="sect4">
-<h5 id="_тестирование_чёрного_ящика">Тестирование чёрного ящика</h5>
+<div class="sect5">
+<h6 id="_тестирование_чёрного_ящика">Тестирование чёрного ящика</h6>
 <div class="paragraph">
 <p><strong>Тестирование чёрного ящика</strong> (<strong>black box</strong>) - тестирование ПО, при котором тестировщик имеет доступ к ПО только через интерфейсы заказчика, либо через внешние интерфейсы, позволяющие другому компьютеру или процессу подключиться к системе для тестирования. Этот подход до сих пор является самым распространенным в повседневной практике, но у него есть целый ряд недостатков. Например, некоторые ошибки возникают достаточно редко и потому их трудно найти и воспроизвести.</p>
 </div>
 </div>
-<div class="sect4">
-<h5 id="_тестирование_белого_ящика">Тестирование белого ящика</h5>
+<div class="sect5">
+<h6 id="_тестирование_белого_ящика">Тестирование белого ящика</h6>
 <div class="paragraph">
 <p><strong>Тестирование белого ящика</strong> (<strong>white box</strong>) - тестирование ПО, при котором тестировщик имеет доступ к исходному коду программы и может писать код, связанный с библиотеками тестируемого ПО. К тестированию белого ящика относят методики:</p>
 </div>
@@ -9742,8 +9936,8 @@ public void afterMethod() {
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_в_зависимости_от_преследуемых_целей">4.1.3. В зависимости от преследуемых целей</h4>
+<div class="sect4">
+<h5 id="_в_зависимости_от_преследуемых_целей">В зависимости от преследуемых целей</h5>
 <div class="paragraph">
 <p>Все <strong>виды тестирования</strong> программного обеспечения, в зависимости от преследуемых целей, можно условно разделить на следующие группы:</p>
 </div>
@@ -9757,8 +9951,8 @@ public void afterMethod() {
 </li>
 </ul>
 </div>
-<div class="sect4">
-<h5 id="_функциональные_виды_тестирования">Функциональные виды тестирования</h5>
+<div class="sect5">
+<h6 id="_функциональные_виды_тестирования">Функциональные виды тестирования</h6>
 <div class="paragraph">
 <p>Функциональные тесты базируются на функциях и особенностях, а также взаимодействии с другими системами, и могут быть представлены на всех уровнях тестирования:</p>
 </div>
@@ -9832,8 +10026,8 @@ public void afterMethod() {
 <p>Если ошибок при запуске не происходит, то дымовой тест считается пройденным. Если программа не прошла дымовой тест, то её отправляют на доработку. Дело в том, что разработчики пишут отдельные компоненты одного приложения, но когда эти компоненты объединяют, нередко получается так, что совместно они работать не могут, следовательно, нет смысла тестировать продукт в целом.</p>
 </div>
 </div>
-<div class="sect4">
-<h5 id="_нефункциональные_виды_тестирования">Нефункциональные виды тестирования</h5>
+<div class="sect5">
+<h6 id="_нефункциональные_виды_тестирования">Нефункциональные виды тестирования</h6>
 <div class="paragraph">
 <p>Нефункциональное тестирование описывает тесты, необходимые для определения характеристик программного обеспечения, которые могут быть измерены различными величинами. В целом, это тестирование того, "Как система работает". Далее перечислены основные <strong>виды нефункциональных тестов</strong>:</p>
 </div>
@@ -9896,8 +10090,8 @@ public void afterMethod() {
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_уровни_тестирования">4.2. Уровни тестирования</h3>
+<div class="sect3">
+<h4 id="_уровни_тестирования">3.3.2. Уровни тестирования</h4>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
@@ -9914,8 +10108,8 @@ public void afterMethod() {
 </li>
 </ol>
 </div>
-<div class="sect3">
-<h4 id="_пирамида_тестирования">4.2.1. Пирамида тестирования</h4>
+<div class="sect4">
+<h5 id="_пирамида_тестирования">Пирамида тестирования</h5>
 <div class="paragraph">
 <p><span class="image"><img src="../assets/img/common/testing/test-pyramid.jpeg" alt="test pyramid"></span></p>
 </div>
@@ -9923,27 +10117,27 @@ public void afterMethod() {
 <p><span class="image"><img src="../assets/img/common/testing/test-hierarchy.png" alt="test hierarchy"></span></p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_модульное_тестирование">4.2.2. Модульное тестирование</h4>
+<div class="sect4">
+<h5 id="_модульное_тестирование">Модульное тестирование</h5>
 <div class="paragraph">
 <p><strong>Модульное тестирование</strong> – это процесс исследования ПО, при котором тестируется минимально возможный компонент, например, отдельный класс или функция.
 Часто модульное тестирование осуществляется разработчиками ПО.</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_интеграционное_тестирование">4.2.3. Интеграционное тестирование</h4>
+<div class="sect4">
+<h5 id="_интеграционное_тестирование">Интеграционное тестирование</h5>
 <div class="paragraph">
 <p><strong>Интеграционное тестирование</strong> – это процесс исследования ПО, при котором тестируется интерфейсы между компонентами или подсистемами.</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_системное_тестирование">4.2.4. Системное тестирование</h4>
+<div class="sect4">
+<h5 id="_системное_тестирование">Системное тестирование</h5>
 <div class="paragraph">
 <p><strong>Системное тестирование</strong> – это процесс исследования ПО, при котором тестируется интегрированная система на её соответствие требованиям заказчика. <strong>Альфа</strong> и <strong>Бета</strong> тестирование относятся к подкатегориям системного тестирования.</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_приемочное_тестирование_acceptance_testing">4.2.5. Приемочное тестирование (Acceptance Testing)</h4>
+<div class="sect4">
+<h5 id="_приемочное_тестирование_acceptance_testing">Приемочное тестирование (Acceptance Testing)</h5>
 <div class="paragraph">
 <p><strong>Приемочное тестирование</strong> - формальный процесс тестирования, который проверяет соответствие системы требованиям и проводится с целью:</p>
 </div>
@@ -9975,8 +10169,8 @@ public void afterMethod() {
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_динамический_и_статический_анализ_кода">4.3. Динамический и статический анализ кода</h3>
+<div class="sect3">
+<h4 id="_динамический_и_статический_анализ_кода">3.3.3. Динамический и статический анализ кода</h4>
 <div class="paragraph">
 <p>По мере продвижения проекта стоимость устранения дефектов ПО может экспоненциально возрастать. Инструменты <strong>статического</strong> и <strong>динамического</strong> анализа помогают предотвратить эти затраты благодаря обнаружению программных ошибок на ранних этапах жизненного цикла ПО.</p>
 </div>
@@ -10006,8 +10200,8 @@ public void afterMethod() {
 <p>На практике разработчики могут использовать как статический, так и динамический анализ для ускорения процессов разработки и тестирования, а также для повышения качества исходного продукта.</p>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_links_2">4.4. Links</h3>
+<div class="sect3">
+<h4 id="_links_2">3.3.4. Links</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -10134,12 +10328,10 @@ public void afterMethod() {
 </div>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_github_keys">5. GitHub keys</h2>
-<div class="sectionbody">
 <div class="sect2">
-<h3 id="_ssh_key">5.1. SSH key</h3>
+<h3 id="_github_keys">3.4. GitHub keys</h3>
+<div class="sect3">
+<h4 id="_ssh_key">3.4.1. SSH key</h4>
 <div class="paragraph">
 <p>С помощью протокола <strong>SSH</strong> можно подключаться и проходить проверку подлинности на удаленных серверах и службах. С помощью ключей <strong>SSH</strong> вы можете подключаться к <strong>GitHub</strong> без предоставления своего имени пользователя и личного маркера доступа при каждом посещении.</p>
 </div>
@@ -10192,8 +10384,8 @@ public void afterMethod() {
 <p><span class="image"><img src="../assets/img/security/github-keys/ssh-install-git4.png" alt="ssh install git4"></span></p>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_gpg_key">5.2. GPG key</h3>
+<div class="sect3">
+<h4 id="_gpg_key">3.4.2. GPG key</h4>
 <div class="paragraph">
 <p>С помощью <strong>GPG</strong> или <strong>S/MIME</strong> можно подписывать теги и коммиты. Эти теги или коммиты помечаются как проверенные на <strong>GitHub</strong>, чтобы другие люди могли быть уверены, что изменения происходят из надежного источника.</p>
 </div>
@@ -10284,9 +10476,10 @@ ssb   4096R/42B317FD4BA89E7A 2016-03-10</code></pre>
 </div>
 </div>
 </div>
+</div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-10-15 01:34:15 UTC
+Last updated 2021-10-21 07:57:25 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/run_prettify.min.js"></script>

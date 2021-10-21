@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.16">
-<title>Консольное приложение</title>
+<title>Управление транзакциями</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -439,366 +439,92 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article">
 <div id="header">
-<h1>Консольное приложение</h1>
+<h1>Управление транзакциями</h1>
 </div>
 <div id="content">
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p><strong>Консольное приложение</strong> - это компьютерное приложение без графического интерфейса пользователя (<strong>GUI</strong>), предназначенное для работы исключительно с командами клавиатуры через текстовый компьютерный интерфейс. Многие ранние операционные системы работали исключительно в таких режимах, и только позже компании начали разрабатывать операционные системы с графическим интерфейсом для простоты использования. Можно запустить консольное приложение без графического интерфейса или запустить операционную систему в режиме консоли по диагностическим и другим причинам.</p>
+<p>Транзакции состоят из одного или более выражений, которые после выполнения либо фиксируются (<code>commit</code>),  либо откатываются назад (<code>rollback</code>).</p>
 </div>
 <div class="paragraph">
-<p>В консольном приложении пользователь выдает команды через клавиатуру, в отличие от приложений с графическим интерфейсом пользователя, которые обычно требуют использования мыши или другого указывающее устройство. Можно запустить приложение, чтобы участвовать в различных действиях, и результат будет отображаться на консоли. Программа способна извлекать и редактировать файлы, печатать, передавать данные, массово удалять и выполнять другие функции. Многие приложения, работающие в фоновом режиме в операционной системе, работают в режиме консоли, поскольку пользователю не нужно взаимодействовать с ними, за исключением редких случаев.</p>
-</div>
-<div class="paragraph">
-<p><strong>Текстовый интерфейс пользователя</strong> (англ. <strong>Text user interface</strong>, <strong>TUI</strong>; также <strong>Character User Interface</strong>, <strong>CUI</strong>) — система средств взаимодействия пользователя с компьютером, основанная на использовании текстового (буквенно-цифрового) режима дисплея или аналогичных устройств — например, командная строка. Приложения, использующие текстовый интерфейс, называют консольными программами.</p>
-</div>
-<div class="paragraph">
-<p>В простейшем случае консольная программа использует интерфейс командной строки, однако многие из таких программ с помощью управляющих последовательностей терминалов создают более дружественный интерфейс, приближающийся к графическому.</p>
-</div>
-<div class="paragraph">
-<p>В Windows командная строка является примером консольного приложения. Пользователь может открыть командную строку для редактирования системных файлов и для других целей. Когда он вводит команды, они прокручивают экран вверх вместе с ответами из приложения.</p>
+<p>Для работы с танзакциями используют следующие методы:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>терминал <strong>Linux</strong>
-<span class="image"><img src="../assets/img/application-architecture/console-application/terminal-linux.png" alt="terminal linux"></span></p>
+<p><code>commit()</code> - делает окончательными все изменения в <strong>БД</strong>, проделанные <code>SQL</code>-выражением, и снимает все блокировки, установленные транзакцией.</p>
 </li>
 <li>
-<p>командная строка <strong>Windows</strong>
-<span class="image"><img src="../assets/img/application-architecture/console-application/terminal-windows.png" alt="terminal windows"></span></p>
-</li>
-<li>
-<p>терминал <strong>macOS</strong>
-<span class="image"><img src="../assets/img/application-architecture/console-application/terminal-mac-os.png" alt="terminal mac os"></span></p>
+<p><code>rollback()</code> - игнорирует изменения и откатывает изменения до предыдущего состояния.</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>Преимущества консольных приложений:</p>
+<p>При вызове этих методов текущая транзакция заканчивается и начинается другая.</p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>Более скромные требования к ресурсам по сравнению с другими видами интерфейсов.</p>
-</li>
-<li>
-<p>При большом наборе возможных команд опытные пользователи могут работать с приложением быстрее, чем с системой меню</p>
-</li>
-<li>
-<p><strong>Основным преимуществом</strong> является то, что <strong>консольные приложения</strong> дают возможность использовать себя в скриптах для автоматизации (рутинных) действий.</p>
-</li>
-</ul>
+<div class="paragraph">
+<p>Каждое новое соединение по умолчанию находится в режиме автофиксации, что означает автоматическую фиксацию транзакций после каждого запроса. В этом случае транзакция состоит из одного запроса. Однако, есть автофиксация запрещена, транзакция не заканчивается вполоть до явного вызовы <code>commit()</code> и <code>rollback()</code>, включая, таким образом, все выражения, выполненые с момента последего завершения транзакции.</p>
+</div>
+<div class="paragraph">
+<p>Рассмотрим следующий код:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">connection.setAutoCommit(false);
+
+//устанавливаем именнованную точку сохранения
+Savepoint svpt  = connection.setSavepoint("NewEmp");
+
+...
+
+Statement st = connection.createStatement();
+
+int rows = st.executeUpdate("INSERT INTO Employees " + (FirstName, LastName) VALUES " + "('Игорь','Цветков')");
+
+rows = st.executeUpdate("UPDATE Employees set Address = 'ул.Седых.19-34'" + "WHERE LastName = 'Цветков'");
+...
+
+// Запись о работнике вставлена, но адрес не обновлен.
+
+connection.commit(); // завершает транзакцию и подтверждаем все изменения.
+
+}catch(SQLException e){
+connection.rollback(svpt); // возвращаемся к предыдущему стабильному состоянию.
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Метод <code>connection.setAutoCommit(false)</code> позволяет снять автоматическое управление транзакциями. Это означает,
+что подтверждение (<code>commit</code>) и откат (<code>rollback</code>) теперь управляются в ручном режиме.</p>
+</div>
+<div class="paragraph">
+<p>C помощью <code>Savepoint svpt  = connection.setSavepoint("NewEmp");</code> устанавливаем точку сохранения. Такая точка позволяет запомнить состояние внутри  БД и выполнить <code>rollback</code> до этого момента.</p>
+</div>
+<div class="paragraph">
+<p>С помощью <code>connection.commit();</code> подтвеждаем завершение транзакции. Однако если во время выполнения транзакции произошел сбой, благодаря методу <code>connection.rollback();</code> находящемуся  в блоке <code>catch</code>, произойдет откат БД до предыдущего стабильного состояния. Сделать это можно так же указав точку сохранения внутри функции <code>connection.rollback(svpt)</code>, которых может быть множество.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_стандартные_потоки">Стандартные потоки</h2>
+<h2 id="_batch_команды">BATCH-команды</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Говоря про <strong>консольные приложения</strong> стоит знать о <strong>стандартных потоках</strong> ввода/вывода данных.</p>
-</div>
-<div class="paragraph">
-<p><strong>Стандартные потоки ввода/вывода</strong> в системах типа <strong>UNIX</strong> (и некоторых других) — потоки процесса, имеющие номер (<strong>дескриптор</strong>), зарезервированный для выполнения некоторых <strong>«стандартных»</strong> функций. Как правило(хотя и не обязательно), эти дескрипторы открыты уже в момент запуска задачи (исполняемого файла).</p>
-</div>
-<div class="paragraph">
-<p>Существует три стандартных потока ввода/вывода данных:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>стандартный поток ввода <strong>standard input</strong> (<strong>stdin</strong>);</p>
-</li>
-<li>
-<p>стандартный поток вывода <strong>standard output</strong> (<strong>stdout</strong>);</p>
-</li>
-<li>
-<p>стандартный поток ошибок <strong>standard error</strong> (<strong>stderr</strong>).</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p><span class="image"><img src="../assets/img/application-architecture/console-application/type-stream.png" alt="type stream"></span></p>
-</div>
-<div class="paragraph">
-<p>Вывод данных на экран и чтение их с клавиатуры происходит потому, что по умолчанию стандартные потоки ассоциированы с терминалом пользователя. Это не является обязательным — потоки можно подключать к чему угодно — к файлам, программам и даже устройствам.</p>
-</div>
-<div class="sect2">
-<h3 id="_стандартный_ввод">Стандартный ввод</h3>
-<div class="paragraph">
-<p><strong>Поток №0</strong> (<strong>stdin</strong>) зарезервирован для чтения команд пользователя или входных данных. Номера потоков ещё называют <strong>дескрипторами</strong>. Этот поток представляет собой некую информацию, передаваемую в терминал, в частности — инструкции, переданные в оболочку для выполнения. Обычно данные в этот поток попадают в ходе ввода их пользователем с клавиатуры.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_стандартный_вывод">Стандартный вывод</h3>
-<div class="paragraph">
-<p><strong>Поток №1</strong> данных (<strong>stdout</strong>), которые оболочка выводит после выполнения каких-то действий. Обычно эти данные попадают в то же окно терминала, где была введена команда, вызвавшая их появление.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_стандартный_вывод_ошибок">Стандартный вывод ошибок</h3>
-<div class="paragraph">
-<p>Поток ошибок (<strong>stderr</strong>) имеет дескриптор 2. Этот поток похож на стандартный поток вывода, так как обычно то, что в него попадает, оказывается на экране терминала. Однако, он, по своей сути, отличается от стандартного вывода, как результат, этими потоками, при желании, можно управлять раздельно. Это полезно, например, в следующей ситуации. Есть команда, которая обрабатывает большой объём данных, выполняя сложную и подверженную ошибкам операцию. Нужно, чтобы полезные данные, которые генерирует эта команда, не смешивались с сообщениями об ошибках. Реализуется это благодаря раздельному перенаправлению потоков вывода и ошибок.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_конвейер">Конвейер</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p><strong>Конвейер</strong> - некоторое множество процессов, для которых выполнено следующее перенаправление ввода-вывода: то, что выводит на поток стандартного вывода предыдущий процесс, попадает в поток стандартного ввода следующего процесса.</p>
-</div>
-<div class="paragraph">
-<p>Другими словами, конвейер умеет передавать выходные данные из одной программы, как входные данные для другой. Т.е. выполняется команда, мы получаем результат и передаем эти данные далее на обработку другой программе.</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>|</code> - отправить следующей команде</p>
-</li>
-<li>
-<p><code>Tee</code> - отправить в файл и на стандартный вывод</p>
-</li>
-<li>
-<p><code>Xargs</code> – построчно передать на ввод команде</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Конвейер создаётся с помощью вызова pipe(), который возвращает два файловых дескриптора: один ссылается на вход конвейера, второй на выход и разделяются <code>|</code> (<code>stdout/stderr | stdin</code>).</p>
+<p>BATCH-команды позволяют запускать на исполнение в <strong>БД</strong> массив запросов <code>SQL</code> вместе как одну единицу. <strong>Пример</strong>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">$ ls | grep r</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">st= com.createStatement();
+
+st.addBatch("INSERT INTO...");
+st.addBatch("INSERT INTO...");
+st.addBatch("INSERT INTO...");
+
+int[] updateCounts = st.executeBatch();</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../assets/img/application-architecture/console-application/process-working-streams.jpg" alt="process working streams"></span></p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_перенаправление_потоков">Перенаправление потоков</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p><strong>Перенаправление ввода/вывода</strong> - изменения стандартных входных или выходных потоков и привязка к определенным условиям или файлам.</p>
-</div>
-<div class="paragraph">
-<p><strong>Перенаправление ввода/вывода</strong> означает работу с вышеописанными потоками и перенаправление данных туда, куда нужно программисту. Делается это с использованием символов <code>&gt;</code> и <code>&lt;</code> в различных комбинациях, применение которых зависит от того, куда, в итоге, должны попасть перенаправляемые данные.</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>&lt;</code> - изменение (назначение) нестандартного входного устройства (<code>&lt; файл</code> - файл в поток ввода);</p>
-</li>
-<li>
-<p><code>&lt;&lt;</code> - считывать стандартный ввод, пока не встретится указанный текст;</p>
-</li>
-<li>
-<p><code>&gt;</code> - переназначение стандартного вывода (<code>&gt; файл</code> - поток вывода в новый файл);</p>
-</li>
-<li>
-<p><code>&gt;&gt;</code> - переназначение вывода, добавление вывода команды в конец существующего файла (<code>&gt;&gt; файл</code> - поток вывода в конец файла);</p>
-</li>
-<li>
-<p><code>2&gt;</code> - переназначения стандартного потока сообщений об ошибках (<code>2&gt; файл</code> - поток ошибок в новый файл);</p>
-</li>
-<li>
-<p><code>2&gt;&gt;</code> - переназначение вывода сообщений об ошибках, добавление сообщений об ошибках в конец существующего файла (<code>2&gt;&gt; файл</code> - поток ошибок в конец файла);</p>
-</li>
-<li>
-<p><code>&amp;&gt;</code>, <code>&gt;&amp;</code> - направляет потоки вывода и ошибок в один файл (<code>&amp;&gt; файл</code> или <code>&gt;&amp; файл</code> - потоки вывода и ошибок в новый файл);</p>
-</li>
-<li>
-<p><code>2&gt;&amp;1</code> - направляет поток ошибок туда, куда направлен поток вывода (<code>2&gt;&amp;1 файл</code> - потоки ошибок туда, куда и поток вывода);</p>
-</li>
-<li>
-<p><code>1&gt;&amp;2</code> - направляет поток вывода туда, куда направлен поток ошибок (<code>1&gt;&amp;2 файл</code> - поток вывода туда, куда и поток ошибок).</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p><span class="image"><img src="../assets/img/application-architecture/console-application/Stdout-redirect.jpg" alt="Stdout redirect"></span></p>
-</div>
-<div class="sect2">
-<h3 id="_перенаправление_стандартного_потока_вывода">Перенаправление стандартного потока вывода</h3>
-<div class="paragraph">
-<p>Обычно команды выводят данные в стандартный поток вывода. Для того, чтобы эти данные оказались в файле, нужно добавить символ <code>&gt;</code> после команды, перед именем целевого файла. До и после <code>&gt;</code> надо поставить <code>пробел</code>. При использовании перенаправления любой файл, указанный после &gt; будет перезаписан. Если в файле нет ничего ценного и его содержимое можно потерять, в нашей конструкции допустимо использовать уже существующий файл. Обычно же лучше использовать в подобном случае имя файла, которого пока не существует. Этот файл будет создан после выполнения команды.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">$ date &gt; date.txt</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Для того, чтобы это данные добавлялись в конец файла, а не перезаписывали файл, надо использовать два символа <code>&gt;&gt;</code>, поставленные один за другим. В результате новая команда, перенаправляющая вывод в файл, но не перезаписывающая его, а добавляющая новые данные после старых, будет выглядеть так:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">$ traceroute google.com &gt;&gt; date.txt</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_перенаправление_стандартного_потока_ввода">Перенаправление стандартного потока ввода</h3>
-<div class="paragraph">
-<p>Используя знак <code>&lt;</code> мы можем перенаправить стандартный ввод, заменив его содержимым файла.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">$ comm &lt;(sort list1.txt) &lt;(sort list2.txt)</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Круглые скобки тут имеют тот же смысл, что и в математике. Оболочка сначала обрабатывает команды в скобках, а затем всё остальное. В нашем примере сначала производится сортировка строк из файлов, а потом то, что получилось, передаётся команде <code>comm</code>, которая затем выводит результат сравнения списков.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_перенаправление_стандартного_потока_ошибок">Перенаправление стандартного потока ошибок</h3>
-<div class="paragraph">
-<p>Это может понадобиться, например, для создания лог-файлов с ошибками или объединения в одном файле сообщений об ошибках и возвращённых некоей командой данных.</p>
-</div>
-<div class="paragraph">
-<p>Обычно, когда обычный пользователь запускает команду, она выводит в терминал и полезные данные и ошибки. При этом, последних обычно больше, чем первых, что усложняет нахождение в выводе команды того, что нужно. Решить эту проблему довольно просто: достаточно перенаправить стандартный поток ошибок в файл, используя команду <code>2&gt;</code>. В результате на экран попадёт только то, что команда отправляет в стандартный вывод:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">$ find / -name wireless 2&gt; denied.txt</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Если нужно сохранить результаты работы команды в отдельный файл, не смешивая эти данные со сведениями об ошибках  можно добавить команду перенаправления стандартного потока вывода в файл:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">$ find / -name wireless 2&gt; denied.txt &gt; found.txt</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Если нужно, чтобы всё, что выведет команда, попало в один файл, можно перенаправить оба потока в одно и то же место, воспользовавшись командой <code>&amp;&gt;</code>:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">$ find / -name wireless &amp;&gt; results.txt</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_формат_и_параметры_команд">Формат и параметры команд</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Наиболее общий формат команд (в квадратные скобки помещены необязательные части):</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">[символ_начала_команды]имя_команды [параметр_1 [параметр_2 […]]]</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Символ начала команды может быть самым разным, однако чаще всего для этой цели используется косая черта <code>/</code>. Если строка вводится без этого символа, выполняется некоторая базовая команда. Если же такой базовой команды нет, символ начала команды отсутствует вообще (как, например, в <strong>DOS</strong>).</p>
-</div>
-<div class="paragraph">
-<p>Параметры команд могут иметь самый разный формат. В основном применяются следующие правила:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>параметры разделяются пробелами (и отделяются от названия команды пробелом)</p>
-</li>
-<li>
-<p>параметры, содержащие пробелы, обрамляются кавычками-апострофами <code>'</code> или двойными кавычками <code>"</code></p>
-</li>
-<li>
-<p>если параметр используется для обозначения включения какой-либо опции, выключенной по умолчанию, он начинается с косой черты <code>/</code> или дефиса <code>-</code></p>
-</li>
-<li>
-<p>если параметр используется для включения/выключения какой-либо опции, он начинается (или заканчивается) знаком плюс или минус (для включения и выключения соответственно)</p>
-</li>
-<li>
-<p>если параметр указывает действие из группы действий, назначенных команде, он не начинается со специальных символов</p>
-</li>
-<li>
-<p>если параметр указывает объект, к которому применяется действие команды, он не начинается со специальных символов</p>
-</li>
-<li>
-<p>если параметр указывает дополнительный параметр какой-либо опции, то он имеет формат <code>/опция:дополнительный_параметр</code> (вместо косой черты также может употребляться дефис).</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">/map dm1 /skill:2</code></pre>
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>/</code> — символ начала команды</p>
-</li>
-<li>
-<p><code>map</code> — название команды (переход на другой уровень)</p>
-</li>
-<li>
-<p><code>dm1</code> — обязательный параметр (название уровня)</p>
-</li>
-<li>
-<p><code>/skill:2</code> — дополнительный параметр (задание уровня сложности)</p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_примеры_консольных_программ">Примеры консольных программ</h2>
-<div class="sectionbody">
-<div class="ulist">
-<ul>
-<li>
-<p>Любая программа, осуществляющая получение данных от пользователя путём чтения <strong>stdin</strong> и отправку данных пользователю путём записи в <strong>stdout</strong>, по определению является консольной программой. Однако, такие программы могут обходиться и безо всякого пользователя, например обрабатывая данные из файлов.</p>
-</li>
-<li>
-<p>Unix shell, а также все утилиты, предназначенные для работы в этой среде.</p>
-</li>
-<li>
-<p><strong>Midnight Commander</strong> (<strong>UNIX</strong>), <strong>FAR Manager</strong> (<strong>Windows</strong>) - это двухпанельный файловый менеджер для операционных систем.
-<span class="image"><img src="../assets/img/application-architecture/console-application/example-midnight-commander.png" alt="example midnight commander"></span></p>
-</li>
-<li>
-<p><strong>Alpine</strong> (клиент электронной почты)
-<span class="image"><img src="../assets/img/application-architecture/console-application/example-alpine-email-client.png" alt="example alpine email client"></span></p>
-</li>
-<li>
-<p><strong>Irssi</strong> (IRC-клиент (Internet Relay Chat))
-<span class="image"><img src="../assets/img/application-architecture/console-application/example-irssi.png" alt="example irssi"></span></p>
-</li>
-<li>
-<p><strong>Lynx</strong> (веб-браузер)
-<span class="image"><img src="../assets/img/application-architecture/console-application/example-lynx.png" alt="example lynx"></span></p>
-</li>
-<li>
-<p><strong>Music on Console</strong> (аудиоплеер)</p>
-</li>
-<li>
-<p><strong>Mutt</strong> (клиент электронной почты)
-<span class="image"><img src="../assets/img/application-architecture/console-application/example-mutt.png" alt="example mutt"></span></p>
-</li>
-<li>
-<p><strong>VIM</strong> (текстовый редактор)
-<span class="image"><img src="../assets/img/application-architecture/console-application/example-vim.png" alt="example vim"></span></p>
-</li>
-<li>
-<p>RTORRENT (ТОРРЕНТ КЛИЕНТ)
-<span class="image"><img src="../assets/img/application-architecture/console-application/example-rtorent.png" alt="example rtorent"></span></p>
-</li>
-<li>
-<p><strong>newsbeuter</strong> (RSS-ридер)
-<span class="image"><img src="../assets/img/application-architecture/console-application/example-newsbeuter.png" alt="example newsbeuter"></span></p>
-</li>
-</ul>
+<p>С помощью функции <code>addBatch()</code> накапливаем <code>SQL</code>-запросы и отправляем на выполнение. Следует учесть, что при возникновении исключения мы не узнает на каком именно запросе произошла ошибка. Однако, с помощью блока <code>try-catch</code> и функции <code>rollback()</code> можно вернуться до предыдущего стабильного состояния.</p>
 </div>
 </div>
 </div>
