@@ -1,5 +1,5 @@
 = Коллекции
-:imagesdir: ../assets/img/collections
+:imagesdir: ../assets/img/java/collections
 
 == Иерархия коллекций: Абстрактные классы, Интерфейсы и Классы
 
