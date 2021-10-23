@@ -451,11 +451,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="paragraph">
 <p><strong>Liquibase</strong> является устоявшимся проектом с открытым исходным кодом и активно используется за пределами своей родной Java среды и не требует глубоких знаний Java для работы. В качестве описания структуры базы и изменений базы исторически использовался <strong>XML</strong> формат, однако сейчас параллельно поддерживается <strong>YAML</strong> и <strong>JSON</strong>. Более подробно: <a href="https://docs.liquibase.com/home.html">Liquibase Docs</a></p>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_настройка_окружения">Настройка окружения</h2>
-<div class="sectionbody">
 <div class="paragraph">
 <p>Использовать <strong>Liquibase</strong> можно различными способами:</p>
 </div>
@@ -468,20 +463,85 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>как java-library подключенная к проекту</p>
 </li>
 <li>
-<p>как уже настроенный CI/CD инструмент</p>
+<p>как встроенную задачу в CI/CD инструмент</p>
 </li>
 </ul>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_настройка_окружения">Настройка окружения</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_установка_и_настройка_субд">Установка и настройка СУБД</h3>
+<div class="paragraph">
+<p>Так как <strong>Liquibase</strong> систему управления версиями базы данных, то необходимо устанавливать и настраивать СУБД. Вместо этого можно использовать Docker Compose и следующий файл для запуска <strong>PostgreSQL</strong> как Docker Container:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">version: '3.7'
+
+services:
+  maven-liquibase-postgres:
+    container_name: maven-liquibase-postgres-container
+    image: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DATABASE:-maven-liquibase}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    ports:
+      - '5432:5432'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Для запуска можно использовать команду:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell script" data-lang="shell script">docker-compose up -d</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Далее, при работе с Liquibase, будет использоваться данная СУБД.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_проект_с_liquibase">Проект с Liquibase</h3>
 <div class="paragraph">
 <p>При разработке на Java наиболее удобным будет использование <strong>Apache Maven</strong> или <strong>Gradle</strong>.</p>
 </div>
 <div class="paragraph">
-<p>В дальнейшем речь пойдет именно о <strong>Apache Maven</strong>. В качестве <em>Makefile</em> здесь выступает <code>pom.xml</code> — он уже содержит все необходимые зависимости, настройки и профили.</p>
-</div>
-<div class="paragraph">
-<p><code>pom.xml</code></p>
+<p>В дальнейшем речь пойдет именно о <strong>Apache Maven</strong>.</p>
 </div>
 <div class="listingblock">
+<div class="title">Структура проекта</div>
+<div class="content">
+<pre>.
+├── pom.xml
+└── src
+    └── main
+        └── resources
+            ├── data
+            ├── liquibase.properties
+            └── master.xml</pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>pom.xml</code> - содержит все необходимые зависимости, настройки для Liquibase</p>
+</li>
+<li>
+<p><code>liquibase.properties</code> - файл с настройками соединения к базе (логин/пароль и возможно другие параметры)</p>
+</li>
+<li>
+<p>xml-файл с изменениями базы (либо другие варианты: YAML, JSON, XML + SQL, YAML + SQL, JSON + SQL)</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="title"><code>pom.xml</code></div>
 <div class="content">
 <pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -554,68 +614,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="paragraph">
-<p>Что бы не устанавливать и настраивать СУБД, можно использовать Docker Compose файл:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>version: '3.7'
-
-services:
-  maven-liquibase-postgres:
-    container_name: maven-liquibase-postgres-container
-    image: postgres
-    restart: unless-stopped
-    environment:
-      POSTGRES_DB: ${POSTGRES_DATABASE:-maven-liquibase}
-      POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
-    ports:
-      - '5432:5432'</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Далее, при работе с Liquibase, будет использоваться данная СУБД.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_запускаем_обновление">Запускаем обновление</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>После того как готов <code>pom.xml</code> можно запускать обновление базы с помощью <strong>Apache Maven</strong>:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-shell script" data-lang="shell script">mvn liquibase:update</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Но перед запуском необходимо добавить</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>liquibase.properties</code> - файл с настройками соединения к базе (логин/пароль и возможно другие параметры)</p>
-</li>
-<li>
-<p>xml-файл с изменениями базы (либо другие варианты: YAML, JSON, XML + SQL, YAML + SQL, JSON + SQL)</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="title">Структура проекта</div>
-<div class="content">
-<pre>.
-├── pom.xml
-└── src
-    └── main
-        └── resources
-            ├── data
-            ├── liquibase.properties
-            └── master.xml</pre>
-</div>
-</div>
-<div class="paragraph">
 <p>Файл с настройками соединения к базе</p>
 </div>
 <div class="listingblock">
@@ -653,17 +651,6 @@ url=jdbc:postgresql://localhost:5432/maven-liquibase?prepareThreshold=0&amp;stri
 &lt;/databaseChangeLog&gt;</code></pre>
 </div>
 </div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Note</div>
-</td>
-<td class="content">
-Все выполняемые команды можно вынести как shell scripts для удобства использования.
-</td>
-</tr>
-</table>
 </div>
 </div>
 </div>
@@ -1432,7 +1419,7 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-10-23 04:11:21 UTC
+Last updated 2021-10-23 04:24:09 UTC
 </div>
 </div>
 </body>

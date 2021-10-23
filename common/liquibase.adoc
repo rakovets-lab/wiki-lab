@@ -5,19 +5,67 @@
 
 *Liquibase* является устоявшимся проектом с открытым исходным кодом и активно используется за пределами своей родной Java среды и не требует глубоких знаний Java для работы. В качестве описания структуры базы и изменений базы исторически использовался *XML* формат, однако сейчас параллельно поддерживается *YAML* и *JSON*. Более подробно: link:https://docs.liquibase.com/home.html[Liquibase Docs]
 
-== Настройка окружения
-
 Использовать *Liquibase* можно различными способами:
 
 * как консольное приложение
 * как java-library подключенная к проекту
-* как уже настроенный CI/CD инструмент
+* как встроенную задачу в CI/CD инструмент
+
+== Настройка окружения
+
+=== Установка и настройка СУБД
+
+Так как *Liquibase* систему управления версиями базы данных, то необходимо устанавливать и настраивать СУБД. Вместо этого можно использовать Docker Compose и следующий файл для запуска *PostgreSQL* как Docker Container:
+
+[source,yaml]
+----
+version: '3.7'
+
+services:
+  maven-liquibase-postgres:
+    container_name: maven-liquibase-postgres-container
+    image: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DATABASE:-maven-liquibase}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    ports:
+      - '5432:5432'
+----
+
+Для запуска можно использовать команду:
+
+[source,shell script]
+----
+docker-compose up -d
+----
+
+Далее, при работе с Liquibase, будет использоваться данная СУБД.
+
+=== Проект с Liquibase
 
 При разработке на Java наиболее удобным будет использование *Apache Maven* или *Gradle*.
 
-В дальнейшем речь пойдет именно о *Apache Maven*. В качестве _Makefile_ здесь выступает `pom.xml` — он уже содержит все необходимые зависимости, настройки и профили.
+В дальнейшем речь пойдет именно о *Apache Maven*.
 
-`pom.xml`
+.Структура проекта
+----
+.
+├── pom.xml
+└── src
+    └── main
+        └── resources
+            ├── data
+            ├── liquibase.properties
+            └── master.xml
+----
+
+* `pom.xml` - содержит все необходимые зависимости, настройки для Liquibase
+* `liquibase.properties` - файл с настройками соединения к базе (логин/пароль и возможно другие параметры)
+* xml-файл с изменениями базы (либо другие варианты: YAML, JSON, XML + SQL, YAML + SQL, JSON + SQL)
+
+.`pom.xml`
 [source,xml]
 ----
 <?xml version="1.0" encoding="UTF-8"?>
@@ -90,52 +138,6 @@
 </project>
 ----
 
-Что бы не устанавливать и настраивать СУБД, можно использовать Docker Compose файл:
-
-----
-version: '3.7'
-
-services:
-  maven-liquibase-postgres:
-    container_name: maven-liquibase-postgres-container
-    image: postgres
-    restart: unless-stopped
-    environment:
-      POSTGRES_DB: ${POSTGRES_DATABASE:-maven-liquibase}
-      POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
-    ports:
-      - '5432:5432'
-----
-
-Далее, при работе с Liquibase, будет использоваться данная СУБД.
-
-== Запускаем обновление
-
-После того как готов `pom.xml` можно запускать обновление базы с помощью *Apache Maven*:
-
-[source,shell script]
-----
-mvn liquibase:update
-----
-
-Но перед запуском необходимо добавить
-
-* `liquibase.properties` - файл с настройками соединения к базе (логин/пароль и возможно другие параметры)
-* xml-файл с изменениями базы (либо другие варианты: YAML, JSON, XML + SQL, YAML + SQL, JSON + SQL)
-
-.Структура проекта
-----
-.
-├── pom.xml
-└── src
-    └── main
-        └── resources
-            ├── data
-            ├── liquibase.properties
-            └── master.xml
-----
-
 Файл с настройками соединения к базе
 
 .`liquibase.properties`
@@ -172,8 +174,6 @@ url=jdbc:postgresql://localhost:5432/maven-liquibase?prepareThreshold=0&stringty
 </databaseChangeLog>
 
 ----
-
-NOTE: Все выполняемые команды можно вынести как shell scripts для удобства использования.
 
 == Обновление БД
 
