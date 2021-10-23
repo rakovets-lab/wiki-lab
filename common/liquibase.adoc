@@ -1,0 +1,745 @@
+= Liquibase
+
+*Liquibase* представляет систему управления версиями базы данных, в основном это касается структуры и в меньшей степени содержимого базы.
+При этом описание базы с одной стороны достаточно абстрактно и позволяет использовать на нижнем уровне различные СУБД, и с другой стороны всегда можно перейти на SQL-диалект конкретной СУБД, что достаточно гибко.
+
+*Liquibase* является устоявшимся проектом с открытым исходным кодом и активно используется за пределами своей родной Java среды и не требует глубоких знаний Java для работы. В качестве описания структуры базы и изменений базы исторически использовался *XML* формат, однако сейчас параллельно поддерживается *YAML* и *JSON*. Более подробно: link:https://docs.liquibase.com/home.html[Liquibase Docs]
+
+== Настройка окружения
+
+Использовать *Liquibase* можно различными способами:
+
+* как консольное приложение
+* как java-library подключенная к проекту
+* как уже настроенный CI/CD инструмент
+
+При разработке на Java наиболее удобным будет использование *Apache Maven* или *Gradle*.
+
+В дальнейшем речь пойдет именно о *Apache Maven*. В качестве _Makefile_ здесь выступает `pom.xml` — он уже содержит все необходимые зависимости, настройки и профили.
+
+`pom.xml`
+[source,xml]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>by.rakovets.example</groupId>
+    <artifactId>liquibase-maven</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <log4j2.version>2.14.1</log4j2.version>
+        <liquibase.version>4.5.0</liquibase.version>
+        <postgresql.version>42.3.0</postgresql.version>
+    </properties>
+
+    <dependencies>
+        <!--Logging-->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>${log4j2.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>${log4j2.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j-impl</artifactId>
+            <version>${log4j2.version}</version>
+        </dependency>
+
+        <!--JDBC drivers-->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <version>${liquibase.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>${liquibase.version}</version>
+                <configuration>
+                    <propertyFile>src/main/resources/liquibase.properties</propertyFile>
+                    <changeLogFile>src/main/resources/master.xml</changeLogFile>
+                    <dataDir>src/main/resources/data</dataDir>
+                    <!-- log  -->
+                    <verbose>true</verbose>
+                    <logging>debug</logging>
+                    <promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+----
+
+Что бы не устанавливать и настраивать СУБД, можно использовать Docker Compose файл:
+
+----
+version: '3.7'
+
+services:
+  maven-liquibase-postgres:
+    container_name: maven-liquibase-postgres-container
+    image: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DATABASE:-maven-liquibase}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    ports:
+      - '5432:5432'
+----
+
+Далее, при работе с Liquibase, будет использоваться данная СУБД.
+
+== Запускаем обновление
+
+После того как готов `pom.xml` можно запускать обновление базы с помощью *Apache Maven*:
+
+[source,shell script]
+----
+mvn liquibase:update
+----
+
+Но перед запуском необходимо добавить
+
+* `liquibase.properties` - файл с настройками соединения к базе (логин/пароль и возможно другие параметры)
+* xml-файл с изменениями базы (либо другие варианты: YAML, JSON, XML + SQL, YAML + SQL, JSON + SQL)
+
+.Структура проекта
+----
+.
+├── pom.xml
+└── src
+    └── main
+        └── resources
+            ├── data
+            ├── liquibase.properties
+            └── master.xml
+----
+
+Файл с настройками соединения к базе
+
+.`liquibase.properties`
+[source,properties]
+----
+username=postgres
+password=postgres
+url=jdbc:postgresql://localhost:5432/maven-liquibase?prepareThreshold=0&stringtype=unspecified
+----
+
+Основным понятием liquibase являются так называемые *changesets* (*изменения базы*). Они могут включать в себя как изменения структуры, так и изменение данных. Для контроля примененных *changesets* *Liquibase* использует таблицы `databasechangelog` и `databasechangeloglock`.
+
+.Main changeLogFile `master.xml`
+[source, xml]
+----
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+
+    <changeSet context="legacy" author="author (generated)" id="1">
+        <createTable tableName="test">
+            <column autoIncrement="true" name="id" type="SERIAL">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_name" type="VARCHAR(255)"/>
+            <column name="preferences" type="TEXT"/>
+        </createTable>
+
+        <rollback>
+            <dropTable tableName="test" />
+        </rollback>
+    </changeSet>
+</databaseChangeLog>
+
+----
+
+NOTE: Все выполняемые команды можно вынести как shell scripts для удобства использования.
+
+== Обновление БД
+
+[source,shell script]
+----
+mvn liquibase:update
+----
+
+Здесь выполняется `liquibase:update` для базы указанной в `liquibase.properties` из `liquibase.url`, которая указана в стандартном JDBC формате.
+
+.Output
+----
+[INFO] Scanning for projects...
+[INFO]
+[INFO] ----------------< by.rakovets.example:liquibase-maven >-----------------
+[INFO] Building liquibase-maven 1.0.0
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO]
+[INFO] --- liquibase-maven-plugin:4.5.0:update (default-cli) @ liquibase-maven ---
+[INFO] ------------------------------------------------------------------------
+[INFO] Loading artifacts into URLClassLoader
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/apache/logging/log4j/log4j-api/2.14.1/log4j-api-2.14.1.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/apache/logging/log4j/log4j-core/2.14.1/log4j-core-2.14.1.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/apache/logging/log4j/log4j-slf4j-impl/2.14.1/log4j-slf4j-impl-2.14.1.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/postgresql/postgresql/42.3.0/postgresql-42.3.0.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/checkerframework/checker-qual/3.5.0/checker-qual-3.5.0.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/liquibase/liquibase-core/4.5.0/liquibase-core-4.5.0.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/javax/xml/bind/jaxb-api/2.3.0/jaxb-api-2.3.0.jar
+[INFO]   artifact: file:/home/rakovets/dev/exp/liquibase/target/classes/
+[INFO]   artifact: file:/home/rakovets/dev/exp/liquibase/target/test-classes/
+[INFO] ------------------------------------------------------------------------
+[INFO] Loading artifacts into URLClassLoader
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/apache/logging/log4j/log4j-api/2.14.1/log4j-api-2.14.1.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/apache/logging/log4j/log4j-core/2.14.1/log4j-core-2.14.1.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/apache/logging/log4j/log4j-slf4j-impl/2.14.1/log4j-slf4j-impl-2.14.1.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/postgresql/postgresql/42.3.0/postgresql-42.3.0.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/checkerframework/checker-qual/3.5.0/checker-qual-3.5.0.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/liquibase/liquibase-core/4.5.0/liquibase-core-4.5.0.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/javax/xml/bind/jaxb-api/2.3.0/jaxb-api-2.3.0.jar
+[INFO]   artifact: file:/home/rakovets/dev/exp/liquibase/target/classes/
+[INFO]   artifact: file:/home/rakovets/dev/exp/liquibase/target/test-classes/
+[INFO] ------------------------------------------------------------------------
+[project, pluginDescriptor]
+[INFO] Parsing Liquibase Properties File
+[INFO]   File: src/main/resources/liquibase.properties
+[INFO] ------------------------------------------------------------------------
+[INFO]
+[INFO]
+[INFO] Liquibase Community 4.5.0 by Datical
+[INFO] ####################################################
+##   _     _             _ _                      ##
+##  | |   (_)           (_) |                     ##
+##  | |    _  __ _ _   _ _| |__   __ _ ___  ___   ##
+##  | |   | |/ _` | | | | | '_ \ / _` / __|/ _ \  ##
+##  | |___| | (_| | |_| | | |_) | (_| \__ \  __/  ##
+##  \_____/_|\__, |\__,_|_|_.__/ \__,_|___/\___|  ##
+##              | |                               ##
+##              |_|                               ##
+##                                                ##
+##  Get documentation at docs.liquibase.com       ##
+##  Get certified courses at learn.liquibase.com  ##
+##  Free schema change activity reports at        ##
+##      https://hub.liquibase.com                 ##
+##                                                ##
+####################################################
+Starting Liquibase at 06:31:52 (version 4.5.0 #52 built at 2021-09-27 16:19+0000)
+[INFO] Settings
+----------------------------
+[INFO]     driver: null
+[INFO]     url: jdbc:postgresql://localhost:5432/maven-liquibase?prepareThreshold=0&stringtype=unspecified
+[INFO]     username: *****
+[INFO]     password: *****
+[INFO]     use empty password: false
+[INFO]     properties file: src/main/resources/liquibase.properties
+[INFO]     properties file will override? false
+[INFO]     prompt on non-local database? false
+[INFO]     clear checksums? false
+[INFO]     changeLogDirectory: null
+[INFO]     changeLogFile: src/main/resources/master.xml
+[INFO]     context(s): null
+[INFO]     label(s): null
+[INFO]     number of changes to apply: 0
+[INFO]     drop first? false
+[INFO] ------------------------------------------------------------------------
+[INFO] Set default schema name to public
+[INFO] Parsing Liquibase Properties File src/main/resources/liquibase.properties for changeLog parameters
+[INFO] Executing on Database: jdbc:postgresql://localhost:5432/maven-liquibase?prepareThreshold=0&stringtype=unspecified
+[INFO] Successfully acquired change log lock
+[INFO] Creating database history table with name: databasechangelog
+[INFO] Reading from databasechangelog
+[INFO] Table test created
+[INFO] ChangeSet src/main/resources/master.xml::1::author (generated) ran successfully in 9ms
+[INFO] Successfully released change log lock
+[INFO] ------------------------------------------------------------------------
+[INFO]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  1.069 s
+[INFO] Finished at: 2021-10-23T06:31:52+03:00
+[INFO] ------------------------------------------------------------------------
+----
+
+После успешного выполнения в БД появляются:
+
+* две служебные таблицы `databasechangelog` и `databasechangeloglock` (если их не было раньше)
+* запись в таблице `databasechangelog` с информацией о примененном *changeset*
+* изменения указанные в *changeset*
+
+== Генерация SQL без обновления базы
+
+Иногда перед запуском изменений требуется посмотреть содержимое создаваемых запросов. Для этого предназначены команды `liquibase:updateSQL` и `liquibase:rollbackSQL`
+
+=== `liquibase:updateSQL`
+
+[source,shell script]
+----
+mvn liquibase:updateSQL
+----
+
+.Output
+----
+[INFO] Scanning for projects...
+[INFO]
+[INFO] ----------------< by.rakovets.example:liquibase-maven >-----------------
+[INFO] Building liquibase-maven 1.0.0
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO]
+[INFO] --- liquibase-maven-plugin:4.5.0:updateSQL (default-cli) @ liquibase-maven ---
+[INFO] ------------------------------------------------------------------------
+[INFO] Loading artifacts into URLClassLoader
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/apache/logging/log4j/log4j-api/2.14.1/log4j-api-2.14.1.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/apache/logging/log4j/log4j-core/2.14.1/log4j-core-2.14.1.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/apache/logging/log4j/log4j-slf4j-impl/2.14.1/log4j-slf4j-impl-2.14.1.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/postgresql/postgresql/42.3.0/postgresql-42.3.0.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/checkerframework/checker-qual/3.5.0/checker-qual-3.5.0.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/liquibase/liquibase-core/4.5.0/liquibase-core-4.5.0.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/javax/xml/bind/jaxb-api/2.3.0/jaxb-api-2.3.0.jar
+[INFO]   artifact: file:/home/rakovets/dev/exp/liquibase/target/classes/
+[INFO]   artifact: file:/home/rakovets/dev/exp/liquibase/target/test-classes/
+[INFO] ------------------------------------------------------------------------
+[INFO] Loading artifacts into URLClassLoader
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/apache/logging/log4j/log4j-api/2.14.1/log4j-api-2.14.1.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/apache/logging/log4j/log4j-core/2.14.1/log4j-core-2.14.1.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/apache/logging/log4j/log4j-slf4j-impl/2.14.1/log4j-slf4j-impl-2.14.1.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/postgresql/postgresql/42.3.0/postgresql-42.3.0.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/checkerframework/checker-qual/3.5.0/checker-qual-3.5.0.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/liquibase/liquibase-core/4.5.0/liquibase-core-4.5.0.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/javax/xml/bind/jaxb-api/2.3.0/jaxb-api-2.3.0.jar
+[INFO]   artifact: file:/home/rakovets/dev/exp/liquibase/target/classes/
+[INFO]   artifact: file:/home/rakovets/dev/exp/liquibase/target/test-classes/
+[INFO] ------------------------------------------------------------------------
+[project, pluginDescriptor]
+[INFO] Parsing Liquibase Properties File
+[INFO]   File: src/main/resources/liquibase.properties
+[INFO] ------------------------------------------------------------------------
+[INFO]
+[INFO]
+[INFO] Liquibase Community 4.5.0 by Datical
+[INFO] ####################################################
+##   _     _             _ _                      ##
+##  | |   (_)           (_) |                     ##
+##  | |    _  __ _ _   _ _| |__   __ _ ___  ___   ##
+##  | |   | |/ _` | | | | | '_ \ / _` / __|/ _ \  ##
+##  | |___| | (_| | |_| | | |_) | (_| \__ \  __/  ##
+##  \_____/_|\__, |\__,_|_|_.__/ \__,_|___/\___|  ##
+##              | |                               ##
+##              |_|                               ##
+##                                                ##
+##  Get documentation at docs.liquibase.com       ##
+##  Get certified courses at learn.liquibase.com  ##
+##  Free schema change activity reports at        ##
+##      https://hub.liquibase.com                 ##
+##                                                ##
+####################################################
+Starting Liquibase at 06:33:38 (version 4.5.0 #52 built at 2021-09-27 16:19+0000)
+[INFO] Settings
+----------------------------
+[INFO]     driver: null
+[INFO]     url: jdbc:postgresql://localhost:5432/maven-liquibase?prepareThreshold=0&stringtype=unspecified
+[INFO]     username: *****
+[INFO]     password: *****
+[INFO]     use empty password: false
+[INFO]     properties file: src/main/resources/liquibase.properties
+[INFO]     properties file will override? false
+[INFO]     prompt on non-local database? false
+[INFO]     clear checksums? false
+[INFO]     changeLogDirectory: null
+[INFO]     changeLogFile: src/main/resources/master.xml
+[INFO]     context(s): null
+[INFO]     label(s): null
+[INFO]     number of changes to apply: 0
+[INFO]     migrationSQLOutputFile: /home/rakovets/dev/exp/liquibase/target/liquibase/migrate.sql
+[INFO] ------------------------------------------------------------------------
+[INFO] Set default schema nliquibase:rollbackSQLame to public
+[INFO] Char encoding not set! The created file will be system dependent!
+[INFO] Output SQL Migration File: /home/rakovets/dev/exp/liquibase/target/liquibase/migrate.sql
+[INFO] Parsing Liquibase Properties File src/main/resources/liquibase.properties for changeLog parameters
+[INFO] Executing on Database: jdbc:postgresql://localhost:5432/maven-liquibase?prepareThreshold=0&stringtype=unspecified
+[INFO] Successfully acquired change log lock
+[INFO] Reading from databasechangelog
+[INFO] Successfully released change log lock
+[INFO] ------------------------------------------------------------------------
+[INFO]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  1.022 s
+[INFO] Finished at: 2021-10-23T06:33:39+03:00
+[INFO] ------------------------------------------------------------------------
+----
+
+.Файл `target/liquibase/migrate.sql`
+[source,sql]
+----
+-- *********************************************************************
+-- Update Database Script
+-- *********************************************************************
+-- Change Log: src/main/resources/master.xml
+-- Ran at: 10/23/21, 6:33 AM
+-- Against: postgres@jdbc:postgresql://localhost:5432/maven-liquibase?prepareThreshold=0&stringtype=unspecified
+-- Liquibase version: 4.5.0
+-- *********************************************************************
+
+-- Lock Database
+UPDATE databasechangeloglock SET LOCKED = TRUE, LOCKEDBY = 'ubuntu (172.20.0.1)', LOCKGRANTED = '2021-10-23 06:33:39.053' WHERE ID = 1 AND LOCKED = FALSE;
+
+-- Release Database Lock
+UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = NULL WHERE ID = 1;
+----
+
+=== `liquibase:rollbackSQL`
+
+[source,shell script]
+----
+mvn liquibase:rollbackSQL -Dliquibase.rollbackCount=1
+----
+
+`-Dliquibase.rollbackCount=1` - откатить 1 последнее изменение или использовать *tags* и тогда выполнять с командой `-Dliquibase.rollbackTag=${tag-name}`.
+
+.Output
+----
+[INFO] Scanning for projects...
+[INFO]
+[INFO] ----------------< by.rakovets.example:liquibase-maven >-----------------
+[INFO] Building liquibase-maven 1.0.0
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO]
+[INFO] --- liquibase-maven-plugin:4.5.0:rollbackSQL (default-cli) @ liquibase-maven ---
+[INFO] ------------------------------------------------------------------------
+[INFO] Loading artifacts into URLClassLoader
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/apache/logging/log4j/log4j-api/2.14.1/log4j-api-2.14.1.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/apache/logging/log4j/log4j-core/2.14.1/log4j-core-2.14.1.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/apache/logging/log4j/log4j-slf4j-impl/2.14.1/log4j-slf4j-impl-2.14.1.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/postgresql/postgresql/42.3.0/postgresql-42.3.0.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/checkerframework/checker-qual/3.5.0/checker-qual-3.5.0.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/liquibase/liquibase-core/4.5.0/liquibase-core-4.5.0.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/javax/xml/bind/jaxb-api/2.3.0/jaxb-api-2.3.0.jar
+[INFO]   artifact: file:/home/rakovets/dev/exp/liquibase/target/classes/
+[INFO]   artifact: file:/home/rakovets/dev/exp/liquibase/target/test-classes/
+[INFO] ------------------------------------------------------------------------
+[INFO] Loading artifacts into URLClassLoader
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/apache/logging/log4j/log4j-api/2.14.1/log4j-api-2.14.1.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/apache/logging/log4j/log4j-core/2.14.1/log4j-core-2.14.1.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/apache/logging/log4j/log4j-slf4j-impl/2.14.1/log4j-slf4j-impl-2.14.1.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/postgresql/postgresql/42.3.0/postgresql-42.3.0.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/checkerframework/checker-qual/3.5.0/checker-qual-3.5.0.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/liquibase/liquibase-core/4.5.0/liquibase-core-4.5.0.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/javax/xml/bind/jaxb-api/2.3.0/jaxb-api-2.3.0.jar
+[INFO]   artifact: file:/home/rakovets/dev/exp/liquibase/target/classes/
+[INFO]   artifact: file:/home/rakovets/dev/exp/liquibase/target/test-classes/
+[INFO] ------------------------------------------------------------------------
+[project, pluginDescriptor]
+[INFO] Parsing Liquibase Properties File
+[INFO]   File: src/main/resources/liquibase.properties
+[INFO] ------------------------------------------------------------------------
+[INFO]
+[INFO]
+[INFO] Liquibase Community 4.5.0 by Datical
+[INFO] ####################################################
+##   _     _             _ _                      ##
+##  | |   (_)           (_) |                     ##
+##  | |    _  __ _ _   _ _| |__   __ _ ___  ___   ##
+##  | |   | |/ _` | | | | | '_ \ / _` / __|/ _ \  ##
+##  | |___| | (_| | |_| | | |_) | (_| \__ \  __/  ##
+##  \_____/_|\__, |\__,_|_|_.__/ \__,_|___/\___|  ##
+##              | |                               ##
+##              |_|                               ##
+##                                                ##
+##  Get documentation at docs.liquibase.com       ##
+##  Get certified courses at learn.liquibase.com  ##
+##  Free schema change activity reports at        ##
+##      https://hub.liquibase.com                 ##
+##                                                ##
+####################################################
+Starting Liquibase at 06:43:58 (version 4.5.0 #52 built at 2021-09-27 16:19+0000)
+[INFO] Settings
+----------------------------
+[INFO]     driver: null
+[INFO]     url: jdbc:postgresql://localhost:5432/maven-liquibase?prepareThreshold=0&stringtype=unspecified
+[INFO]     username: *****
+[INFO]     password: *****
+[INFO]     use empty password: false
+[INFO]     properties file: src/main/resources/liquibase.properties
+[INFO]     properties file will override? false
+[INFO]     prompt on non-local database? false
+[INFO]     clear checksums? false
+[INFO]     changeLogDirectory: null
+[INFO]     changeLogFile: src/main/resources/master.xml
+[INFO]     context(s): null
+[INFO]     label(s): null
+[INFO]     rollback Count: 1
+[INFO]     rollback Date: null
+[INFO]     rollback Tag: null
+[INFO]     migrationSQLOutputFile: /home/rakovets/dev/exp/liquibase/target/liquibase/migrate.sql
+[INFO] ------------------------------------------------------------------------
+[INFO] Set default schema name to public
+[INFO] Char encoding not set! The created file will be system dependent!
+[INFO] Output SQL Migration File: /home/rakovets/dev/exp/liquibase/target/liquibase/migrate.sql
+[INFO] Parsing Liquibase Properties File src/main/resources/liquibase.properties for changeLog parameters
+[INFO] Executing on Database: jdbc:postgresql://localhost:5432/maven-liquibase?prepareThreshold=0&stringtype=unspecified
+[INFO] Successfully acquired change log lock
+[INFO] Reading from databasechangelog
+[INFO] Successfully released change log lock
+[INFO] ------------------------------------------------------------------------
+[INFO]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  1.046 s
+[INFO] Finished at: 2021-10-23T06:43:59+03:00
+[INFO] ------------------------------------------------------------------------
+----
+
+.Файл `.Файл `target/liquibase/migrate.sql``
+----
+-- *********************************************************************
+-- Rollback 1 Change(s) Script
+-- *********************************************************************
+-- Change Log: src/main/resources/master.xml
+-- Ran at: 10/23/21, 6:43 AM
+-- Against: postgres@jdbc:postgresql://localhost:5432/maven-liquibase?prepareThreshold=0&stringtype=unspecified
+-- Liquibase version: 4.5.0
+-- *********************************************************************
+
+-- Lock Database
+UPDATE databasechangeloglock SET LOCKED = TRUE, LOCKEDBY = 'ubuntu (172.20.0.1)', LOCKGRANTED = '2021-10-23 06:43:59.083' WHERE ID = 1 AND LOCKED = FALSE;
+
+-- Rolling Back ChangeSet: src/main/resources/master.xml::1::author (generated)
+DROP TABLE test;
+
+DELETE FROM databasechangelog WHERE ID = '1' AND AUTHOR = 'author (generated)' AND FILENAME = 'src/main/resources/master.xml';
+
+-- Release Database Lock
+UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = NULL WHERE ID = 1;
+----
+
+== Подробнее о changeSet
+
+Изменения могут быть в разных форматах, в том числе обычный sql или он же в отдельном файле.
+
+Каждое изменение может включать секцию `rollback` позволяющую откатывать изменения командой `liquibase:rollback`.
+Кроме того для маркировки изменений, например для более удобного отката туда, можно использовать `tagDatabase`.
+
+=== Обычный формат
+
+[source,xml]
+----
+<changeSet context="legacy" author="author (generated)" id="1">
+    <createTable tableName="test">
+        <column autoIncrement="true" name="id" type="SERIAL">
+            <constraints primaryKey="true" primaryKeyName="test_pkey"/>
+        </column>
+        <column name="c1" type="VARCHAR(255)"/>
+        <column name="c2" type="INTEGER"/>
+        <column name="c3" type="SMALLINT"/>
+        <column name="c4" type="VARCHAR(255)"/>
+        <column name="c5" type="TEXT"/>
+        <column name="c6" type="VARCHAR(255)"/>
+    </createTable>
+</changeSet>
+----
+
+=== Встроенный SQL
+
+[source,xml]
+----
+<changeSet context="legacy" author="author" id="1-domain-some-domain">
+    <sql>CREATE DOMAIN public.some_domain AS bigint; ALTER DOMAIN public.some_domain OWNER TO test;</sql>
+    <rollback>DROP DOMAIN public.some_domain;</rollback>
+</changeSet>
+----
+
+=== Файл SQL
+
+[source,xml]
+----
+<changeSet context="legacy" author="author" id="1-user">
+    <sqlFile dbms="postgresql" path="sql/some.sql" relativeToChangelogFile="true"/>
+    <rollback>delete from "some";</rollback>
+</changeSet>
+----
+
+=== Теги
+
+[source,xml]
+----
+<changeSet context="legacy" author="author" id="1-initial-changeset">
+    <tagDatabase tag="initial"/>
+</changeSet>
+----
+
+
+
+== Контексты запуска
+
+Для более удобного управления различными конфигурациями, например `development/production` можно использовать контексты.
+Контекст указывается в changeSet аттрибуте context и затем запускается *Apache Maven* параметром `-Dcontexts`.
+
+=== Изменение с контекстом
+
+[source,xml]
+----
+<changeSet context="legacy" author="author" id="1-initial-changeset">
+    <tagDatabase tag="initial"/>
+</changeSet>
+----
+
+=== Запуск изменений по контексту
+
+[source,shell script]
+----
+#!/usr/bin/env bash mvn liquibase:update\ -Denv=dev\ -Dliquibase.url="jdbc:postgresql://dev/test?prepareThreshold=0&stringtype=unspecified"\ -Dliquibase.contexts=non-legacy
+----
+
+== Откат изменений
+
+Операция обратная обновлению, в большинстве случаев поддерживается автоматически.
+Для прочих возможно задание через секцию rollback.
+Запускается командой liquibase:rollback.
+
+=== Изменение с откатом
+
+[source,xml]
+----
+<changeSet context="legacy" author="author" id="1-domain-some-domain">
+    <sql>CREATE DOMAIN public.some_domain AS bigint; ALTER DOMAIN public.some_domain OWNER TO test;</sql>
+    <rollback>DROP DOMAIN public.some_domain;</rollback>
+</changeSet>
+----
+
+=== Запуск отката
+
+[source,shell script]
+----
+#!/usr/bin/env bash mvn liquibase:update\ -Denv=dev\ -Dliquibase.url="jdbc:postgresql://dev/test?prepareThreshold=0&stringtype=unspecified"\ -Dliquibase.contexts=non-legacy
+----
+
+== Сравнение
+
+В разработке удобно использовать для сравнения двух существующих баз на предмет внесённых изменений.
+В настройки (или параметры запуска) потребуется добавить ссылку на reference DB и данные для доступа к ней.
+
+.`liquibase.properties`
+[source,properties]
+----
+referenceUsername=test referenceUrl=jdbc:postgresql://dev/test_reference
+----
+
+=== Сравнение схем
+
+Сравнение схем `url` и `referenceUrl`.
+
+[source,shell script]
+----
+#!/usr/bin/env bash mvn liquibase:diff\ -Denv=dev\ -Dliquibase.referenceUrl="jdbc:postgresql://dev/test?prepareThreshold=0"\ -Dliquibase.url="jdbc:postgresql://dev/test_reference?prepareThreshold=0"\ -Dliquibase.diffChangeLogFile=dev/diff.xml
+----
+
+== Сохранение схемы
+
+Также бывает полезно сохранить текущую схему базы, с данными или без. Необходимо иметь в виду, что *Liquibase* сохраняет схему не полностью соответствующую оригиналу, например используемые домены или наследование нужно будет добавлять отдельно (см Ограничения).
+
+=== Сохранение схемы без учёта данных
+
+Сохранение схемы существующей базы.
+
+[source,shell script]
+----
+#!/usr/bin/env bash mvn liquibase:generateChangeLog\ -Denv=dev\ -Dliquibase.url="jdbc:postgresql://dev/test_reference?prepareThreshold=0"\ -Dliquibase.outputChangeLogFile=dev/changelog.xml
+----
+
+=== Сохранение схемы с данными
+
+Сохранение схемы существующей базы с данными.
+
+[source,shell script]
+----
+#!/usr/bin/env bash mvn liquibase:generateChangeLog\ -Denv=dev\ -Dliquibase.url="jdbc:postgresql://dev/test_reference?prepareThreshold=0"\ -Dliquibase.outputChangeLogFile=dev/changelog.xml
+----
+
+== Обработка типов данных специфичных для конкретной базы
+
+[source,xml]
+----
+<changeSet>
+    <createTable tableName="t_name">
+        ...
+        <column name="doubleArray" type="DOUBLE_ARRAY"/>
+        ...
+    </createTable>
+    <modifySql dbms="postgresql">
+        <replace replace="DOUBLE_ARRAY" with="double precision[][]"/>
+    </modifySql>
+</changeSet>
+----
+
+== Links
+
+* Существуют определенные проблемы с выгрузкой, сравнением и применением бинарных данных, в частности проблема с генерацией изменений.
+** https://liquibase.jira.com/browse/CORE-2650
+** https://liquibase.jira.com/browse/CORE-2906
+* Наследование и общие столбцы
+** http://forum.liquibase.org/topic/postgresql-subtable-via-inherits
+** https://stackoverflow.com/questions/25840467/liquibase-common-columns
+* Исходный код
+** https://github.com/liquibase/liquibase
+* Как добавить liquibase в существующий проект
+** https://www.liquibase.org/documentation/existing_project.html
+** https://www.liquibase.org/documentation/contexts.html
+* Как работают изменения базы
+** https://www.liquibase.org/documentation/changeset.html
+** https://www.liquibase.org/documentation/databasechangelog_table.html
+* Больше о формате изменений
+** http://www.liquibase.org/documentation/json_format.html
+** https://www.liquibase.org/documentation/changes/sql.html
+** https://www.liquibase.org/documentation/changes/sql_file.html
+** https://www.liquibase.org/documentation/column.html
+* Больше про update
+** https://www.liquibase.org/documentation/maven/generated/update-mojo.html
+* Больше о генерации изменений
+** https://www.liquibase.org/documentation/maven/generated/generateChangeLog-mojo.html
+* Больше о custom SQL
+** http://www.liquibase.org/documentation/modify_sql.html
+** https://stackoverflow.com/questions/28240068/create-column-of-type-double-precision-with-liquibase
+* Прочее
+** https://news.ycombinator.com/item?id=10145933
+* Другие статьи о Liquibase
+** https://habr.com/ru/post/179425/
+** https://habr.com/ru/post/178665/
+** https://habr.com/ru/post/333762/
+** https://habr.com/ru/post/251617/
+** https://habr.com/ru/post/251617/
+
+== Альтернативные решения
+
+* Flyway +
+Наряду с Liquibase пользуется популярностью в Java сообществе — http://flywaydb.org/documentation
+* Sqitch +
+Аналог на Perl — http://sqitch.org
+* FluentMigrator +
+Аналог для .Net — https://github.com/schambers/fluentmigrator
+* DBGeni +
+Аналог для Ruby — http://dbgeni.appsintheopen.com/manual.html
