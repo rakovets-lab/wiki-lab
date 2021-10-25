@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.16">
-<title>Generics</title>
+<title>JUnit.</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -439,286 +439,303 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article">
 <div id="header">
-<h1>Generics</h1>
+<h1>JUnit.</h1>
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_type_inference_вывод_типа">Type Inference (Вывод типа)</h2>
+<h2 id="_введение">Введение</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><strong>Вывод типа</strong> - это способность <strong>компилятора Java</strong> просматривать каждый <strong>вызов метода</strong> и соответствующее <strong>объявление</strong>, чтобы определить <strong>тип аргумента</strong> (или аргументов), которые делают вызов применимым. Алгоритм <strong>вывода типа</strong> определяет <strong>типы аргументов</strong> и, если они доступны, тип, которому <strong>присваивается</strong> или <strong>возвращается</strong> результат. Наконец, <strong>алгоритм вывода</strong> пытается найти <strong>наиболее конкретный тип</strong>, который работает со всеми аргументами.</p>
+<p><strong>Тестирование</strong> – это процесс проверки функционала программы с целью подтверждения того, что она работает в соответствии с определёнными требованиями. Unit-тестирование – это тестирование, которые пишутся, непосредственно, на уровне разработчика (тестирование определённой сущности – метод или класс). Это крайне важный этап разработки ПО, который помогает создавать качественный продукт.</p>
 </div>
 <div class="paragraph">
-<p>В следующем примере <strong>логический вывод типа</strong> определяет, что второй аргумент, передаваемый методу <code>pick()</code>, имеет тип <code>Serializable</code>:</p>
+<p><strong>Юнит-тестирование</strong> делится на две большие группы:</p>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">static &lt;T&gt; T pick(T a1, T a2) {
-    return a2;
-}
-Serializable s = pick("d", new ArrayList&lt;String&gt;());</code></pre>
+<div class="ulist">
+<ul>
+<li>
+<p>Ручное тестирование</p>
+</li>
+<li>
+<p>Автоматизированное тестирование</p>
+</li>
+</ul>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Ручное тестирование</th>
+<th class="tableblock halign-left valign-top">Автоматизированное тестирование</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Ручное выполнение тестов без помощи каких-либо средств.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Использование специальных средств для автоматизированного тестирования</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Не программируется</p>
+<p class="tableblock">Нет возможности для написания сложных тестов для тестирования сложных моделей поведения.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Программируется</p>
+<p class="tableblock">Тестировщики могут написать сложные тесты для тестирования сложных моделей программирования</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Низкая надёжность</p>
+<p class="tableblock">Ручное тестирование имеет низкую надёжность, так как крайне подвержено влиянию человеческого фактора.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Высокая надёжность</p>
+<p class="tableblock">Автоматизированное тестирование точное и надёжное.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Большие затраты времени</p>
+<p class="tableblock">Связано с тем, что человек имеет крайне ограниченные возможность в скорости работы.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Быстро</p>
+<p class="tableblock">Автоматизированные тесты выполняются на порядок быстрее, чем это может сделать человек.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="sect2">
+<h3 id="_junit">JUnit</h3>
+<div class="paragraph">
+<p><strong>JUnit</strong> – это фреймворк, разработанный для тестирования программ, написанных с использованием технологии <strong>Java</strong>. Он лежит в основе <strong>TDD</strong> (<strong>Test-Driven Development</strong>) и входит в семейство фрейморков для тестирования xUnit.</p>
+</div>
+<div class="paragraph">
+<p>Главная идея данного фреймворка – “сначала тесты, потом код”. Это означает, что сначала мы определяем, что должно получиться в результате работы того или иного куска кода и пишем тесты, которые проверяют идентичность результата с требуемым, после чего пишем сам кусок кода, который и будем тестировать. Данный подход увеличивает эффективность работы разработчика и позволяет писать более стабильный код. В результате этого мы получаем меньшее количество времени, которое затрачивается на отладку программы.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_вывод_типа_и_обобщенные_методы">Вывод типа и обобщенные методы</h3>
-<div class="paragraph">
-<p><strong>Вывод типа</strong>, позволяет вызывать <strong>обобщенный метод</strong>, как обычный метод, без указания типа в угловых скобках.</p>
-</div>
-<div class="paragraph">
-<p>Полный синтаксис для вызова этого метода:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">Pair&lt;Integer, String&gt; p1 = new Pair&lt;&gt;(1, "apple");
-Pair&lt;Integer, String&gt; p2 = new Pair&lt;&gt;(2, "pear");
-boolean same = Util.&lt;Integer, String&gt;compare(p1, p2);</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Компилятор может определить <strong>тип</strong> ориентируясь на <strong>аргументы</strong> переданные в <strong>метод</strong>:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">Pair&lt;Integer, String&gt; p1 = new Pair&lt;&gt;(1, "apple");
-Pair&lt;Integer, String&gt; p2 = new Pair&lt;&gt;(2, "pear");
-boolean same = Util.compare(p1, p2);</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Эта функция называется <strong>вывод типа</strong>, она позволяет вызывать <strong>обобщенный метод</strong> как <strong>обычный метод</strong> без указания типа в угловых скобках.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_вывод_типа_и_создание_экземпляров_обобщенных_классов">Вывод типа и создание экземпляров обобщенных классов</h3>
-<div class="paragraph">
-<p>Можно заменить <strong>аргументы типа</strong>, необходимые для вызова конструктора обобщенного класса, пустым набором параметров типа <code>&lt;&gt;</code>, если компилятор может вывести аргументы типа из контекста. Эта пара угловых скобок неофициально называется <strong>diamond</strong>.</p>
-</div>
-<div class="paragraph">
-<p>Например, рассмотрим следующее объявление переменной:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">Map&lt;String, List&lt;String&gt;&gt; myMap = new HashMap&lt;String, List&lt;String&gt;&gt;();</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Можно заменить <strong>параметризованный тип конструктора</strong> на пустой набор параметров типа <code>&lt;&gt;</code>:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">Map&lt;String, List&lt;String&gt;&gt; myMap = new HashMap&lt;&gt;();</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Обратите внимание, что для использования <strong>вывода типа</strong> во время создания экземпляра обобщенного класса необходимо использовать <strong>diamond</strong>. В следующем примере <strong>компилятор</strong> генерирует <strong>предупреждение о непроверенном преобразовании</strong>, поскольку конструктор <code>HashMap()</code> относится к <strong>сырому типу</strong> <code>HashMap</code>, а не к типу <code>Map &lt;String, List &lt;String&gt;&gt;</code>:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">Map&lt;String, List&lt;String&gt;&gt; myMap = new HashMap(); // unchecked conversion warning</code></pre>
-</div>
+<h3 id="_свойства_junit">Свойства JUnit</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Фреймворк с открытым исходным кодом, который используется для написания и выполнения тестов.</p>
+</li>
+<li>
+<p>Позволяет писать код более быстро и качественно.</p>
+</li>
+<li>
+<p>Крайне прост в использовании.</p>
+</li>
+<li>
+<p>Поддерживает аннотации для идентификации методов.</p>
+</li>
+<li>
+<p>Поддерживает утверждения для тестирования получаемых результатов.</p>
+</li>
+<li>
+<p>Тесты могут быть организованы  в связки тестов (<strong>test suites</strong>).</p>
+</li>
+<li>
+<p>Имеет визуальную индикацию состояния тестов (красные – не пройдены, зелёные – пройдены).</p>
+</li>
+</ul>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_выведение_типов_и_обобщенные_конструкторы_обобщенных_и_необобщенных_классов">Выведение типов и обобщенные конструкторы обобщенных и необобщенных классов</h3>
+<h3 id="_тестовый_случай">Тестовый случай</h3>
 <div class="paragraph">
-<p>Конструкторы могут быть обобщенными (другими словами, объявлять свои собственные параметры обобщенного типа) как в обобщенных, так и в необобщенных  классах. Рассмотрим следующий пример:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">class MyClass&lt;X&gt; {
-    &lt;T&gt; MyClass(T t) {
-        // ...//
-    }
-}</code></pre>
-</div>
+<p><strong>Тестовый случай</strong> (Test Case) в <strong>юнит тестировании</strong> – это часть кода, которая проверяет, что другая часть кода  (в частности – метод) работает в соответствии с определёнными требованиями.</p>
 </div>
 <div class="paragraph">
-<p>Рассмотрим следующий экземпляр класса <code>MyClass</code>:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">new MyClass&lt;Integer&gt;("")</code></pre>
-</div>
+<p>Формально описанный тестовый случай характеризуется известными входными данными и ожидаемым выводом программы, который известен до начала выполнения теста.</p>
 </div>
 <div class="paragraph">
-<p>Этот оператор создает экземпляр параметризованного типа <code>MyClass &lt;Integer&gt;</code>; оператор явно указывает тип <code>Integer</code> для параметра обобщенного типа <code>X</code> обобщенного класса <code>MyClass &lt;X&gt;</code>. Конструктор для этого обобщенного класса содержит параметр обобщенного типа <code>T</code>. Компилятор определяет тип <code>String</code> для параметра обобщенного типа <code>T</code> конструктора этого обобщенного класса (поскольку фактическим параметром этого конструктора является объект <code>String</code>).</p>
-</div>
-<div class="paragraph">
-<p>Компиляторы из выпусков предшествующих Java SE 7, могут определять фактические параметры типов обобщенных конструкторов, аналогично обобщенным методам. Однако компиляторы в Java SE 7 и более поздних версиях могут вывести фактические параметры типа создаваемого экземпляра универсального класса, если вы используете <code>&lt;&gt;</code>:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">MyClass&lt;Integer&gt; myObject = new MyClass&lt;&gt;("");</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>В этом примере компилятор определяет тип <code>Integer</code> для параметра обобщенного типа <code>X</code> обобщенного класса <code>MyClass &lt;X&gt;</code>. Он определяет тип <code>String</code> для параметра формального типа <code>T</code> конструктора этого универсального класса.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_целевые_типы_target_types">Целевые типы (Target Types)</h3>
-<div class="paragraph">
-<p><strong>Компилятор Java</strong> использует <strong>целевую типизацию</strong> для вывода параметров типа вызова обобщенного метода. <strong>Целевой тип выражения</strong> - это тип данных, ожидаемый <strong>компилятором Java</strong> в зависимости от того, где находится выражение. Рассмотрим метод <code>Collections.emptyList()</code>, который объявлен следующим образом:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">static &lt;T&gt; List&lt;T&gt; emptyList();</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Рассмотрим следующий оператор присваивания:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">List&lt;String&gt; listOne = Collections.emptyList();</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Этот оператор ожидает экземпляр <code>List &lt;String&gt;</code>; этот тип данных является целевым типом. Поскольку метод <code>emptyList()</code> возвращает значение типа <code>List &lt;T&gt;</code>, <strong>компилятор</strong> делает вывод, что аргумент типа <code>T</code> должен быть значением <code>String</code>. Это работает как в <strong>Java SE 7</strong>, так и в <strong>8</strong>. В качестве альтернативы можно использовать подтверждающий тип и указать значение <code>T</code> следующим образом:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">List&lt;String&gt; listOne = Collections.&lt;String&gt;emptyList();</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Однако в данном контексте это необязательно. Однако это было необходимо в других контекстах. Рассмотрим следующий метод:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">void processStringList(List&lt;String&gt; stringList) {
-    // process stringList
-}</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Если есть необходимость вызвать метод <code>processStringList()</code> с пустым списком. В <strong>Java SE 7</strong> следующий код не компилируется:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">processStringList(Collections.emptyList());</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Компилятор <strong>Java SE 7</strong> выдает сообщение об ошибке, подобное следующему:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-shell script" data-lang="shell script">List&lt;Object&gt; cannot be converted to List&lt;String&gt;</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Компилятору требуется значение для аргумента типа <code>T</code>, поэтому он начинается со значением <code>Object</code>. Следовательно, вызов <code>Collections.emptyList()</code> возвращает значение типа <code>List &lt;Object&gt;</code>, которое несовместимо с методом <code>processStringList()</code>. В <strong>Java SE 7</strong> необходимо указать значение значения аргумента типа следующим образом:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">processStringList(Collections.&lt;String&gt;emptyList());</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>В <strong>Java SE 8</strong> в этом больше нет необходимости. Понятие целевого типа было расширено за счет включения <strong>аргументов метода</strong>, таких как аргумент метода <code>processStringList()</code>. В этом случае для <code>processStringList()</code> требуется аргумент типа <code>List &lt;String&gt;</code>. Метод <code>Collections.emptyList()</code> возвращает значение <code>List &lt;T&gt;</code>, поэтому, используя целевой тип <code>List &lt;String&gt;</code>, компилятор делает вывод, что аргумент типа <code>T</code> имеет значение <code>String</code>. Таким образом, в <strong>Java SE 8</strong> следующий код компилируется:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">processStringList(Collections.emptyList());</code></pre>
-</div>
+<p>Необходимо создавать, как минимум, два тестовых случая для каждого требования – положительный и отрицательный. Если требование имеет под требования, каждое из них должно тестироваться отдельно.</p>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_generics_наследование_и_подтипы">Generics, наследование и подтипы</h2>
+<h2 id="_junit_5">JUnit 5</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Возможно присвоить объект одного типа объекту другого типа при условии, что типы совместимы. Например, можно типу <code>Object</code> присвоить <code>Integer</code>, поскольку <code>Object</code> является одним из суперклассов <code>Integer</code>:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">Object someObject = new Object();
-Integer someInteger = new Integer(10);
-someObject = someInteger; // OK</code></pre>
-</div>
+<p><strong>JUnit 5</strong> требует <strong>Java 8</strong> (или выше) во время выполнения. Однако вы все равно можете протестировать код, скомпилированный с предыдущими версиями <strong>JDK</strong>.</p>
 </div>
 <div class="paragraph">
-<p>В объектно-ориентированной терминологии это называется отношением «есть». Поскольку <code>Integer</code>  является разновидностью <code>Object</code>, присвоение разрешено. Но <code>Integer</code> также является разновидностью <code>Number</code>, поэтому следующий код также валиден:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public void someMethod(Number n) {
-    /* ... */
-}
-
-someMethod(new Integer(10)); // OK
-someMethod(new Double(10.1)); // OK</code></pre>
-</div>
+<p>В отличие от предыдущих версий <strong>JUnit</strong>, <strong>JUnit 5</strong> состоит из нескольких разных модулей из трех разных подпроектов.</p>
 </div>
 <div class="paragraph">
-<p>То же самое и с generics. Вы можете выполнить вызов обобщенного типа, передав <code>Number</code> в качестве <strong>аргумента типа</strong>, и любой последующий вызов <code>add()</code> будет разрешен, если аргумент совместим с <code>Number</code>:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">Box&lt;Number&gt; box = new Box&lt;Number&gt;();
-box.add(new Integer(10));   // OK
-box.add(new Double(10.1));  // OK</code></pre>
-</div>
+<p><strong>JUnit 5</strong> = <strong>Platform JUnit</strong> + <strong>JUnit Jupiter</strong> + <strong>JUnit Vintage</strong></p>
 </div>
 <div class="paragraph">
-<p>Теперь рассмотрим следующий метод:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public void boxTest(Box&lt;Number&gt; n) { /* ... */ }</code></pre>
-</div>
+<p><strong>JUnit платформа</strong> служит основой для запуска тестирования рамок на <strong>JVM</strong>. Он также определяет <strong>TestEngineAPI</strong> для разработки инфраструктуры тестирования, работающей на платформе. Кроме того, платформа предоставляет средство запуска консоли для запуска платформы из командной строки и средство запуска на основе <strong>JUnit 4</strong> для запуска любого <strong>TestEngine</strong> на платформе в среде на основе <strong>JUnit 4</strong>. Первоклассная поддержка <strong>платформы JUnit</strong> также существует в популярных <strong>IDE</strong> (см. <strong>IntelliJ IDEA</strong>, <strong>Eclipse</strong>, <strong>NetBeans</strong> и <strong>код Visual Studio</strong>) и инструментах сборки (см. <strong>Gradle</strong>, <strong>Maven</strong> и <strong>Ant</strong>).</p>
 </div>
 <div class="paragraph">
-<p>Какие аргументы он принимает? Посмотрев на его, видно, что он принимает единственный аргумент, тип которого - <code>Box &lt;Number&gt;</code>. Но что это значит? Можно ли передать в качестве аргумента <code>Box &lt;Integer</code>&gt; или <code>Box &lt;Double&gt;</code>, как и следовало ожидать? Ответ - «нет», потому что <code>Box &lt;Integer&gt;</code> и <code>Box &lt;Double&gt;</code> не являются подтипами <code>Box &lt;Number&gt;</code>.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="../assets/img/java/generics/generics-subtype-relationship.gif" alt="связь обобщенных подтипов">
-</div>
+<p><strong>JUnit Jupiter</strong> является сочетанием новой модели программирования и модели расширения для написания тестов и расширений в <strong>JUnit 5</strong>. Jupiter подпроекте обеспечивает <strong>TestEngine</strong> для выполнения тестов на основе <strong>Jupiter</strong> на платформе.</p>
 </div>
 <div class="paragraph">
-<p>Это распространенное заблуждение, когда дело доходит до программирования с использованием generics, но это важная концепция, которую нужно изучить.</p>
+<p><strong>JUnit Vintage</strong> обеспечивает <strong>TestEngine</strong> запуск тестов на основе <strong>JUnit 3</strong> и <strong>JUnit 4</strong> на платформе.</p>
+</div>
+<div class="paragraph">
+<p>Получать помощь, а также задайте вопросы, связанные с <strong>JUnit 5</strong> можно на <a href="https://translate.google.com/website?sl=en&amp;tl=ru&amp;ajax=1&amp;elem=1&amp;se=1&amp;u=https://stackoverflow.com/questions/tagged/junit5"><strong>Stack Overflow</strong></a> или пообщайтесь с нами в <a href="https://translate.google.com/website?sl=en&amp;tl=ru&amp;ajax=1&amp;elem=1&amp;se=1&amp;u=https://gitter.im/junit-team/junit5"><strong>Gitter</strong></a>.</p>
+</div>
+<div class="paragraph">
+<p>В <a href="https://translate.google.com/website?sl=en&amp;tl=ru&amp;ajax=1&amp;elem=1&amp;se=1&amp;u=https://github.com/junit-team/junit5-samples"><strong>junit5-samples</strong></a> репозитории размещена коллекция примеров проектов, основанных на <strong>JUnit Jupiter</strong>, <strong>JUnit Vintage</strong> и других средах тестирования. Вы найдете подходящие сценарии сборки.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Для <strong>Gradle</strong> и <strong>Java</strong> ознакомьтесь с <a href="https://translate.google.com/website?sl=en&amp;tl=ru&amp;ajax=1&amp;elem=1&amp;se=1&amp;u=https://github.com/junit-team/junit5-samples/tree/r5.7.2/junit5-jupiter-starter-gradle"><strong>junit5-jupiter-starter-gradle</strong></a> проектом.</p>
+</li>
+<li>
+<p>Для <strong>Gradle</strong> и <strong>Kotlin</strong> ознакомьтесь с <a href="https://translate.google.com/website?sl=en&amp;tl=ru&amp;ajax=1&amp;elem=1&amp;se=1&amp;u=https://github.com/junit-team/junit5-samples/tree/r5.7.2/junit5-jupiter-starter-gradle-kotlin"><strong>junit5-jupiter-starter-gradle-kotlin</strong></a> проектом.</p>
+</li>
+<li>
+<p>Для <strong>Gradle</strong> и <strong>Groovy</strong> ознакомьтесь с <a href="https://translate.google.com/website?sl=en&amp;tl=ru&amp;ajax=1&amp;elem=1&amp;se=1&amp;u=https://github.com/junit-team/junit5-samples/tree/r5.7.2/junit5-jupiter-starter-gradle-groovy"><strong>junit5-jupiter-starter-gradle-groovy</strong></a> проектом.</p>
+</li>
+<li>
+<p>Для <strong>Maven</strong> проверьте <a href="https://translate.google.com/website?sl=en&amp;tl=ru&amp;ajax=1&amp;elem=1&amp;se=1&amp;u=https://github.com/junit-team/junit5-samples/tree/r5.7.2/junit5-jupiter-starter-maven"><strong>junit5-jupiter-starter-maven</strong></a> проект.</p>
+</li>
+<li>
+<p>Что касается <strong>Ant</strong>, ознакомьтесь с <a href="https://translate.google.com/website?sl=en&amp;tl=ru&amp;ajax=1&amp;elem=1&amp;se=1&amp;u=https://github.com/junit-team/junit5-samples/tree/r5.7.2/junit5-jupiter-starter-ant"><strong>junit5-jupiter-starter-ant</strong></a> проектом.</p>
+</li>
+</ul>
 </div>
 <div class="sect2">
-<h3 id="_обобщенные_классы_и_подтипы">Обобщенные классы и подтипы</h3>
+<h3 id="_аннотации">Аннотации</h3>
 <div class="paragraph">
-<p>Можно создать подтипы общего класса или интерфейса, расширив или реализуя его. Отношения между параметрами типа одного класса или интерфейса и параметрами типа другого определяются ключевыми словами <code>extends</code> и <code>implements</code>.</p>
+<p><strong>JUnit Jupiter</strong> поддерживает следующие аннотации для настройки тестов и расширения фреймворка.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Аннотация</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Свойство</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>@Test</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Означает, что метод является методом тестирования. В отличие от аннотации <strong>JUnit 4</strong>, эта аннотация не объявляет никаких атрибутов, так как тестовые расширения в JUnit Jupiter работают на основе собственных специальных аннотаций. Такие методы наследуются, если они не переопределены.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>@ParameterizedTest</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Означает, что метод является параметризированным тестом. Такие методы наследуются, если они не переопределены.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>@RepeatedTest</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Означает, что метод является тестовым шаблоном для повторного теста. Такие методы наследуются, если они не переопределены.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>@TestFactory</code> (<strong>JUnit5</strong>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Означает, что метод является испытательным заводом для динамических тестов. Такие методы наследуются, если они не переопределены.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>@TestTemplate</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Означает, что метод является шаблоном для тестовых случаев, предназначенных для вызова несколько раз в зависимости от количества контекстов вызова, возвращенных зарегистрированными поставщиками. Такие методы наследуются, если они не переопределены.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>@TestMethodOrder</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Используется для настройки порядка выполнения тестового метода для аннотированного тестового класса; похож на <strong>JUnit 4&#8217;s</strong>. Такие аннотации наследуются.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>@TestInstance</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Используется для настройки жизненного цикла экземпляра теста для аннотированного тестового класса. Такие аннотации наследуются.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>@DisplayName</code> (<strong>JUnit5</strong>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Объявляет пользовательское имя дисплея для тестового класса или метода тестирования. Такие аннотации не наследуются.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>@DisplayNameGeneration</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Объявляет пользовательский генератор имен отображения для тестового класса. Такие аннотации наследуются.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>@BeforeEach</code> (<strong>JUnit5</strong>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Означает, что аннотированный метод должен быть выполнен перед каждым, или методом в текущем классе; по аналогии с <strong>JUnit 4&#8217;s</strong>. Такие методы наследуются, если они не переопределены.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>@AfterEach</code> (<strong>JUnit5</strong>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Означает, что аннотированный метод должен быть выполнен после каждого, или метода в текущем классе; по аналогии с <strong>JUnit 4&#8217;s</strong>. Такие методы наследуются, если они не переопределены.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>@BeforeAll</code> (<strong>JUnit5</strong>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Означает, что аннотированный метод должен быть выполнен прежде всего, и методы в текущем классе; по аналогии с <strong>JUnit 4&#8217;s</strong>. Такие методы наследуются (если они не скрыты или переопределены)и должны быть (если не используется жизненный цикл "в каждом классе" экземпляра теста).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>@AfterAll</code> (<strong>JUnit5</strong>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Означает, что аннотированный метод должен быть выполнен в конце концов, и методы в текущем классе; по аналогии с <strong>JUnit 4&#8217;s</strong>. Такие методы наследуются (если они не скрыты или переопределены)и должны быть (если не используется жизненный цикл "в каждом классе" экземпляра теста).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>@Nested</code> (<strong>JUnit5</strong>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Означает, что аннотированный класс является нестатичным вложенным тестовым классом. и методы не могут быть использованы непосредственно в тестовом классе, если не используется жизненный цикл экземпляра теста "на класс". Такие аннотации не наследуются.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>@Tag</code> (<strong>JUnit5</strong>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Используется для объявления тегов для фильтрации тестов, либо на уровне класса или метода; аналогично тестовым группам в <strong>TestNG</strong> или <strong>Categories</strong> в <strong>JUnit 4.</strong> Такие аннотации наследуются на уровне класса, но не на уровне метода.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>@Disabled</code> (<strong>JUnit5</strong>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Используется для отключения тестового класса или метода тестирования; по аналогии с <strong>JUnit 4&#8217;s</strong>. Такие аннотации не наследуются.@Ignore</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>@Timeout</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Используется для неудачи теста, испытательного завода, шаблона тестирования или метода жизненного цикла, если его выполнение превышает данный срок. Такие аннотации наследуются.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>@ExtendWith</code> (<strong>JUnit5</strong>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Используется для регистрации расширений декларативно. Такие аннотации наследуются.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>@RegisterExtension</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Используется для регистрации расширений программно через поля. Такие поля наследуются, если они не затенены.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>@TempDir</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Используется для поставки временного каталога с помощью инъекций поля или инъекций параметра в метод жизненного цикла или метод тестирования; расположен в пакете <code>org.junit.jupiter.api.io</code></p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Все основные аннотации находятся в <a href="https://junit-org.translate.goog/junit5/docs/current/api/org.junit.jupiter.api/org/junit/jupiter/api/package-summary.html?_x_tr_sl=en&amp;_x_tr_tl=ru&amp;_x_tr_hl=ru&amp;_x_tr_pto=ajax,elem,se"><strong>org.junit.jupiter.api</strong></a> пакете в <strong>junit-jupiter-api</strong> модуле.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_утверждения">Утверждения</h3>
+<div class="paragraph">
+<p><strong>JUnit 5</strong> поставляется со многими стандартными утверждениями, которые можно найти в классе <a href="https://junit.org/junit5/docs/current/api/org.junit.jupiter.api/org/junit/jupiter/api/Assertions.html"><strong>org.junit.jupiter.api.Assertions</strong>.</a></p>
 </div>
 <div class="paragraph">
-<p>Используя классы <code>Collections</code> в качестве примера, <code>ArrayList &lt;E&gt;</code> реализует <code>List &lt;E&gt;</code>, а <code>List &lt;E&gt;</code> расширяет <code>Collection &lt;E&gt;</code>. Итак, <code>ArrayList &lt;String&gt;</code> является подтипом <code>List &lt;String&gt;</code>, который является подтипом <code>Collection &lt;String&gt;</code>. Пока вы не изменяете <strong>аргумент типа</strong>, отношения подтипов между типами сохраняются.</p>
+<p>Основные утверждения:</p>
 </div>
-<div class="imageblock">
-<div class="content">
-<img src="../assets/img/java/generics/generics-sample-hierarchy.gif" alt="пример иерархии обобщенных подтипов">
-</div>
-</div>
-<div class="paragraph">
-<p>Теперь представьте, что мы хотим определить наш собственный интерфейс списка, <code>PayloadList</code>, который связывает необязательное значение универсального типа <code>P</code> с каждым элементом. Его объявление может выглядеть так:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">interface PayloadList&lt;E,P&gt; extends List&lt;E&gt; {
-    void setPayload(int index, P val);
-}</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Следующие параметризации <code>PayloadList</code> являются подтипами <code>List &lt;String&gt;</code>:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">PayloadList&lt;String,String&gt;
-PayloadList&lt;String,Integer&gt;
-PayloadList&lt;String,Exception&gt;
-[source, java]</code></pre>
-</div>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="../assets/img/java/generics/generics-payload-list-hierarchy.gif" alt="иерархия playLoadList">
-</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>assertEquals()</code>,</p>
+</li>
+<li>
+<p><code>assertArrayEquals()</code>,</p>
+</li>
+<li>
+<p><code>assertSame()</code>,</p>
+</li>
+<li>
+<p><code>assertNotSame()</code>,</p>
+</li>
+<li>
+<p><code>assertTrue()</code>,</p>
+</li>
+<li>
+<p><code>assertFalse()</code>,</p>
+</li>
+<li>
+<p><code>assertNull()</code>,</p>
+</li>
+<li>
+<p><code>assertNotNull()</code>,</p>
+</li>
+<li>
+<p><code>assertLinesMatch()</code>,</p>
+</li>
+<li>
+<p><code>assertIterablesMatch()</code></p>
+</li>
+</ul>
 </div>
 </div>
 </div>
@@ -726,7 +743,7 @@ PayloadList&lt;String,Exception&gt;
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-10-25 04:31:33 UTC
+Last updated 2021-10-25 04:36:14 UTC
 </div>
 </div>
 </body>

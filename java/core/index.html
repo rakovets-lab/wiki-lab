@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.16">
-<title>Mockito</title>
+<title>Java</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -439,400 +439,295 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article">
 <div id="header">
-<h1>Mockito</h1>
+<h1>Java</h1>
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_mockito_что_это_такое_и_зачем_нужно">Mockito: что это такое и зачем нужно</h2>
+<h2 id="_generics">Generics</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p>Говоря коротко, <strong>Mockito</strong> – фреймворк для работы с заглушками.</p>
-</div>
-<div class="paragraph">
-<p>Как известно, при <strong>тестировании кода</strong> (прежде всего <strong>юнит-тестировании</strong>, но не только) тестируемому элементу часто требуется предоставить экземпляры классов, которыми он должен пользоваться при работе.
-При этом часто они не должны быть <strong>полнофункциональными</strong> – наоборот, от них требуется вести себя <strong>жёстко заданным образом</strong>, так, чтобы их поведение было <strong>простым и полностью предсказуемым</strong>.
-Они и называются <strong>заглушками</strong> (<strong>stub</strong>).
-Чтобы их получить, можно создавать альтернативные тестовые реализации интерфейсов, наследовать нужные классы с переопределением функционала и так далее, но всё это достаточно неудобно, избыточно и чревато ошибками.
-Более удобное во всех смыслах решение – <strong>специализированные фреймворки</strong> для создания заглушек.
-Одним из таковых (и, пожалуй, самым известным для <strong>Java</strong>) и является <strong>Mockito</strong>.</p>
-</div>
-<div class="paragraph">
-<p><strong>Mockito</strong> позволяет создать одной строчкой кода так называемый <strong>mock</strong> (что-то вроде основы для нужной заглушки) любого класса.
-Для такого <strong>mock</strong> сразу после создания характерно некое поведение по умолчанию (<strong>все методы возвращают заранее известные значения</strong> — обычно это <strong>null</strong> либо <strong>0</strong>).
-Можно переопределить это поведение желаемым образом, проконтролировать с нужной степенью детальности обращения к ним так далее.
-В результате <strong>mock</strong> и становится заглушкой с требуемыми свойствами.</p>
-</div>
-<div class="paragraph">
-<p>Также <strong>mock</strong> можно создать и для тех классов, новый экземпляр которых вообще-то так просто не создашь, в частности, классов с исключительно приватными конструкторами типа <strong>синглтонов</strong> и <strong>утилитных классов</strong>, а при минимальной настройке фреймворка — и перечислений (<strong>enums</strong>).</p>
-</div>
-<div class="paragraph">
-<p>Наибольшее распространение получили следующие возможности <strong>Mockito</strong> :</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>создание заглушек для классов и интерфейсов;</p>
-</li>
-<li>
-<p>проверка вызова метода и значений передаваемых методу параметров;</p>
-</li>
-<li>
-<p>использование концепции «частичной заглушки», при которой заглушка создается на класс с определением поведения, требуемое для некоторых методов класса;</p>
-</li>
-<li>
-<p>подключение к реальному классу «шпиона» spy для контроля вызова методов.</p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_mock_и_spy">Mock и Spy</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Центральный класс <strong>Mockito</strong>, через который предполагается обращаться к большей части функционала, — это, собственно, класс под названием <strong>Mockito</strong> (есть также класс <strong>BDDMockito</strong>, предоставляющий примерно те же возможности в форме, более подходящей для <a href="https://ru.wikipedia.org/wiki/BDD_(%D0%BF%D1%80%D0%BE%D0%B3%D1%80%D0%B0%D0%BC%D0%BC%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5)"><strong>BDD</strong></a>.
-Доступ к функционалу реализован через его <strong>статические методы</strong>.</p>
-</div>
-<div class="paragraph">
-<p>Помните, что методы <strong>mock</strong> объекта возвращают значения по умолчанию: <strong>false</strong> для <strong>boolean</strong>, <strong>0</strong> для <strong>int</strong>, <strong>пустые коллекции</strong>, <strong>null</strong> для остальных объектов.
-Для <strong>spy</strong> — значение, возвращаемое методом реального объекта.</p>
-</div>
-<div class="paragraph">
-<p>Для того, чтобы отличить mock-объект от обычного в составе <strong>Mockito</strong> для этого есть инструмент — <strong>метод Mockito.mockingDetails</strong>.
-Передав ему произвольный объект, получим объект класса <strong>MockingDetails</strong>.
-Он содержит информацию о том, что этот объект представляет собой с точки зрения <strong>Mockito</strong>: является ли он <strong>mock</strong>, <strong>spy</strong> (см. ниже), как использовался, как был создан и прочее.</p>
-</div>
-<div class="paragraph">
-<p>Поведение по умолчанию (и не только его) можно изменить при помощи функционала класса <strong>MockSettings</strong>, но это нечасто бывает нужно.</p>
-</div>
-<div class="paragraph">
-<p>Чтобы создать <strong>Mockito</strong> объект можно использовать либо аннотацию <strong>@Mock</strong>, либо <strong>метод</strong> <strong>mock</strong>.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Mock
-ICalculator mcalc;
-
-ICalculator mcalc = Mockito.mock(ICalculator.class);</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Однако, что если необходимо использовать в качестве заглушки объект реального класса с имеющимся функционалом, переопределив работу только части его методов?
-На этот случай в <strong>Mockito</strong> есть так называемые <strong>spy</strong>, "шпионы".
-В отличие от <strong>mock&#8217;ов</strong>, их можно создавать на основе как класса, так и готового объекта.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">DataService dataServiceSpy = Mockito.spy(DataService.class);
-// or
-DataService dataService = new DataService();
-dataServiceSpy = Mockito.spy(dataService);</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>При создании <strong>spy</strong> на основе класса, если его тип — интерфейс, будет создан обычный <strong>mock-объект</strong>, а если тип — класс, то <strong>Mockito</strong> попытается создать экземпляр при помощи конструктора по умолчанию (без параметров).
-И только если такого конструктора нет, произойдёт ошибка и тест не сработает.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_управление_поведением">Управление поведением</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>В целом управление поведением <strong>mock-объекта</strong> сводится к одной очевидной концепции: когда на mock так-то воздействовали (то есть вызван такой-то метод с такими-то аргументами), он должен отреагировать так-то и так-то.
-У этой концепции существуют две реализации в рамках класса <strong>Mockito</strong> — основная, рекомендуемая разработчиками к использованию везде, где это возможно, и альтернативная, применяемая там, где основная не годится.</p>
-</div>
-<div class="paragraph">
-<p>Основная реализация базируется на методе <strong>Mockito.when</strong>.
-Этот метод принимает в качестве "параметра" вызов переопределяемого метода <strong>mock-объекта</strong> (таким образом фиксируется определяемое воздействие) и возвращает объект типа <strong>OngoingStubbing</strong>, позволяющий вызвать один из методов семейства <strong>Mockito.then</strong>&#8230;&#8203; (так задаётся реакция на это воздействие).</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">//when(mock).thenReturn(value)
-
-public interface DataService {
-    void saveData(List&lt;String&gt; dataToSave);
-    String getDataById(String id);
-    String getDataById(String id, Supplier&lt;String&gt; calculateIfAbsent);
-    List&lt;String&gt; getData();
-    List&lt;String&gt; getDataListByIds(List&lt;String&gt; idList);
-    List&lt;String&gt; getDataByRequest(DataSearchRequest request);
-}
------------------------------------------
-List&lt;String&gt; data = new ArrayList&lt;&gt;();
-data.add("dataItem");
-Mockito.when(dataService.getAllData()).thenReturn(data);</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>После этой операции, вызвав у объекта dataService метод getAllData(), получим объект, data.</p>
-</div>
-<div class="paragraph">
-<p>Альтернативная реализация связывания условия и результата вызова — методы семейства <strong>Mockito.do</strong>&#8230;&#8203;. Эти методы позволяют задать поведение начиная с результата вызова и возвращают объект класса <strong>Stubber</strong>, уже при помощи которого можно задать условие.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">//doReturn(value).when(mock).method(params)
-
-public interface DataService {
-    List&lt;String&gt; getData();
-}
------------------------------------------
-List&lt;String&gt; data = new ArrayList&lt;&gt;();
-data.add("dataItem");
-Mockito.doReturn(data).when(dataService).getData()</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Обратите внимание: в первой реализации при задании поведения метода (в данном случае <strong>getAllData()</strong>) сначала выполняется вызов ещё не переопределённой его версии, и только потом, в недрах <strong>Mockito</strong>, происходит переопределение.
-Во второй же такого вызова не происходит — методу <strong>Stubber.when</strong> передаётся непосредственно <strong>mock</strong>, а уже у возвращённого этим методом объекта того же типа, но другой природы совершается вызов переопределяемого метода.
-Эта разница всё и определяет.
-Связывание через <strong>Mockito.do&#8230;&#8203;</strong> никак не контролирует на стадии компиляции то, какой переопределяемый метод я вызову и совместим ли он по типу с заданным возвращаемым значением.</p>
-</div>
 <div class="sect2">
-<h3 id="_задание_условий_вызова">Задание условий вызова</h3>
+<h3 id="_type_inference_вывод_типа">Type Inference (Вывод типа)</h3>
 <div class="paragraph">
-<p>Пример выше касается метода без параметров, и связанное с ним условие вызова возможно одно — сам факт вызова.
-Как только появляются параметры, ситуация становится сложнее.
-Как минимум, для вызова метода, поведение которого я задаю, мне нужно что-то ему передать.
-Но важнее другое: может оказаться, что задаваемую реакцию я хочу получать не всегда, а только при вызове с параметрами, отвечающими определённым требованиям.
-Если нужно задать реакцию на любой вызов этого метода независимо от аргументов, можно воспользоваться методом <strong>Mockito.any</strong></p>
+<p><strong>Вывод типа</strong> - это способность <strong>компилятора Java</strong> просматривать каждый <strong>вызов метода</strong> и соответствующее <strong>объявление</strong>, чтобы определить <strong>тип аргумента</strong> (или аргументов), которые делают вызов применимым. Алгоритм <strong>вывода типа</strong> определяет <strong>типы аргументов</strong> и, если они доступны, тип, которому <strong>присваивается</strong> или <strong>возвращается</strong> результат. Наконец, <strong>алгоритм вывода</strong> пытается найти <strong>наиболее конкретный тип</strong>, который работает со всеми аргументами.</p>
+</div>
+<div class="paragraph">
+<p>В следующем примере <strong>логический вывод типа</strong> определяет, что второй аргумент, передаваемый методу <code>pick()</code>, имеет тип <code>Serializable</code>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public interface DataService {
-    String getDataItemById(String id);
------------------------------------------
-Mockito.when(dataService.getDataItemById(any()))
-       .thenReturn("dataItem");</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Если же требуется, чтобы <strong>mock</strong> реагировал только на определённое значение аргумента, можно использовать непосредственно это значение или методы <strong>Mockito.eq</strong> (когда речь об эквивалентности) либо <strong>Mockito.same</strong> (когда требуется сравнение ссылок)</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">Mockito.when(dataService.getDataItemById("idValue"))
-       .thenReturn("dataItem");
-// or
-Mockito.when(dataService.getDataItemById(Mockito.eq("idValue")))
-       .thenReturn("dataItem");</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>При работе с методами с более чем одним аргументом заданные требования комбинируются в соответствии с логическим И, то есть для получения заданного результата КАЖДЫЙ из аргументов должен отвечать поставленному требованию.</p>
-</div>
-<div class="paragraph">
-<p>Кроме того, при задании поведения такого метода нельзя комбинировать использующие матчеры статические методы Mockito и прямую передачу значений.
-Используйте <strong>Mockito.eq</strong> или Mockito.same</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_задание_результатов_вызова">Задание результатов вызова</h3>
-<div class="paragraph">
-<p>После того, как метод <strong>mock-объекта</strong> вызван, объект должен отреагировать на вызов.
-Основные возможные последствия — возвращение результата и выбрасывание исключения, и именно на эти варианты в первую очередь рассчитан инструментарий <strong>Mockito</strong>.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">Mockito.when(dataService.getAllData()).thenReturn(data);</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Также</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">Mockito.when(dataService.getDataById("invalidId"))
-       .thenThrow(new IllegalArgumentException());</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Есть и другой способ: можно создать объект исключения и бросить непосредственно его, а можно предоставить <strong>Mockito</strong> только класс исключения, чтобы оно было создано автоматически.
-В обоих случаях синтаксис позволяет использовать и <strong>checked</strong> исключения, однако <strong>Mockito</strong> не позволит запустить такой тест, если тип исключения не соответствует методу, который я хочу заставить бросить это исключение.</p>
-</div>
-<div class="paragraph">
-<p>Выше варианты реакции подходят, если в ответ на вызов с заданными условиями нужно всегда возвращать определённое, всегда одно и то же значение результата или выбрасывать всегда одинаковое исключение.
-Предположим, метод принимает коллекцию значений, а возвращает другую коллекцию значений, связанных с первыми одно к одному (например, это получение коллекции объектов данных по набору их ID), и в рамках теста необходимо использовать этот <strong>mock-объект</strong> неоднократно с разными наборами входных данных, получая каждый раз соответствующий результат.
-В Mockito есть метод <strong>Mockito.thenAnswer</strong>, он же <strong>Mockito.then</strong>.
-Он принимает реализацию функционального интерфейса <strong>Answer</strong>, единственный метод которого получает объект <strong>класса InvocationOnMock</strong>.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">Mockito.when(dataService.getDataByIds(Mockito.any()))
-       .thenAnswer(invocation -&gt; invocation
-                .&lt;List&lt;String&gt;&gt;getArgument(0).stream()
-                .map(id -&gt; {
-                    switch (id) {
-                        case "a":
-                            return "dataItemA";
-                        case "b":
-                            return "dataItemB";
-                        default:
-                            return null;
-                    }
-                })
-                .collect(Collectors.toList()));</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Обратите внимание: типобезопасности <strong>InvocationOnMock</strong> не обеспечивает — аргументы возвращаются либо в виде массива <strong>Object[]</strong>, либо <strong>generic</strong>-методом.</p>
-</div>
-<div class="paragraph">
-<p>Отдельно стоит упомянуть ещё один вариант реакции — <strong>thenCallRealMethod</strong>.
-Предназначение понятно из названия.
-Он действует как для <strong>mock</strong>-, так и для <strong>spy</strong>-объектов.
-В случае <strong>mock</strong> все поля объекта, к которым может обратиться код метода, будут опять-таки иметь значение <strong>null</strong>.
-Для <strong>spy</strong> же использование <strong>thenCallRealMethod</strong> означает возвращение к поведению <strong>spy</strong> по умолчанию.</p>
-</div>
-<div class="paragraph">
-<p>Методы <strong>thenReturn</strong> и <strong>thenThrow</strong> имеют перегруженные версии, принимающие <strong>varargs</strong>.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">Mockito.when(dataService.getDataById("a"))
-       .thenReturn("valueA1", "valueA2")
-       .thenThrow(IllegalArgumentException.class);</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Здесь первый вызов метода с заданным параметром вернёт "valueA1, второй — "valueA2, а третий (и все последующие) будет вызывать выбрасывание <strong>IllegalArgumentException</strong>.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_слежение_за_вызовами_методов">Слежение за вызовами методов</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Метод <strong>verify</strong> позволяет проверить, была ли выполнена проверка с определенными параметрами.
-Если проверка не выполнялась или выполнялась с другими параметрами, то <strong>verify</strong> вызовет исключение.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">Mockito.verify(dataService).getDataById(Mockito.any());</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Тест с такой конструкцией пройдёт успешно, если она находится после единственного за время выполнения теста вызова метода <strong>getDataById</strong>, и упадёт, если метод не был вызван или был вызван дважды и более.</p>
-</div>
-<div class="paragraph">
-<p>Для проверки количества вызовов определенных методов Mockito предоставляет следующие методы:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>atLeast(int min) - не меньше min вызовов;</p>
-</li>
-<li>
-<p>atLeastOnce() - хотя бы один вызов;</p>
-</li>
-<li>
-<p>atMost(int max) - не более max вызовов;</p>
-</li>
-<li>
-<p>times(int cnt) - cnt вызовов;</p>
-</li>
-<li>
-<p>never() - вызовов не было;</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">Mockito.verify(dataService, Mockito.times(1)).getDataById(Mockito.any());</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_mock_объекты_как_значения_полей_и_аннотации_mockito">Mock-объекты как значения полей и аннотации Mockito</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Если в классе теста есть поля, которым я хочу присвоить <strong>mock-объекты</strong> в качестве значений, это не обязательно делать вручную — достаточно снабдить его аннотацией <strong>@Mock</strong>.</p>
-</div>
-<div class="paragraph">
-<p>Для <strong>spy</strong> предусмотрена аннотация <strong>@Spy</strong> — она в целом аналогична <strong>@Mock</strong>… но для spy может использоваться объект, на основе которого он будет создан (несмотря на название, этот метод предназначен не только для <strong>mock&#8217;ов</strong>, а задействует также и все нижеперечисленные аннотации).
-Такой объект можно сразу указать в качестве значения аннотируемого поля, но можно и не указывать — тогда <strong>spy</strong> будет создан на основе класса.</p>
-</div>
-<div class="paragraph">
-<p>Есть аннотация <strong>@Captor</strong> для создания экземпляров <strong>ArgumentCaptor</strong>.</p>
-</div>
-<div class="paragraph">
-<p>Ещё существует <strong>@InjectMocks</strong>.
-Помеченное таким образом поле инициализируется настоящим объектом указанного класса.
-Его поля по возможности проинициализированы значениями <strong>mock-полей</strong>, помеченных соответствующей аннотацией.
-Для этого используется конструктор с наибольшим числом параметров, сеттеры и так далее.
-Если какого-то объектного параметра конструктора не хватает, вместо него будет использован <strong>null</strong>, а вот параметр-примитив просто не позволит тесту сработать.
-В целом это похоже на маленькую и простую (и всё равно не такую уж примитивную) реализацию <strong>dependency injection</strong>.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_откат_поведения_к_дефолтному_и_сессии_mockito">Откат поведения к дефолтному и сессии Mockito</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Чтобы привести все <strong>mock-объекты</strong> в состояние по умолчанию можно использовать методы <strong>Mockito.reset</strong> и <strong>Mockito.clearInvocations</strong>.
-Оба принимают <strong>varargs</strong>, и передавать им нужно соответствующие <strong>mock&#8217;и</strong>.</p>
-</div>
-<div class="paragraph">
-<p>Ещё одно решение — использовать так называемые <strong>сессии Mockito</strong>.
-Именно его рекомендуют авторы.
-В начале сессии все <strong>mock-объекты</strong> инициализируются, а после работы обязательно должно быть выполнено её окончание (хотя mock&#8217;и продолжают оставаться функциональными и после него).
-Если я хочу создавать отдельную сессию для каждого тестового метода, то удобно создать поле типа MockitoSession, присвоить ему значение до вызова тестового метода и завершить сессию после.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Mock
-DataService dataService;
-
-MockitoSession session;
-
-@BeforeMethod
-public void beforeMethod() {
-    session = Mockito.mockitoSession()
-            .initMocks(this)
-            .startMocking();
+<pre class="highlight"><code class="language-java" data-lang="java">static &lt;T&gt; T pick(T a1, T a2) {
+    return a2;
 }
-
-@Test
-public void testMethod() {
-    // some code using the dataService field
-}
-
-@AfterMethod
-public void afterMethod() {
-    session.finishMocking();
+Serializable s = pick("d", new ArrayList&lt;String&gt;());</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_вывод_типа_и_обобщенные_методы">Вывод типа и обобщенные методы</h4>
+<div class="paragraph">
+<p><strong>Вывод типа</strong>, позволяет вызывать <strong>обобщенный метод</strong>, как обычный метод, без указания типа в угловых скобках.</p>
+</div>
+<div class="paragraph">
+<p>Полный синтаксис для вызова этого метода:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">Pair&lt;Integer, String&gt; p1 = new Pair&lt;&gt;(1, "apple");
+Pair&lt;Integer, String&gt; p2 = new Pair&lt;&gt;(2, "pear");
+boolean same = Util.&lt;Integer, String&gt;compare(p1, p2);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Компилятор может определить <strong>тип</strong> ориентируясь на <strong>аргументы</strong> переданные в <strong>метод</strong>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">Pair&lt;Integer, String&gt; p1 = new Pair&lt;&gt;(1, "apple");
+Pair&lt;Integer, String&gt; p2 = new Pair&lt;&gt;(2, "pear");
+boolean same = Util.compare(p1, p2);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Эта функция называется <strong>вывод типа</strong>, она позволяет вызывать <strong>обобщенный метод</strong> как <strong>обычный метод</strong> без указания типа в угловых скобках.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_вывод_типа_и_создание_экземпляров_обобщенных_классов">Вывод типа и создание экземпляров обобщенных классов</h4>
+<div class="paragraph">
+<p>Можно заменить <strong>аргументы типа</strong>, необходимые для вызова конструктора обобщенного класса, пустым набором параметров типа <code>&lt;&gt;</code>, если компилятор может вывести аргументы типа из контекста. Эта пара угловых скобок неофициально называется <strong>diamond</strong>.</p>
+</div>
+<div class="paragraph">
+<p>Например, рассмотрим следующее объявление переменной:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">Map&lt;String, List&lt;String&gt;&gt; myMap = new HashMap&lt;String, List&lt;String&gt;&gt;();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Можно заменить <strong>параметризованный тип конструктора</strong> на пустой набор параметров типа <code>&lt;&gt;</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">Map&lt;String, List&lt;String&gt;&gt; myMap = new HashMap&lt;&gt;();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Обратите внимание, что для использования <strong>вывода типа</strong> во время создания экземпляра обобщенного класса необходимо использовать <strong>diamond</strong>. В следующем примере <strong>компилятор</strong> генерирует <strong>предупреждение о непроверенном преобразовании</strong>, поскольку конструктор <code>HashMap()</code> относится к <strong>сырому типу</strong> <code>HashMap</code>, а не к типу <code>Map &lt;String, List &lt;String&gt;&gt;</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">Map&lt;String, List&lt;String&gt;&gt; myMap = new HashMap(); // unchecked conversion warning</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_выведение_типов_и_обобщенные_конструкторы_обобщенных_и_необобщенных_классов">Выведение типов и обобщенные конструкторы обобщенных и необобщенных классов</h4>
+<div class="paragraph">
+<p>Конструкторы могут быть обобщенными (другими словами, объявлять свои собственные параметры обобщенного типа) как в обобщенных, так и в необобщенных  классах. Рассмотрим следующий пример:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">class MyClass&lt;X&gt; {
+    &lt;T&gt; MyClass(T t) {
+        // ...//
+    }
 }</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>Рассмотрим следующий экземпляр класса <code>MyClass</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">new MyClass&lt;Integer&gt;("")</code></pre>
 </div>
 </div>
-<div class="sect1">
-<h2 id="_links">Links</h2>
-<div class="sectionbody">
-<div class="ulist">
-<ul>
-<li>
-<p><a href="https://ru.wikipedia.org/wiki/BDD_(%D0%BF%D1%80%D0%BE%D0%B3%D1%80%D0%B0%D0%BC%D0%BC%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5)">Mockito и как его готовить</a></p>
-</li>
-<li>
-<p><a href="https://habr.com/ru/post/444982/">BDD (программирование)</a></p>
-</li>
-<li>
-<p><a href="https://www.javadoc.io/doc/org.mockito/mockito-core/2.7.10/org/mockito/Mockito.html">Официальная документация Mockito</a></p>
-</li>
-<li>
-<p><a href="https://habr.com/ru/search/?target_type=posts&amp;order=relevance&amp;q=%5B%D0%B0%D0%B2%D1%82%D0%BE%D1%82%D0%B5%D1%81%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5%5D">Автотестирование</a></p>
-</li>
-</ul>
+<div class="paragraph">
+<p>Этот оператор создает экземпляр параметризованного типа <code>MyClass &lt;Integer&gt;</code>; оператор явно указывает тип <code>Integer</code> для параметра обобщенного типа <code>X</code> обобщенного класса <code>MyClass &lt;X&gt;</code>. Конструктор для этого обобщенного класса содержит параметр обобщенного типа <code>T</code>. Компилятор определяет тип <code>String</code> для параметра обобщенного типа <code>T</code> конструктора этого обобщенного класса (поскольку фактическим параметром этого конструктора является объект <code>String</code>).</p>
+</div>
+<div class="paragraph">
+<p>Компиляторы из выпусков предшествующих Java SE 7, могут определять фактические параметры типов обобщенных конструкторов, аналогично обобщенным методам. Однако компиляторы в Java SE 7 и более поздних версиях могут вывести фактические параметры типа создаваемого экземпляра универсального класса, если вы используете <code>&lt;&gt;</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">MyClass&lt;Integer&gt; myObject = new MyClass&lt;&gt;("");</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>В этом примере компилятор определяет тип <code>Integer</code> для параметра обобщенного типа <code>X</code> обобщенного класса <code>MyClass &lt;X&gt;</code>. Он определяет тип <code>String</code> для параметра формального типа <code>T</code> конструктора этого универсального класса.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_целевые_типы_target_types">Целевые типы (Target Types)</h4>
+<div class="paragraph">
+<p><strong>Компилятор Java</strong> использует <strong>целевую типизацию</strong> для вывода параметров типа вызова обобщенного метода. <strong>Целевой тип выражения</strong> - это тип данных, ожидаемый <strong>компилятором Java</strong> в зависимости от того, где находится выражение. Рассмотрим метод <code>Collections.emptyList()</code>, который объявлен следующим образом:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">static &lt;T&gt; List&lt;T&gt; emptyList();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Рассмотрим следующий оператор присваивания:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">List&lt;String&gt; listOne = Collections.emptyList();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Этот оператор ожидает экземпляр <code>List &lt;String&gt;</code>; этот тип данных является целевым типом. Поскольку метод <code>emptyList()</code> возвращает значение типа <code>List &lt;T&gt;</code>, <strong>компилятор</strong> делает вывод, что аргумент типа <code>T</code> должен быть значением <code>String</code>. Это работает как в <strong>Java SE 7</strong>, так и в <strong>8</strong>. В качестве альтернативы можно использовать подтверждающий тип и указать значение <code>T</code> следующим образом:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">List&lt;String&gt; listOne = Collections.&lt;String&gt;emptyList();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Однако в данном контексте это необязательно. Однако это было необходимо в других контекстах. Рассмотрим следующий метод:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">void processStringList(List&lt;String&gt; stringList) {
+    // process stringList
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Если есть необходимость вызвать метод <code>processStringList()</code> с пустым списком. В <strong>Java SE 7</strong> следующий код не компилируется:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">processStringList(Collections.emptyList());</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Компилятор <strong>Java SE 7</strong> выдает сообщение об ошибке, подобное следующему:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell script" data-lang="shell script">List&lt;Object&gt; cannot be converted to List&lt;String&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Компилятору требуется значение для аргумента типа <code>T</code>, поэтому он начинается со значением <code>Object</code>. Следовательно, вызов <code>Collections.emptyList()</code> возвращает значение типа <code>List &lt;Object&gt;</code>, которое несовместимо с методом <code>processStringList()</code>. В <strong>Java SE 7</strong> необходимо указать значение значения аргумента типа следующим образом:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">processStringList(Collections.&lt;String&gt;emptyList());</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>В <strong>Java SE 8</strong> в этом больше нет необходимости. Понятие целевого типа было расширено за счет включения <strong>аргументов метода</strong>, таких как аргумент метода <code>processStringList()</code>. В этом случае для <code>processStringList()</code> требуется аргумент типа <code>List &lt;String&gt;</code>. Метод <code>Collections.emptyList()</code> возвращает значение <code>List &lt;T&gt;</code>, поэтому, используя целевой тип <code>List &lt;String&gt;</code>, компилятор делает вывод, что аргумент типа <code>T</code> имеет значение <code>String</code>. Таким образом, в <strong>Java SE 8</strong> следующий код компилируется:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">processStringList(Collections.emptyList());</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_generics_наследование_и_подтипы">Generics, наследование и подтипы</h3>
+<div class="paragraph">
+<p>Возможно присвоить объект одного типа объекту другого типа при условии, что типы совместимы. Например, можно типу <code>Object</code> присвоить <code>Integer</code>, поскольку <code>Object</code> является одним из суперклассов <code>Integer</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">Object someObject = new Object();
+Integer someInteger = new Integer(10);
+someObject = someInteger; // OK</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>В объектно-ориентированной терминологии это называется отношением «есть». Поскольку <code>Integer</code>  является разновидностью <code>Object</code>, присвоение разрешено. Но <code>Integer</code> также является разновидностью <code>Number</code>, поэтому следующий код также валиден:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">public void someMethod(Number n) {
+    /* ... */
+}
+
+someMethod(new Integer(10)); // OK
+someMethod(new Double(10.1)); // OK</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>То же самое и с generics. Вы можете выполнить вызов обобщенного типа, передав <code>Number</code> в качестве <strong>аргумента типа</strong>, и любой последующий вызов <code>add()</code> будет разрешен, если аргумент совместим с <code>Number</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">Box&lt;Number&gt; box = new Box&lt;Number&gt;();
+box.add(new Integer(10));   // OK
+box.add(new Double(10.1));  // OK</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Теперь рассмотрим следующий метод:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">public void boxTest(Box&lt;Number&gt; n) { /* ... */ }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Какие аргументы он принимает? Посмотрев на его, видно, что он принимает единственный аргумент, тип которого - <code>Box &lt;Number&gt;</code>. Но что это значит? Можно ли передать в качестве аргумента <code>Box &lt;Integer</code>&gt; или <code>Box &lt;Double&gt;</code>, как и следовало ожидать? Ответ - «нет», потому что <code>Box &lt;Integer&gt;</code> и <code>Box &lt;Double&gt;</code> не являются подтипами <code>Box &lt;Number&gt;</code>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../../assets/img/java/core/generics/generics-subtype-relationship.gif" alt="связь обобщенных подтипов">
+</div>
+</div>
+<div class="paragraph">
+<p>Это распространенное заблуждение, когда дело доходит до программирования с использованием generics, но это важная концепция, которую нужно изучить.</p>
+</div>
+<div class="sect3">
+<h4 id="_обобщенные_классы_и_подтипы">Обобщенные классы и подтипы</h4>
+<div class="paragraph">
+<p>Можно создать подтипы общего класса или интерфейса, расширив или реализуя его. Отношения между параметрами типа одного класса или интерфейса и параметрами типа другого определяются ключевыми словами <code>extends</code> и <code>implements</code>.</p>
+</div>
+<div class="paragraph">
+<p>Используя классы <code>Collections</code> в качестве примера, <code>ArrayList &lt;E&gt;</code> реализует <code>List &lt;E&gt;</code>, а <code>List &lt;E&gt;</code> расширяет <code>Collection &lt;E&gt;</code>. Итак, <code>ArrayList &lt;String&gt;</code> является подтипом <code>List &lt;String&gt;</code>, который является подтипом <code>Collection &lt;String&gt;</code>. Пока вы не изменяете <strong>аргумент типа</strong>, отношения подтипов между типами сохраняются.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../../assets/img/java/core/generics/generics-sample-hierarchy.gif" alt="пример иерархии обобщенных подтипов">
+</div>
+</div>
+<div class="paragraph">
+<p>Теперь представьте, что мы хотим определить наш собственный интерфейс списка, <code>PayloadList</code>, который связывает необязательное значение универсального типа <code>P</code> с каждым элементом. Его объявление может выглядеть так:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">interface PayloadList&lt;E,P&gt; extends List&lt;E&gt; {
+    void setPayload(int index, P val);
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Следующие параметризации <code>PayloadList</code> являются подтипами <code>List &lt;String&gt;</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">PayloadList&lt;String,String&gt;
+PayloadList&lt;String,Integer&gt;
+PayloadList&lt;String,Exception&gt;
+[source, java]</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../../assets/img/java/core/generics/generics-payload-list-hierarchy.gif" alt="иерархия playLoadList">
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-10-25 04:31:33 UTC
+Last updated 2021-10-25 04:36:14 UTC
 </div>
 </div>
 </body>

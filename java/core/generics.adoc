@@ -1,5 +1,5 @@
 = Generics
-:imagesdir: ../assets/img/java/generics
+:imagesdir: ../../assets/img/java/core/generics
 
 == Type Inference (Вывод типа)
 

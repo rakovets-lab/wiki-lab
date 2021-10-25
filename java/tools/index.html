@@ -443,12 +443,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_java_tools_testing">Java Tools: Testing</h2>
+<h2 id="_junit">JUnit.</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_junit">JUnit.</h3>
-<div class="sect3">
-<h4 id="_введение">Введение</h4>
+<h3 id="_введение">Введение</h3>
 <div class="paragraph">
 <p><strong>Тестирование</strong> – это процесс проверки функционала программы с целью подтверждения того, что она работает в соответствии с определёнными требованиями. Unit-тестирование – это тестирование, которые пишутся, непосредственно, на уровне разработчика (тестирование определённой сущности – метод или класс). Это крайне важный этап разработки ПО, который помогает создавать качественный продукт.</p>
 </div>
@@ -501,8 +499,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </tr>
 </tbody>
 </table>
-<div class="sect4">
-<h5 id="_junit_2">JUnit</h5>
+<div class="sect3">
+<h4 id="_junit_2">JUnit</h4>
 <div class="paragraph">
 <p><strong>JUnit</strong> – это фреймворк, разработанный для тестирования программ, написанных с использованием технологии <strong>Java</strong>. Он лежит в основе <strong>TDD</strong> (<strong>Test-Driven Development</strong>) и входит в семейство фрейморков для тестирования xUnit.</p>
 </div>
@@ -510,8 +508,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>Главная идея данного фреймворка – “сначала тесты, потом код”. Это означает, что сначала мы определяем, что должно получиться в результате работы того или иного куска кода и пишем тесты, которые проверяют идентичность результата с требуемым, после чего пишем сам кусок кода, который и будем тестировать. Данный подход увеличивает эффективность работы разработчика и позволяет писать более стабильный код. В результате этого мы получаем меньшее количество времени, которое затрачивается на отладку программы.</p>
 </div>
 </div>
-<div class="sect4">
-<h5 id="_свойства_junit">Свойства JUnit</h5>
+<div class="sect3">
+<h4 id="_свойства_junit">Свойства JUnit</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -538,8 +536,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </ul>
 </div>
 </div>
-<div class="sect4">
-<h5 id="_тестовый_случай">Тестовый случай</h5>
+<div class="sect3">
+<h4 id="_тестовый_случай">Тестовый случай</h4>
 <div class="paragraph">
 <p><strong>Тестовый случай</strong> (Test Case) в <strong>юнит тестировании</strong> – это часть кода, которая проверяет, что другая часть кода  (в частности – метод) работает в соответствии с определёнными требованиями.</p>
 </div>
@@ -551,8 +549,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_junit_5">JUnit 5</h4>
+<div class="sect2">
+<h3 id="_junit_5">JUnit 5</h3>
 <div class="paragraph">
 <p><strong>JUnit 5</strong> требует <strong>Java 8</strong> (или выше) во время выполнения. Однако вы все равно можете протестировать код, скомпилированный с предыдущими версиями <strong>JDK</strong>.</p>
 </div>
@@ -596,8 +594,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 </ul>
 </div>
-<div class="sect4">
-<h5 id="_аннотации">Аннотации</h5>
+<div class="sect3">
+<h4 id="_аннотации">Аннотации</h4>
 <div class="paragraph">
 <p><strong>JUnit Jupiter</strong> поддерживает следующие аннотации для настройки тестов и расширения фреймворка.</p>
 </div>
@@ -697,8 +695,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>Все основные аннотации находятся в <a href="https://junit-org.translate.goog/junit5/docs/current/api/org.junit.jupiter.api/org/junit/jupiter/api/package-summary.html?_x_tr_sl=en&amp;_x_tr_tl=ru&amp;_x_tr_hl=ru&amp;_x_tr_pto=ajax,elem,se"><strong>org.junit.jupiter.api</strong></a> пакете в <strong>junit-jupiter-api</strong> модуле.</p>
 </div>
 </div>
-<div class="sect4">
-<h5 id="_утверждения">Утверждения</h5>
+<div class="sect3">
+<h4 id="_утверждения">Утверждения</h4>
 <div class="paragraph">
 <p><strong>JUnit 5</strong> поставляется со многими стандартными утверждениями, которые можно найти в классе <a href="https://junit.org/junit5/docs/current/api/org.junit.jupiter.api/org/junit/jupiter/api/Assertions.html"><strong>org.junit.jupiter.api.Assertions</strong>.</a></p>
 </div>
@@ -742,10 +740,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 </div>
+</div>
+<div class="sect1">
+<h2 id="_mockito">Mockito</h2>
+<div class="sectionbody">
 <div class="sect2">
-<h3 id="_mockito">Mockito</h3>
-<div class="sect3">
-<h4 id="_mockito_что_это_такое_и_зачем_нужно">Mockito: что это такое и зачем нужно</h4>
+<h3 id="_mockito_что_это_такое_и_зачем_нужно">Mockito: что это такое и зачем нужно</h3>
 <div class="paragraph">
 <p>Говоря коротко, <strong>Mockito</strong> – фреймворк для работы с заглушками.</p>
 </div>
@@ -786,8 +786,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </ul>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_mock_и_spy">Mock и Spy</h4>
+<div class="sect2">
+<h3 id="_mock_и_spy">Mock и Spy</h3>
 <div class="paragraph">
 <p>Центральный класс <strong>Mockito</strong>, через который предполагается обращаться к большей части функционала, — это, собственно, класс под названием <strong>Mockito</strong> (есть также класс <strong>BDDMockito</strong>, предоставляющий примерно те же возможности в форме, более подходящей для <a href="https://ru.wikipedia.org/wiki/BDD_(%D0%BF%D1%80%D0%BE%D0%B3%D1%80%D0%B0%D0%BC%D0%BC%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5)"><strong>BDD</strong></a>.
 Доступ к функционалу реализован через его <strong>статические методы</strong>.</p>
@@ -833,8 +833,8 @@ dataServiceSpy = Mockito.spy(dataService);</code></pre>
 И только если такого конструктора нет, произойдёт ошибка и тест не сработает.</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_управление_поведением">Управление поведением</h4>
+<div class="sect2">
+<h3 id="_управление_поведением">Управление поведением</h3>
 <div class="paragraph">
 <p>В целом управление поведением <strong>mock-объекта</strong> сводится к одной очевидной концепции: когда на mock так-то воздействовали (то есть вызван такой-то метод с такими-то аргументами), он должен отреагировать так-то и так-то.
 У этой концепции существуют две реализации в рамках класса <strong>Mockito</strong> — основная, рекомендуемая разработчиками к использованию везде, где это возможно, и альтернативная, применяемая там, где основная не годится.</p>
@@ -886,8 +886,8 @@ Mockito.doReturn(data).when(dataService).getData()</code></pre>
 Эта разница всё и определяет.
 Связывание через <strong>Mockito.do&#8230;&#8203;</strong> никак не контролирует на стадии компиляции то, какой переопределяемый метод я вызову и совместим ли он по типу с заданным возвращаемым значением.</p>
 </div>
-<div class="sect4">
-<h5 id="_задание_условий_вызова">Задание условий вызова</h5>
+<div class="sect3">
+<h4 id="_задание_условий_вызова">Задание условий вызова</h4>
 <div class="paragraph">
 <p>Пример выше касается метода без параметров, и связанное с ним условие вызова возможно одно — сам факт вызова.
 Как только появляются параметры, ситуация становится сложнее.
@@ -924,8 +924,8 @@ Mockito.when(dataService.getDataItemById(Mockito.eq("idValue")))
 Используйте <strong>Mockito.eq</strong> или Mockito.same</p>
 </div>
 </div>
-<div class="sect4">
-<h5 id="_задание_результатов_вызова">Задание результатов вызова</h5>
+<div class="sect3">
+<h4 id="_задание_результатов_вызова">Задание результатов вызова</h4>
 <div class="paragraph">
 <p>После того, как метод <strong>mock-объекта</strong> вызван, объект должен отреагировать на вызов.
 Основные возможные последствия — возвращение результата и выбрасывание исключения, и именно на эти варианты в первую очередь рассчитан инструментарий <strong>Mockito</strong>.</p>
@@ -997,8 +997,8 @@ Mockito.when(dataService.getDataItemById(Mockito.eq("idValue")))
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_слежение_за_вызовами_методов">Слежение за вызовами методов</h4>
+<div class="sect2">
+<h3 id="_слежение_за_вызовами_методов">Слежение за вызовами методов</h3>
 <div class="paragraph">
 <p>Метод <strong>verify</strong> позволяет проверить, была ли выполнена проверка с определенными параметрами.
 Если проверка не выполнялась или выполнялась с другими параметрами, то <strong>verify</strong> вызовет исключение.</p>
@@ -1039,8 +1039,8 @@ Mockito.when(dataService.getDataItemById(Mockito.eq("idValue")))
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_mock_объекты_как_значения_полей_и_аннотации_mockito">Mock-объекты как значения полей и аннотации Mockito</h4>
+<div class="sect2">
+<h3 id="_mock_объекты_как_значения_полей_и_аннотации_mockito">Mock-объекты как значения полей и аннотации Mockito</h3>
 <div class="paragraph">
 <p>Если в классе теста есть поля, которым я хочу присвоить <strong>mock-объекты</strong> в качестве значений, это не обязательно делать вручную — достаточно снабдить его аннотацией <strong>@Mock</strong>.</p>
 </div>
@@ -1060,8 +1060,8 @@ Mockito.when(dataService.getDataItemById(Mockito.eq("idValue")))
 В целом это похоже на маленькую и простую (и всё равно не такую уж примитивную) реализацию <strong>dependency injection</strong>.</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_откат_поведения_к_дефолтному_и_сессии_mockito">Откат поведения к дефолтному и сессии Mockito</h4>
+<div class="sect2">
+<h3 id="_откат_поведения_к_дефолтному_и_сессии_mockito">Откат поведения к дефолтному и сессии Mockito</h3>
 <div class="paragraph">
 <p>Чтобы привести все <strong>mock-объекты</strong> в состояние по умолчанию можно использовать методы <strong>Mockito.reset</strong> и <strong>Mockito.clearInvocations</strong>.
 Оба принимают <strong>varargs</strong>, и передавать им нужно соответствующие <strong>mock&#8217;и</strong>.</p>
@@ -1098,8 +1098,8 @@ public void afterMethod() {
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_links">Links</h4>
+<div class="sect2">
+<h3 id="_links">Links</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -1120,10 +1120,9 @@ public void afterMethod() {
 </div>
 </div>
 </div>
-</div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-10-25 04:31:33 UTC
+Last updated 2021-10-25 04:36:14 UTC
 </div>
 </div>
 </body>

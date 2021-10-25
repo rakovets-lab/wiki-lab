@@ -1,5 +1,5 @@
 = Объекты БД
-:imagesdir: ../assets/img/bd-object
+:imagesdir: ../assets/img/sql
 
 == Виды объектов БД
 

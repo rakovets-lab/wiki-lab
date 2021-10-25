@@ -454,25 +454,30 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_java">2. Java</a>
 <ul class="sectlevel2">
 <li><a href="#_generics">2.1. Generics</a></li>
-<li><a href="#_java_tools">2.2. Java: Tools</a></li>
 </ul>
 </li>
-<li><a href="#_sql">3. SQL</a>
+<li><a href="#_java_tools">3. Java: Tools</a>
 <ul class="sectlevel2">
-<li><a href="#_основные_понятия_sql">3.1. Основные понятия SQL</a></li>
-<li><a href="#_манипуляция_данными">3.2. Манипуляция данными</a></li>
-<li><a href="#_многотабличные_базы_данных">3.3. Многотабличные базы данных</a></li>
-<li><a href="#_агрегатные_функции_и_группировка">3.4. Агрегатные функции и группировка</a></li>
-<li><a href="#_проектирование_баз_данных">3.5. Проектирование баз данных</a></li>
-<li><a href="#_продвинутый_sql">3.6. Продвинутый SQL</a></li>
-<li><a href="#_объекты_бд">3.7. Объекты БД</a></li>
+<li><a href="#_junit">3.1. JUnit.</a></li>
+<li><a href="#_mockito">3.2. Mockito</a></li>
 </ul>
 </li>
-<li><a href="#_java_2">4. Java</a>
+<li><a href="#_sql">4. SQL</a>
 <ul class="sectlevel2">
-<li><a href="#_github_keys">4.1. GitHub keys</a></li>
-<li><a href="#_liquibase">4.2. Liquibase</a></li>
-<li><a href="#_тестирование">4.3. Тестирование</a></li>
+<li><a href="#_основные_понятия_sql">4.1. Основные понятия SQL</a></li>
+<li><a href="#_манипуляция_данными">4.2. Манипуляция данными</a></li>
+<li><a href="#_многотабличные_базы_данных">4.3. Многотабличные базы данных</a></li>
+<li><a href="#_агрегатные_функции_и_группировка">4.4. Агрегатные функции и группировка</a></li>
+<li><a href="#_проектирование_баз_данных">4.5. Проектирование баз данных</a></li>
+<li><a href="#_продвинутый_sql">4.6. Продвинутый SQL</a></li>
+<li><a href="#_объекты_бд">4.7. Объекты БД</a></li>
+</ul>
+</li>
+<li><a href="#_java_2">5. Java</a>
+<ul class="sectlevel2">
+<li><a href="#_github_keys">5.1. GitHub keys</a></li>
+<li><a href="#_liquibase">5.2. Liquibase</a></li>
+<li><a href="#_тестирование">5.3. Тестирование</a></li>
 </ul>
 </li>
 </ul>
@@ -1320,9 +1325,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sect1">
 <h2 id="_java">2. Java</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p>Unresolved directive in java/index.adoc - include::collections.adoc[]</p>
-</div>
 <div class="sect2">
 <h3 id="_generics">2.1. Generics</h3>
 <div class="sect3">
@@ -1555,7 +1557,7 @@ box.add(new Double(10.1));  // OK</code></pre>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="../assets/img/java/generics/generics-subtype-relationship.gif" alt="связь обобщенных подтипов">
+<img src="../../assets/img/java/core/generics/generics-subtype-relationship.gif" alt="связь обобщенных подтипов">
 </div>
 </div>
 <div class="paragraph">
@@ -1571,7 +1573,7 @@ box.add(new Double(10.1));  // OK</code></pre>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="../assets/img/java/generics/generics-sample-hierarchy.gif" alt="пример иерархии обобщенных подтипов">
+<img src="../../assets/img/java/core/generics/generics-sample-hierarchy.gif" alt="пример иерархии обобщенных подтипов">
 </div>
 </div>
 <div class="paragraph">
@@ -1597,20 +1599,21 @@ PayloadList&lt;String,Exception&gt;
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="../assets/img/java/generics/generics-payload-list-hierarchy.gif" alt="иерархия playLoadList">
+<img src="../../assets/img/java/core/generics/generics-payload-list-hierarchy.gif" alt="иерархия playLoadList">
 </div>
 </div>
 </div>
 </div>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_java_tools">3. Java: Tools</h2>
+<div class="sectionbody">
 <div class="sect2">
-<h3 id="_java_tools">2.2. Java: Tools</h3>
+<h3 id="_junit">3.1. JUnit.</h3>
 <div class="sect3">
-<h4 id="_java_tools_testing">2.2.1. Java Tools: Testing</h4>
-<div class="sect4">
-<h5 id="_junit">JUnit.</h5>
-<div class="sect5">
-<h6 id="_введение">Введение</h6>
+<h4 id="_введение">3.1.1. Введение</h4>
 <div class="paragraph">
 <p><strong>Тестирование</strong> – это процесс проверки функционала программы с целью подтверждения того, что она работает в соответствии с определёнными требованиями. Unit-тестирование – это тестирование, которые пишутся, непосредственно, на уровне разработчика (тестирование определённой сущности – метод или класс). Это крайне важный этап разработки ПО, который помогает создавать качественный продукт.</p>
 </div>
@@ -1663,8 +1666,8 @@ PayloadList&lt;String,Exception&gt;
 </tr>
 </tbody>
 </table>
-<div class="sect6">
-<h7 id="_junit_2">JUnit</h7>
+<div class="sect4">
+<h5 id="_junit_2">JUnit</h5>
 <div class="paragraph">
 <p><strong>JUnit</strong> – это фреймворк, разработанный для тестирования программ, написанных с использованием технологии <strong>Java</strong>. Он лежит в основе <strong>TDD</strong> (<strong>Test-Driven Development</strong>) и входит в семейство фрейморков для тестирования xUnit.</p>
 </div>
@@ -1672,8 +1675,8 @@ PayloadList&lt;String,Exception&gt;
 <p>Главная идея данного фреймворка – “сначала тесты, потом код”. Это означает, что сначала мы определяем, что должно получиться в результате работы того или иного куска кода и пишем тесты, которые проверяют идентичность результата с требуемым, после чего пишем сам кусок кода, который и будем тестировать. Данный подход увеличивает эффективность работы разработчика и позволяет писать более стабильный код. В результате этого мы получаем меньшее количество времени, которое затрачивается на отладку программы.</p>
 </div>
 </div>
-<div class="sect6">
-<h7 id="_свойства_junit">Свойства JUnit</h7>
+<div class="sect4">
+<h5 id="_свойства_junit">Свойства JUnit</h5>
 <div class="ulist">
 <ul>
 <li>
@@ -1700,8 +1703,8 @@ PayloadList&lt;String,Exception&gt;
 </ul>
 </div>
 </div>
-<div class="sect6">
-<h7 id="_тестовый_случай">Тестовый случай</h7>
+<div class="sect4">
+<h5 id="_тестовый_случай">Тестовый случай</h5>
 <div class="paragraph">
 <p><strong>Тестовый случай</strong> (Test Case) в <strong>юнит тестировании</strong> – это часть кода, которая проверяет, что другая часть кода  (в частности – метод) работает в соответствии с определёнными требованиями.</p>
 </div>
@@ -1713,8 +1716,8 @@ PayloadList&lt;String,Exception&gt;
 </div>
 </div>
 </div>
-<div class="sect5">
-<h6 id="_junit_5">JUnit 5</h6>
+<div class="sect3">
+<h4 id="_junit_5">3.1.2. JUnit 5</h4>
 <div class="paragraph">
 <p><strong>JUnit 5</strong> требует <strong>Java 8</strong> (или выше) во время выполнения. Однако вы все равно можете протестировать код, скомпилированный с предыдущими версиями <strong>JDK</strong>.</p>
 </div>
@@ -1758,8 +1761,8 @@ PayloadList&lt;String,Exception&gt;
 </li>
 </ul>
 </div>
-<div class="sect6">
-<h7 id="_аннотации">Аннотации</h7>
+<div class="sect4">
+<h5 id="_аннотации">Аннотации</h5>
 <div class="paragraph">
 <p><strong>JUnit Jupiter</strong> поддерживает следующие аннотации для настройки тестов и расширения фреймворка.</p>
 </div>
@@ -1859,8 +1862,8 @@ PayloadList&lt;String,Exception&gt;
 <p>Все основные аннотации находятся в <a href="https://junit-org.translate.goog/junit5/docs/current/api/org.junit.jupiter.api/org/junit/jupiter/api/package-summary.html?_x_tr_sl=en&amp;_x_tr_tl=ru&amp;_x_tr_hl=ru&amp;_x_tr_pto=ajax,elem,se"><strong>org.junit.jupiter.api</strong></a> пакете в <strong>junit-jupiter-api</strong> модуле.</p>
 </div>
 </div>
-<div class="sect6">
-<h7 id="_утверждения">Утверждения</h7>
+<div class="sect4">
+<h5 id="_утверждения">Утверждения</h5>
 <div class="paragraph">
 <p><strong>JUnit 5</strong> поставляется со многими стандартными утверждениями, которые можно найти в классе <a href="https://junit.org/junit5/docs/current/api/org.junit.jupiter.api/org/junit/jupiter/api/Assertions.html"><strong>org.junit.jupiter.api.Assertions</strong>.</a></p>
 </div>
@@ -1904,10 +1907,10 @@ PayloadList&lt;String,Exception&gt;
 </div>
 </div>
 </div>
-<div class="sect4">
-<h5 id="_mockito">Mockito</h5>
-<div class="sect5">
-<h6 id="_mockito_что_это_такое_и_зачем_нужно">Mockito: что это такое и зачем нужно</h6>
+<div class="sect2">
+<h3 id="_mockito">3.2. Mockito</h3>
+<div class="sect3">
+<h4 id="_mockito_что_это_такое_и_зачем_нужно">3.2.1. Mockito: что это такое и зачем нужно</h4>
 <div class="paragraph">
 <p>Говоря коротко, <strong>Mockito</strong> – фреймворк для работы с заглушками.</p>
 </div>
@@ -1948,8 +1951,8 @@ PayloadList&lt;String,Exception&gt;
 </ul>
 </div>
 </div>
-<div class="sect5">
-<h6 id="_mock_и_spy">Mock и Spy</h6>
+<div class="sect3">
+<h4 id="_mock_и_spy">3.2.2. Mock и Spy</h4>
 <div class="paragraph">
 <p>Центральный класс <strong>Mockito</strong>, через который предполагается обращаться к большей части функционала, — это, собственно, класс под названием <strong>Mockito</strong> (есть также класс <strong>BDDMockito</strong>, предоставляющий примерно те же возможности в форме, более подходящей для <a href="https://ru.wikipedia.org/wiki/BDD_(%D0%BF%D1%80%D0%BE%D0%B3%D1%80%D0%B0%D0%BC%D0%BC%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5)"><strong>BDD</strong></a>.
 Доступ к функционалу реализован через его <strong>статические методы</strong>.</p>
@@ -1995,8 +1998,8 @@ dataServiceSpy = Mockito.spy(dataService);</code></pre>
 И только если такого конструктора нет, произойдёт ошибка и тест не сработает.</p>
 </div>
 </div>
-<div class="sect5">
-<h6 id="_управление_поведением">Управление поведением</h6>
+<div class="sect3">
+<h4 id="_управление_поведением">3.2.3. Управление поведением</h4>
 <div class="paragraph">
 <p>В целом управление поведением <strong>mock-объекта</strong> сводится к одной очевидной концепции: когда на mock так-то воздействовали (то есть вызван такой-то метод с такими-то аргументами), он должен отреагировать так-то и так-то.
 У этой концепции существуют две реализации в рамках класса <strong>Mockito</strong> — основная, рекомендуемая разработчиками к использованию везде, где это возможно, и альтернативная, применяемая там, где основная не годится.</p>
@@ -2048,8 +2051,8 @@ Mockito.doReturn(data).when(dataService).getData()</code></pre>
 Эта разница всё и определяет.
 Связывание через <strong>Mockito.do&#8230;&#8203;</strong> никак не контролирует на стадии компиляции то, какой переопределяемый метод я вызову и совместим ли он по типу с заданным возвращаемым значением.</p>
 </div>
-<div class="sect6">
-<h7 id="_задание_условий_вызова">Задание условий вызова</h7>
+<div class="sect4">
+<h5 id="_задание_условий_вызова">Задание условий вызова</h5>
 <div class="paragraph">
 <p>Пример выше касается метода без параметров, и связанное с ним условие вызова возможно одно — сам факт вызова.
 Как только появляются параметры, ситуация становится сложнее.
@@ -2086,8 +2089,8 @@ Mockito.when(dataService.getDataItemById(Mockito.eq("idValue")))
 Используйте <strong>Mockito.eq</strong> или Mockito.same</p>
 </div>
 </div>
-<div class="sect6">
-<h7 id="_задание_результатов_вызова">Задание результатов вызова</h7>
+<div class="sect4">
+<h5 id="_задание_результатов_вызова">Задание результатов вызова</h5>
 <div class="paragraph">
 <p>После того, как метод <strong>mock-объекта</strong> вызван, объект должен отреагировать на вызов.
 Основные возможные последствия — возвращение результата и выбрасывание исключения, и именно на эти варианты в первую очередь рассчитан инструментарий <strong>Mockito</strong>.</p>
@@ -2159,8 +2162,8 @@ Mockito.when(dataService.getDataItemById(Mockito.eq("idValue")))
 </div>
 </div>
 </div>
-<div class="sect5">
-<h6 id="_слежение_за_вызовами_методов">Слежение за вызовами методов</h6>
+<div class="sect3">
+<h4 id="_слежение_за_вызовами_методов">3.2.4. Слежение за вызовами методов</h4>
 <div class="paragraph">
 <p>Метод <strong>verify</strong> позволяет проверить, была ли выполнена проверка с определенными параметрами.
 Если проверка не выполнялась или выполнялась с другими параметрами, то <strong>verify</strong> вызовет исключение.</p>
@@ -2201,8 +2204,8 @@ Mockito.when(dataService.getDataItemById(Mockito.eq("idValue")))
 </div>
 </div>
 </div>
-<div class="sect5">
-<h6 id="_mock_объекты_как_значения_полей_и_аннотации_mockito">Mock-объекты как значения полей и аннотации Mockito</h6>
+<div class="sect3">
+<h4 id="_mock_объекты_как_значения_полей_и_аннотации_mockito">3.2.5. Mock-объекты как значения полей и аннотации Mockito</h4>
 <div class="paragraph">
 <p>Если в классе теста есть поля, которым я хочу присвоить <strong>mock-объекты</strong> в качестве значений, это не обязательно делать вручную — достаточно снабдить его аннотацией <strong>@Mock</strong>.</p>
 </div>
@@ -2222,8 +2225,8 @@ Mockito.when(dataService.getDataItemById(Mockito.eq("idValue")))
 В целом это похоже на маленькую и простую (и всё равно не такую уж примитивную) реализацию <strong>dependency injection</strong>.</p>
 </div>
 </div>
-<div class="sect5">
-<h6 id="_откат_поведения_к_дефолтному_и_сессии_mockito">Откат поведения к дефолтному и сессии Mockito</h6>
+<div class="sect3">
+<h4 id="_откат_поведения_к_дефолтному_и_сессии_mockito">3.2.6. Откат поведения к дефолтному и сессии Mockito</h4>
 <div class="paragraph">
 <p>Чтобы привести все <strong>mock-объекты</strong> в состояние по умолчанию можно использовать методы <strong>Mockito.reset</strong> и <strong>Mockito.clearInvocations</strong>.
 Оба принимают <strong>varargs</strong>, и передавать им нужно соответствующие <strong>mock&#8217;и</strong>.</p>
@@ -2260,8 +2263,8 @@ public void afterMethod() {
 </div>
 </div>
 </div>
-<div class="sect5">
-<h6 id="_links">Links</h6>
+<div class="sect3">
+<h4 id="_links">3.2.7. Links</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -2282,13 +2285,11 @@ public void afterMethod() {
 </div>
 </div>
 </div>
-</div>
-</div>
 <div class="sect1">
-<h2 id="_sql">3. SQL</h2>
+<h2 id="_sql">4. SQL</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_основные_понятия_sql">3.1. Основные понятия SQL</h3>
+<h3 id="_основные_понятия_sql">4.1. Основные понятия SQL</h3>
 <div class="paragraph">
 <p><strong>SQL</strong> - это язык структурированных запросов, с помощью которого можно обрабатывать и извлекать данные из реляционных баз данных.</p>
 </div>
@@ -2445,7 +2446,7 @@ public void afterMethod() {
 <p>Необходимо отметить, что SQL реализует декларативную парадигму программирования: с помощью данного языка пользователь описывает запрос, а СУБД принимает решение, как этот запрос выполнить, т.е. планирует элементарные операции, необходимые для выполнения данного запроса.</p>
 </div>
 <div class="sect3">
-<h4 id="_create_database_and_schema">3.1.1. Create Database and Schema</h4>
+<h4 id="_create_database_and_schema">4.1.1. Create Database and Schema</h4>
 <div class="paragraph">
 <p><strong>Схема</strong>/<strong>Schema</strong> с точки зрения <strong>базы данных</strong> представляет собой контейнер объектов типа таблиц, триггеров, хранимых процедур и т.п. Но стоит рассмотреть некоторые особенности для следующих <strong>СУБД</strong>:</p>
 </div>
@@ -2511,7 +2512,7 @@ public void afterMethod() {
 </div>
 </div>
 <div class="sect3">
-<h4 id="_типы_данных">3.1.2. Типы данных</h4>
+<h4 id="_типы_данных">4.1.2. Типы данных</h4>
 <div class="paragraph">
 <p><strong>Тип данных</strong> — это атрибут, который определяет тип любого объекта. <strong>SQL</strong> предлагает шесть категорий типов данных для использования.</p>
 </div>
@@ -2750,7 +2751,7 @@ public void afterMethod() {
 </div>
 </div>
 <div class="sect3">
-<h4 id="_таблицы">3.1.3. Таблицы</h4>
+<h4 id="_таблицы">4.1.3. Таблицы</h4>
 <div class="sect4">
 <h5 id="_создание_таблицы_create_table">Создание таблицы <code>CREATE TABLE</code></h5>
 <div class="paragraph">
@@ -2805,7 +2806,7 @@ public void afterMethod() {
 </div>
 </div>
 <div class="sect3">
-<h4 id="_ограничения">3.1.4. Ограничения</h4>
+<h4 id="_ограничения">4.1.4. Ограничения</h4>
 <div class="paragraph">
 <p><strong>Ограничения</strong> могут быть указаны при создании таблицы с помощью оператора <code>CREATE TABLE</code> или после создания таблицы с помощью инструкции <code>ALTER TABLE</code>.</p>
 </div>
@@ -3213,7 +3214,7 @@ ALTER country DROP DEFAULT;</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_изменение_структуры_таблицы">3.1.5. Изменение структуры таблицы</h4>
+<h4 id="_изменение_структуры_таблицы">4.1.5. Изменение структуры таблицы</h4>
 <div class="paragraph">
 <p>Оператор <code>ALTER TABLE</code> используется для добавления, удаления или изменения столбцов в существующей таблице, а также для добавления и удаления различных ограничений для существующей таблицы.</p>
 </div>
@@ -3285,7 +3286,7 @@ DROP COLUMN day_birth;</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_однострочные_и_многострочные_комментарии">3.1.6. Однострочные и многострочные комментарии</h4>
+<h4 id="_однострочные_и_многострочные_комментарии">4.1.6. Однострочные и многострочные комментарии</h4>
 <div class="paragraph">
 <p>Комментарии используются для пояснения разделов операторов SQL или для предотвращения выполнения операторов во время отладки запросов.</p>
 </div>
@@ -3351,9 +3352,9 @@ SELECT * FROM category;</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_манипуляция_данными">3.2. Манипуляция данными</h3>
+<h3 id="_манипуляция_данными">4.2. Манипуляция данными</h3>
 <div class="sect3">
-<h4 id="_добавление_записи_в_таблицу_insert_into">3.2.1. Добавление записи в таблицу (<code>INSERT INTO</code>)</h4>
+<h4 id="_добавление_записи_в_таблицу_insert_into">4.2.1. Добавление записи в таблицу (<code>INSERT INTO</code>)</h4>
 <div class="paragraph">
 <p><code>INSERT INTO</code> - этот запрос используется для добавления двумя разными способами новых строк данных в таблицу в базе данных.</p>
 </div>
@@ -3380,7 +3381,7 @@ VALUES (2, 'February', 29);</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_выборка_записей_из_таблицы_select">3.2.2. Выборка записей из таблицы (<code>SELECT</code>)</h4>
+<h4 id="_выборка_записей_из_таблицы_select">4.2.2. Выборка записей из таблицы (<code>SELECT</code>)</h4>
 <div class="sect4">
 <h5 id="_простая_выборка_select">Простая выборка (<code>SELECT</code>)</h5>
 <div class="paragraph">
@@ -3447,7 +3448,7 @@ FROM users;</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_выборка_с_условием_where">3.2.3. Выборка с условием (<code>WHERE</code>)</h4>
+<h4 id="_выборка_с_условием_where">4.2.3. Выборка с условием (<code>WHERE</code>)</h4>
 <div class="paragraph">
 <p><code>WHERE</code> - это запрос позволяющий включить в вывод лишь некоторые конкретные строки. Данное ключевое слово позволяет фильтровать данные по определённому условию.</p>
 </div>
@@ -4113,7 +4114,7 @@ WHERE manufacture_date BETWEEN '2021-02-01' AND '2021-04-01';</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_псевдонимы_aliases">3.2.4. Псевдонимы (<code>Aliases</code>)</h4>
+<h4 id="_псевдонимы_aliases">4.2.4. Псевдонимы (<code>Aliases</code>)</h4>
 <div class="paragraph">
 <p><strong>SQL-псевдонимы</strong> используются для предоставления таблицы или столбца таблицы временного имени. Псевдонимы часто используются, чтобы сделать имена столбцов более читабельными. Псевдоним существует только для продолжительности запроса.</p>
 </div>
@@ -4185,7 +4186,7 @@ WHERE u.name = 'Lily'
 </div>
 </div>
 <div class="sect3">
-<h4 id="_обновление_записей_update">3.2.5. Обновление записей (<code>UPDATE</code>)</h4>
+<h4 id="_обновление_записей_update">4.2.5. Обновление записей (<code>UPDATE</code>)</h4>
 <div class="paragraph">
 <p>Зачастую необходимо изменить данные в таблице. В <strong>SQL</strong> это делается с помощью <code>UPDATE</code>.</p>
 </div>
@@ -4212,7 +4213,7 @@ WHERE name = 'Game of Thrones';</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_удаление_записей_из_таблицы_delete">3.2.6. Удаление записей из таблицы (<code>DELETE</code>)</h4>
+<h4 id="_удаление_записей_из_таблицы_delete">4.2.6. Удаление записей из таблицы (<code>DELETE</code>)</h4>
 <div class="paragraph">
 <p>Удаление записи из таблицы очень простая операция, всё что нужно - это обозначить, что необходимо удалить.</p>
 </div>
@@ -4259,9 +4260,9 @@ WHERE tv_serial_id IS NOT NULL;</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_многотабличные_базы_данных">3.3. Многотабличные базы данных</h3>
+<h3 id="_многотабличные_базы_данных">4.3. Многотабличные базы данных</h3>
 <div class="sect3">
-<h4 id="_ключи">3.3.1. Ключи</h4>
+<h4 id="_ключи">4.3.1. Ключи</h4>
 <div class="paragraph">
 <p><strong>Ключ</strong> — это колонка или колонки, не имеющие в строках дублирующих значений.</p>
 </div>
@@ -4450,7 +4451,7 @@ WHERE tv_serial_id IS NOT NULL;</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_подзапросы">3.3.2. Подзапросы</h4>
+<h4 id="_подзапросы">4.3.2. Подзапросы</h4>
 <div class="sect4">
 <h5 id="_оператор_exists">Оператор <code>EXISTS</code></h5>
 <div class="paragraph">
@@ -4560,7 +4561,7 @@ WHERE product_id = ALL (SELECT product_id FROM info WHERE couns =7);</code></pre
 </div>
 </div>
 <div class="sect3">
-<h4 id="_соединение">3.3.3. Соединение</h4>
+<h4 id="_соединение">4.3.3. Соединение</h4>
 <div class="paragraph">
 <p>Оператор <code>UNION</code> используется для объединения результирующего набора из двух или более операторов <code>SELECT</code>. Каждый оператор <code>SELECT</code> в <code>UNION</code> должен иметь одинаковое количество столбцов. Столбцы также должны иметь похожие типы данных и в каждой инструкции <code>SELECT</code> быть в том же порядке.</p>
 </div>
@@ -4649,7 +4650,7 @@ ORDER BY city;</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_объединения">3.3.4. Объединения</h4>
+<h4 id="_объединения">4.3.4. Объединения</h4>
 <div class="paragraph">
 <p>Предложение <code>JOIN</code> используется для объединения строк из двух или более таблиц на основе соответствующего столбца между ними.</p>
 </div>
@@ -4884,9 +4885,9 @@ ORDER BY A.city;</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_агрегатные_функции_и_группировка">3.4. Агрегатные функции и группировка</h3>
+<h3 id="_агрегатные_функции_и_группировка">4.4. Агрегатные функции и группировка</h3>
 <div class="sect3">
-<h4 id="_агрегатные_функции">3.4.1. Агрегатные функции</h4>
+<h4 id="_агрегатные_функции">4.4.1. Агрегатные функции</h4>
 <div class="sect4">
 <h5 id="_функции_min_и_max">Функции <code>MIN()</code> и <code>MAX()</code></h5>
 <div class="paragraph">
@@ -5011,7 +5012,7 @@ FROM invoice;</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_группировка">3.4.2. Группировка</h4>
+<h4 id="_группировка">4.4.2. Группировка</h4>
 <div class="paragraph">
 <p>Оператор <code>GROUP BY</code> часто используется с агрегатными функциями (<code>COUNT</code>, <code>MAX</code>, <code>MIN</code>, <code>SUM</code>, <code>AVG</code>) для группировки результирующего набора одним или несколькими столбцами.</p>
 </div>
@@ -5066,7 +5067,7 @@ GROUP BY name;</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_предложение_having">3.4.3. Предложение <code>HAVING</code></h4>
+<h4 id="_предложение_having">4.4.3. Предложение <code>HAVING</code></h4>
 <div class="paragraph">
 <p>Предложение <code>HAVING</code> используется в SQL, для работы с агрегатными функциями, так как <code>WHERE</code> не могло с ними использоваться.</p>
 </div>
@@ -5109,9 +5110,9 @@ ORDER BY COUNT(user_id) DESC;</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_проектирование_баз_данных">3.5. Проектирование баз данных</h3>
+<h3 id="_проектирование_баз_данных">4.5. Проектирование баз данных</h3>
 <div class="sect3">
-<h4 id="_нормализация_и_денормализация_баз_данных">3.5.1. Нормализация и денормализация баз данных</h4>
+<h4 id="_нормализация_и_денормализация_баз_данных">4.5.1. Нормализация и денормализация баз данных</h4>
 <div class="paragraph">
 <p><strong>Нормализация базы данных</strong> - это процесс эффективной организации данных в базе данных. Есть две причины процесса нормализации:</p>
 </div>
@@ -5536,9 +5537,9 @@ ORDER BY COUNT(user_id) DESC;</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_продвинутый_sql">3.6. Продвинутый SQL</h3>
+<h3 id="_продвинутый_sql">4.6. Продвинутый SQL</h3>
 <div class="sect3">
-<h4 id="_заявление_select_into">3.6.1. Заявление <code>SELECT INTO</code></h4>
+<h4 id="_заявление_select_into">4.6.1. Заявление <code>SELECT INTO</code></h4>
 <div class="paragraph">
 <p>Оператор <code>SELECT INTO</code> копирует данные из одной таблицы в новую таблицу.</p>
 </div>
@@ -5602,7 +5603,7 @@ FROM users;</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_оператор_insert_into_select">3.6.2. Оператор <code>INSERT INTO SELECT</code></h4>
+<h4 id="_оператор_insert_into_select">4.6.2. Оператор <code>INSERT INTO SELECT</code></h4>
 <div class="paragraph">
 <p>Оператор <code>INSERT INTO SELECT</code> копирует данные из одной таблицы и вставляет ее в другую таблицу. <code>INSERT INTO SELECT</code> требует, чтобы типы данных в исходной и целевой таблицах соответствовали.</p>
 </div>
@@ -5642,7 +5643,7 @@ SELECT nme, fullname, balance FROM clients;</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_create_index">3.6.3. <code>CREATE INDEX</code></h4>
+<h4 id="_create_index">4.6.3. <code>CREATE INDEX</code></h4>
 <div class="paragraph">
 <p>Оператор <code>CREATE INDEX</code> используется для создания индексов в таблицах. Индексы используются для быстрого извлечения данных из базы данных. Пользователи не могут видеть индексы, они просто используются для ускорения поиска/запросов.</p>
 </div>
@@ -5693,7 +5694,7 @@ ON users (name, fullname);</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_оператор_drop_index">3.6.4. Оператор <code>DROP INDEX</code></h4>
+<h4 id="_оператор_drop_index">4.6.4. Оператор <code>DROP INDEX</code></h4>
 <div class="paragraph">
 <p>Оператор <code>DROP INDEX</code> используется для удаления индекса в таблице.</p>
 </div>
@@ -5705,7 +5706,7 @@ DROP INDEX index_name;</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_поле_auto_increment">3.6.5. Поле <code>AUTO INCREMENT</code></h4>
+<h4 id="_поле_auto_increment">4.6.5. Поле <code>AUTO INCREMENT</code></h4>
 <div class="paragraph">
 <p><code>Auto-increment</code> позволяет создавать уникальный номер автоматически, когда новая запись вставляется в таблицу. Часто это поле основного ключа, которое необходимо создать автоматически каждый раз, когда будет вставлена новая запись.</p>
 </div>
@@ -5751,7 +5752,7 @@ VALUES ('Том','Эдисон');</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_работа_с_датами">3.6.6. Работа с датами</h4>
+<h4 id="_работа_с_датами">4.6.6. Работа с датами</h4>
 <div class="paragraph">
 <p>Пока ваши данные содержат только часть даты, ваши запросы будут работать должным образом. Однако, если задействована временная часть, она становится более сложной.</p>
 </div>
@@ -5779,7 +5780,7 @@ VALUES ('Том','Эдисон');</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_операторы">3.6.7. Операторы</h4>
+<h4 id="_операторы">4.6.7. Операторы</h4>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 9. Арифметические операторы SQL</caption>
 <colgroup>
@@ -5985,7 +5986,7 @@ VALUES ('Том','Эдисон');</code></pre>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_функции">3.6.8. Функции</h4>
+<h4 id="_функции">4.6.8. Функции</h4>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 14. Функции</caption>
 <colgroup>
@@ -6568,7 +6569,7 @@ VALUES ('Том','Эдисон');</code></pre>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_блокировки">3.6.9. Блокировки</h4>
+<h4 id="_блокировки">4.6.9. Блокировки</h4>
 <div class="paragraph">
 <p><strong>Блокировки</strong> - это механизм поддержки требований об изолированности транзакций.</p>
 </div>
@@ -6607,7 +6608,7 @@ VALUES ('Том','Эдисон');</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_sql_транзакции">3.6.10. SQL-транзакции</h4>
+<h4 id="_sql_транзакции">4.6.10. SQL-транзакции</h4>
 <div class="paragraph">
 <p><strong>Транзакция</strong> представляет собой единицу работы, которая выполняется с базой данных.</p>
 </div>
@@ -6718,9 +6719,9 @@ VALUES ('Том','Эдисон');</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_объекты_бд">3.7. Объекты БД</h3>
+<h3 id="_объекты_бд">4.7. Объекты БД</h3>
 <div class="sect3">
-<h4 id="_виды_объектов_бд">3.7.1. Виды объектов БД</h4>
+<h4 id="_виды_объектов_бд">4.7.1. Виды объектов БД</h4>
 <div class="paragraph">
 <p><strong>Объектами баз данных</strong> называют их структурные составляющие, такие, как <strong>схемы</strong> (<strong>schema</strong>), <strong>таблицы</strong> (<strong>table</strong>), <strong>представления</strong> (<strong>view</strong>), <strong>функции</strong> (<strong>function</strong>), <strong>процедуры</strong> (<strong>procedure</strong>), <strong>триггеры</strong> (<strong>trigger</strong>), <strong>последовательности</strong> (<strong>sequence</strong>), <strong>ограничения</strong> (<strong>constraints</strong>). Они выполняют различные функции по хранению и обработке информации.</p>
 </div>
@@ -6734,7 +6735,7 @@ VALUES ('Том','Эдисон');</code></pre>
 </div>
 <div class="paragraph">
 <div class="title">Схемы</div>
-<p><span class="image"><img src="../assets/img/bd-object/postgresql-schema.png" alt="postgresql schema"></span></p>
+<p><span class="image"><img src="../assets/img/sql/postgresql-schema.png" alt="postgresql schema"></span></p>
 </div>
 <div class="sect5">
 <h6 id="_создание_схемы_сreate_schema">Создание схемы (<code>СREATE SCHEMA</code>)</h6>
@@ -6887,7 +6888,7 @@ ALTER SCHEMA имя OWNER TO { новый_владелец | CURRENT_USER | SESS
 </div>
 <div class="paragraph">
 <div class="title">Таблицы</div>
-<p><span class="image"><img src="../assets/img/bd-object/postgresql-tables.png" alt="postgresql tables"></span></p>
+<p><span class="image"><img src="../assets/img/sql/postgresql-tables.png" alt="postgresql tables"></span></p>
 </div>
 <div class="sect5">
 <h6 id="_создание_таблицы_create_table_2">Создание таблицы (<code>CREATE TABLE</code>)</h6>
@@ -6978,7 +6979,7 @@ ENABLE TRIGGER [ имя_триггера | ALL | USER ]</code></pre>
 <p>Еще можно сказать, что <strong>представление это виртуальная таблица</strong>, которая используется для упрощения сложных запросов и обеспечения безопасности для набора записей.</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../assets/img/bd-object/postgresql-views.png" alt="postgresql views"></span></p>
+<p><span class="image"><img src="../assets/img/sql/postgresql-views.png" alt="postgresql views"></span></p>
 </div>
 <div class="paragraph">
 <p><strong>Преимущества представления</strong>:</p>
@@ -7412,7 +7413,7 @@ OWNER TO { новый_владелец | CURRENT_USER | SESSION_USER }</code></p
 </div>
 <div class="paragraph">
 <div class="title">Функции</div>
-<p><span class="image"><img src="../assets/img/bd-object/postgresql-functions.png" alt="postgresql functions"></span></p>
+<p><span class="image"><img src="../assets/img/sql/postgresql-functions.png" alt="postgresql functions"></span></p>
 </div>
 <div class="sect5">
 <h6 id="_создание_функции_create_function">Создание функции (<code>CREATE FUNCTION</code>)</h6>
@@ -7849,7 +7850,7 @@ RESET ALL</code></pre>
 </div>
 <div class="paragraph">
 <div class="title">Триггеры</div>
-<p><span class="image"><img src="../assets/img/bd-object/postgresql-triggers.png" alt="postgresql triggers"></span></p>
+<p><span class="image"><img src="../assets/img/sql/postgresql-triggers.png" alt="postgresql triggers"></span></p>
 </div>
 <div class="paragraph">
 <p>В <strong>PostgreSQL</strong> триггеры создаются на основе существующих функции, т.е. сначала командой <code>CREATE FUNCTION</code> определяется триггерная функция, затем на ее основе командой <code>CREATE TRIGGER</code> определяется собственно триггер.</p>
@@ -8057,7 +8058,7 @@ ALTER TRIGGER имя ON имя_таблицы [ NO ] DEPENDS ON EXTENSION имя
 </div>
 <div class="paragraph">
 <div class="title">Последовательности (<code>Sequence</code>)</div>
-<p><span class="image"><img src="../assets/img/bd-object/postgresql-sequence.png" alt="postgresql sequence"></span>]</p>
+<p><span class="image"><img src="../assets/img/sql/postgresql-sequence.png" alt="postgresql sequence"></span>]</p>
 </div>
 <div class="sect5">
 <h6 id="_создание_последовательности_create_sequence">Создание последовательности (<code>CREATE SEQUENCE</code>)</h6>
@@ -8220,9 +8221,9 @@ ALTER TRIGGER имя ON имя_таблицы [ NO ] DEPENDS ON EXTENSION имя
 </div>
 </div>
 <div class="sect3">
-<h4 id="_ограничения_constraints">3.7.2. Ограничения (<code>Constraints</code>)</h4>
+<h4 id="_ограничения_constraints">4.7.2. Ограничения (<code>Constraints</code>)</h4>
 <div class="paragraph">
-<p><span class="image"><img src="../assets/img/bd-object/postgresql-constraints.png" alt="postgresql constraints"></span></p>
+<p><span class="image"><img src="../assets/img/sql/postgresql-constraints.png" alt="postgresql constraints"></span></p>
 </div>
 <div class="paragraph">
 <p>С помощью ключевого слова <code>CONSTRAINT</code> можно задать имя для ограничений. В качестве ограничений могут использоваться <code>PRIMARY KEY</code>, <code>UNIQUE</code>, <code>CHECK</code>.</p>
@@ -8563,7 +8564,7 @@ REFERENCES product_groups;</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_права_доступа">3.7.3. Права доступа</h4>
+<h4 id="_права_доступа">4.7.3. Права доступа</h4>
 <div class="paragraph">
 <p>Когда в базе данных создаётся объект, ему назначается владелец. Владельцем обычно становится роль, с которой был выполнен оператор создания. Для большинства типов объектов в исходном состоянии только владелец (или суперпользователь) может делать с объектом всё что угодно. Чтобы разрешить использовать его другим ролям, нужно дать им права.</p>
 </div>
@@ -8811,12 +8812,12 @@ REFERENCES product_groups;</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_java_2">4. Java</h2>
+<h2 id="_java_2">5. Java</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_github_keys">4.1. GitHub keys</h3>
+<h3 id="_github_keys">5.1. GitHub keys</h3>
 <div class="sect3">
-<h4 id="_ssh_key">4.1.1. SSH key</h4>
+<h4 id="_ssh_key">5.1.1. SSH key</h4>
 <div class="paragraph">
 <p>С помощью протокола <strong>SSH</strong> можно подключаться и проходить проверку подлинности на удаленных серверах и службах. С помощью ключей <strong>SSH</strong> вы можете подключаться к <strong>GitHub</strong> без предоставления своего имени пользователя и личного маркера доступа при каждом посещении.</p>
 </div>
@@ -8870,7 +8871,7 @@ REFERENCES product_groups;</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_gpg_key">4.1.2. GPG key</h4>
+<h4 id="_gpg_key">5.1.2. GPG key</h4>
 <div class="paragraph">
 <p>С помощью <strong>GPG</strong> или <strong>S/MIME</strong> можно подписывать теги и коммиты. Эти теги или коммиты помечаются как проверенные на <strong>GitHub</strong>, чтобы другие люди могли быть уверены, что изменения происходят из надежного источника.</p>
 </div>
@@ -8960,7 +8961,7 @@ ssb   4096R/42B317FD4BA89E7A 2016-03-10</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_liquibase">4.2. Liquibase</h3>
+<h3 id="_liquibase">5.2. Liquibase</h3>
 <div class="paragraph">
 <p><strong>Liquibase</strong> представляет систему управления версиями базы данных, в основном это касается структуры и в меньшей степени содержимого базы.
 При этом описание базы с одной стороны достаточно абстрактно и позволяет использовать на нижнем уровне различные СУБД, и с другой стороны всегда можно перейти на SQL-диалект конкретной СУБД, что достаточно гибко.</p>
@@ -8985,7 +8986,7 @@ ssb   4096R/42B317FD4BA89E7A 2016-03-10</code></pre>
 </ul>
 </div>
 <div class="sect3">
-<h4 id="_настройка_окружения">4.2.1. Настройка окружения</h4>
+<h4 id="_настройка_окружения">5.2.1. Настройка окружения</h4>
 <div class="sect4">
 <h5 id="_установка_и_настройка_субд">Установка и настройка СУБД</h5>
 <div class="paragraph">
@@ -9168,7 +9169,7 @@ url=jdbc:postgresql://localhost:5432/maven-liquibase?prepareThreshold=0&amp;stri
 </div>
 </div>
 <div class="sect3">
-<h4 id="_обновление_бд">4.2.2. Обновление БД</h4>
+<h4 id="_обновление_бд">5.2.2. Обновление БД</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="shell script">mvn liquibase:update</code></pre>
@@ -9291,7 +9292,7 @@ Starting Liquibase at 06:31:52 (version 4.5.0 #52 built at 2021-09-27 16:19+0000
 </div>
 </div>
 <div class="sect3">
-<h4 id="_генерация_sql_без_обновления_базы">4.2.3. Генерация SQL без обновления базы</h4>
+<h4 id="_генерация_sql_без_обновления_базы">5.2.3. Генерация SQL без обновления базы</h4>
 <div class="paragraph">
 <p>Иногда перед запуском изменений требуется посмотреть содержимое создаваемых запросов. Для этого предназначены команды <code>liquibase:updateSQL</code> и <code>liquibase:rollbackSQL</code></p>
 </div>
@@ -9567,7 +9568,7 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 </div>
 </div>
 <div class="sect3">
-<h4 id="_подробнее_о_changeset">4.2.4. Подробнее о changeSet</h4>
+<h4 id="_подробнее_о_changeset">5.2.4. Подробнее о changeSet</h4>
 <div class="paragraph">
 <p>Изменения могут быть в разных форматах, в том числе обычный sql или он же в отдельном файле.</p>
 </div>
@@ -9629,7 +9630,7 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 </div>
 </div>
 <div class="sect3">
-<h4 id="_контексты_запуска">4.2.5. Контексты запуска</h4>
+<h4 id="_контексты_запуска">5.2.5. Контексты запуска</h4>
 <div class="paragraph">
 <p>Для более удобного управления различными конфигурациями, например <code>development/production</code> можно использовать контексты.
 Контекст указывается в changeSet аттрибуте context и затем запускается <strong>Apache Maven</strong> параметром <code>-Dcontexts</code>.</p>
@@ -9657,7 +9658,7 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 </div>
 </div>
 <div class="sect3">
-<h4 id="_откат_изменений">4.2.6. Откат изменений</h4>
+<h4 id="_откат_изменений">5.2.6. Откат изменений</h4>
 <div class="paragraph">
 <p>Операция обратная обновлению, в большинстве случаев поддерживается автоматически.
 Для прочих возможно задание через секцию rollback.
@@ -9687,7 +9688,7 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 </div>
 </div>
 <div class="sect3">
-<h4 id="_сравнение">4.2.7. Сравнение</h4>
+<h4 id="_сравнение">5.2.7. Сравнение</h4>
 <div class="paragraph">
 <p>В разработке удобно использовать для сравнения двух существующих баз на предмет внесённых изменений.
 В настройки (или параметры запуска) потребуется добавить ссылку на reference DB и данные для доступа к ней.</p>
@@ -9715,7 +9716,7 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 </div>
 </div>
 <div class="sect3">
-<h4 id="_сохранение_схемы">4.2.8. Сохранение схемы</h4>
+<h4 id="_сохранение_схемы">5.2.8. Сохранение схемы</h4>
 <div class="paragraph">
 <p>Также бывает полезно сохранить текущую схему базы, с данными или без. Необходимо иметь в виду, что <strong>Liquibase</strong> сохраняет схему не полностью соответствующую оригиналу, например используемые домены или наследование нужно будет добавлять отдельно (см Ограничения).</p>
 </div>
@@ -9749,7 +9750,7 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 </div>
 </div>
 <div class="sect3">
-<h4 id="_обработка_типов_данных_специфичных_для_конкретной_базы">4.2.9. Обработка типов данных специфичных для конкретной базы</h4>
+<h4 id="_обработка_типов_данных_специфичных_для_конкретной_базы">5.2.9. Обработка типов данных специфичных для конкретной базы</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="xml">&lt;changeSet&gt;
@@ -9766,7 +9767,7 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 </div>
 </div>
 <div class="sect3">
-<h4 id="_альтернативные_решения">4.2.10. Альтернативные решения</h4>
+<h4 id="_альтернативные_решения">5.2.10. Альтернативные решения</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -9789,7 +9790,7 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 </div>
 </div>
 <div class="sect3">
-<h4 id="_links_2">4.2.11. Links</h4>
+<h4 id="_links_2">5.2.11. Links</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -9943,7 +9944,7 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 </div>
 </div>
 <div class="sect2">
-<h3 id="_тестирование">4.3. Тестирование</h3>
+<h3 id="_тестирование">5.3. Тестирование</h3>
 <div class="paragraph">
 <p><strong>Тестирование</strong> (<strong>testing</strong>) <strong>программного обеспечения</strong> (<strong>ПО</strong>) – это процесс исследования ПО с целью выявления ошибок и определения соответствия между реальным и ожидаемым поведением ПО, осуществляемый на основе набора тестов, выбранных определённым образом. В более широком смысле, <strong>тестирование ПО</strong> – это техника контроля качества программного продукта, включающая в себя проектирование тестов, выполнение тестирования и анализ полученных результатов.</p>
 </div>
@@ -9951,7 +9952,7 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 <p>Очень часто современные программные продукты разрабатываются в сжатые сроки и при ограниченных бюджетах проектов. Программирование сегодня перешло из разряда искусства в разряд ремесел для многих миллионов специалистов. Но, к сожалению, в такой спешке разработчики зачастую игнорируют необходимость обеспечения защищённости своих продуктов, подвергая тем самым пользователей неоправданному риску. <strong>Контроль качества</strong> (<strong>тестирование</strong>) считается важным в <strong>процессе разработки ПО</strong>, потому что обеспечивает безопасность, надёжность, удобство создаваемого продукта. В настоящее время существует великое множество подходов и методик к решению задачи тестирования ПО, но эффективное тестирование сложных программных систем - процесс творческий, не сводящийся к следованию строгим и чётким правилам.</p>
 </div>
 <div class="sect3">
-<h4 id="_классификация_видов_тестирования">4.3.1. Классификация видов тестирования</h4>
+<h4 id="_классификация_видов_тестирования">5.3.1. Классификация видов тестирования</h4>
 <div class="paragraph">
 <p>Существует несколько признаков, по которым принято производить классификацию видов тестирования. Все <strong>виды тестирования</strong> программного обеспечения можно условно классифицировать по следующему виду:</p>
 </div>
@@ -10227,7 +10228,7 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 </div>
 </div>
 <div class="sect3">
-<h4 id="_уровни_тестирования">4.3.2. Уровни тестирования</h4>
+<h4 id="_уровни_тестирования">5.3.2. Уровни тестирования</h4>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
@@ -10306,7 +10307,7 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 </div>
 </div>
 <div class="sect3">
-<h4 id="_динамический_и_статический_анализ_кода">4.3.3. Динамический и статический анализ кода</h4>
+<h4 id="_динамический_и_статический_анализ_кода">5.3.3. Динамический и статический анализ кода</h4>
 <div class="paragraph">
 <p>По мере продвижения проекта стоимость устранения дефектов ПО может экспоненциально возрастать. Инструменты <strong>статического</strong> и <strong>динамического</strong> анализа помогают предотвратить эти затраты благодаря обнаружению программных ошибок на ранних этапах жизненного цикла ПО.</p>
 </div>
@@ -10337,7 +10338,7 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 </div>
 </div>
 <div class="sect3">
-<h4 id="_links_3">4.3.4. Links</h4>
+<h4 id="_links_3">5.3.4. Links</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -10469,7 +10470,7 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-10-25 04:31:33 UTC
+Last updated 2021-10-25 04:36:14 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/run_prettify.min.js"></script>
