@@ -2,6 +2,8 @@
 
 :leveloffset: +1
 
+include::logging.adoc[]
+
 include::collections.adoc[]
 
 include::generics.adoc[]
