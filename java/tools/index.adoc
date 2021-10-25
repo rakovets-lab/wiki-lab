@@ -1,7 +1,11 @@
-= Java: Tools
+= Java Tools
 
 :leveloffset: +1
 
-include::testing/index.adoc[]
+include::junit.adoc[]
+
+include::mockito.adoc[]
+
+include::liquibase.adoc[]
 
 :leveloffset: -1

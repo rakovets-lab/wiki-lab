@@ -12,7 +12,9 @@ Wiki for lab.
 
 include::application-architecture/index.adoc[]
 
-include::java/index.adoc[]
+include::java/core/index.adoc[]
+
+include::java/tools/index.adoc[]
 
 include::sql/index.adoc[]
 
