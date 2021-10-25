@@ -451,15 +451,16 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_n_tier_architecture">1.3. N-tier Architecture</a></li>
 </ul>
 </li>
-<li><a href="#_java">2. Java</a>
+<li><a href="#_java_core">2. Java Core</a>
 <ul class="sectlevel2">
 <li><a href="#_generics">2.1. Generics</a></li>
 </ul>
 </li>
-<li><a href="#_java_tools">3. Java: Tools</a>
+<li><a href="#_java_tools">3. Java Tools</a>
 <ul class="sectlevel2">
 <li><a href="#_junit">3.1. JUnit.</a></li>
 <li><a href="#_mockito">3.2. Mockito</a></li>
+<li><a href="#_liquibase">3.3. Liquibase</a></li>
 </ul>
 </li>
 <li><a href="#_sql">4. SQL</a>
@@ -473,11 +474,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_объекты_бд">4.7. Объекты БД</a></li>
 </ul>
 </li>
-<li><a href="#_java_2">5. Java</a>
+<li><a href="#_common">5. Common</a>
 <ul class="sectlevel2">
 <li><a href="#_github_keys">5.1. GitHub keys</a></li>
-<li><a href="#_liquibase">5.2. Liquibase</a></li>
-<li><a href="#_тестирование">5.3. Тестирование</a></li>
+<li><a href="#_тестирование">5.2. Тестирование</a></li>
 </ul>
 </li>
 </ul>
@@ -1323,7 +1323,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="_java">2. Java</h2>
+<h2 id="_java_core">2. Java Core</h2>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_generics">2.1. Generics</h3>
@@ -1608,7 +1608,7 @@ PayloadList&lt;String,Exception&gt;
 </div>
 </div>
 <div class="sect1">
-<h2 id="_java_tools">3. Java: Tools</h2>
+<h2 id="_java_tools">3. Java Tools</h2>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_junit">3.1. JUnit.</h3>
@@ -2278,6 +2278,989 @@ public void afterMethod() {
 </li>
 <li>
 <p><a href="https://habr.com/ru/search/?target_type=posts&amp;order=relevance&amp;q=%5B%D0%B0%D0%B2%D1%82%D0%BE%D1%82%D0%B5%D1%81%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5%5D">Автотестирование</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_liquibase">3.3. Liquibase</h3>
+<div class="paragraph">
+<p><strong>Liquibase</strong> представляет систему управления версиями базы данных, в основном это касается структуры и в меньшей степени содержимого базы.
+При этом описание базы с одной стороны достаточно абстрактно и позволяет использовать на нижнем уровне различные СУБД, и с другой стороны всегда можно перейти на SQL-диалект конкретной СУБД, что достаточно гибко.</p>
+</div>
+<div class="paragraph">
+<p><strong>Liquibase</strong> является устоявшимся проектом с открытым исходным кодом и активно используется за пределами своей родной Java среды и не требует глубоких знаний Java для работы. В качестве описания структуры базы и изменений базы исторически использовался <strong>XML</strong> формат, однако сейчас параллельно поддерживается <strong>YAML</strong> и <strong>JSON</strong>. Более подробно: <a href="https://docs.liquibase.com/home.html">Liquibase Docs</a></p>
+</div>
+<div class="paragraph">
+<p>Использовать <strong>Liquibase</strong> можно различными способами:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>как консольное приложение</strong></p>
+</li>
+<li>
+<p><strong>как java-library</strong> подключенная к проекту</p>
+</li>
+<li>
+<p><strong>как встроенную задачу в CI/CD инструмент</strong></p>
+</li>
+</ul>
+</div>
+<div class="sect3">
+<h4 id="_настройка_окружения">3.3.1. Настройка окружения</h4>
+<div class="sect4">
+<h5 id="_установка_и_настройка_субд">Установка и настройка СУБД</h5>
+<div class="paragraph">
+<p>Так как <strong>Liquibase</strong> систему управления версиями базы данных, то необходимо устанавливать и настраивать СУБД. Вместо этого можно использовать <strong>Docker Compose</strong> и следующий файл для запуска <strong>PostgreSQL</strong> как <strong>Docker Container</strong>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="yaml">version: '3.7'
+
+services:
+  maven-liquibase-postgres:
+    container_name: maven-liquibase-postgres-container
+    image: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DATABASE:-maven-liquibase}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    ports:
+      - '5432:5432'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Для запуска можно использовать команду:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="shell script">docker-compose up -d</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Далее, при работе с Liquibase, будет использоваться данная СУБД.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_проект_с_liquibase">Проект с Liquibase</h5>
+<div class="paragraph">
+<p>При разработке на Java наиболее удобным будет использование <strong>Apache Maven</strong> или <strong>Gradle</strong>.</p>
+</div>
+<div class="paragraph">
+<p>В дальнейшем речь пойдет именно о <strong>Apache Maven</strong>.</p>
+</div>
+<div class="listingblock">
+<div class="title">Структура проекта</div>
+<div class="content">
+<pre>.
+├── pom.xml
+└── src
+    └── main
+        └── resources
+            ├── data
+            ├── liquibase.properties
+            └── master.xml</pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>pom.xml</code> - содержит все необходимые зависимости, настройки для Liquibase</p>
+</li>
+<li>
+<p><code>liquibase.properties</code> - файл с настройками соединения к базе (логин/пароль и возможно другие параметры)</p>
+</li>
+<li>
+<p>xml-файл с изменениями базы (либо другие варианты: YAML, JSON, XML + SQL, YAML + SQL, JSON + SQL)</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="title"><code>pom.xml</code></div>
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+    &lt;groupId&gt;by.rakovets.example&lt;/groupId&gt;
+    &lt;artifactId&gt;liquibase-maven&lt;/artifactId&gt;
+    &lt;version&gt;1.0.0&lt;/version&gt;
+    &lt;packaging&gt;pom&lt;/packaging&gt;
+
+    &lt;properties&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+        &lt;project.reporting.outputEncoding&gt;UTF-8&lt;/project.reporting.outputEncoding&gt;
+        &lt;log4j2.version&gt;2.14.1&lt;/log4j2.version&gt;
+        &lt;liquibase.version&gt;4.5.0&lt;/liquibase.version&gt;
+        &lt;postgresql.version&gt;42.3.0&lt;/postgresql.version&gt;
+    &lt;/properties&gt;
+
+    &lt;dependencies&gt;
+        &lt;!--Logging--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.logging.log4j&lt;/groupId&gt;
+            &lt;artifactId&gt;log4j-api&lt;/artifactId&gt;
+            &lt;version&gt;${log4j2.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.logging.log4j&lt;/groupId&gt;
+            &lt;artifactId&gt;log4j-core&lt;/artifactId&gt;
+            &lt;version&gt;${log4j2.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.logging.log4j&lt;/groupId&gt;
+            &lt;artifactId&gt;log4j-slf4j-impl&lt;/artifactId&gt;
+            &lt;version&gt;${log4j2.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+
+        &lt;!--JDBC drivers--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.postgresql&lt;/groupId&gt;
+            &lt;artifactId&gt;postgresql&lt;/artifactId&gt;
+            &lt;version&gt;${postgresql.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.liquibase&lt;/groupId&gt;
+            &lt;artifactId&gt;liquibase-core&lt;/artifactId&gt;
+            &lt;version&gt;${liquibase.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+
+    &lt;build&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.liquibase&lt;/groupId&gt;
+                &lt;artifactId&gt;liquibase-maven-plugin&lt;/artifactId&gt;
+                &lt;version&gt;${liquibase.version}&lt;/version&gt;
+                &lt;configuration&gt;
+                    &lt;propertyFile&gt;src/main/resources/liquibase.properties&lt;/propertyFile&gt;
+                    &lt;changeLogFile&gt;src/main/resources/master.xml&lt;/changeLogFile&gt;
+                    &lt;dataDir&gt;src/main/resources/data&lt;/dataDir&gt;
+                    &lt;!-- log  --&gt;
+                    &lt;verbose&gt;true&lt;/verbose&gt;
+                    &lt;logging&gt;debug&lt;/logging&gt;
+                    &lt;promptOnNonLocalDatabase&gt;false&lt;/promptOnNonLocalDatabase&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+&lt;/project&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Файл с настройками соединения к базе</p>
+</div>
+<div class="listingblock">
+<div class="title"><code>liquibase.properties</code></div>
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="properties">username=postgres
+password=postgres
+url=jdbc:postgresql://localhost:5432/maven-liquibase?prepareThreshold=0&amp;stringtype=unspecified</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Основным понятием liquibase являются так называемые <strong>changesets</strong> (<strong>изменения базы</strong>). Они могут включать в себя как изменения структуры, так и изменение данных. Для контроля примененных <strong>changesets</strong> <strong>Liquibase</strong> использует таблицы <code>databasechangelog</code> и <code>databasechangeloglock</code>.</p>
+</div>
+<div class="listingblock">
+<div class="title">Main changeLogFile <code>master.xml</code></div>
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;?xml version="1.1" encoding="UTF-8" standalone="no"?&gt;
+&lt;databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd"&gt;
+
+    &lt;changeSet context="legacy" author="author (generated)" id="1"&gt;
+        &lt;createTable tableName="test"&gt;
+            &lt;column autoIncrement="true" name="id" type="SERIAL"&gt;
+                &lt;constraints nullable="false"/&gt;
+            &lt;/column&gt;
+            &lt;column name="user_name" type="VARCHAR(255)"/&gt;
+            &lt;column name="preferences" type="TEXT"/&gt;
+        &lt;/createTable&gt;
+
+        &lt;rollback&gt;
+            &lt;dropTable tableName="test" /&gt;
+        &lt;/rollback&gt;
+    &lt;/changeSet&gt;
+&lt;/databaseChangeLog&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_обновление_бд">3.3.2. Обновление БД</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="shell script">mvn liquibase:update</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Здесь выполняется <code>liquibase:update</code> для базы указанной в <code>liquibase.properties</code> из <code>liquibase.url</code>, которая указана в стандартном JDBC формате.</p>
+</div>
+<div class="listingblock">
+<div class="title">Output</div>
+<div class="content">
+<pre>[INFO] Scanning for projects...
+[INFO]
+[INFO] ----------------&lt; by.rakovets.example:liquibase-maven &gt;-----------------
+[INFO] Building liquibase-maven 1.0.0
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO]
+[INFO] --- liquibase-maven-plugin:4.5.0:update (default-cli) @ liquibase-maven ---
+[INFO] ------------------------------------------------------------------------
+[INFO] Loading artifacts into URLClassLoader
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/apache/logging/log4j/log4j-api/2.14.1/log4j-api-2.14.1.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/apache/logging/log4j/log4j-core/2.14.1/log4j-core-2.14.1.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/apache/logging/log4j/log4j-slf4j-impl/2.14.1/log4j-slf4j-impl-2.14.1.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/postgresql/postgresql/42.3.0/postgresql-42.3.0.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/checkerframework/checker-qual/3.5.0/checker-qual-3.5.0.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/liquibase/liquibase-core/4.5.0/liquibase-core-4.5.0.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/javax/xml/bind/jaxb-api/2.3.0/jaxb-api-2.3.0.jar
+[INFO]   artifact: file:/home/rakovets/dev/exp/liquibase/target/classes/
+[INFO]   artifact: file:/home/rakovets/dev/exp/liquibase/target/test-classes/
+[INFO] ------------------------------------------------------------------------
+[INFO] Loading artifacts into URLClassLoader
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/apache/logging/log4j/log4j-api/2.14.1/log4j-api-2.14.1.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/apache/logging/log4j/log4j-core/2.14.1/log4j-core-2.14.1.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/apache/logging/log4j/log4j-slf4j-impl/2.14.1/log4j-slf4j-impl-2.14.1.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/postgresql/postgresql/42.3.0/postgresql-42.3.0.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/checkerframework/checker-qual/3.5.0/checker-qual-3.5.0.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/liquibase/liquibase-core/4.5.0/liquibase-core-4.5.0.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/javax/xml/bind/jaxb-api/2.3.0/jaxb-api-2.3.0.jar
+[INFO]   artifact: file:/home/rakovets/dev/exp/liquibase/target/classes/
+[INFO]   artifact: file:/home/rakovets/dev/exp/liquibase/target/test-classes/
+[INFO] ------------------------------------------------------------------------
+[project, pluginDescriptor]
+[INFO] Parsing Liquibase Properties File
+[INFO]   File: src/main/resources/liquibase.properties
+[INFO] ------------------------------------------------------------------------
+[INFO]
+[INFO]
+[INFO] Liquibase Community 4.5.0 by Datical
+[INFO] ####################################################
+##   _     _             _ _                      ##
+##  | |   (_)           (_) |                     ##
+##  | |    _  __ _ _   _ _| |__   __ _ ___  ___   ##
+##  | |   | |/ _` | | | | | '_ \ / _` / __|/ _ \  ##
+##  | |___| | (_| | |_| | | |_) | (_| \__ \  __/  ##
+##  \_____/_|\__, |\__,_|_|_.__/ \__,_|___/\___|  ##
+##              | |                               ##
+##              |_|                               ##
+##                                                ##
+##  Get documentation at docs.liquibase.com       ##
+##  Get certified courses at learn.liquibase.com  ##
+##  Free schema change activity reports at        ##
+##      https://hub.liquibase.com                 ##
+##                                                ##
+####################################################
+Starting Liquibase at 06:31:52 (version 4.5.0 #52 built at 2021-09-27 16:19+0000)
+[INFO] Settings
+----------------------------
+[INFO]     driver: null
+[INFO]     url: jdbc:postgresql://localhost:5432/maven-liquibase?prepareThreshold=0&amp;stringtype=unspecified
+[INFO]     username: *****
+[INFO]     password: *****
+[INFO]     use empty password: false
+[INFO]     properties file: src/main/resources/liquibase.properties
+[INFO]     properties file will override? false
+[INFO]     prompt on non-local database? false
+[INFO]     clear checksums? false
+[INFO]     changeLogDirectory: null
+[INFO]     changeLogFile: src/main/resources/master.xml
+[INFO]     context(s): null
+[INFO]     label(s): null
+[INFO]     number of changes to apply: 0
+[INFO]     drop first? false
+[INFO] ------------------------------------------------------------------------
+[INFO] Set default schema name to public
+[INFO] Parsing Liquibase Properties File src/main/resources/liquibase.properties for changeLog parameters
+[INFO] Executing on Database: jdbc:postgresql://localhost:5432/maven-liquibase?prepareThreshold=0&amp;stringtype=unspecified
+[INFO] Successfully acquired change log lock
+[INFO] Creating database history table with name: databasechangelog
+[INFO] Reading from databasechangelog
+[INFO] Table test created
+[INFO] ChangeSet src/main/resources/master.xml::1::author (generated) ran successfully in 9ms
+[INFO] Successfully released change log lock
+[INFO] ------------------------------------------------------------------------
+[INFO]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  1.069 s
+[INFO] Finished at: 2021-10-23T06:31:52+03:00
+[INFO] ------------------------------------------------------------------------</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>После успешного выполнения в БД появляются:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>две служебные таблицы <code>databasechangelog</code> и <code>databasechangeloglock</code> (если их не было раньше)</p>
+</li>
+<li>
+<p>запись в таблице <code>databasechangelog</code> с информацией о примененном <strong>changeset</strong></p>
+</li>
+<li>
+<p>изменения указанные в <strong>changeset</strong></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_генерация_sql_без_обновления_базы">3.3.3. Генерация SQL без обновления базы</h4>
+<div class="paragraph">
+<p>Иногда перед запуском изменений требуется посмотреть содержимое создаваемых запросов. Для этого предназначены команды <code>liquibase:updateSQL</code> и <code>liquibase:rollbackSQL</code></p>
+</div>
+<div class="sect4">
+<h5 id="_liquibaseupdatesql"><code>liquibase:updateSQL</code></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="shell script">mvn liquibase:updateSQL</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Output</div>
+<div class="content">
+<pre>[INFO] Scanning for projects...
+[INFO]
+[INFO] ----------------&lt; by.rakovets.example:liquibase-maven &gt;-----------------
+[INFO] Building liquibase-maven 1.0.0
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO]
+[INFO] --- liquibase-maven-plugin:4.5.0:updateSQL (default-cli) @ liquibase-maven ---
+[INFO] ------------------------------------------------------------------------
+[INFO] Loading artifacts into URLClassLoader
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/apache/logging/log4j/log4j-api/2.14.1/log4j-api-2.14.1.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/apache/logging/log4j/log4j-core/2.14.1/log4j-core-2.14.1.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/apache/logging/log4j/log4j-slf4j-impl/2.14.1/log4j-slf4j-impl-2.14.1.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/postgresql/postgresql/42.3.0/postgresql-42.3.0.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/checkerframework/checker-qual/3.5.0/checker-qual-3.5.0.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/liquibase/liquibase-core/4.5.0/liquibase-core-4.5.0.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/javax/xml/bind/jaxb-api/2.3.0/jaxb-api-2.3.0.jar
+[INFO]   artifact: file:/home/rakovets/dev/exp/liquibase/target/classes/
+[INFO]   artifact: file:/home/rakovets/dev/exp/liquibase/target/test-classes/
+[INFO] ------------------------------------------------------------------------
+[INFO] Loading artifacts into URLClassLoader
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/apache/logging/log4j/log4j-api/2.14.1/log4j-api-2.14.1.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/apache/logging/log4j/log4j-core/2.14.1/log4j-core-2.14.1.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/apache/logging/log4j/log4j-slf4j-impl/2.14.1/log4j-slf4j-impl-2.14.1.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/postgresql/postgresql/42.3.0/postgresql-42.3.0.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/checkerframework/checker-qual/3.5.0/checker-qual-3.5.0.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/liquibase/liquibase-core/4.5.0/liquibase-core-4.5.0.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/javax/xml/bind/jaxb-api/2.3.0/jaxb-api-2.3.0.jar
+[INFO]   artifact: file:/home/rakovets/dev/exp/liquibase/target/classes/
+[INFO]   artifact: file:/home/rakovets/dev/exp/liquibase/target/test-classes/
+[INFO] ------------------------------------------------------------------------
+[project, pluginDescriptor]
+[INFO] Parsing Liquibase Properties File
+[INFO]   File: src/main/resources/liquibase.properties
+[INFO] ------------------------------------------------------------------------
+[INFO]
+[INFO]
+[INFO] Liquibase Community 4.5.0 by Datical
+[INFO] ####################################################
+##   _     _             _ _                      ##
+##  | |   (_)           (_) |                     ##
+##  | |    _  __ _ _   _ _| |__   __ _ ___  ___   ##
+##  | |   | |/ _` | | | | | '_ \ / _` / __|/ _ \  ##
+##  | |___| | (_| | |_| | | |_) | (_| \__ \  __/  ##
+##  \_____/_|\__, |\__,_|_|_.__/ \__,_|___/\___|  ##
+##              | |                               ##
+##              |_|                               ##
+##                                                ##
+##  Get documentation at docs.liquibase.com       ##
+##  Get certified courses at learn.liquibase.com  ##
+##  Free schema change activity reports at        ##
+##      https://hub.liquibase.com                 ##
+##                                                ##
+####################################################
+Starting Liquibase at 06:33:38 (version 4.5.0 #52 built at 2021-09-27 16:19+0000)
+[INFO] Settings
+----------------------------
+[INFO]     driver: null
+[INFO]     url: jdbc:postgresql://localhost:5432/maven-liquibase?prepareThreshold=0&amp;stringtype=unspecified
+[INFO]     username: *****
+[INFO]     password: *****
+[INFO]     use empty password: false
+[INFO]     properties file: src/main/resources/liquibase.properties
+[INFO]     properties file will override? false
+[INFO]     prompt on non-local database? false
+[INFO]     clear checksums? false
+[INFO]     changeLogDirectory: null
+[INFO]     changeLogFile: src/main/resources/master.xml
+[INFO]     context(s): null
+[INFO]     label(s): null
+[INFO]     number of changes to apply: 0
+[INFO]     migrationSQLOutputFile: /home/rakovets/dev/exp/liquibase/target/liquibase/migrate.sql
+[INFO] ------------------------------------------------------------------------
+[INFO] Set default schema nliquibase:rollbackSQLame to public
+[INFO] Char encoding not set! The created file will be system dependent!
+[INFO] Output SQL Migration File: /home/rakovets/dev/exp/liquibase/target/liquibase/migrate.sql
+[INFO] Parsing Liquibase Properties File src/main/resources/liquibase.properties for changeLog parameters
+[INFO] Executing on Database: jdbc:postgresql://localhost:5432/maven-liquibase?prepareThreshold=0&amp;stringtype=unspecified
+[INFO] Successfully acquired change log lock
+[INFO] Reading from databasechangelog
+[INFO] Successfully released change log lock
+[INFO] ------------------------------------------------------------------------
+[INFO]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  1.022 s
+[INFO] Finished at: 2021-10-23T06:33:39+03:00
+[INFO] ------------------------------------------------------------------------</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Файл <code>target/liquibase/migrate.sql</code></div>
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="sql">-- *********************************************************************
+-- Update Database Script
+-- *********************************************************************
+-- Change Log: src/main/resources/master.xml
+-- Ran at: 10/23/21, 6:33 AM
+-- Against: postgres@jdbc:postgresql://localhost:5432/maven-liquibase?prepareThreshold=0&amp;stringtype=unspecified
+-- Liquibase version: 4.5.0
+-- *********************************************************************
+
+-- Create Database Lock Table
+CREATE TABLE databasechangeloglock (ID INTEGER NOT NULL, LOCKED BOOLEAN NOT NULL, LOCKGRANTED TIMESTAMP WITHOUT TIME ZONE, LOCKEDBY VARCHAR(255), CONSTRAINT databasechangeloglock_pkey PRIMARY KEY (ID));
+
+-- Initialize Database Lock Table
+DELETE FROM databasechangeloglock;
+
+INSERT INTO databasechangeloglock (ID, LOCKED) VALUES (1, FALSE);
+
+-- Lock Database
+UPDATE databasechangeloglock SET LOCKED = TRUE, LOCKEDBY = 'ubuntu (172.20.0.1)', LOCKGRANTED = '2021-10-23 07:29:28.866' WHERE ID = 1 AND LOCKED = FALSE;
+
+-- Create Database Change Log Table
+CREATE TABLE databasechangelog (ID VARCHAR(255) NOT NULL, AUTHOR VARCHAR(255) NOT NULL, FILENAME VARCHAR(255) NOT NULL, DATEEXECUTED TIMESTAMP WITHOUT TIME ZONE NOT NULL, ORDEREXECUTED INTEGER NOT NULL, EXECTYPE VARCHAR(10) NOT NULL, MD5SUM VARCHAR(35), DESCRIPTION VARCHAR(255), COMMENTS VARCHAR(255), TAG VARCHAR(255), LIQUIBASE VARCHAR(20), CONTEXTS VARCHAR(255), LABELS VARCHAR(255), DEPLOYMENT_ID VARCHAR(10));
+
+-- Changeset src/main/resources/master.xml::1::author (generated)
+CREATE TABLE test (id INTEGER GENERATED BY DEFAULT AS IDENTITY NOT NULL, user_name VARCHAR(255), preferences TEXT);
+
+INSERT INTO databasechangelog (ID, AUTHOR, FILENAME, DATEEXECUTED, ORDEREXECUTED, MD5SUM, DESCRIPTION, COMMENTS, EXECTYPE, CONTEXTS, LABELS, LIQUIBASE, DEPLOYMENT_ID) VALUES ('1', 'author (generated)', 'src/main/resources/master.xml', NOW(), 1, '8:d30ee8898b8b3a53a55c2ae2deba7edd', 'createTable tableName=test', '', 'EXECUTED', 'legacy', NULL, '4.5.0', '4963369142');
+
+-- Release Database Lock
+UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = NULL WHERE ID = 1;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_liquibaserollbacksql"><code>liquibase:rollbackSQL</code></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="shell script">mvn liquibase:rollbackSQL -Dliquibase.rollbackCount=1</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>-Dliquibase.rollbackCount=1</code> - откатить 1 последнее изменение или использовать <strong>tags</strong> и тогда выполнять с командой <code>-Dliquibase.rollbackTag=${tag-name}</code>.</p>
+</div>
+<div class="listingblock">
+<div class="title">Output</div>
+<div class="content">
+<pre>[INFO] Scanning for projects...
+[INFO]
+[INFO] ----------------&lt; by.rakovets.example:liquibase-maven &gt;-----------------
+[INFO] Building liquibase-maven 1.0.0
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO]
+[INFO] --- liquibase-maven-plugin:4.5.0:rollbackSQL (default-cli) @ liquibase-maven ---
+[INFO] ------------------------------------------------------------------------
+[INFO] Loading artifacts into URLClassLoader
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/apache/logging/log4j/log4j-api/2.14.1/log4j-api-2.14.1.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/apache/logging/log4j/log4j-core/2.14.1/log4j-core-2.14.1.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/apache/logging/log4j/log4j-slf4j-impl/2.14.1/log4j-slf4j-impl-2.14.1.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/postgresql/postgresql/42.3.0/postgresql-42.3.0.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/checkerframework/checker-qual/3.5.0/checker-qual-3.5.0.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/liquibase/liquibase-core/4.5.0/liquibase-core-4.5.0.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/javax/xml/bind/jaxb-api/2.3.0/jaxb-api-2.3.0.jar
+[INFO]   artifact: file:/home/rakovets/dev/exp/liquibase/target/classes/
+[INFO]   artifact: file:/home/rakovets/dev/exp/liquibase/target/test-classes/
+[INFO] ------------------------------------------------------------------------
+[INFO] Loading artifacts into URLClassLoader
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/apache/logging/log4j/log4j-api/2.14.1/log4j-api-2.14.1.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/apache/logging/log4j/log4j-core/2.14.1/log4j-core-2.14.1.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/apache/logging/log4j/log4j-slf4j-impl/2.14.1/log4j-slf4j-impl-2.14.1.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/postgresql/postgresql/42.3.0/postgresql-42.3.0.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/checkerframework/checker-qual/3.5.0/checker-qual-3.5.0.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/org/liquibase/liquibase-core/4.5.0/liquibase-core-4.5.0.jar
+[INFO]   artifact: file:/home/rakovets/.m2/repository/javax/xml/bind/jaxb-api/2.3.0/jaxb-api-2.3.0.jar
+[INFO]   artifact: file:/home/rakovets/dev/exp/liquibase/target/classes/
+[INFO]   artifact: file:/home/rakovets/dev/exp/liquibase/target/test-classes/
+[INFO] ------------------------------------------------------------------------
+[project, pluginDescriptor]
+[INFO] Parsing Liquibase Properties File
+[INFO]   File: src/main/resources/liquibase.properties
+[INFO] ------------------------------------------------------------------------
+[INFO]
+[INFO]
+[INFO] Liquibase Community 4.5.0 by Datical
+[INFO] ####################################################
+##   _     _             _ _                      ##
+##  | |   (_)           (_) |                     ##
+##  | |    _  __ _ _   _ _| |__   __ _ ___  ___   ##
+##  | |   | |/ _` | | | | | '_ \ / _` / __|/ _ \  ##
+##  | |___| | (_| | |_| | | |_) | (_| \__ \  __/  ##
+##  \_____/_|\__, |\__,_|_|_.__/ \__,_|___/\___|  ##
+##              | |                               ##
+##              |_|                               ##
+##                                                ##
+##  Get documentation at docs.liquibase.com       ##
+##  Get certified courses at learn.liquibase.com  ##
+##  Free schema change activity reports at        ##
+##      https://hub.liquibase.com                 ##
+##                                                ##
+####################################################
+Starting Liquibase at 06:43:58 (version 4.5.0 #52 built at 2021-09-27 16:19+0000)
+[INFO] Settings
+----------------------------
+[INFO]     driver: null
+[INFO]     url: jdbc:postgresql://localhost:5432/maven-liquibase?prepareThreshold=0&amp;stringtype=unspecified
+[INFO]     username: *****
+[INFO]     password: *****
+[INFO]     use empty password: false
+[INFO]     properties file: src/main/resources/liquibase.properties
+[INFO]     properties file will override? false
+[INFO]     prompt on non-local database? false
+[INFO]     clear checksums? false
+[INFO]     changeLogDirectory: null
+[INFO]     changeLogFile: src/main/resources/master.xml
+[INFO]     context(s): null
+[INFO]     label(s): null
+[INFO]     rollback Count: 1
+[INFO]     rollback Date: null
+[INFO]     rollback Tag: null
+[INFO]     migrationSQLOutputFile: /home/rakovets/dev/exp/liquibase/target/liquibase/migrate.sql
+[INFO] ------------------------------------------------------------------------
+[INFO] Set default schema name to public
+[INFO] Char encoding not set! The created file will be system dependent!
+[INFO] Output SQL Migration File: /home/rakovets/dev/exp/liquibase/target/liquibase/migrate.sql
+[INFO] Parsing Liquibase Properties File src/main/resources/liquibase.properties for changeLog parameters
+[INFO] Executing on Database: jdbc:postgresql://localhost:5432/maven-liquibase?prepareThreshold=0&amp;stringtype=unspecified
+[INFO] Successfully acquired change log lock
+[INFO] Reading from databasechangelog
+[INFO] Successfully released change log lock
+[INFO] ------------------------------------------------------------------------
+[INFO]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  1.046 s
+[INFO] Finished at: 2021-10-23T06:43:59+03:00
+[INFO] ------------------------------------------------------------------------</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Файл <code>.Файл `target/liquibase/migrate.sql`</code></div>
+<div class="content">
+<pre>-- *********************************************************************
+-- Rollback 1 Change(s) Script
+-- *********************************************************************
+-- Change Log: src/main/resources/master.xml
+-- Ran at: 10/23/21, 6:43 AM
+-- Against: postgres@jdbc:postgresql://localhost:5432/maven-liquibase?prepareThreshold=0&amp;stringtype=unspecified
+-- Liquibase version: 4.5.0
+-- *********************************************************************
+
+-- Lock Database
+UPDATE databasechangeloglock SET LOCKED = TRUE, LOCKEDBY = 'ubuntu (172.20.0.1)', LOCKGRANTED = '2021-10-23 06:43:59.083' WHERE ID = 1 AND LOCKED = FALSE;
+
+-- Rolling Back ChangeSet: src/main/resources/master.xml::1::author (generated)
+DROP TABLE test;
+
+DELETE FROM databasechangelog WHERE ID = '1' AND AUTHOR = 'author (generated)' AND FILENAME = 'src/main/resources/master.xml';
+
+-- Release Database Lock
+UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = NULL WHERE ID = 1;</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_подробнее_о_changeset">3.3.4. Подробнее о changeSet</h4>
+<div class="paragraph">
+<p>Изменения могут быть в разных форматах, в том числе обычный sql или он же в отдельном файле.</p>
+</div>
+<div class="paragraph">
+<p>Каждое изменение может включать секцию <code>rollback</code> позволяющую откатывать изменения командой <code>liquibase:rollback</code>.
+Кроме того для маркировки изменений, например для более удобного отката туда, можно использовать <code>tagDatabase</code>.</p>
+</div>
+<div class="sect4">
+<h5 id="_обычный_формат">Обычный формат</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;changeSet context="legacy" author="author (generated)" id="1"&gt;
+    &lt;createTable tableName="test"&gt;
+        &lt;column autoIncrement="true" name="id" type="SERIAL"&gt;
+            &lt;constraints primaryKey="true" primaryKeyName="test_pkey"/&gt;
+        &lt;/column&gt;
+        &lt;column name="c1" type="VARCHAR(255)"/&gt;
+        &lt;column name="c2" type="INTEGER"/&gt;
+        &lt;column name="c3" type="SMALLINT"/&gt;
+        &lt;column name="c4" type="VARCHAR(255)"/&gt;
+        &lt;column name="c5" type="TEXT"/&gt;
+        &lt;column name="c6" type="VARCHAR(255)"/&gt;
+    &lt;/createTable&gt;
+&lt;/changeSet&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_встроенный_sql">Встроенный SQL</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;changeSet context="legacy" author="author" id="1-domain-some-domain"&gt;
+    &lt;sql&gt;CREATE DOMAIN public.some_domain AS bigint; ALTER DOMAIN public.some_domain OWNER TO test;&lt;/sql&gt;
+    &lt;rollback&gt;DROP DOMAIN public.some_domain;&lt;/rollback&gt;
+&lt;/changeSet&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_файл_sql">Файл SQL</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;changeSet context="legacy" author="author" id="1-user"&gt;
+    &lt;sqlFile dbms="postgresql" path="sql/some.sql" relativeToChangelogFile="true"/&gt;
+    &lt;rollback&gt;delete from "some";&lt;/rollback&gt;
+&lt;/changeSet&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_теги">Теги</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;changeSet context="legacy" author="author" id="1-initial-changeset"&gt;
+    &lt;tagDatabase tag="initial"/&gt;
+&lt;/changeSet&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_контексты_запуска">3.3.5. Контексты запуска</h4>
+<div class="paragraph">
+<p>Для более удобного управления различными конфигурациями, например <code>development/production</code> можно использовать контексты.
+Контекст указывается в changeSet аттрибуте context и затем запускается <strong>Apache Maven</strong> параметром <code>-Dcontexts</code>.</p>
+</div>
+<div class="sect4">
+<h5 id="_изменение_с_контекстом">Изменение с контекстом</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;changeSet context="legacy" author="author" id="1-initial-changeset"&gt;
+    &lt;tagDatabase tag="initial"/&gt;
+&lt;/changeSet&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_запуск_изменений_по_контексту">Запуск изменений по контексту</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="shell script">#!/usr/bin/env bash mvn liquibase:update\
+        -Denv=dev\
+        -Dliquibase.url="jdbc:postgresql://dev/test?prepareThreshold=0&amp;stringtype=unspecified"\
+        -Dliquibase.contexts=non-legacy</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_откат_изменений">3.3.6. Откат изменений</h4>
+<div class="paragraph">
+<p>Операция обратная обновлению, в большинстве случаев поддерживается автоматически.
+Для прочих возможно задание через секцию rollback.
+Запускается командой liquibase:rollback.</p>
+</div>
+<div class="sect4">
+<h5 id="_изменение_с_откатом">Изменение с откатом</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;changeSet context="legacy" author="author" id="1-domain-some-domain"&gt;
+    &lt;sql&gt;CREATE DOMAIN public.some_domain AS bigint; ALTER DOMAIN public.some_domain OWNER TO test;&lt;/sql&gt;
+    &lt;rollback&gt;DROP DOMAIN public.some_domain;&lt;/rollback&gt;
+&lt;/changeSet&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_запуск_отката">Запуск отката</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="shell script">#!/usr/bin/env bash mvn liquibase:update\
+        -Denv=dev\
+        -Dliquibase.url="jdbc:postgresql://dev/test?prepareThreshold=0&amp;stringtype=unspecified"\
+        -Dliquibase.contexts=non-legacy</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_сравнение">3.3.7. Сравнение</h4>
+<div class="paragraph">
+<p>В разработке удобно использовать для сравнения двух существующих баз на предмет внесённых изменений.
+В настройки (или параметры запуска) потребуется добавить ссылку на reference DB и данные для доступа к ней.</p>
+</div>
+<div class="listingblock">
+<div class="title"><code>liquibase.properties</code></div>
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="properties">referenceUsername=test referenceUrl=jdbc:postgresql://dev/test_reference</code></pre>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_сравнение_схем">Сравнение схем</h5>
+<div class="paragraph">
+<p>Сравнение схем <code>url</code> и <code>referenceUrl</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="shell script">#!/usr/bin/env bash mvn liquibase:diff\
+        -Denv=dev\
+        -Dliquibase.referenceUrl="jdbc:postgresql://dev/test?prepareThreshold=0"\
+        -Dliquibase.url="jdbc:postgresql://dev/test_reference?prepareThreshold=0"\
+        -Dliquibase.diffChangeLogFile=dev/diff.xml</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_сохранение_схемы">3.3.8. Сохранение схемы</h4>
+<div class="paragraph">
+<p>Также бывает полезно сохранить текущую схему базы, с данными или без. Необходимо иметь в виду, что <strong>Liquibase</strong> сохраняет схему не полностью соответствующую оригиналу, например используемые домены или наследование нужно будет добавлять отдельно (см Ограничения).</p>
+</div>
+<div class="sect4">
+<h5 id="_сохранение_схемы_без_учёта_данных">Сохранение схемы без учёта данных</h5>
+<div class="paragraph">
+<p>Сохранение схемы существующей базы.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="shell script">#!/usr/bin/env bash mvn liquibase:generateChangeLog\
+        -Denv=dev\
+        -Dliquibase.url="jdbc:postgresql://dev/test_reference?prepareThreshold=0"\
+        -Dliquibase.outputChangeLogFile=dev/changelog.xml</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_сохранение_схемы_с_данными">Сохранение схемы с данными</h5>
+<div class="paragraph">
+<p>Сохранение схемы существующей базы с данными.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="shell script">#!/usr/bin/env bash mvn liquibase:generateChangeLog\
+        -Denv=dev\
+        -Dliquibase.url="jdbc:postgresql://dev/test_reference?prepareThreshold=0"\
+        -Dliquibase.outputChangeLogFile=dev/changelog.xml</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_обработка_типов_данных_специфичных_для_конкретной_базы">3.3.9. Обработка типов данных специфичных для конкретной базы</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;changeSet&gt;
+    &lt;createTable tableName="t_name"&gt;
+        ...
+        &lt;column name="doubleArray" type="DOUBLE_ARRAY"/&gt;
+        ...
+    &lt;/createTable&gt;
+    &lt;modifySql dbms="postgresql"&gt;
+        &lt;replace replace="DOUBLE_ARRAY" with="double precision[][]"/&gt;
+    &lt;/modifySql&gt;
+&lt;/changeSet&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_альтернативные_решения">3.3.10. Альтернативные решения</h4>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Flyway</strong><br>
+Наряду с Liquibase пользуется популярностью в Java сообществе — <a href="http://flywaydb.org/documentation" class="bare">http://flywaydb.org/documentation</a></p>
+</li>
+<li>
+<p><strong>Sqitch</strong><br>
+Аналог на Perl — <a href="http://sqitch.org" class="bare">http://sqitch.org</a></p>
+</li>
+<li>
+<p><strong>FluentMigrator</strong><br>
+Аналог для .Net — <a href="https://github.com/schambers/fluentmigrator" class="bare">https://github.com/schambers/fluentmigrator</a></p>
+</li>
+<li>
+<p><strong>DBGeni</strong><br>
+Аналог для Ruby — <a href="http://dbgeni.appsintheopen.com/manual.html" class="bare">http://dbgeni.appsintheopen.com/manual.html</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_links_2">3.3.11. Links</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Существуют определенные проблемы с выгрузкой, сравнением и применением бинарных данных, в частности проблема с генерацией изменений.</p>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://liquibase.jira.com/browse/CORE-2650" class="bare">https://liquibase.jira.com/browse/CORE-2650</a></p>
+</li>
+<li>
+<p><a href="https://liquibase.jira.com/browse/CORE-2906" class="bare">https://liquibase.jira.com/browse/CORE-2906</a></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Наследование и общие столбцы</p>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="http://forum.liquibase.org/topic/postgresql-subtable-via-inherits" class="bare">http://forum.liquibase.org/topic/postgresql-subtable-via-inherits</a></p>
+</li>
+<li>
+<p><a href="https://stackoverflow.com/questions/25840467/liquibase-common-columns" class="bare">https://stackoverflow.com/questions/25840467/liquibase-common-columns</a></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Исходный код</p>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://github.com/liquibase/liquibase" class="bare">https://github.com/liquibase/liquibase</a></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Как добавить liquibase в существующий проект</p>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://www.liquibase.org/documentation/existing_project.html" class="bare">https://www.liquibase.org/documentation/existing_project.html</a></p>
+</li>
+<li>
+<p><a href="https://www.liquibase.org/documentation/contexts.html" class="bare">https://www.liquibase.org/documentation/contexts.html</a></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Как работают изменения базы</p>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://www.liquibase.org/documentation/changeset.html" class="bare">https://www.liquibase.org/documentation/changeset.html</a></p>
+</li>
+<li>
+<p><a href="https://www.liquibase.org/documentation/databasechangelog_table.html" class="bare">https://www.liquibase.org/documentation/databasechangelog_table.html</a></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Больше о формате изменений</p>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="http://www.liquibase.org/documentation/json_format.html" class="bare">http://www.liquibase.org/documentation/json_format.html</a></p>
+</li>
+<li>
+<p><a href="https://www.liquibase.org/documentation/changes/sql.html" class="bare">https://www.liquibase.org/documentation/changes/sql.html</a></p>
+</li>
+<li>
+<p><a href="https://www.liquibase.org/documentation/changes/sql_file.html" class="bare">https://www.liquibase.org/documentation/changes/sql_file.html</a></p>
+</li>
+<li>
+<p><a href="https://www.liquibase.org/documentation/column.html" class="bare">https://www.liquibase.org/documentation/column.html</a></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Больше про update</p>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://www.liquibase.org/documentation/maven/generated/update-mojo.html" class="bare">https://www.liquibase.org/documentation/maven/generated/update-mojo.html</a></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Больше о генерации изменений</p>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://www.liquibase.org/documentation/maven/generated/generateChangeLog-mojo.html" class="bare">https://www.liquibase.org/documentation/maven/generated/generateChangeLog-mojo.html</a></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Больше о custom SQL</p>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="http://www.liquibase.org/documentation/modify_sql.html" class="bare">http://www.liquibase.org/documentation/modify_sql.html</a></p>
+</li>
+<li>
+<p><a href="https://stackoverflow.com/questions/28240068/create-column-of-type-double-precision-with-liquibase" class="bare">https://stackoverflow.com/questions/28240068/create-column-of-type-double-precision-with-liquibase</a></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Прочее</p>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://news.ycombinator.com/item?id=10145933" class="bare">https://news.ycombinator.com/item?id=10145933</a></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Другие статьи о Liquibase</p>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://habr.com/ru/post/179425/" class="bare">https://habr.com/ru/post/179425/</a></p>
+</li>
+<li>
+<p><a href="https://habr.com/ru/post/178665/" class="bare">https://habr.com/ru/post/178665/</a></p>
+</li>
+<li>
+<p><a href="https://habr.com/ru/post/333762/" class="bare">https://habr.com/ru/post/333762/</a></p>
+</li>
+<li>
+<p><a href="https://habr.com/ru/post/251617/" class="bare">https://habr.com/ru/post/251617/</a></p>
+</li>
+<li>
+<p><a href="https://habr.com/ru/post/251617/" class="bare">https://habr.com/ru/post/251617/</a></p>
+</li>
+</ul>
+</div>
 </li>
 </ul>
 </div>
@@ -8812,7 +9795,7 @@ REFERENCES product_groups;</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_java_2">5. Java</h2>
+<h2 id="_common">5. Common</h2>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_github_keys">5.1. GitHub keys</h3>
@@ -8961,990 +9944,7 @@ ssb   4096R/42B317FD4BA89E7A 2016-03-10</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_liquibase">5.2. Liquibase</h3>
-<div class="paragraph">
-<p><strong>Liquibase</strong> представляет систему управления версиями базы данных, в основном это касается структуры и в меньшей степени содержимого базы.
-При этом описание базы с одной стороны достаточно абстрактно и позволяет использовать на нижнем уровне различные СУБД, и с другой стороны всегда можно перейти на SQL-диалект конкретной СУБД, что достаточно гибко.</p>
-</div>
-<div class="paragraph">
-<p><strong>Liquibase</strong> является устоявшимся проектом с открытым исходным кодом и активно используется за пределами своей родной Java среды и не требует глубоких знаний Java для работы. В качестве описания структуры базы и изменений базы исторически использовался <strong>XML</strong> формат, однако сейчас параллельно поддерживается <strong>YAML</strong> и <strong>JSON</strong>. Более подробно: <a href="https://docs.liquibase.com/home.html">Liquibase Docs</a></p>
-</div>
-<div class="paragraph">
-<p>Использовать <strong>Liquibase</strong> можно различными способами:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>как консольное приложение</strong></p>
-</li>
-<li>
-<p><strong>как java-library</strong> подключенная к проекту</p>
-</li>
-<li>
-<p><strong>как встроенную задачу в CI/CD инструмент</strong></p>
-</li>
-</ul>
-</div>
-<div class="sect3">
-<h4 id="_настройка_окружения">5.2.1. Настройка окружения</h4>
-<div class="sect4">
-<h5 id="_установка_и_настройка_субд">Установка и настройка СУБД</h5>
-<div class="paragraph">
-<p>Так как <strong>Liquibase</strong> систему управления версиями базы данных, то необходимо устанавливать и настраивать СУБД. Вместо этого можно использовать <strong>Docker Compose</strong> и следующий файл для запуска <strong>PostgreSQL</strong> как <strong>Docker Container</strong>:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="yaml">version: '3.7'
-
-services:
-  maven-liquibase-postgres:
-    container_name: maven-liquibase-postgres-container
-    image: postgres
-    restart: unless-stopped
-    environment:
-      POSTGRES_DB: ${POSTGRES_DATABASE:-maven-liquibase}
-      POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
-    ports:
-      - '5432:5432'</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Для запуска можно использовать команду:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="shell script">docker-compose up -d</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Далее, при работе с Liquibase, будет использоваться данная СУБД.</p>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_проект_с_liquibase">Проект с Liquibase</h5>
-<div class="paragraph">
-<p>При разработке на Java наиболее удобным будет использование <strong>Apache Maven</strong> или <strong>Gradle</strong>.</p>
-</div>
-<div class="paragraph">
-<p>В дальнейшем речь пойдет именно о <strong>Apache Maven</strong>.</p>
-</div>
-<div class="listingblock">
-<div class="title">Структура проекта</div>
-<div class="content">
-<pre>.
-├── pom.xml
-└── src
-    └── main
-        └── resources
-            ├── data
-            ├── liquibase.properties
-            └── master.xml</pre>
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>pom.xml</code> - содержит все необходимые зависимости, настройки для Liquibase</p>
-</li>
-<li>
-<p><code>liquibase.properties</code> - файл с настройками соединения к базе (логин/пароль и возможно другие параметры)</p>
-</li>
-<li>
-<p>xml-файл с изменениями базы (либо другие варианты: YAML, JSON, XML + SQL, YAML + SQL, JSON + SQL)</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="title"><code>pom.xml</code></div>
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
-    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
-
-    &lt;groupId&gt;by.rakovets.example&lt;/groupId&gt;
-    &lt;artifactId&gt;liquibase-maven&lt;/artifactId&gt;
-    &lt;version&gt;1.0.0&lt;/version&gt;
-    &lt;packaging&gt;pom&lt;/packaging&gt;
-
-    &lt;properties&gt;
-        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
-        &lt;project.reporting.outputEncoding&gt;UTF-8&lt;/project.reporting.outputEncoding&gt;
-        &lt;log4j2.version&gt;2.14.1&lt;/log4j2.version&gt;
-        &lt;liquibase.version&gt;4.5.0&lt;/liquibase.version&gt;
-        &lt;postgresql.version&gt;42.3.0&lt;/postgresql.version&gt;
-    &lt;/properties&gt;
-
-    &lt;dependencies&gt;
-        &lt;!--Logging--&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;org.apache.logging.log4j&lt;/groupId&gt;
-            &lt;artifactId&gt;log4j-api&lt;/artifactId&gt;
-            &lt;version&gt;${log4j2.version}&lt;/version&gt;
-        &lt;/dependency&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;org.apache.logging.log4j&lt;/groupId&gt;
-            &lt;artifactId&gt;log4j-core&lt;/artifactId&gt;
-            &lt;version&gt;${log4j2.version}&lt;/version&gt;
-        &lt;/dependency&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;org.apache.logging.log4j&lt;/groupId&gt;
-            &lt;artifactId&gt;log4j-slf4j-impl&lt;/artifactId&gt;
-            &lt;version&gt;${log4j2.version}&lt;/version&gt;
-        &lt;/dependency&gt;
-
-        &lt;!--JDBC drivers--&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;org.postgresql&lt;/groupId&gt;
-            &lt;artifactId&gt;postgresql&lt;/artifactId&gt;
-            &lt;version&gt;${postgresql.version}&lt;/version&gt;
-        &lt;/dependency&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;org.liquibase&lt;/groupId&gt;
-            &lt;artifactId&gt;liquibase-core&lt;/artifactId&gt;
-            &lt;version&gt;${liquibase.version}&lt;/version&gt;
-        &lt;/dependency&gt;
-    &lt;/dependencies&gt;
-
-    &lt;build&gt;
-        &lt;plugins&gt;
-            &lt;plugin&gt;
-                &lt;groupId&gt;org.liquibase&lt;/groupId&gt;
-                &lt;artifactId&gt;liquibase-maven-plugin&lt;/artifactId&gt;
-                &lt;version&gt;${liquibase.version}&lt;/version&gt;
-                &lt;configuration&gt;
-                    &lt;propertyFile&gt;src/main/resources/liquibase.properties&lt;/propertyFile&gt;
-                    &lt;changeLogFile&gt;src/main/resources/master.xml&lt;/changeLogFile&gt;
-                    &lt;dataDir&gt;src/main/resources/data&lt;/dataDir&gt;
-                    &lt;!-- log  --&gt;
-                    &lt;verbose&gt;true&lt;/verbose&gt;
-                    &lt;logging&gt;debug&lt;/logging&gt;
-                    &lt;promptOnNonLocalDatabase&gt;false&lt;/promptOnNonLocalDatabase&gt;
-                &lt;/configuration&gt;
-            &lt;/plugin&gt;
-        &lt;/plugins&gt;
-    &lt;/build&gt;
-&lt;/project&gt;</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Файл с настройками соединения к базе</p>
-</div>
-<div class="listingblock">
-<div class="title"><code>liquibase.properties</code></div>
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="properties">username=postgres
-password=postgres
-url=jdbc:postgresql://localhost:5432/maven-liquibase?prepareThreshold=0&amp;stringtype=unspecified</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Основным понятием liquibase являются так называемые <strong>changesets</strong> (<strong>изменения базы</strong>). Они могут включать в себя как изменения структуры, так и изменение данных. Для контроля примененных <strong>changesets</strong> <strong>Liquibase</strong> использует таблицы <code>databasechangelog</code> и <code>databasechangeloglock</code>.</p>
-</div>
-<div class="listingblock">
-<div class="title">Main changeLogFile <code>master.xml</code></div>
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="xml">&lt;?xml version="1.1" encoding="UTF-8" standalone="no"?&gt;
-&lt;databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd"&gt;
-
-    &lt;changeSet context="legacy" author="author (generated)" id="1"&gt;
-        &lt;createTable tableName="test"&gt;
-            &lt;column autoIncrement="true" name="id" type="SERIAL"&gt;
-                &lt;constraints nullable="false"/&gt;
-            &lt;/column&gt;
-            &lt;column name="user_name" type="VARCHAR(255)"/&gt;
-            &lt;column name="preferences" type="TEXT"/&gt;
-        &lt;/createTable&gt;
-
-        &lt;rollback&gt;
-            &lt;dropTable tableName="test" /&gt;
-        &lt;/rollback&gt;
-    &lt;/changeSet&gt;
-&lt;/databaseChangeLog&gt;</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_обновление_бд">5.2.2. Обновление БД</h4>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="shell script">mvn liquibase:update</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Здесь выполняется <code>liquibase:update</code> для базы указанной в <code>liquibase.properties</code> из <code>liquibase.url</code>, которая указана в стандартном JDBC формате.</p>
-</div>
-<div class="listingblock">
-<div class="title">Output</div>
-<div class="content">
-<pre>[INFO] Scanning for projects...
-[INFO]
-[INFO] ----------------&lt; by.rakovets.example:liquibase-maven &gt;-----------------
-[INFO] Building liquibase-maven 1.0.0
-[INFO] --------------------------------[ pom ]---------------------------------
-[INFO]
-[INFO] --- liquibase-maven-plugin:4.5.0:update (default-cli) @ liquibase-maven ---
-[INFO] ------------------------------------------------------------------------
-[INFO] Loading artifacts into URLClassLoader
-[INFO]   artifact: file:/home/rakovets/.m2/repository/org/apache/logging/log4j/log4j-api/2.14.1/log4j-api-2.14.1.jar
-[INFO]   artifact: file:/home/rakovets/.m2/repository/org/apache/logging/log4j/log4j-core/2.14.1/log4j-core-2.14.1.jar
-[INFO]   artifact: file:/home/rakovets/.m2/repository/org/apache/logging/log4j/log4j-slf4j-impl/2.14.1/log4j-slf4j-impl-2.14.1.jar
-[INFO]   artifact: file:/home/rakovets/.m2/repository/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar
-[INFO]   artifact: file:/home/rakovets/.m2/repository/org/postgresql/postgresql/42.3.0/postgresql-42.3.0.jar
-[INFO]   artifact: file:/home/rakovets/.m2/repository/org/checkerframework/checker-qual/3.5.0/checker-qual-3.5.0.jar
-[INFO]   artifact: file:/home/rakovets/.m2/repository/org/liquibase/liquibase-core/4.5.0/liquibase-core-4.5.0.jar
-[INFO]   artifact: file:/home/rakovets/.m2/repository/javax/xml/bind/jaxb-api/2.3.0/jaxb-api-2.3.0.jar
-[INFO]   artifact: file:/home/rakovets/dev/exp/liquibase/target/classes/
-[INFO]   artifact: file:/home/rakovets/dev/exp/liquibase/target/test-classes/
-[INFO] ------------------------------------------------------------------------
-[INFO] Loading artifacts into URLClassLoader
-[INFO]   artifact: file:/home/rakovets/.m2/repository/org/apache/logging/log4j/log4j-api/2.14.1/log4j-api-2.14.1.jar
-[INFO]   artifact: file:/home/rakovets/.m2/repository/org/apache/logging/log4j/log4j-core/2.14.1/log4j-core-2.14.1.jar
-[INFO]   artifact: file:/home/rakovets/.m2/repository/org/apache/logging/log4j/log4j-slf4j-impl/2.14.1/log4j-slf4j-impl-2.14.1.jar
-[INFO]   artifact: file:/home/rakovets/.m2/repository/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar
-[INFO]   artifact: file:/home/rakovets/.m2/repository/org/postgresql/postgresql/42.3.0/postgresql-42.3.0.jar
-[INFO]   artifact: file:/home/rakovets/.m2/repository/org/checkerframework/checker-qual/3.5.0/checker-qual-3.5.0.jar
-[INFO]   artifact: file:/home/rakovets/.m2/repository/org/liquibase/liquibase-core/4.5.0/liquibase-core-4.5.0.jar
-[INFO]   artifact: file:/home/rakovets/.m2/repository/javax/xml/bind/jaxb-api/2.3.0/jaxb-api-2.3.0.jar
-[INFO]   artifact: file:/home/rakovets/dev/exp/liquibase/target/classes/
-[INFO]   artifact: file:/home/rakovets/dev/exp/liquibase/target/test-classes/
-[INFO] ------------------------------------------------------------------------
-[project, pluginDescriptor]
-[INFO] Parsing Liquibase Properties File
-[INFO]   File: src/main/resources/liquibase.properties
-[INFO] ------------------------------------------------------------------------
-[INFO]
-[INFO]
-[INFO] Liquibase Community 4.5.0 by Datical
-[INFO] ####################################################
-##   _     _             _ _                      ##
-##  | |   (_)           (_) |                     ##
-##  | |    _  __ _ _   _ _| |__   __ _ ___  ___   ##
-##  | |   | |/ _` | | | | | '_ \ / _` / __|/ _ \  ##
-##  | |___| | (_| | |_| | | |_) | (_| \__ \  __/  ##
-##  \_____/_|\__, |\__,_|_|_.__/ \__,_|___/\___|  ##
-##              | |                               ##
-##              |_|                               ##
-##                                                ##
-##  Get documentation at docs.liquibase.com       ##
-##  Get certified courses at learn.liquibase.com  ##
-##  Free schema change activity reports at        ##
-##      https://hub.liquibase.com                 ##
-##                                                ##
-####################################################
-Starting Liquibase at 06:31:52 (version 4.5.0 #52 built at 2021-09-27 16:19+0000)
-[INFO] Settings
-----------------------------
-[INFO]     driver: null
-[INFO]     url: jdbc:postgresql://localhost:5432/maven-liquibase?prepareThreshold=0&amp;stringtype=unspecified
-[INFO]     username: *****
-[INFO]     password: *****
-[INFO]     use empty password: false
-[INFO]     properties file: src/main/resources/liquibase.properties
-[INFO]     properties file will override? false
-[INFO]     prompt on non-local database? false
-[INFO]     clear checksums? false
-[INFO]     changeLogDirectory: null
-[INFO]     changeLogFile: src/main/resources/master.xml
-[INFO]     context(s): null
-[INFO]     label(s): null
-[INFO]     number of changes to apply: 0
-[INFO]     drop first? false
-[INFO] ------------------------------------------------------------------------
-[INFO] Set default schema name to public
-[INFO] Parsing Liquibase Properties File src/main/resources/liquibase.properties for changeLog parameters
-[INFO] Executing on Database: jdbc:postgresql://localhost:5432/maven-liquibase?prepareThreshold=0&amp;stringtype=unspecified
-[INFO] Successfully acquired change log lock
-[INFO] Creating database history table with name: databasechangelog
-[INFO] Reading from databasechangelog
-[INFO] Table test created
-[INFO] ChangeSet src/main/resources/master.xml::1::author (generated) ran successfully in 9ms
-[INFO] Successfully released change log lock
-[INFO] ------------------------------------------------------------------------
-[INFO]
-[INFO] ------------------------------------------------------------------------
-[INFO] BUILD SUCCESS
-[INFO] ------------------------------------------------------------------------
-[INFO] Total time:  1.069 s
-[INFO] Finished at: 2021-10-23T06:31:52+03:00
-[INFO] ------------------------------------------------------------------------</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>После успешного выполнения в БД появляются:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>две служебные таблицы <code>databasechangelog</code> и <code>databasechangeloglock</code> (если их не было раньше)</p>
-</li>
-<li>
-<p>запись в таблице <code>databasechangelog</code> с информацией о примененном <strong>changeset</strong></p>
-</li>
-<li>
-<p>изменения указанные в <strong>changeset</strong></p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_генерация_sql_без_обновления_базы">5.2.3. Генерация SQL без обновления базы</h4>
-<div class="paragraph">
-<p>Иногда перед запуском изменений требуется посмотреть содержимое создаваемых запросов. Для этого предназначены команды <code>liquibase:updateSQL</code> и <code>liquibase:rollbackSQL</code></p>
-</div>
-<div class="sect4">
-<h5 id="_liquibaseupdatesql"><code>liquibase:updateSQL</code></h5>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="shell script">mvn liquibase:updateSQL</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="title">Output</div>
-<div class="content">
-<pre>[INFO] Scanning for projects...
-[INFO]
-[INFO] ----------------&lt; by.rakovets.example:liquibase-maven &gt;-----------------
-[INFO] Building liquibase-maven 1.0.0
-[INFO] --------------------------------[ pom ]---------------------------------
-[INFO]
-[INFO] --- liquibase-maven-plugin:4.5.0:updateSQL (default-cli) @ liquibase-maven ---
-[INFO] ------------------------------------------------------------------------
-[INFO] Loading artifacts into URLClassLoader
-[INFO]   artifact: file:/home/rakovets/.m2/repository/org/apache/logging/log4j/log4j-api/2.14.1/log4j-api-2.14.1.jar
-[INFO]   artifact: file:/home/rakovets/.m2/repository/org/apache/logging/log4j/log4j-core/2.14.1/log4j-core-2.14.1.jar
-[INFO]   artifact: file:/home/rakovets/.m2/repository/org/apache/logging/log4j/log4j-slf4j-impl/2.14.1/log4j-slf4j-impl-2.14.1.jar
-[INFO]   artifact: file:/home/rakovets/.m2/repository/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar
-[INFO]   artifact: file:/home/rakovets/.m2/repository/org/postgresql/postgresql/42.3.0/postgresql-42.3.0.jar
-[INFO]   artifact: file:/home/rakovets/.m2/repository/org/checkerframework/checker-qual/3.5.0/checker-qual-3.5.0.jar
-[INFO]   artifact: file:/home/rakovets/.m2/repository/org/liquibase/liquibase-core/4.5.0/liquibase-core-4.5.0.jar
-[INFO]   artifact: file:/home/rakovets/.m2/repository/javax/xml/bind/jaxb-api/2.3.0/jaxb-api-2.3.0.jar
-[INFO]   artifact: file:/home/rakovets/dev/exp/liquibase/target/classes/
-[INFO]   artifact: file:/home/rakovets/dev/exp/liquibase/target/test-classes/
-[INFO] ------------------------------------------------------------------------
-[INFO] Loading artifacts into URLClassLoader
-[INFO]   artifact: file:/home/rakovets/.m2/repository/org/apache/logging/log4j/log4j-api/2.14.1/log4j-api-2.14.1.jar
-[INFO]   artifact: file:/home/rakovets/.m2/repository/org/apache/logging/log4j/log4j-core/2.14.1/log4j-core-2.14.1.jar
-[INFO]   artifact: file:/home/rakovets/.m2/repository/org/apache/logging/log4j/log4j-slf4j-impl/2.14.1/log4j-slf4j-impl-2.14.1.jar
-[INFO]   artifact: file:/home/rakovets/.m2/repository/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar
-[INFO]   artifact: file:/home/rakovets/.m2/repository/org/postgresql/postgresql/42.3.0/postgresql-42.3.0.jar
-[INFO]   artifact: file:/home/rakovets/.m2/repository/org/checkerframework/checker-qual/3.5.0/checker-qual-3.5.0.jar
-[INFO]   artifact: file:/home/rakovets/.m2/repository/org/liquibase/liquibase-core/4.5.0/liquibase-core-4.5.0.jar
-[INFO]   artifact: file:/home/rakovets/.m2/repository/javax/xml/bind/jaxb-api/2.3.0/jaxb-api-2.3.0.jar
-[INFO]   artifact: file:/home/rakovets/dev/exp/liquibase/target/classes/
-[INFO]   artifact: file:/home/rakovets/dev/exp/liquibase/target/test-classes/
-[INFO] ------------------------------------------------------------------------
-[project, pluginDescriptor]
-[INFO] Parsing Liquibase Properties File
-[INFO]   File: src/main/resources/liquibase.properties
-[INFO] ------------------------------------------------------------------------
-[INFO]
-[INFO]
-[INFO] Liquibase Community 4.5.0 by Datical
-[INFO] ####################################################
-##   _     _             _ _                      ##
-##  | |   (_)           (_) |                     ##
-##  | |    _  __ _ _   _ _| |__   __ _ ___  ___   ##
-##  | |   | |/ _` | | | | | '_ \ / _` / __|/ _ \  ##
-##  | |___| | (_| | |_| | | |_) | (_| \__ \  __/  ##
-##  \_____/_|\__, |\__,_|_|_.__/ \__,_|___/\___|  ##
-##              | |                               ##
-##              |_|                               ##
-##                                                ##
-##  Get documentation at docs.liquibase.com       ##
-##  Get certified courses at learn.liquibase.com  ##
-##  Free schema change activity reports at        ##
-##      https://hub.liquibase.com                 ##
-##                                                ##
-####################################################
-Starting Liquibase at 06:33:38 (version 4.5.0 #52 built at 2021-09-27 16:19+0000)
-[INFO] Settings
-----------------------------
-[INFO]     driver: null
-[INFO]     url: jdbc:postgresql://localhost:5432/maven-liquibase?prepareThreshold=0&amp;stringtype=unspecified
-[INFO]     username: *****
-[INFO]     password: *****
-[INFO]     use empty password: false
-[INFO]     properties file: src/main/resources/liquibase.properties
-[INFO]     properties file will override? false
-[INFO]     prompt on non-local database? false
-[INFO]     clear checksums? false
-[INFO]     changeLogDirectory: null
-[INFO]     changeLogFile: src/main/resources/master.xml
-[INFO]     context(s): null
-[INFO]     label(s): null
-[INFO]     number of changes to apply: 0
-[INFO]     migrationSQLOutputFile: /home/rakovets/dev/exp/liquibase/target/liquibase/migrate.sql
-[INFO] ------------------------------------------------------------------------
-[INFO] Set default schema nliquibase:rollbackSQLame to public
-[INFO] Char encoding not set! The created file will be system dependent!
-[INFO] Output SQL Migration File: /home/rakovets/dev/exp/liquibase/target/liquibase/migrate.sql
-[INFO] Parsing Liquibase Properties File src/main/resources/liquibase.properties for changeLog parameters
-[INFO] Executing on Database: jdbc:postgresql://localhost:5432/maven-liquibase?prepareThreshold=0&amp;stringtype=unspecified
-[INFO] Successfully acquired change log lock
-[INFO] Reading from databasechangelog
-[INFO] Successfully released change log lock
-[INFO] ------------------------------------------------------------------------
-[INFO]
-[INFO] ------------------------------------------------------------------------
-[INFO] BUILD SUCCESS
-[INFO] ------------------------------------------------------------------------
-[INFO] Total time:  1.022 s
-[INFO] Finished at: 2021-10-23T06:33:39+03:00
-[INFO] ------------------------------------------------------------------------</pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="title">Файл <code>target/liquibase/migrate.sql</code></div>
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="sql">-- *********************************************************************
--- Update Database Script
--- *********************************************************************
--- Change Log: src/main/resources/master.xml
--- Ran at: 10/23/21, 6:33 AM
--- Against: postgres@jdbc:postgresql://localhost:5432/maven-liquibase?prepareThreshold=0&amp;stringtype=unspecified
--- Liquibase version: 4.5.0
--- *********************************************************************
-
--- Create Database Lock Table
-CREATE TABLE databasechangeloglock (ID INTEGER NOT NULL, LOCKED BOOLEAN NOT NULL, LOCKGRANTED TIMESTAMP WITHOUT TIME ZONE, LOCKEDBY VARCHAR(255), CONSTRAINT databasechangeloglock_pkey PRIMARY KEY (ID));
-
--- Initialize Database Lock Table
-DELETE FROM databasechangeloglock;
-
-INSERT INTO databasechangeloglock (ID, LOCKED) VALUES (1, FALSE);
-
--- Lock Database
-UPDATE databasechangeloglock SET LOCKED = TRUE, LOCKEDBY = 'ubuntu (172.20.0.1)', LOCKGRANTED = '2021-10-23 07:29:28.866' WHERE ID = 1 AND LOCKED = FALSE;
-
--- Create Database Change Log Table
-CREATE TABLE databasechangelog (ID VARCHAR(255) NOT NULL, AUTHOR VARCHAR(255) NOT NULL, FILENAME VARCHAR(255) NOT NULL, DATEEXECUTED TIMESTAMP WITHOUT TIME ZONE NOT NULL, ORDEREXECUTED INTEGER NOT NULL, EXECTYPE VARCHAR(10) NOT NULL, MD5SUM VARCHAR(35), DESCRIPTION VARCHAR(255), COMMENTS VARCHAR(255), TAG VARCHAR(255), LIQUIBASE VARCHAR(20), CONTEXTS VARCHAR(255), LABELS VARCHAR(255), DEPLOYMENT_ID VARCHAR(10));
-
--- Changeset src/main/resources/master.xml::1::author (generated)
-CREATE TABLE test (id INTEGER GENERATED BY DEFAULT AS IDENTITY NOT NULL, user_name VARCHAR(255), preferences TEXT);
-
-INSERT INTO databasechangelog (ID, AUTHOR, FILENAME, DATEEXECUTED, ORDEREXECUTED, MD5SUM, DESCRIPTION, COMMENTS, EXECTYPE, CONTEXTS, LABELS, LIQUIBASE, DEPLOYMENT_ID) VALUES ('1', 'author (generated)', 'src/main/resources/master.xml', NOW(), 1, '8:d30ee8898b8b3a53a55c2ae2deba7edd', 'createTable tableName=test', '', 'EXECUTED', 'legacy', NULL, '4.5.0', '4963369142');
-
--- Release Database Lock
-UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = NULL WHERE ID = 1;</code></pre>
-</div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_liquibaserollbacksql"><code>liquibase:rollbackSQL</code></h5>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="shell script">mvn liquibase:rollbackSQL -Dliquibase.rollbackCount=1</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p><code>-Dliquibase.rollbackCount=1</code> - откатить 1 последнее изменение или использовать <strong>tags</strong> и тогда выполнять с командой <code>-Dliquibase.rollbackTag=${tag-name}</code>.</p>
-</div>
-<div class="listingblock">
-<div class="title">Output</div>
-<div class="content">
-<pre>[INFO] Scanning for projects...
-[INFO]
-[INFO] ----------------&lt; by.rakovets.example:liquibase-maven &gt;-----------------
-[INFO] Building liquibase-maven 1.0.0
-[INFO] --------------------------------[ pom ]---------------------------------
-[INFO]
-[INFO] --- liquibase-maven-plugin:4.5.0:rollbackSQL (default-cli) @ liquibase-maven ---
-[INFO] ------------------------------------------------------------------------
-[INFO] Loading artifacts into URLClassLoader
-[INFO]   artifact: file:/home/rakovets/.m2/repository/org/apache/logging/log4j/log4j-api/2.14.1/log4j-api-2.14.1.jar
-[INFO]   artifact: file:/home/rakovets/.m2/repository/org/apache/logging/log4j/log4j-core/2.14.1/log4j-core-2.14.1.jar
-[INFO]   artifact: file:/home/rakovets/.m2/repository/org/apache/logging/log4j/log4j-slf4j-impl/2.14.1/log4j-slf4j-impl-2.14.1.jar
-[INFO]   artifact: file:/home/rakovets/.m2/repository/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar
-[INFO]   artifact: file:/home/rakovets/.m2/repository/org/postgresql/postgresql/42.3.0/postgresql-42.3.0.jar
-[INFO]   artifact: file:/home/rakovets/.m2/repository/org/checkerframework/checker-qual/3.5.0/checker-qual-3.5.0.jar
-[INFO]   artifact: file:/home/rakovets/.m2/repository/org/liquibase/liquibase-core/4.5.0/liquibase-core-4.5.0.jar
-[INFO]   artifact: file:/home/rakovets/.m2/repository/javax/xml/bind/jaxb-api/2.3.0/jaxb-api-2.3.0.jar
-[INFO]   artifact: file:/home/rakovets/dev/exp/liquibase/target/classes/
-[INFO]   artifact: file:/home/rakovets/dev/exp/liquibase/target/test-classes/
-[INFO] ------------------------------------------------------------------------
-[INFO] Loading artifacts into URLClassLoader
-[INFO]   artifact: file:/home/rakovets/.m2/repository/org/apache/logging/log4j/log4j-api/2.14.1/log4j-api-2.14.1.jar
-[INFO]   artifact: file:/home/rakovets/.m2/repository/org/apache/logging/log4j/log4j-core/2.14.1/log4j-core-2.14.1.jar
-[INFO]   artifact: file:/home/rakovets/.m2/repository/org/apache/logging/log4j/log4j-slf4j-impl/2.14.1/log4j-slf4j-impl-2.14.1.jar
-[INFO]   artifact: file:/home/rakovets/.m2/repository/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar
-[INFO]   artifact: file:/home/rakovets/.m2/repository/org/postgresql/postgresql/42.3.0/postgresql-42.3.0.jar
-[INFO]   artifact: file:/home/rakovets/.m2/repository/org/checkerframework/checker-qual/3.5.0/checker-qual-3.5.0.jar
-[INFO]   artifact: file:/home/rakovets/.m2/repository/org/liquibase/liquibase-core/4.5.0/liquibase-core-4.5.0.jar
-[INFO]   artifact: file:/home/rakovets/.m2/repository/javax/xml/bind/jaxb-api/2.3.0/jaxb-api-2.3.0.jar
-[INFO]   artifact: file:/home/rakovets/dev/exp/liquibase/target/classes/
-[INFO]   artifact: file:/home/rakovets/dev/exp/liquibase/target/test-classes/
-[INFO] ------------------------------------------------------------------------
-[project, pluginDescriptor]
-[INFO] Parsing Liquibase Properties File
-[INFO]   File: src/main/resources/liquibase.properties
-[INFO] ------------------------------------------------------------------------
-[INFO]
-[INFO]
-[INFO] Liquibase Community 4.5.0 by Datical
-[INFO] ####################################################
-##   _     _             _ _                      ##
-##  | |   (_)           (_) |                     ##
-##  | |    _  __ _ _   _ _| |__   __ _ ___  ___   ##
-##  | |   | |/ _` | | | | | '_ \ / _` / __|/ _ \  ##
-##  | |___| | (_| | |_| | | |_) | (_| \__ \  __/  ##
-##  \_____/_|\__, |\__,_|_|_.__/ \__,_|___/\___|  ##
-##              | |                               ##
-##              |_|                               ##
-##                                                ##
-##  Get documentation at docs.liquibase.com       ##
-##  Get certified courses at learn.liquibase.com  ##
-##  Free schema change activity reports at        ##
-##      https://hub.liquibase.com                 ##
-##                                                ##
-####################################################
-Starting Liquibase at 06:43:58 (version 4.5.0 #52 built at 2021-09-27 16:19+0000)
-[INFO] Settings
-----------------------------
-[INFO]     driver: null
-[INFO]     url: jdbc:postgresql://localhost:5432/maven-liquibase?prepareThreshold=0&amp;stringtype=unspecified
-[INFO]     username: *****
-[INFO]     password: *****
-[INFO]     use empty password: false
-[INFO]     properties file: src/main/resources/liquibase.properties
-[INFO]     properties file will override? false
-[INFO]     prompt on non-local database? false
-[INFO]     clear checksums? false
-[INFO]     changeLogDirectory: null
-[INFO]     changeLogFile: src/main/resources/master.xml
-[INFO]     context(s): null
-[INFO]     label(s): null
-[INFO]     rollback Count: 1
-[INFO]     rollback Date: null
-[INFO]     rollback Tag: null
-[INFO]     migrationSQLOutputFile: /home/rakovets/dev/exp/liquibase/target/liquibase/migrate.sql
-[INFO] ------------------------------------------------------------------------
-[INFO] Set default schema name to public
-[INFO] Char encoding not set! The created file will be system dependent!
-[INFO] Output SQL Migration File: /home/rakovets/dev/exp/liquibase/target/liquibase/migrate.sql
-[INFO] Parsing Liquibase Properties File src/main/resources/liquibase.properties for changeLog parameters
-[INFO] Executing on Database: jdbc:postgresql://localhost:5432/maven-liquibase?prepareThreshold=0&amp;stringtype=unspecified
-[INFO] Successfully acquired change log lock
-[INFO] Reading from databasechangelog
-[INFO] Successfully released change log lock
-[INFO] ------------------------------------------------------------------------
-[INFO]
-[INFO] ------------------------------------------------------------------------
-[INFO] BUILD SUCCESS
-[INFO] ------------------------------------------------------------------------
-[INFO] Total time:  1.046 s
-[INFO] Finished at: 2021-10-23T06:43:59+03:00
-[INFO] ------------------------------------------------------------------------</pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="title">Файл <code>.Файл `target/liquibase/migrate.sql`</code></div>
-<div class="content">
-<pre>-- *********************************************************************
--- Rollback 1 Change(s) Script
--- *********************************************************************
--- Change Log: src/main/resources/master.xml
--- Ran at: 10/23/21, 6:43 AM
--- Against: postgres@jdbc:postgresql://localhost:5432/maven-liquibase?prepareThreshold=0&amp;stringtype=unspecified
--- Liquibase version: 4.5.0
--- *********************************************************************
-
--- Lock Database
-UPDATE databasechangeloglock SET LOCKED = TRUE, LOCKEDBY = 'ubuntu (172.20.0.1)', LOCKGRANTED = '2021-10-23 06:43:59.083' WHERE ID = 1 AND LOCKED = FALSE;
-
--- Rolling Back ChangeSet: src/main/resources/master.xml::1::author (generated)
-DROP TABLE test;
-
-DELETE FROM databasechangelog WHERE ID = '1' AND AUTHOR = 'author (generated)' AND FILENAME = 'src/main/resources/master.xml';
-
--- Release Database Lock
-UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = NULL WHERE ID = 1;</pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_подробнее_о_changeset">5.2.4. Подробнее о changeSet</h4>
-<div class="paragraph">
-<p>Изменения могут быть в разных форматах, в том числе обычный sql или он же в отдельном файле.</p>
-</div>
-<div class="paragraph">
-<p>Каждое изменение может включать секцию <code>rollback</code> позволяющую откатывать изменения командой <code>liquibase:rollback</code>.
-Кроме того для маркировки изменений, например для более удобного отката туда, можно использовать <code>tagDatabase</code>.</p>
-</div>
-<div class="sect4">
-<h5 id="_обычный_формат">Обычный формат</h5>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="xml">&lt;changeSet context="legacy" author="author (generated)" id="1"&gt;
-    &lt;createTable tableName="test"&gt;
-        &lt;column autoIncrement="true" name="id" type="SERIAL"&gt;
-            &lt;constraints primaryKey="true" primaryKeyName="test_pkey"/&gt;
-        &lt;/column&gt;
-        &lt;column name="c1" type="VARCHAR(255)"/&gt;
-        &lt;column name="c2" type="INTEGER"/&gt;
-        &lt;column name="c3" type="SMALLINT"/&gt;
-        &lt;column name="c4" type="VARCHAR(255)"/&gt;
-        &lt;column name="c5" type="TEXT"/&gt;
-        &lt;column name="c6" type="VARCHAR(255)"/&gt;
-    &lt;/createTable&gt;
-&lt;/changeSet&gt;</code></pre>
-</div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_встроенный_sql">Встроенный SQL</h5>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="xml">&lt;changeSet context="legacy" author="author" id="1-domain-some-domain"&gt;
-    &lt;sql&gt;CREATE DOMAIN public.some_domain AS bigint; ALTER DOMAIN public.some_domain OWNER TO test;&lt;/sql&gt;
-    &lt;rollback&gt;DROP DOMAIN public.some_domain;&lt;/rollback&gt;
-&lt;/changeSet&gt;</code></pre>
-</div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_файл_sql">Файл SQL</h5>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="xml">&lt;changeSet context="legacy" author="author" id="1-user"&gt;
-    &lt;sqlFile dbms="postgresql" path="sql/some.sql" relativeToChangelogFile="true"/&gt;
-    &lt;rollback&gt;delete from "some";&lt;/rollback&gt;
-&lt;/changeSet&gt;</code></pre>
-</div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_теги">Теги</h5>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="xml">&lt;changeSet context="legacy" author="author" id="1-initial-changeset"&gt;
-    &lt;tagDatabase tag="initial"/&gt;
-&lt;/changeSet&gt;</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_контексты_запуска">5.2.5. Контексты запуска</h4>
-<div class="paragraph">
-<p>Для более удобного управления различными конфигурациями, например <code>development/production</code> можно использовать контексты.
-Контекст указывается в changeSet аттрибуте context и затем запускается <strong>Apache Maven</strong> параметром <code>-Dcontexts</code>.</p>
-</div>
-<div class="sect4">
-<h5 id="_изменение_с_контекстом">Изменение с контекстом</h5>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="xml">&lt;changeSet context="legacy" author="author" id="1-initial-changeset"&gt;
-    &lt;tagDatabase tag="initial"/&gt;
-&lt;/changeSet&gt;</code></pre>
-</div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_запуск_изменений_по_контексту">Запуск изменений по контексту</h5>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="shell script">#!/usr/bin/env bash mvn liquibase:update\
-        -Denv=dev\
-        -Dliquibase.url="jdbc:postgresql://dev/test?prepareThreshold=0&amp;stringtype=unspecified"\
-        -Dliquibase.contexts=non-legacy</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_откат_изменений">5.2.6. Откат изменений</h4>
-<div class="paragraph">
-<p>Операция обратная обновлению, в большинстве случаев поддерживается автоматически.
-Для прочих возможно задание через секцию rollback.
-Запускается командой liquibase:rollback.</p>
-</div>
-<div class="sect4">
-<h5 id="_изменение_с_откатом">Изменение с откатом</h5>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="xml">&lt;changeSet context="legacy" author="author" id="1-domain-some-domain"&gt;
-    &lt;sql&gt;CREATE DOMAIN public.some_domain AS bigint; ALTER DOMAIN public.some_domain OWNER TO test;&lt;/sql&gt;
-    &lt;rollback&gt;DROP DOMAIN public.some_domain;&lt;/rollback&gt;
-&lt;/changeSet&gt;</code></pre>
-</div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_запуск_отката">Запуск отката</h5>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="shell script">#!/usr/bin/env bash mvn liquibase:update\
-        -Denv=dev\
-        -Dliquibase.url="jdbc:postgresql://dev/test?prepareThreshold=0&amp;stringtype=unspecified"\
-        -Dliquibase.contexts=non-legacy</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_сравнение">5.2.7. Сравнение</h4>
-<div class="paragraph">
-<p>В разработке удобно использовать для сравнения двух существующих баз на предмет внесённых изменений.
-В настройки (или параметры запуска) потребуется добавить ссылку на reference DB и данные для доступа к ней.</p>
-</div>
-<div class="listingblock">
-<div class="title"><code>liquibase.properties</code></div>
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="properties">referenceUsername=test referenceUrl=jdbc:postgresql://dev/test_reference</code></pre>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_сравнение_схем">Сравнение схем</h5>
-<div class="paragraph">
-<p>Сравнение схем <code>url</code> и <code>referenceUrl</code>.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="shell script">#!/usr/bin/env bash mvn liquibase:diff\
-        -Denv=dev\
-        -Dliquibase.referenceUrl="jdbc:postgresql://dev/test?prepareThreshold=0"\
-        -Dliquibase.url="jdbc:postgresql://dev/test_reference?prepareThreshold=0"\
-        -Dliquibase.diffChangeLogFile=dev/diff.xml</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_сохранение_схемы">5.2.8. Сохранение схемы</h4>
-<div class="paragraph">
-<p>Также бывает полезно сохранить текущую схему базы, с данными или без. Необходимо иметь в виду, что <strong>Liquibase</strong> сохраняет схему не полностью соответствующую оригиналу, например используемые домены или наследование нужно будет добавлять отдельно (см Ограничения).</p>
-</div>
-<div class="sect4">
-<h5 id="_сохранение_схемы_без_учёта_данных">Сохранение схемы без учёта данных</h5>
-<div class="paragraph">
-<p>Сохранение схемы существующей базы.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="shell script">#!/usr/bin/env bash mvn liquibase:generateChangeLog\
-        -Denv=dev\
-        -Dliquibase.url="jdbc:postgresql://dev/test_reference?prepareThreshold=0"\
-        -Dliquibase.outputChangeLogFile=dev/changelog.xml</code></pre>
-</div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_сохранение_схемы_с_данными">Сохранение схемы с данными</h5>
-<div class="paragraph">
-<p>Сохранение схемы существующей базы с данными.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="shell script">#!/usr/bin/env bash mvn liquibase:generateChangeLog\
-        -Denv=dev\
-        -Dliquibase.url="jdbc:postgresql://dev/test_reference?prepareThreshold=0"\
-        -Dliquibase.outputChangeLogFile=dev/changelog.xml</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_обработка_типов_данных_специфичных_для_конкретной_базы">5.2.9. Обработка типов данных специфичных для конкретной базы</h4>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="xml">&lt;changeSet&gt;
-    &lt;createTable tableName="t_name"&gt;
-        ...
-        &lt;column name="doubleArray" type="DOUBLE_ARRAY"/&gt;
-        ...
-    &lt;/createTable&gt;
-    &lt;modifySql dbms="postgresql"&gt;
-        &lt;replace replace="DOUBLE_ARRAY" with="double precision[][]"/&gt;
-    &lt;/modifySql&gt;
-&lt;/changeSet&gt;</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_альтернативные_решения">5.2.10. Альтернативные решения</h4>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>Flyway</strong><br>
-Наряду с Liquibase пользуется популярностью в Java сообществе — <a href="http://flywaydb.org/documentation" class="bare">http://flywaydb.org/documentation</a></p>
-</li>
-<li>
-<p><strong>Sqitch</strong><br>
-Аналог на Perl — <a href="http://sqitch.org" class="bare">http://sqitch.org</a></p>
-</li>
-<li>
-<p><strong>FluentMigrator</strong><br>
-Аналог для .Net — <a href="https://github.com/schambers/fluentmigrator" class="bare">https://github.com/schambers/fluentmigrator</a></p>
-</li>
-<li>
-<p><strong>DBGeni</strong><br>
-Аналог для Ruby — <a href="http://dbgeni.appsintheopen.com/manual.html" class="bare">http://dbgeni.appsintheopen.com/manual.html</a></p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_links_2">5.2.11. Links</h4>
-<div class="ulist">
-<ul>
-<li>
-<p>Существуют определенные проблемы с выгрузкой, сравнением и применением бинарных данных, в частности проблема с генерацией изменений.</p>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="https://liquibase.jira.com/browse/CORE-2650" class="bare">https://liquibase.jira.com/browse/CORE-2650</a></p>
-</li>
-<li>
-<p><a href="https://liquibase.jira.com/browse/CORE-2906" class="bare">https://liquibase.jira.com/browse/CORE-2906</a></p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>Наследование и общие столбцы</p>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="http://forum.liquibase.org/topic/postgresql-subtable-via-inherits" class="bare">http://forum.liquibase.org/topic/postgresql-subtable-via-inherits</a></p>
-</li>
-<li>
-<p><a href="https://stackoverflow.com/questions/25840467/liquibase-common-columns" class="bare">https://stackoverflow.com/questions/25840467/liquibase-common-columns</a></p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>Исходный код</p>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="https://github.com/liquibase/liquibase" class="bare">https://github.com/liquibase/liquibase</a></p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>Как добавить liquibase в существующий проект</p>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="https://www.liquibase.org/documentation/existing_project.html" class="bare">https://www.liquibase.org/documentation/existing_project.html</a></p>
-</li>
-<li>
-<p><a href="https://www.liquibase.org/documentation/contexts.html" class="bare">https://www.liquibase.org/documentation/contexts.html</a></p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>Как работают изменения базы</p>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="https://www.liquibase.org/documentation/changeset.html" class="bare">https://www.liquibase.org/documentation/changeset.html</a></p>
-</li>
-<li>
-<p><a href="https://www.liquibase.org/documentation/databasechangelog_table.html" class="bare">https://www.liquibase.org/documentation/databasechangelog_table.html</a></p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>Больше о формате изменений</p>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="http://www.liquibase.org/documentation/json_format.html" class="bare">http://www.liquibase.org/documentation/json_format.html</a></p>
-</li>
-<li>
-<p><a href="https://www.liquibase.org/documentation/changes/sql.html" class="bare">https://www.liquibase.org/documentation/changes/sql.html</a></p>
-</li>
-<li>
-<p><a href="https://www.liquibase.org/documentation/changes/sql_file.html" class="bare">https://www.liquibase.org/documentation/changes/sql_file.html</a></p>
-</li>
-<li>
-<p><a href="https://www.liquibase.org/documentation/column.html" class="bare">https://www.liquibase.org/documentation/column.html</a></p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>Больше про update</p>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="https://www.liquibase.org/documentation/maven/generated/update-mojo.html" class="bare">https://www.liquibase.org/documentation/maven/generated/update-mojo.html</a></p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>Больше о генерации изменений</p>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="https://www.liquibase.org/documentation/maven/generated/generateChangeLog-mojo.html" class="bare">https://www.liquibase.org/documentation/maven/generated/generateChangeLog-mojo.html</a></p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>Больше о custom SQL</p>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="http://www.liquibase.org/documentation/modify_sql.html" class="bare">http://www.liquibase.org/documentation/modify_sql.html</a></p>
-</li>
-<li>
-<p><a href="https://stackoverflow.com/questions/28240068/create-column-of-type-double-precision-with-liquibase" class="bare">https://stackoverflow.com/questions/28240068/create-column-of-type-double-precision-with-liquibase</a></p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>Прочее</p>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="https://news.ycombinator.com/item?id=10145933" class="bare">https://news.ycombinator.com/item?id=10145933</a></p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>Другие статьи о Liquibase</p>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="https://habr.com/ru/post/179425/" class="bare">https://habr.com/ru/post/179425/</a></p>
-</li>
-<li>
-<p><a href="https://habr.com/ru/post/178665/" class="bare">https://habr.com/ru/post/178665/</a></p>
-</li>
-<li>
-<p><a href="https://habr.com/ru/post/333762/" class="bare">https://habr.com/ru/post/333762/</a></p>
-</li>
-<li>
-<p><a href="https://habr.com/ru/post/251617/" class="bare">https://habr.com/ru/post/251617/</a></p>
-</li>
-<li>
-<p><a href="https://habr.com/ru/post/251617/" class="bare">https://habr.com/ru/post/251617/</a></p>
-</li>
-</ul>
-</div>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_тестирование">5.3. Тестирование</h3>
+<h3 id="_тестирование">5.2. Тестирование</h3>
 <div class="paragraph">
 <p><strong>Тестирование</strong> (<strong>testing</strong>) <strong>программного обеспечения</strong> (<strong>ПО</strong>) – это процесс исследования ПО с целью выявления ошибок и определения соответствия между реальным и ожидаемым поведением ПО, осуществляемый на основе набора тестов, выбранных определённым образом. В более широком смысле, <strong>тестирование ПО</strong> – это техника контроля качества программного продукта, включающая в себя проектирование тестов, выполнение тестирования и анализ полученных результатов.</p>
 </div>
@@ -9952,7 +9952,7 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 <p>Очень часто современные программные продукты разрабатываются в сжатые сроки и при ограниченных бюджетах проектов. Программирование сегодня перешло из разряда искусства в разряд ремесел для многих миллионов специалистов. Но, к сожалению, в такой спешке разработчики зачастую игнорируют необходимость обеспечения защищённости своих продуктов, подвергая тем самым пользователей неоправданному риску. <strong>Контроль качества</strong> (<strong>тестирование</strong>) считается важным в <strong>процессе разработки ПО</strong>, потому что обеспечивает безопасность, надёжность, удобство создаваемого продукта. В настоящее время существует великое множество подходов и методик к решению задачи тестирования ПО, но эффективное тестирование сложных программных систем - процесс творческий, не сводящийся к следованию строгим и чётким правилам.</p>
 </div>
 <div class="sect3">
-<h4 id="_классификация_видов_тестирования">5.3.1. Классификация видов тестирования</h4>
+<h4 id="_классификация_видов_тестирования">5.2.1. Классификация видов тестирования</h4>
 <div class="paragraph">
 <p>Существует несколько признаков, по которым принято производить классификацию видов тестирования. Все <strong>виды тестирования</strong> программного обеспечения можно условно классифицировать по следующему виду:</p>
 </div>
@@ -10228,7 +10228,7 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 </div>
 </div>
 <div class="sect3">
-<h4 id="_уровни_тестирования">5.3.2. Уровни тестирования</h4>
+<h4 id="_уровни_тестирования">5.2.2. Уровни тестирования</h4>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
@@ -10307,7 +10307,7 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 </div>
 </div>
 <div class="sect3">
-<h4 id="_динамический_и_статический_анализ_кода">5.3.3. Динамический и статический анализ кода</h4>
+<h4 id="_динамический_и_статический_анализ_кода">5.2.3. Динамический и статический анализ кода</h4>
 <div class="paragraph">
 <p>По мере продвижения проекта стоимость устранения дефектов ПО может экспоненциально возрастать. Инструменты <strong>статического</strong> и <strong>динамического</strong> анализа помогают предотвратить эти затраты благодаря обнаружению программных ошибок на ранних этапах жизненного цикла ПО.</p>
 </div>
@@ -10338,7 +10338,7 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 </div>
 </div>
 <div class="sect3">
-<h4 id="_links_3">5.3.4. Links</h4>
+<h4 id="_links_3">5.2.4. Links</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -10470,7 +10470,7 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-10-25 04:36:14 UTC
+Last updated 2021-10-25 04:38:01 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/run_prettify.min.js"></script>
