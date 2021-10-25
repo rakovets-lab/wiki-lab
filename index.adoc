@@ -18,6 +18,8 @@ include::data-persistence/index.adoc[]
 
 include::java/index.adoc[]
 
+include::spring/index.adoc[]
+
 include::common/testing.adoc[]
 
 include::security/github-keys.adoc[]
