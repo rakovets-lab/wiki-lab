@@ -1,5 +1,5 @@
 = GitHub keys
-:imagesdir: ../assets/img/security/github-keys
+:imagesdir: ../assets/img/common/github-keys
 
 == SSH key
 
