@@ -14,9 +14,9 @@ include::application-architecture/index.adoc[]
 
 include::java/core/index.adoc[]
 
-include::java/tools/index.adoc[]
+include::java/spring/index.adoc[]
 
-include::spring/index.adoc[]
+include::java/tools/index.adoc[]
 
 include::sql/index.adoc[]
 
