@@ -1,4 +1,4 @@
-= SPRING FRAMEWORK
+= Spring Framework
 
 :leveloffset: +1
 
