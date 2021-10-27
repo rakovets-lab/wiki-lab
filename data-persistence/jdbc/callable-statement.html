@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.16">
-<title>Client-Server Architecture</title>
+<title>CallableStatement</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -439,182 +439,127 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article">
 <div id="header">
-<h1>Client-Server Architecture</h1>
+<h1><code>CallableStatement</code></h1>
 </div>
 <div id="content">
 <div id="preamble">
 <div class="sectionbody">
-<div class="admonitionblock warning">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Warning</div>
-</td>
-<td class="content">
-Термины и названия, которые используются в разработке программного обеспечения, для одних и тех же вещей и идей, могут отличаться друг от друга в зависимости от авторов и различных глоссариев принятых в командах и компаниях. К сожалению, согласованность в этом отсутствует и необходимо это учитывать при коммуникации с другими. Да бы не вносить еще большую несогласованность, рекомендуется использовать только термины и названия на английском языке, так как в процессе локализации может теряться смысл или очевидность, того или иного термина и названия. Что еще хуже, может появиться новый термин или название для конкретной локализации.
-</td>
-</tr>
-</table>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_что_такое_client_server_architecture">Что такое Client-Server Architecture?</h2>
-<div class="sectionbody">
 <div class="paragraph">
-<p><strong>Client-server model</strong> или <strong>client-server architecture</strong>, представляет собой структуру распределенного приложения, разделяющую задачи между <strong>серверами</strong> и <strong>клиентами</strong>, которые либо находятся в одной системе, либо обмениваются данными через компьютерную сеть или Интернет. <strong>Клиент</strong> полагается на отправку запроса в другую программу, чтобы получить доступ к услуге, предоставляемой сервером. На <strong>сервере</strong> выполняется одна или несколько программ, которые совместно используют ресурсы и распределяют работу между клиентами.</p>
+<p>Подобно тому, как объект <code>Connection</code> создает объекты <code>Statement</code> и <code>PreparedStatement</code>, он также создает объект <code>CallableStatement</code>, который будет использоваться для выполнения вызова хранимой процедуры из базы данных. <strong>Хранимая процедура</strong> - последовательность команд, хранимых в <strong>БД</strong>.</p>
 </div>
 <div class="paragraph">
-<p>Клиент и сервер физически представляют собой программы, например, клиентом может являться <em>браузер</em>, а сервером: <em>Web server</em> или <em>Relational Database Management System</em>.</p>
+<p>Синтаксис вызова хранимой процедуры в <code>JDBC</code> показан ниже. Квадратные скобки означают, что параметры необязательны и сами по себе не являются частью синтаксиса.</p>
 </div>
-<div class="paragraph">
-<p>Отношения <strong>client-server</strong> взаимодействуют согласно <strong>request–response messaging pattern</strong> и должны иметь общий протокол связи, который формально определяет используемые правила, язык и шаблоны <strong>requests</strong> и <strong>response</strong>. Связь между клиентом и сервером <em>обычно</em> осуществляется по набору протоколов <strong>TCP/IP</strong>.</p>
-</div>
-<div class="paragraph">
-<p><strong>В основе взаимодействия клиент-сервер</strong> лежит принцип того, что такое взаимодействие начинает клиент, сервер лишь отвечает клиенту и сообщает о том, может ли он предоставить услугу и, если может, то на каких условиях.</p>
-</div>
-<div class="paragraph">
-<p><strong>Клиентское и серверное программное обеспечение</strong> обычно установлено на разных машинах, но также они могут работать и на одном компьютере. Данная концепция взаимодействия была разработана для того, чтобы разделить нагрузку между участниками процесса обмена информацией, а также для того, чтобы разделить программный код поставщика и заказчика.</p>
-</div>
-<div class="imageblock text-center">
+<div class="listingblock">
 <div class="content">
-<img src="../assets/img/application-architecture/client-server.jpg" alt="Простая схема взаимодействия client-server">
-</div>
-<div class="title">Figure 1. Простая схема взаимодействия <strong>client-server</strong></div>
-</div>
-<div class="paragraph">
-<p>Видно, что к одному серверу может обращаться сразу несколько клиентов (на одном сайте может находиться несколько посетителей). Также стоит заметить, что количество одновременно взаимодействующих клиентов с сервером зависит от мощности сервера и от того, что хочет получить клиент от сервера.</p>
-</div>
-<div class="sect2">
-<h3 id="_преимущества">Преимущества</h3>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>Отсутствие дублирования кода</strong> программы-сервера программами-клиентами. Это позволяет обновлять систему, без обязательной необходимости обновлять программу-клиент, так как основная логика выполнения находится на стороне программы-сервера.</p>
-</li>
-<li>
-<p><strong>Снижаются требования к компьютерам на которые установлен клиент</strong>, так как все вычисления выполняются на сервере.</p>
-</li>
-<li>
-<p><strong>Безопасность</strong>, так как все данные хранятся на сервере, который, как правило, защищён гораздо лучше большинства клиентов. На сервере проще организовать контроль полномочий, чтобы разрешать доступ к данным только клиентам с соответствующими правами доступа.</p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_недостатки">Недостатки</h3>
-<div class="ulist">
-<ul>
-<li>
-<p>Неработоспособность сервера <strong>может сделать неработоспособной всю вычислительную</strong> систему. Неработоспособным сервером следует считать сервер, производительности которого, не хватает на обслуживание всех клиентов. Неработоспособным сервером следует так же считать сервер, который физически не обслуживает клиентов, т.к находящийся на ремонте, профилактике и т.д.</p>
-</li>
-<li>
-<p>Поддержка работы данной системы <strong>требует отдельного специалиста</strong> — системного администратора.</p>
-</li>
-<li>
-<p><strong>Высокая стоимость оборудования</strong>, т.к. к серверу предъявляются более высокие требования к отказоустойчивости, чем к клиентам.</p>
-</li>
-</ul>
+<pre class="highlight"><code class="language-java" data-lang="java">{call имя_процедуры[(?, ?, ...)]}
+
+{? = call имя_процедуры[(?, ?, ...)]}
+
+{call имя_процедуры}</code></pre>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_тонкий_и_толстый_клиент">Тонкий и толстый клиент</h2>
+<h2 id="_создание_объекта_callablestatement">Создание объекта <code>CallableStatement</code></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Все <strong>клиенты</strong> в клиент-серверной архитектуре условно делятся на два подтипа: <strong>толстые клиенты</strong> и <strong>тонкие клиенты</strong>.</p>
+<p>Объекты <code>CallableStatement</code> создаются методом <code>prepareCall</code> объекта <code>Connection</code>. Пример, который создает экземпляр <code>CallableStatement</code>, содержащий вызов хранимой процедуры с двумя аргументами и без возвращаемого параметра:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">CallableStatement cstmt = con.prepareCall("{call procedure_name(?, ?)}");</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_входные_и_выходные_in_и_out_параметры">Входные и выходные <code>IN</code> и <code>OUT</code>-параметры</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Для передачи и получения значения из хранимой процедуры есть три типа параметров:  <code>IN</code>, <code>OUT</code> и <code>INOUT</code>. Объект <code>CallableStatement</code> может использовать все три.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Параметры</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Описание</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>IN</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Параметр, значение которого присваивается по умолчанию при создании оператора <code>SQL</code>. C помощью метода <code>setXXX()</code> можно установить входные значения с параметром <code>IN</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>OUT</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Параметр, значение которого предоставляется оператором <code>SQL</code>, который он возвращает. Извлечение значения из параметров <code>OUT</code> выполнется с помощью методов <code>getXXX()</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>INOUT</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Параметр, который предоставляет как входные, так и выходные значения. Можно связать переменные с помощью методов <code>setXXX()</code> и извлекаете значения с помощью методов <code>getXXX()</code>.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Передача значений входных парметров объекта <code>CallableStatement</code> осуществляется с помощью методов <code>setXXX</code>, унаследованных от <code>PreparedStatement</code>. Типы передаваемых значений определяются тем, какой из методов <code>setXXX</code> используется (<code>setString</code> для передачи значений типа <code>String</code>, <code>setInt</code> для передачи значений типа <code>int</code> и т.п.).</p>
 </div>
 <div class="paragraph">
-<p><strong>Толстый клиент</strong> — клиент, выполняющий запрашиваемые со стороны пользователя манипуляции независимо от ведущего сервера. Основной сервер в такой вариации системной архитектуры может применяться как особое хранилище информации, обработка и конечное предоставление которых просто переносится на локальную машину пользователя.</p>
+<p><code>JDBC</code>-типы всех <code>OUT</code>-параметров хранимых процедур должны быть зарегистрированы перед их вызовом. Регистрация типов данных выходного параметра производится методом <code>registerOutParameter</code>. Только в этом случае после вызова хранимой процедуры <code>CallableStatement.executeQuery()</code> можно получить результаты выполнения с помощью методов <code>getXXX</code>. Необходимо использовать подходящий по типу данных метод <code>getXXX</code> в соответствии с зарегистрированным <code>JDBC</code>-типом параметра.</p>
 </div>
 <div class="paragraph">
-<p><strong>Толстый клиент</strong> – это рабочая машина или ПК, которые функционируют на основе своей ОС и наполнены полноценным набором ПО для требуемых задач пользователя. Если взглянуть с программной точки зрения, понятными примерами толстых клиентов можно считать программы для совместной деятельности, если они изначально установлены на определенные вычислительные устройства. Например: <em>Yahoo Messenger</em>, <em>Office 365</em>, <em>Microsoft Outlook</em>.</p>
+<p>Другими словами, <code>registerOutParameter</code> использует <code>JDBC</code>-тип, который подходит к <code>JDBC</code>-типу возвращаемого из значения, а <code>getXXX</code> преобразует его в тип Java.</p>
 </div>
 <div class="paragraph">
-<p><strong>Преимущества толстых клиентов:</strong></p>
+<p>Пример регистрации выходных параметров хранимой процедуры и чтение выходных значений.</p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>Большая функциональность;</p>
-</li>
-<li>
-<p>Наличие многопользовательского режима;</p>
-</li>
-<li>
-<p>Возможность работы в режиме оффлайн;</p>
-</li>
-<li>
-<p>Мгновенное быстродействие;</p>
-</li>
-<li>
-<p>Минимальная зависимость от сложных серверов.</p>
-</li>
-</ul>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">CallableStatement cstmt = con.prepareCall ("{call getData(?, ?)}");
+cstmt.registerOutParameter(1, java.sql.Types.TINYINT);
+cstmt.registerOutParameter(2, java.sql.Types.DECIMAL, 2);
+// Вызов хранимой процедуры
+cstmt.executeQuery();
+// Чтение выходных данных
+byte x = cstmt.getByte(1);
+java.math.BigDecimal n = cstmt.getBigDecimal(2, 2);</code></pre>
+</div>
 </div>
 <div class="paragraph">
-<p><strong>Недостатки толстых клиентов:</strong></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Все рабочие машины на постоянной основе нуждаются в техническом обслуживании;</p>
-</li>
-<li>
-<p>Необходимость в индивидуальном обновлении аппаратного ПО каждого клиента до уровня программного обеспечения, которое будет использоваться;</p>
-</li>
-<li>
-<p>Массивные объемы дистрибутивов;</p>
-</li>
-<li>
-<p>Полная зависимость от платформ, под которую данные клиенты были созданы.</p>
-</li>
-</ul>
+<p>В примере метод <code>getByte</code> извлекает байт из первого выходного параметра, а <code>getBigDecimal</code> возвращает объект <code>BigDecimal</code> (с двумя цифрами после десятичной точки) из второго выходного параметра.</p>
 </div>
 <div class="paragraph">
-<p><strong>Тонкий клиент</strong> — вид клиента, который может переносить выполнение задач по обработке информации на сервер, не применяя свои мощности по вычислению для их внедрения. Все вычислительные ресурсы подобного клиента максимально ограничены, важно, чтобы их хватало для старта нужного сетевого ПО, применяя, к примеру, веб-интерфейс.</p>
+<p>Если параметр является одновременно и входным, и выходным (<code>INOUT</code>), то необходимо вызывать как метод <code>setXXX</code>, так и метод <code>registerOutParameter</code>. Метод <code>setXXX</code> устанавливает входное значение параметра, а <code>registerOutParameter</code> регистрирует тип выходного значения.
+В следующий пример демонстрирует вызов хранимой процедуры с одним <code>INOUT</code>-параметром. Метод <code>setByte</code> устанавливает значение параметра в <code>25</code>, которое будет передано хранимой процедуре базе данных как <code>TINYINT</code>. Далее метод <code>registerOutParameter</code> регистрирует первый параметр как <code>TINYINT</code>. После выполнения хранимой процедуры возвращается значение типа <code>TINYINT</code>, которое будет считано методом <code>getByte</code> в виде типа <code>byte</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">CallableStatement cstmt = con.prepareCall("{call procedureName(?)}");
+// Определение значение параметра
+cstmt.setByte(1, 25);
+// Регистрация выходного параметра
+cstmt.registerOutParameter(1, java.sql.Types.TINYINT);
+cstmt.executeUpdate();
+// Чтение параметра
+byte x = cstmt.getByte(1);</code></pre>
+</div>
 </div>
 <div class="paragraph">
-<p>Одним из наиболее распространенных примеров такого типа клиента считается ПК с заранее установленным веб-браузером, который применяется для работы с web-сервисами.</p>
+<p>Если хранимая процедура оформлена функцией, т.е возвращает значение не через параметры, а через оператор <code>RETURNS</code>, то для вызова используйте <code>execute</code> вместо <code>executeUpdate</code>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_закрытие_объекта_callablestatement">Закрытие объекта <code>CallableStatement</code></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Так же, как нужно закрывать объект <code>Statement</code>, по той же причине необходимо закрывать объект <code>CallableStatement</code>.</p>
 </div>
 <div class="paragraph">
-<p><strong>Характерная черта тонких клиентов</strong> — применение терминального режима функционирования. В такой ситуации, терминальный сервер применяется для процесса отправки и получения информации пользователя, что и является базовым отличием от процесса независимой обработки информации в толстых клиентах.</p>
-</div>
-<div class="paragraph">
-<p><strong>Плюсы тонкого клиента:</strong></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Минимальное аппаратное обслуживание;</p>
-</li>
-<li>
-<p>Низкий риск возникновения неисправности;</p>
-</li>
-<li>
-<p>Минимальные технические требования к аппаратному оборудованию.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p><strong>Недостатки тонкого клиента:</strong></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>При сбое на сервере «пострадают» все подключенные пользователи;</p>
-</li>
-<li>
-<p>Нет возможности работать без активного подключения к сети;</p>
-</li>
-<li>
-<p>При взаимодействии с большим массивом данных может снижаться объем производительности основного сервера.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p><strong>Базовые отличия</strong> между ними – это варианты обработки данных. <strong>Толстые клиенты</strong> работают с информацией на основе собственных аппаратных и программных возможностей, в то же время <strong>тонкие</strong> применяют ПО центрального сервера, только чтобы обработать данные, предоставляя системе лишь требуемый графический интерфейс для выполнения работы пользователем. Это значит, что в роли тонких клиентов иногда мы можем увидеть устаревшие или не очень производительные ПК.</p>
+<p>Простой вызов метода <code>close()</code> сделает эту работу. Если сначала закрыть объект <code>Connection</code>, он также закроет объект <code>CallableStatement</code>. Однако всегда нужно явно закрывать объект <code>CallableStatement</code>, чтобы обеспечить правильную очистку.</p>
 </div>
 </div>
 </div>
