@@ -1,0 +1,7 @@
+= Java Core
+
+:leveloffset: +1
+
+include::generics.adoc[]
+
+:leveloffset: -1
