@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.16">
-<title>Проектирование баз данных</title>
+<title>Listeners</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -439,431 +439,105 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article">
 <div id="header">
-<h1>Проектирование баз данных</h1>
+<h1>Listeners</h1>
 </div>
 <div id="content">
-<div class="sect1">
-<h2 id="_нормализация_и_денормализация_баз_данных">Нормализация и денормализация баз данных</h2>
+<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p><strong>Нормализация базы данных</strong> - это процесс эффективной организации данных в базе данных. Есть две причины процесса нормализации:</p>
+<p><strong>Событие</strong> (<strong>Event</strong>) - это то, что произошло. В мире веб-приложений событием может быть инициализация приложения, уничтожение приложения, запрос от клиента, создание/уничтожение сеанса, изменение атрибутов в сеансе и т.д.</p>
+</div>
+<div class="paragraph">
+<p><strong>Servlet API</strong> предоставляет различные типы интерфейсов <strong>Listeners</strong> (<strong>слушателей</strong>), которые мы можем реализовать и настроить в <code>web.xml</code> для обработки определенных событий, когда происходят определенные события. Например, можно создать <strong>Listener</strong> для события запуска приложения, чтобы прочитать параметры инициализации контекста и создать соединение с базой данных, а также установить его как свойство контекста для использования другими ресурсами.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_интерфейс_listener_и_объект_event">Интерфейс <code>Listener</code> и объект <code>Event</code></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>Servlet API</strong> предоставляет разные типы <strong>Listeners</strong> для разных типов событий. Интерфейс <code>Listener</code> объявляет методы для обработки подобного набора событий. Например, у нас есть <code>ServletContextListener</code>, который прослушивает события запуска и завершения контекста. Каждый метод в интерфейсе <code>Listener</code> принимает объект <code>Event</code> в качестве входных данных. Объект <code>Event</code> действует как оболочка, предоставляя конкретный объект для <code>Listener</code>.</p>
+</div>
+<div class="paragraph">
+<p><strong>Servlet API</strong> предоставляет следующие объекты <code>Event</code>:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Устранение избыточных данных, например, хранение тех же данных в более чем одной таблице.</p>
+<p><code>javax.servlet.AsyncEvent</code>- событие, которое вызывается, когда асинхронная операция, инициированная <code>ServletRequest</code> (путем вызова <code>ServletRequest.startAsync()</code> или <code>ServletRequest.startAsync(ServletRequest, ServletResponse))</code>, завершилась по тайм-ауту или вызвала ошибку.</p>
 </li>
 <li>
-<p>Обеспечение зависимостей данных.</p>
+<p><code>javax.servlet.http.HttpSessionBindingEvent</code> - событие этого типа отправляются объекту, который реализует <code>HttpSessionBindingListener</code>, когда объект связан или не связан с сеансом, или <code>HttpSessionAttributeListener</code>, настроенному в <code>web.xml</code>, когда любой атрибут привязывается, отвязывается или заменяется в <strong>session</strong> (<strong>сеансе</strong>). Сеанс связывает объект, вызывая <code>HttpSession.setAttribute()</code>, и отменяет привязку объекта, вызывая <code>HttpSession.removeAttribute()</code>. Когда объект удаляется из сеанса, мы можем использовать это событие для операций очистки.</p>
+</li>
+<li>
+<p><code>javax.servlet.http.HttpSessionEvent</code> - это класс, который представляет уведомления о событиях изменения сеанса в веб-приложении.</p>
+</li>
+<li>
+<p><code>javax.servlet.ServletContextAttributeEvent</code> - класс событий для уведомлений об изменениях атрибутов <code>ServletContext</code> веб-приложения.</p>
+</li>
+<li>
+<p><code>javax.servlet.ServletContextEvent</code> - это класс событий для уведомлений об изменениях контекста сервлета веб-приложения.</p>
+</li>
+<li>
+<p><code>javax.servlet.ServletRequestEvent</code> - этот тип события представляет событие жизненного цикла <code>ServletRequest</code>. Исходный код события - <code>ServletContext</code> этого веб-приложения.</p>
+</li>
+<li>
+<p><code>javax.servlet.ServletRequestAttributeEvent</code> - это класс событий для уведомления об изменениях атрибутов, запрошенных сервлетом в приложении.</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p><strong>Денормализация</strong> — намеренное приведение структуры базы данных в состояние, не соответствующее критериям нормализации, обычно проводимое с целью ускорения операций чтения из базы за счет добавления избыточных данных.</p>
-</div>
-<div class="paragraph">
-<p><strong>Нормализация</strong> состоит из ряда принципов, которые помогают в создании хорошей структуры базы данных. Эти принципы делятся на нормальные формы, их цель в организации структуры базы данных таким образом, чтобы правильно организовать структуру базы данных.</p>
-</div>
-<div class="sect2">
-<h3 id="_первая_нормальная_форма">Первая нормальная форма</h3>
-<div class="paragraph">
-<p>Правила первой нормальной формы:</p>
+<p><strong>Servlet API</strong> предоставляет следующие интерфейсы <code>Listener</code>:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>В таблице не должно быть дублирующих строк.</p>
+<p><code>javax.servlet.AsyncListener</code> - слушатель будет уведомлен, если асинхронная операция, запущенная в <code>ServletRequest</code> с добавленным слушателем, завершилась, истекло время ожидания или вызвала ошибку.</p>
 </li>
 <li>
-<p>В каждой ячейке таблицы хранится атомарное значение (одно не составное значение).</p>
+<p><code>javax.servlet.ServletContextListener</code> - интерфейс для получения уведомлений об изменениях жизненного цикла <code>ServletContext</code>.</p>
 </li>
 <li>
-<p>В столбце хранятся данные одного типа.</p>
+<p><code>javax.servlet.ServletContextAttributeListener</code> - интерфейс, который получает события уведомления об изменениях атрибута <code>ServletContext</code>.</p>
 </li>
 <li>
-<p>Нет упорядочивания строк сверху вниз (другими словами, порядок строк не несет в себе никакой информации).</p>
+<p><code>javax.servlet.ServletRequestListener</code> - интерфейс для получения событий уведомления о запросах, входящих и выходящих из области веб-приложения.</p>
 </li>
 <li>
-<p>Нет упорядочивания столбцов слева направо (другими словами, порядок столбцов не несет в себе никакой информации).</p>
+<p><code>javax.servlet.ServletRequestAttributeListener</code> - интерфейс, который получает события уведомления об изменениях атрибута <code>ServletRequest</code>.</p>
+</li>
+<li>
+<p><code>javax.servlet.http.HttpSessionListener</code> - интерфейс для получения уведомлений об изменениях жизненного цикла <code>HttpSession</code>.</p>
+</li>
+<li>
+<p><code>javax.servlet.http.HttpSessionBindingListener</code> - приводит к уведомлению объекта, когда он связан с или из сеанса.</p>
+</li>
+<li>
+<p><code>javax.servlet.http.HttpSessionAttributeListener</code> - интерфейс для получения событий уведомления об изменениях атрибута <code>HttpSession</code>.</p>
+</li>
+<li>
+<p><code>javax.servlet.http.HttpSessionActivationListener</code> - объекты привязанные к сеансу, могут прослушивать события контейнера, сообщая им, что сеанс будет деактивирован или активирован. Контейнер, который переносит сеанс между виртуальными машинами или сохраняет сеансы, необходим для уведомления всех объектов, привязанных к сеансам, реализующим <code>HttpSessionActivationListener</code>.</p>
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>Пример, допустим есть ненормализованная таблица:</p>
 </div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-</colgroup>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ID покупателя</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ФИО</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Заказ</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Телефон</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Егоров Егор</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Ноутбук Asus G53</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Мобильный телефон 44 888 77 77, Домашний Телефон 8-77-77</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Егоров Егор</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Телефон Nokia 5310</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Мобильный телефон 44 888 77 77, Домашний Телефон 8-77-77</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Егоров Егор</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Наушники LG 700</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Мобильный телефон 44 888 77 77, Домашний Телефон 8-77-77</p></td>
-</tr>
-</tbody>
-</table>
-<div class="paragraph">
-<p>Такая таблица нарушает требования первой нормальной формы. Ее следует разбить на две части, а затем соединить их с помощью ключа.</p>
 </div>
-<table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 1. Информация о клиенте</caption>
-<colgroup>
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-</colgroup>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ID покупателя</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ФИО</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Мобильный телефон</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Домашний телефон</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Егоров Егор</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">44 888 77 77</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">8-77-77</p></td>
-</tr>
-</tbody>
-</table>
-<table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 2. Информация о заказах</caption>
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ID заказа</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ID клиента</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Заказ</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Ноутбук Asus G53</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Телефон Nokia 5310</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Наушники LG 700</p></td>
-</tr>
-</tbody>
-</table>
+<div class="sect1">
+<h2 id="_настройка_listener">Настройка <code>Listener</code></h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>Такие таблицы соответствуют требованиям первой нормальной формы.</p>
-</div>
-<div class="sect3">
-<h4 id="_вторая_нормальная_форма">Вторая нормальная форма</h4>
-<div class="paragraph">
-<p><strong>Правило второй нормальной формы</strong> звучит следующим образом: отношение соответствует второй нормальной форме, если оно соответствует первой нормальной форме и каждый не ключевой атрибут неприводимо зависит от первичного ключа.</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ФИО</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Должность</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Подразделение</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Егоров Егор</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Программист</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Отдел разработки ПО</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Иванов Иван</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Бухгалтер</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Бухгалтерия</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Борисов Борис</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Продавец</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Отдел реализации</p></td>
-</tr>
-</tbody>
-</table>
-<div class="paragraph">
-<p>Допустим в организации каждому сотруднику присваивается уникальный табельный номер, который никогда не будет изменен. Таким образом, чтобы привести эту таблицу ко второй нормальной форме, необходимо добавить в нее еще один атрибут, т.е. столбец с табельным номером, который будет выступать первичным ключом.</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-</colgroup>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Табельный номер</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ФИО</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Должность</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Подразделение</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">660</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Егоров Егор</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Программист</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Отдел разработки ПО</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">212</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Иванов Иван</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Бухгалтер</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Бухгалтерия</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1024</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Борисов Борис</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Продавец</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Отдел реализации</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect3">
-<h4 id="_третья_нормальная_форма">Третья нормальная форма</h4>
-<div class="paragraph">
-<p><strong>Правило третьей нормальной формы</strong> звучит следующим образом: отношение находится в третьей нормальной форме, когда находится во второй нормальной форме и каждый не ключевой атрибут не транзитивно зависит от первичного ключа.</p>
+<p>Можно использовать аннотацию <code>@WebListener</code> для объявления класса как <code>Listener</code>, но класс должен реализовывать один или несколько интерфейсов <code>Listener</code>.</p>
 </div>
 <div class="paragraph">
-<p>Иначе говоря, третья нормальная форма требует выносить все не ключевые поля, содержимое которых может относиться к нескольким записям таблицы в отдельные таблицы.</p>
+<p>Можно определить слушателей в <code>web.xml</code>:</p>
 </div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-</colgroup>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">CourseID</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Course</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">TeacherID</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Teacher</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Математика</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Егоров Егор</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Java</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Иванов Иван</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Алгоритмы</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Иванов Иван</p></td>
-</tr>
-</tbody>
-</table>
-<div class="paragraph">
-<p>Такую ненормализованную таблицу требуется разбить на две разные таблицы:</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">TeacherID</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Teacher</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Егоров Егор</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Иванов Иван</p></td>
-</tr>
-</tbody>
-</table>
-<div class="paragraph">
-<p>Таким образом в первой таблице TeacherID является ключом, явный указывающий на преподавателя.</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">CourseID</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Course</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">TeacherID</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Математика</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Java</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Алгоритмы</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect3">
-<h4 id="_нормальная_форма_бойса_кодда">Нормальная форма Бойса-Кодда</h4>
-<div class="paragraph">
-<p><strong>Требование нормальной формы Бойса-Кодда</strong> звучит следующим образом: таблица должна находиться в третьей нормальной форме и ключевые атрибуты составного ключа не должны зависеть от неключевых атрибутов. Отсюда следует, что требования нормальной формы Бойса-Кодда предъявляются только к таблицам, у которых первичный ключ составной.</p>
-</div>
-<div class="paragraph">
-<p><strong>Пример</strong></p>
-</div>
-<div class="paragraph">
-<p>Представим, что у нас есть организация, которая реализует множество различных проектов. При этом в каждом проекте работа ведётся по нескольким функциональным направлениям, в каждом из которых есть свой куратор. Сотрудник может быть куратором только того направления, на котором он специализируется, т.е. если сотрудник программист, он не может курировать в проекте направление, связанное с бухгалтерией.</p>
-</div>
-<div class="paragraph">
-<p>Допустим, что нам нужно хранить информацию о кураторах всех проектов по каждому направлению в таблице, где <strong>первичный ключ составной</strong> «Проект + Направление:</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Проект</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Направление</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Куратор</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Разработка</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Егоров Егор</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Бухгалтерия</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Иванов Иван</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Разработка</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Егоров Егор</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Реализация</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Андреев Андрей</p></td>
-</tr>
-</tbody>
-</table>
-<div class="paragraph">
-<p>В данном случае таблица не находится в нормальной форме Бойса-Кодда, дело в том, что зная куратора, можно четко определить, какое направление он курирует, иными словами, часть составного ключа, т.е. «Направление», зависит от неключевого атрибута, т.е. «Куратора». Чтобы привести данную таблицу к нормальной форме Бойса-Кодда, необходимо сделать декомпозицию данного отношения, т.е. разбить эту таблицу на несколько таблиц.</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 3. Таблица кураторов</caption>
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Идентификатор куратора</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ФИО</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Направление</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Егоров Егор</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Разработка</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Иванов Иван</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Бухгалтерия</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Андреев Андрей</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Реализация</p></td>
-</tr>
-</tbody>
-</table>
-<table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 4. Таблица связи кураторов и проектов</caption>
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Проект</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Идентификатор куратора</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
-</tr>
-</tbody>
-</table>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;listener&gt;
+    &lt;listener-class&gt;
+        com.example.listener.AppContextListener
+    &lt;/listener-class&gt;
+&lt;/listener&gt;</code></pre>
 </div>
 </div>
 </div>

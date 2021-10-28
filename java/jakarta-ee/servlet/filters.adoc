@@ -1,0 +1,189 @@
+= Filters
+:imagesdir: ../../../assets/img/java/jakarta-ee/servlet
+
+*Filter*, в соответствии со спецификацией, это Java-код, пригодный для повторного использования и позволяющий преобразовать содержание HTTP-запросов, HTTP-ответов и информацию, содержащуюся в заголовках HTML.
+
+*Filter* занимается предварительной обработкой запроса, прежде чем тот попадает в сервлет, и/или последующей обработкой ответа, исходящего из сервлета.
+
+image::filter.png[]
+
+*Filters* могут:
+
+* перехватывать инициацию сервлета прежде, чем сервлет будет инициирован;
+* определить содержание запроса прежде, чем сервлет будет инициирован;
+* модифицировать заголовки и данные запроса, в которые упаковывается поступающий запрос;
+* модифицировать заголовки и данные ответа, в которые упаковывается получаемый ответ;
+* перехватывать инициацию сервлета после обращения к сервлету.
+
+== Интерфейс `javax.servlet.Filter`
+
+*Filter* может быть сконфигурирован так, что он будет работать с одним сервлетом или группой сервлетов. Основой для формирования фильтров служит интерфейс javax.servlet.Filter, который реализует три метода:
+
+* `void init (FilterConfig config) throws ServletException`
+* `void destroy()`
+* `void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException`
+
+Метод `init()` вызывается прежде, чем фильтр начинает работать, и определяет конфигурационные параметры фильтра. Метод `doFilter()` выполняет непосредственно работу фильтра. Таким образом, сервер вызывает `init()` один раз, чтобы запустить фильтр в работу, а затем вызывает `doFilter()` столько раз, сколько запросов будет сделано непосредственно к данному фильтру.
+
+После того как фильтр заканчивает свою работу, вызывается метод `destroy()`.
+
+[source,java]
+----
+package common;
+
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+
+public class FilterConnect implements Filter {
+    private FilterConfig config = null;
+    private boolean active = false;
+
+    public void init (FilterConfig config) throws ServletException {
+        this.config = config;
+        String act = config.getInitParameter("active");
+        if (act != null) {
+            active = (act.toUpperCase().equals("TRUE"));
+        }
+    }
+
+    public void doFilter (ServletRequest request, ServletResponse response,
+                          FilterChain chain) throws IOException, ServletException {
+        if (active) {
+            // Здесь можно вставить код для обработки
+        }
+        chain.doFilter(request, response);
+    }
+
+    public void destroy() {
+        config = null;
+    }
+}
+----
+
+* В примере представленного шаблона фильтра инициализируется значение параметра `active`. При вызове фильтра (метод `doFilter()`) проверяется значение параметра `active`, и если `active` равно `true`, могут быть выполнены действия, определенные разработчиком.
+* Интерфейс `FilterConfig` содержит метод для получения *имени фильтра*, его *параметров инициации* и *контекста* активного в данный момент сервлета.
+* С помощью своего метода `doFilter()` каждый фильтр получает текущий запрос `ServletRequest` и ответ `ServletResponse`, а также `FilterChain`, содержащий *список фильтров*, предназначенных для обработки.
+* В методе `doFilter()` фильтр может делать с запросом и ответом всё, что ему захочется - собирать данные или упаковывать объекты для придания им нового поведения.
+* Затем фильтр вызывает `chain.doFilter()`, чтобы передать управление следующему фильтру.
+* После возвращения этого вызова, фильтр может по окончании работы своего метода `doFilter()` выполнить дополнительную работу над полученным ответом. К примеру, сохранить регистрационную информацию об этом ответе.
+
+После того как класс-фильтр откомпилирован, его необходимо установить в *контейнер сервлетов* и *привязать* (*mapping*) к одному или нескольким сервлетам. Объявление и подключение фильтра определяется в дескрипторе приложения `web.xml` внутри элементов `<filter>` и `<filter-mapping>`. Для подключения фильтра к сервлету необходимо использовать вложенные элементы `<filter-name>` и `<servlet-name>`.
+
+[source,xml]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="4.0" xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+   http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd">
+    ...
+    <filter>
+        <filter-name>FilterName</filter-name>
+        <filter-class>common.FilterConnect</filter-class>
+        <init-param>
+            <param-name>active</param-name>
+            <param-value>true</param-true>
+        </init-param>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>FilterName</filter-name>
+        <servlet-name>ServletName</servlet-name>
+    </filter-mapping>
+    ...
+</web-app>
+----
+
+В представленном коде дескриптора приложения `web.xml` объявлен класс-фильтр `FilterConnect` с именем `FilterName`. Фильтр имеет параметр инициализации `active`, которому присваивается значение `true`. Фильтр `FilterName` в разделе `<filter-mapping>` подключен к сервлету `ServletName`.
+
+Порядок, в котором контейнер строит цепочку фильтров для запроса определяется следующими правилами:
+
+* цепочка, определяемая `url-pattern`, выстраивается в том порядке, в котором встречаются соответствующие описания фильтров в `web.xml`;
+* последовательность сервлетов, определенных с помощью `servlet-name`, также выполняется в той последовательности, в какой эти элементы встречаются в дескрипторе поставки `web.xml`.
+
+image::filter-chain.png[]
+
+Для связи фильтра со страницами `HTML` или группой сервлетов необходимо использовать тег `<url-pattern>`. Например, после следующего кода:
+
+[source,xml]
+----
+<filter-mapping>
+    <filter-name>FilterName</filter-name>
+    <url-pattern>*.html</url-pattern>
+</filter-mapping>
+----
+
+Такой фильтр будет применен ко всем вызовам страниц HTML.
+
+Привязывать фильтры можно также с использованием аннотации `@WebFilter()`:
+
+[source,java]
+----
+@WebFilter(name = "FilterName, url", urlPatterns={}, servletNames={})
+public class FilterConnect implements Filter {
+    // ...
+}
+----
+
+В данном случае порядок вызова фильтров ничем не гарантирован.
+
+== Использование дополнительных ресурсов, `RequestDispatcher`
+
+В отдельных случаях недостаточно вставить в сервлет фильтр или даже цепочку фильтров, а необходимо обратиться к другому сервлету, странице *JSP*, документу *HTML*, *XML* или другому ресурсу.
+
+image::filter-forward.png[]
+
+Если требуемый ресурс находится в том же контексте, что и сервлет, который его вызывает, то для получения ресурса необходимо использовать метод представленный в интерфейсе `ServletRequest`:
+
+* `getRequestDispatcher(String path): RequestDispatcher`, где `path` - это путь к ресурсу относительно контекста.
+
+Например, необходимо обратиться к сервлету `Connect`:
+
+[source,java]
+----
+RequestDispatcher rd = request.getRequestDispatcher("Connect");
+----
+
+Если ресурс находится в другом контексте, то необходимо предварительно получить контекст методом интерфейса `ServletContext`:
+
+* `getContext(String uripath): ServletContext`;
+
+После чего получить `RequestDispatcher` с помощью использовать метода интерфейса `ServletContext`:
+
+* `getRequestDispatcher(String uripath): RequestDispatcher`, где путь `uripath` должен быть абсолютным, т.е. начинаться с наклонной черты `/`.
+
+Например:
+
+[source,java]
+----
+RequestDispatcher rd = config.getServletContext()
+                                .getContext("/prod")
+                                .getRequestDispatcher("/prod/Customer");
+----
+
+Если требуемый ресурс - сервлет, помещенный в контекст под своим именем, то для его получения можно обратиться к методу интерфейса `ServletContext`:
+
+* `getNamedDispatcher (String name): RequestDispatcher`
+
+Все эти методы возвращают `null`, если ресурс недоступен или сервер не реализует интерфейс `RequestDispatcher`.
+
+Как видно из описания методов, к другим ресурсам можно обратиться только через объект типа `RequestDispatcher`, который предлагает два метода обращения к ресурсу:
+
+* `forward(ServletRequest request, ServletResponse response): void`
+* `include(ServletRequest request, ServletResponse response): void`
+
+`forward(ServletRequest request, ServletResponse response): void` просто передает управление другому ресурсу, предоставив ему свои аргументы `ServletRequest` и `ServletResponse`. Вызывающий сервлет выполняет предварительную обработку объектов `request` и `response` и передает их вызванному сервлету или другому ресурсу, который окончательно формирует ответ `response` и отправляет его клиенту или, опять-таки, вызывает другой ресурс. Например:
+
+[source,java]
+----
+if (rd != null) {
+    rd.forward (request, response);
+} else {
+    response.sendError (HttpServletResponse.SC_NO_CONTENT);
+}
+----
+
+Вызывающий сервлет не должен выполнять какую-либо отправку клиенту до обращения к методу `forward()`, иначе будет выброшено исключение класса `IllegalStateException`. Если же вызывающий сервлет уже что-то отправлял клиенту, то следует обратиться ко второму методу
+
+`include(ServletRequest request, ServletResponse response): void` - этот метод вызывает ресурс, который на основании объекта `request` может изменить тело объекта `response`. Но вызванный ресурс не может изменить заголовки и код ответа объекта `response`. Это естественное ограничение, поскольку вызывающий сервлет мог уже отправить заголовки клиенту. Попытка вызванного ресурса изменить заголовок будет просто проигнорирована. Можно сказать, что метод `include()` выполняет такую же работу, как вставки на стороне сервера *SSI*(*Server Side Include*).
