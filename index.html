@@ -472,6 +472,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_junit">5.1. JUnit</a></li>
 <li><a href="#_mockito">5.2. Mockito</a></li>
 <li><a href="#_liquibase">5.3. Liquibase</a></li>
+<li><a href="#_logging">5.4. Logging</a></li>
 </ul>
 </li>
 <li><a href="#_sql">6. SQL</a>
@@ -4549,6 +4550,1076 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 </li>
 </ul>
 </div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_logging">5.4. Logging</h3>
+<div class="paragraph">
+<p><strong>Logging</strong> (<strong>логирование</strong>, <strong>журналирование</strong>) — это процесс записи куда-то (в файл, в сетевой сокет) данных о работе программы. Место, куда эти данные записываются, является <strong>log-файл</strong>, а само содержимое называют <strong>logs</strong> (<strong>логи</strong>). <strong>Log</strong> (<strong>лог</strong>) - это одна запись, которая делается в <strong>log-file</strong>. Так же само действие по отправке записи при logging называется <strong>log</strong> (<strong>логировать</strong>)</p>
+</div>
+<div class="paragraph">
+<p>Если в работе сервера, компьютера или программного обеспечения возникла неизвестная ошибка, в первую очередь смотрят логи. <strong>Log-файл</strong> — <strong>текстовый файл</strong> с информацией о действиях программного обеспечения или пользователей, который хранится на компьютере или передается на хранение в систему логирования. Это хронология событий и их источников, ошибок и причин, по которым они произошли. Читать и анализировать логи можно как с помощью обычного текстового редактора, так и с помощью специального ПО.</p>
+</div>
+<div class="paragraph">
+<p><strong>Logging</strong> позволяет ответить на вопросы, что происходило, когда и при каких обстоятельствах. Без логов сложно понять, из-за чего появляется ошибка, если она возникает периодически и только при определенных условиях. Чтобы облегчить задачу администраторам и программистам, в лог записывается информация не только об ошибках, но и о причинах их возникновения. Благодаря логам найденные ошибки можно быстро исправить.</p>
+</div>
+<div class="paragraph">
+<p>Весь процесс логирования состоит из трех частей.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Сбор информации.</p>
+</li>
+<li>
+<p>Фильтрование собранной информации.</p>
+</li>
+<li>
+<p>Запись отобранной информации.</p>
+</li>
+</ul>
+</div>
+<div class="sect3">
+<h4 id="_типы_логов">5.4.1. Типы логов</h4>
+<div class="paragraph">
+<p>Для удобной работы с логами их делят на типы. Это помогает быстрее находить нужные и выбирать правильные инструменты для работы с ними. Например, выделяют:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>системные логи</strong>, то есть те, которые связаны с системными событиями;</p>
+</li>
+<li>
+<p><strong>серверные логи</strong>, регистрирующие обращения к серверу и возникшие при этом ошибки;</p>
+</li>
+<li>
+<p><strong>логи баз данных</strong>, фиксирующие запросы к базам данных;</p>
+</li>
+<li>
+<p><strong>почтовые логи</strong>, относящиеся к входящим/исходящим письмам и отслеживающие ошибки, из-за которых письма не были доставлены;</p>
+</li>
+<li>
+<p><strong>логи авторизации</strong>;</p>
+</li>
+<li>
+<p><strong>логи аутентификации</strong>;</p>
+</li>
+<li>
+<p><strong>логи приложений</strong>, установленных на этих операционных системах.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Также логи можно типизировать <strong>по степени важности</strong>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Fatal/critical error</strong> — то, что нужно срочно исправить.</p>
+</li>
+<li>
+<p><strong>Not critical error</strong> — ошибки, которые не влияют на пользователя.</p>
+</li>
+<li>
+<p><strong>Warning</strong> — предупреждения, то, на что нужно обратить внимание.</p>
+</li>
+<li>
+<p><strong>Initial information</strong> — информация о вызовах <strong>API</strong> сервиса, запросах в БД, вызовах других сервисов.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Еще одним важным вопросом на который надо ответить - это что необходимо отправлять в log.</p>
+</div>
+<div class="paragraph">
+<p>Работа приложения - это происходящие в нем события, которые в свою очередь могут быть классифицированы на:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>события, связанные с бизнес-логикой;</p>
+</li>
+<li>
+<p>события, связанные с безопасностью приложения;</p>
+</li>
+<li>
+<p>системные события, связанные с уже конкретикой реализации - вызовов ОС, использования библиотек, фреймворков и т.д.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Логировать обязательно необходимо:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Начало/конец работы приложения</strong>. Нужно знать, что приложение действительно запустилось, как мы и ожидали, и завершилось так же ожидаемо.</p>
+</li>
+<li>
+<p><strong>Вопросы безопасности</strong>. Здесь хорошо бы логировать попытки подбора пароля, логирование входа важных юзеров и т.д.</p>
+</li>
+<li>
+<p>Некоторые <strong>состояния приложения</strong>. Например, переход из одного состояния в другое в бизнес процессе.</p>
+</li>
+<li>
+<p>Некоторая <strong>информация для debug</strong>, с соответственным уровнем логирования.</p>
+</li>
+<li>
+<p><strong>Некоторые SQL скрипты</strong>. Есть реальные случаи, когда это нужно. Опять-таки, умелым образом регулируя уровни, можно добиться отличных результатов.</p>
+</li>
+<li>
+<p><strong>Выполняемые потоки (Thread)</strong> могут быть отправлены в log в случаях с проверкой корректной работы.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Популярные ошибки в logging:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Избыток логирования</strong><br>
+Не стоит логировать каждый шаг, который чисто теоретически может быть важным.
+<strong>Есть правило</strong>: логи могут нагружать работоспособность не более, чем на <strong>10%</strong>. Иначе будут проблемы с производительностью.</p>
+</li>
+<li>
+<p><strong>Логирование всех данных в один файл</strong><br>
+Это приведет к тому, что в определенный момент чтение/запись в него будет очень сложной, не говоря о том, что есть ограничения по размеру файлов в определенных системах.</p>
+</li>
+<li>
+<p><strong>Использование неверных уровней логирования</strong><br>
+У каждого уровня логирования есть четкие границы, и их стоит соблюдать. Если граница расплывчатая, можно договориться какой из уровней использовать.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_библиотеки_логирования_в_java">5.4.2. Библиотеки логирования в Java</h4>
+<div class="paragraph">
+<p>В <strong>Java</strong> существуют следующие <strong>библиотеки логирования</strong>, иногда называемые <strong>loggers</strong> (<strong>логерами</strong>):</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Log4j</strong> - это первый набор инструментов для логирования Java, который появился еще в 1999-м году. Внутри себя имеет различные способы вывода логов, несколько форматов логирования и многое другое. Раньше данная библиотека активно применялась, но уже долгое время этот проект не развивается.</p>
+</li>
+<li>
+<p><strong>JUL</strong> — <code>java.util.logging</code>. Является частью <strong>JDK</strong>. Имеет множество уровней логирования, например, только для отладки у этого инструмента есть в арсенале 3 отладочных уровня вместо одного стандартного.</p>
+</li>
+<li>
+<p><strong>JCL</strong> — <strong>Apache Commons Logging</strong>. Из-за того, что долгое время не было промышленного стандарта в logging и был период, когда многие создавали свой свои собственные библиотеки логирования, решили выпустить <strong>JCL</strong> — общую обертку, которая  использовалась бы над другими.</p>
+</li>
+<li>
+<p><strong>Logback</strong> - был создан как альтернатива умирающему <strong>Log4j</strong>, разработанная создателями <strong>Log4j</strong>, поэтому он вобрал в себя все лучшее из этого инструмента, при этом усовершенствовал некоторые показатели.</p>
+</li>
+<li>
+<p><strong>Log4j 2.x</strong> - это улучшенная версия <strong>log4j 1.x</strong> и <strong>logback</strong>.</p>
+</li>
+<li>
+<p><strong>SLF4J</strong> — <strong>Simple Logging Facade for Java</strong>. Этот инструмент является оберткой над многими популярными библиотеками логирования, например: <strong>Logback</strong>, <strong>Log4j</strong>, <strong>JUL</strong> и др., поэтому его рекомендуется использовать в паре с полноценной библиотекой для логирования.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_уровень_логирования">5.4.3. Уровень логирования</h4>
+<div class="paragraph">
+<p>Если в <strong>лог-файл</strong> записывать все действия программы, то там будет большое количество различных сведений. В некоторых ситуациях лог-файлы могут генерироваться очень быстро и в огромных размерах. В этом случае найти нужную информацию в логах будет очень нелегко. Поэтому, чтобы контролировать объемы записываемой информации, придумали различные уровни логирования.</p>
+</div>
+<div class="paragraph">
+<p><strong>Уровень логирования</strong> - это разделение событий по приоритетам, по степени важности. Например, <strong>error</strong> - пишем ошибки, <strong>debug</strong> - пишем более подробно в лог и т.д.</p>
+</div>
+<div class="paragraph">
+<p>Практически все библиотеки логирования (кроме <strong>JUL</strong>) имеют следующие уровни логирования:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>OFF</strong>: никакие логи не записываются, все будут проигнорированы;</p>
+</li>
+<li>
+<p><strong>FATAL</strong>: ошибка, после которой приложение уже не сможет работать и будет остановлено, например, <strong>JVM out of memory error</strong>;</p>
+</li>
+<li>
+<p><strong>ERROR</strong>: уровень ошибок, когда есть проблемы, которые нужно решить. Ошибка не останавливает работу приложения в целом. Остальные запросы могут работать корректно;</p>
+</li>
+<li>
+<p><strong>WARN</strong>: обозначаются логи, которые содержат предостережение. Произошло неожиданное действие, несмотря на это система устояла и выполнила запрос;</p>
+</li>
+<li>
+<p><strong>INFO</strong>: лог, который записывает важные действия в приложении. Это не ошибки, это не предостережение, это ожидаемые действия системы;</p>
+</li>
+<li>
+<p><strong>DEBUG</strong>: логи, необходимые для отладки приложения. Для уверенности в том, что система делает именно то, что от нее ожидают, или описания действия системы: <code>method1 начал работу</code>;</p>
+</li>
+<li>
+<p><strong>TRACE</strong>: менее приоритетные логи для отладки, с наименьшим уровнем логирования;</p>
+</li>
+<li>
+<p><strong>ALL</strong>: уровень, при котором будут записаны все логи из системы.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Если в приложении в каком-то месте включен уровень логирования <strong>INFO</strong>, будут логироваться все уровни, начиная с <strong>INFO</strong> и до <strong>FATAL</strong>. Если будет уровень логирования <strong>FATAL</strong>, будут записаны <strong>только логи с этим уровнем</strong>.</p>
+</div>
+<div class="paragraph">
+<p><strong>JUL</strong> имеет следующие уровни логирования:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>FINEST</strong>,</p>
+</li>
+<li>
+<p><strong>FINER</strong>,</p>
+</li>
+<li>
+<p><strong>FINE</strong>,</p>
+</li>
+<li>
+<p><strong>CONFIG</strong>,</p>
+</li>
+<li>
+<p><strong>INFO</strong>,</p>
+</li>
+<li>
+<p><strong>WARNING</strong>,</p>
+</li>
+<li>
+<p><strong>SEVERE</strong>,</p>
+</li>
+<li>
+<p><strong>ALL</strong>,</p>
+</li>
+<li>
+<p><strong>OFF</strong>.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_основные_термины">5.4.4. Основные термины</h4>
+<div class="paragraph">
+<p>В основе большинства библиотек логирования в <strong>Java</strong> лежат три понятия:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Logger</strong></p>
+</li>
+<li>
+<p><strong>Appender</strong></p>
+</li>
+<li>
+<p><strong>Layout</strong></p>
+</li>
+</ul>
+</div>
+<div class="sect4">
+<h5 id="_logger">Logger</h5>
+<div class="paragraph">
+<p><strong>Logger</strong> — это некий объект, который отвечает за запись информации в лог-файлы, опираясь на заданные уровни логирования. <strong>Logger</strong> создается с помощью фабрики и на этапе создания ему присваивается имя. Имя может быть любым, но по стандарту имя должно быть сопряжено с именем класса, в котором вы собираетесь что-то логировать.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="java">Logger logger = LoggerFactory.gerLogger(SomeClass.class);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Основная задача Logger</strong> — не пропустить событие, которое нужно записать в лог-файл.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="java">logger.info("Application started");
+logger.debug("Or not");</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Это событие по сути состоит из двух полей:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>message = "Application started"</code>;</p>
+</li>
+<li>
+<p><code>level = Level.Info</code>.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_appender">Appender</h5>
+<div class="paragraph">
+<p><strong>Appender</strong> — это конечная точка, куда «приходит» информация для логирования. В качестве <strong>appender</strong> могут выступать: <strong>файл</strong>, <strong>база данных</strong>, <strong>консоль</strong>, <strong>сокет</strong> и др. У <strong>appender</strong> нет каких-либо ограничений, куда записывать сообщения. Можно написать свой <strong>appender</strong>, который пишет сообщения куда-угодно. Если <strong>Logger</strong> — это начальная точка в logging, то <strong>Appender</strong> — это конечная точка.</p>
+</div>
+<div class="paragraph">
+<p><strong>Loggers</strong>  и <strong>appenders</strong> связаны в отношении <code>many-to-many</code>. При этом один <strong>logger</strong> может содержать несколько <strong>appenders</strong> и наоборот. Чтобы изменить поведение <strong>logger по умолчанию</strong>, нам нужно сконфигурировать свой <strong>файловый appender</strong>.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_layout">Layout</h5>
+<div class="paragraph">
+<p><strong>Layout</strong> — это формат, в котором выводятся сообщения. Форматирование сообщений напрямую зависит от используемой библиотеки при logging.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_узлы_логирования">Узлы логирования</h5>
+<div class="paragraph">
+<p>При создании logger используется класс, но по итогу записывается полное имя класса с пакетами. Это делается, чтобы потом можно было разделить логирование на узлы, и для каждого узла настроить уровень логирования и appender. Например, имя класса: <code>com.github.romankh3.logginglecture.MainDemo</code> — в нем создался logger. И вот таким образом его можно разделить на узлы логирования.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../assets/img/java/tools/logging/logging-nodes.png" alt="logging nodes"></span></p>
+</div>
+<div class="paragraph">
+<p>Каждый <strong>logger</strong> имеет имя, описывающее иерархию, к которой он принадлежит. Разделитель – точка. Принцип полностью аналогичен формированию имени пакета в <strong>Java</strong>. Например: <code>ru.aarexer.example.SomeClass</code>. Главный узел — нулевой <strong>RootLogger</strong>. Это узел, который принимает все логи всего приложения. Каждому <strong>logger</strong> можно выставить свой уровень. Установленный <strong>logger</strong> уровень вывода распространяется на все его дочерние <strong>loggers</strong>, для которых явно не выставлен уровень. Поэтому у всех <strong>loggers</strong> будет уровень логирования, даже если явно мы не прописали для <code>ru.aarexer.example.SomeClass</code> его, то он будет наследоваться от <strong>RootLogger</strong>.</p>
+</div>
+<div class="paragraph">
+<p><strong>Appenders</strong> настраивают свою работу именно на узлы логирования. Но такое наследование <strong>appenders</strong> можно отключить через конфигурацию, для этого стоит посмотреть в сторону выставления флага <code>additivity="false"</code> на <strong>loggers</strong>.</p>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_конфигурация_и_использование">5.4.5. Конфигурация и использование</h4>
+<div class="sect4">
+<h5 id="_конфигурация_2">Конфигурация</h5>
+<div class="paragraph">
+<p>При конфигурировании можно выбрать куда будет производиться запись, путь где будет лежать файл лога, количество файлов, их размеры. Более подробные описания конфигураций для различных реализаций будут приведены при описании этих реализаций.</p>
+</div>
+<div class="paragraph">
+<p>В зависимости от используемой библиотеки, <strong>loggers</strong> могут конфигурироваться различными способами.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Log4j</strong> поддерживает конфигурирование двумя способами – как <strong>properties</strong> и <strong>xml</strong> файл.</p>
+</li>
+<li>
+<p><strong>JUL</strong> настраивается только через <strong>properties</strong> файл.</p>
+</li>
+<li>
+<p><strong>Logback</strong> может быть сконфигурирован через <strong>xml</strong> и <strong>groovy</strong> файл.</p>
+</li>
+<li>
+<p><strong>Log4j 2</strong> может быть сконфигурирован через <strong>xml</strong>, <strong>json</strong> и <strong>yaml</strong> файл.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Конфигурация через xml-файл:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8" ?&gt;
+&lt;!DOCTYPE log4j:configuration SYSTEM "log4j.dtd"&gt;
+&lt;log4j:configuration debug="false" xmlns:log4j="http://jakarta.apache.org/log4j/"&gt;
+    &lt;appender name="ConsoleAppender" class="org.apache.log4j.ConsoleAppender"&gt;
+        &lt;param name="Encoding" value="Cp866"/&gt;
+        &lt;layout class="org.apache.log4j.PatternLayout"&gt;
+            &lt;param name="ConversionPattern" value="%d{ISO8601} [%-5p][%-16.16t][%32.32c] - %m%n" /&gt;
+        &lt;/layout&gt;
+    &lt;/appender&gt;
+    &lt;root&gt;
+        &lt;priority value="DEBUG"/&gt;
+        &lt;appender-ref ref="ConsoleAppender" /&gt;
+    &lt;/root&gt;
+&lt;/log4j:configuration&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Конфигурация через properties-файл:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="properties">log4j.debug = false
+log4j.rootLogger = DEBUG, ConsoleAppender
+# CONSOLE appender customisation
+log4j.appender.ConsoleAppender = org.apache.log4j.ConsoleAppender
+log4j.appender.ConsoleAppender.encoding = Cp866
+log4j.appender.ConsoleAppender.layout = org.apache.log4j.PatternLayout
+log4j.appender.ConsoleAppender.layout.ConversionPattern = %d{ISO8601} [%-5p][%-16.16t][%32.32c] - %m%n
+# File appender customisation
+log4j.appender.FILE=org.apache.log4j.RollingFileAppender
+log4j.appender.FILE.File=./target/logging/logging.log
+log4j.appender.FILE.MaxFileSize=1MB log4j.appender.FILE.threshold=DEBUG log4j.appender.FILE.MaxBackupIndex=2 log4j.appender.FILE.layout=org.apache.log4j.PatternLayout log4j.appender.FILE.layout.ConversionPattern=[ %-5p] - %c:%L - %m%n</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Принято считать эти два способа равнозначными. При инициализации они ищутся в <strong>classpath</strong>, сначала <strong>xml-файл</strong>, потом <strong>properties-файл</strong>. Так что при наличии обоих рабочим будет именно <strong>xml</strong>.</p>
+</div>
+<div class="paragraph">
+<p>Ниже приведен пример конфигурации <code>log4j.properties</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="properties">log4j.appender.CONSOLE=org.apache.log4j.ConsoleAppender</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Эта строка говорит, что мы регистрируем <strong>appender</strong> <code>CONSOLE</code>, который использует реализацию <code>org.apache.log4j.ConsoleAppender</code>. Этот <strong>appender</strong> записывает данные в консоль.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="properties">log4j.appender.FILE=org.apache.log4j.RollingFileAppender</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Этот <strong>appender</strong> записывает в файл.</p>
+</div>
+<div class="paragraph">
+<p>Когда у нас уже есть зарегистрированные <strong>appenders</strong>, мы можем определить, какой будет уровень логирования в узлах и какие <strong>appenders</strong> будут при этом использоваться.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="properties">log4j.rootLogger=DEBUG, CONSOLE, FILE</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>log4j.rootLogger</code> означает, что будем настраивать главный узел, в котором находятся все логи;</p>
+</li>
+<li>
+<p>после знака равно первое слово говорит о том, с каким уровнем и выше будут записываться логи (в нашем случае это <code>DEBUG</code>);</p>
+</li>
+<li>
+<p>далее после запятой указываются все <strong>appenders</strong>, которые будут использоваться.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Чтобы настроить определенный узел логирования, нужно использовать такую запись:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="properties">log4j.logger.com.github.romankh3.logginglecture=TRACE, OWN, CONSOLE</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>где <code>log4j.logger.</code> используется для настройки определенного узла, в нашем случае это <code>com.github.romankh3.logginglecture.</code>.</p>
+</div>
+<div class="paragraph">
+<p>Настройка <code>CONSOLE</code> <strong>appender</strong>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="properties"># CONSOLE appender customisation
+log4j.appender.CONSOLE=org.apache.log4j.ConsoleAppender
+log4j.appender.CONSOLE.threshold=DEBUG
+log4j.appender.CONSOLE.layout=org.apache.log4j.PatternLayout
+log4j.appender.CONSOLE.layout.ConversionPattern=[%-5p] : %c:%L : %m%n</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Здесь видно, что можно задать уровень, с которого будет обрабатывать именно <strong>appender</strong>. Реальная ситуация: сообщение с уровнем <strong>info</strong> принял узел логирования и передал <strong>appender</strong>, который к нему приписан, а вот уже <strong>appender</strong>, с уровнем <strong>warn</strong> и выше, лог этот принял, но ничего с ним не сделал.</p>
+</div>
+<div class="paragraph">
+<p>Далее нужно определиться с тем, какой шаблон будет в сообщении (<strong>PatternLayout</strong>).</p>
+</div>
+<div class="paragraph">
+<p>Пример настройки <code>FILE</code> <strong>appender</strong>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="properties"># File appender customisation
+log4j.appender.FILE=org.apache.log4j.RollingFileAppender
+log4j.appender.FILE.File=./target/logging/logging.log
+log4j.appender.FILE.MaxFileSize=1MB
+log4j.appender.FILE.threshold=DEBUG
+log4j.appender.FILE.MaxBackupIndex=2
+log4j.appender.FILE.layout=org.apache.log4j.PatternLayout
+log4j.appender.FILE.layout.ConversionPattern=[ %-5p] - %c:%L - %m%n</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Здесь можно настроить, в какой именно файл будут записываться логи. Запись идет в файл <code>logging.log</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="properties">log4j.appender.FILE.File=./target/logging/logging.log</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Чтобы не было проблем с размером файла, можно настроить максимальный: в данном случае — 1МБ.</p>
+</div>
+<div class="paragraph">
+<p><code>MaxBackupIndex</code> — говорит о том, сколько будет таких файлов. Если создается больше этого числа, то первый файл будет удален.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_использование">Использование</h5>
+<div class="paragraph">
+<p>Чтобы использовать <code>Logger</code>, необходимо его создать:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="java">org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(ClassName.class);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Чтобы сделать запись в лог, можно использовать множество методов, которые показывают, с каким уровнем будут записи.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="java">logger.trace("Method 1 started with argument={}", argument);
+logger.debug("Database updated with script = {}", script);
+logger.info("Application has started on port = {}", port);
+logger.warn("Log4j didn't find log4j.properties.Please, provide them");
+logger.error("Connection refused to host = {}", host);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Также можно использовать метод <code>log()</code> и передать в него параметры.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="java">logger.log(Level.INFO, argument);</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_реализация_slf4jlog4j_2logback">5.4.6. Реализация (SLF4J/Log4J 2/Logback)</h4>
+<div class="paragraph">
+<p>На данный момент в <strong>Java</strong> наиболее популярные следующие библиотеки логирования:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>log4j 2</strong></p>
+</li>
+<li>
+<p><strong>Logback</strong></p>
+</li>
+<li>
+<p><strong>SLF4J</strong> (как фасад)</p>
+</li>
+</ul>
+</div>
+<div class="sect4">
+<h5 id="_system_err_println"><code>System.err.println()</code></h5>
+<div class="paragraph">
+<p>Первоначально был, разумеется, <code>System.err.println()</code> - выводит запись в консоль. Его и сейчас используют для быстрого получения лога при debugging.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_log4j_2">Log4j 2</h5>
+<div class="paragraph">
+<p>Для использования <strong>log4j2</strong> вам необходимо подключить библиотеки <code>log4j-api-2.x</code> и <code>log4j-core-2.x</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.apache.logging.log4j&lt;/groupId&gt;
+        &lt;artifactId&gt;log4j-api&lt;/artifactId&gt;
+        &lt;version&gt;${log4j.version}&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.apache.logging.log4j&lt;/groupId&gt;
+        &lt;artifactId&gt;log4j-core&lt;/artifactId&gt;
+        &lt;version&gt;${log4j.version}&lt;/version&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Logger создается вызовом статического метода класса <code>org.apache.logging.log4j.Logger</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="java">Logger log = LogManager.getLogger(LoggingLog4j.class);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Logger умеет принимать помимо привычных нам <code>String</code>, <code>Object</code> и <code>Throwable</code> еще два новых типа — <code>MapMessage</code> и <code>Marker</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="java">// Карта сообщений (напечатается как msg1="Сообщение 1” msg2="Сообщение 2”)
+MapMessage mapMessage = new MapMessage();
+mapMessage.put("msg1", "Сообщение 1");
+mapMessage.put("msg2", "Сообщение 2");
+// Маркер, объект по которому можно фильтровать сообщения
+Marker marker = MarkerManager.getMarker("fileonly");
+// Строковое сообщение
+String stringMessage = "Сообщение";
+// Строковое сообщение с параметрами
+String stringMessageFormat = "Сообщение {}, от {}";
+// Исключение
+Throwable throwable = new Throwable();
+// Объект
+Object object = new Object();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>В классическом для loggers стиле методы делятся на два типа:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>совпадающие с названием уровня логирования</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="java">log.info((marker, mapMessage, throwable);
+log.throwing(throwable);</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>методы <code>log</code>, принимающие уровень логирования в качестве параметра.</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="java">log.log(Level.INFO, marker, stringMessage, throwable);
+log.throwing(Level.INFO, throwable);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Если не определить конфигурацию, то при запуске <strong>log4j2</strong> выдаст гневное сообщение, о том, что конфигурация не задана и будет печатать ваши сообщения на консоль уровнем не ниже <strong>ERROR</strong>. Конфигурация <strong>log4j2</strong> задается несколькими вариантами: <strong>xml</strong>, <strong>json</strong>, <strong>yaml</strong>. Файл с конфигурацией автоматически ищется <strong>classpath</strong>, должен иметь название <strong>log4j2</strong> и располагаться в пакете по умолчанию.</p>
+</div>
+<div class="paragraph">
+<p>Конфигурация <strong>log4j2</strong> состоит из описания loggers, appenders и фильтров.</p>
+</div>
+<div class="paragraph">
+<p>Фильтры позволяют оценивать события журнала, чтобы определить, следует ли их публиковать и каким образом. Фильтр будет вызван одним из своих методов фильтра и вернет <strong>Result</strong>, который представляет собой <strong>Enum</strong> имеющий одно из 3 значений:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>ACCEPT</code></p>
+</li>
+<li>
+<p><code>DENY</code></p>
+</li>
+<li>
+<p><code>NEUTRAL</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Фильтры могут быть сконфигурированы в одном из четырех мест:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Контекстные фильтры</strong><br>
+Настраиваются непосредственно в конфигурации. События, отклоняемые этими фильтрами, не будут передаваться регистраторам для дальнейшей обработки. После того как событие было принято контекстным фильтром, оно не будет оцениваться никакими другими контекстными фильтрами, а уровень регистратора не будет использоваться для фильтрации события. Однако событие будет оцениваться фильтрами <strong>Logger</strong> и <strong>Appender</strong>.</p>
+</li>
+<li>
+<p><strong>Фильтры регистратора</strong><br>
+Настраиваются на указанном регистраторе. Они оцениваются после контекстных фильтров и уровня журнала для регистратора. События, отклоненные этими фильтрами, будут отброшены, и событие не будет передано родительскому регистратору независимо от параметра аддитивности.</p>
+</li>
+<li>
+<p><strong>Фильтры Appender</strong><br>
+Используются для определения того, должен ли конкретный Appender обрабатывать форматирование и публикацию события.</p>
+</li>
+<li>
+<p><strong>Ссылочные фильтры appender</strong><br>
+Используются для определения того, должен ли регистратор направлять событие в приложение.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Есть различные фильтра, в том числе и по маркерам:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>BurstFilter</strong> - предоставляет механизм для управления скоростью обработки <strong>LogEvents</strong> путем автоматического отбрасывания событий после достижения максимального предела.</p>
+</li>
+<li>
+<p><strong>CompositeFilter</strong> - предоставляет способ указать несколько фильтров. Он добавляется в конфигурацию в качестве элемента фильтров и содержит другие фильтры для оценки. Элемент <strong>filters</strong> не принимает никаких параметров.</p>
+</li>
+<li>
+<p><strong>DynamicThresholdFilter</strong> - позволяет выполнять фильтрацию по уровню журнала на основе определенных атрибутов.</p>
+</li>
+<li>
+<p><strong>MapFilter</strong> - позволяет фильтровать по элементам данных, которые находятся в MapMessage.</p>
+</li>
+<li>
+<p><strong>MarkerFilter</strong> - сравнивает настроенное значение маркера с параметром маркера, включенным в <strong>LogEvent</strong>. Совпадение происходит, когда имя маркера совпадает с маркером события журнала или одним из его родителей.</p>
+</li>
+<li>
+<p><strong>RegexFilter</strong> - позволяет сравнивать отформатированное или неформатированное сообщение с регулярным выражением.</p>
+</li>
+<li>
+<p><strong>StructuredDataFilter</strong> - это <code>MapFilter</code>, который также позволяет фильтровать по идентификатору события, типу и сообщению.</p>
+</li>
+<li>
+<p><strong>ThreadContextMapFilter</strong> - позволяет выполнять фильтрацию по элементам данных, которые находятся в сопоставлении <strong>ThreadContext</strong>.</p>
+</li>
+<li>
+<p><strong>ThresholdFilter</strong> - возвращает результат <strong>onMatch</strong>, если уровень в <strong>LogEvent</strong> совпадает или более специфичным, чем настроенный уровень, а значение <strong>onMismatch</strong> в противном случае.</p>
+</li>
+<li>
+<p><strong>TimeFilter</strong> - можно использовать для ограничения фильтра только определенной частью дня.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Имеется широкий круг классов appenders, в том числе асинхронные appenders и appenders оборачивающие группу других appenders.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>AsyncAppender</strong> - принимает ссылки на другие приложения и заставляет <strong>LogEvents</strong> записываться на них в отдельном потоке.</p>
+</li>
+<li>
+<p><strong>OutputStreamAppender</strong> - предоставляет основу для многих других приложений, таких как приложения <strong>File</strong> и <strong>Socket</strong>, которые записывают событие в выходной поток.</p>
+</li>
+<li>
+<p><strong>ConsoleAppender</strong> - записывает свои выходные данные либо в <code>System.out</code>, либо в <code>System.err</code>, причем <code>System.out</code> является целевым объектом по умолчанию.</p>
+</li>
+<li>
+<p><strong>FileAppender</strong> - это объект <code>OutputStreamAppender</code>, который записывает данные в файл, указанный в параметре fileName.</p>
+</li>
+<li>
+<p><strong>JDBCAppender</strong> - записывает события журнала в таблицу реляционной базы данных с помощью стандартного <code>JDBC</code>.</p>
+</li>
+<li>
+<p><strong>RollingFileAppender</strong> - это объект <code>OutputStreamAppender</code>, который записывает данные в файл, указанный в параметре <strong>fileName</strong>, и переворачивает файл в соответствии с параметрами <strong>TriggeringPolicy</strong> и <strong>RolloverPolicy</strong>.</p>
+</li>
+<li>
+<p><strong>SocketAppender</strong> - это <code>OutputStreamAppender</code>, который записывает свои выходные данные в удаленное место назначения, указанное узлом и портом.</p>
+</li>
+<li>
+<p>И другие.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Стоит также заметить, что <strong>log4j</strong> может создавать множество различающихся appenders одного и того же класса, например несколько файловых appenders, которые пишут в разные файлы. Рассмотрим пример конфигурации, в которой объявлены два logger:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>корневой - которых пишет в файл <code>log.log</code></p>
+</li>
+<li>
+<p>для нашего класса - пишет в <code>log2.log</code> с использованием фильтрации по маркер.</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="title">Пример настройки конфигурации <code>log4j.xml</code> файла</div>
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;Configuration&gt;
+    &lt;!-- Секция appenders --&gt;
+    &lt;Appenders&gt;
+        &lt;!-- Файловый appender --&gt;
+        &lt;File name="file" fileName="log.log"&gt;
+            &lt;PatternLayout&gt;
+                &lt;Pattern&gt;%d %p %c{1.} [%t] %m %ex%n&lt;/Pattern&gt;
+            &lt;/PatternLayout&gt;
+        &lt;/File&gt;
+        &lt;!-- Файловый appender --&gt;
+        &lt;File name="file2" fileName="log2.log"&gt;
+            &lt;!-- Фильтр по маркеру --&gt;
+            &lt;MarkerFilter marker="fileonly" onMatch="DENY" onMismatch="ACCEPT"/&gt;
+            &lt;PatternLayout&gt;
+                &lt;Pattern&gt;%d %p %c{1.} [%t] %m %ex%n&lt;/Pattern&gt;
+            &lt;/PatternLayout&gt;
+        &lt;/File&gt;
+    &lt;/Appenders&gt;
+    &lt;!-- Секция loggers --&gt;
+    &lt;Loggers&gt;
+        &lt;!-- Корневой logger --&gt;
+        &lt;Root level="trace"&gt;
+            &lt;AppenderRef ref="file" level="DEBUG"/&gt;
+        &lt;/Root&gt;
+        &lt;!-- Logger нашего класса --&gt;
+        &lt;Logger name="logging.log4j.LoggingLog4j" level="info" additivity="false"&gt;
+            &lt;AppenderRef ref="file2" level="INFO"/&gt;
+        &lt;/Logger&gt;
+    &lt;/Loggers&gt;
+&lt;/Configuration&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_logback">Logback</h5>
+<div class="paragraph">
+<p>Данный фреймворк используется только в связке с оберткой <strong>SLF4J</strong>.</p>
+</div>
+<div class="paragraph">
+<p>Добавляется следующей зависимостью:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;ch.qos.logback&lt;/groupId&gt;
+    &lt;artifactId&gt;logback-classic&lt;/artifactId&gt;
+    &lt;version&gt;1.2.6&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="java">org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(LoggingLogback.class);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>API позволяет выводить строковые сообщения, шаблоны строковых сообщений, исключения, а также использовать маркеры.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="java">// Строковое сообщение
+String stringMessage = "Сообщение";
+// Шаблон сообщения
+String stringMessageFormat = "Сообщение {} {}";
+// Ошибка
+Throwable throwable = new Throwable();
+// Маркер
+Marker marker = MarkerFactory.getMarker("marker");</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Конфигурация ищется в <strong>classpath</strong> в следующем порядке:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Пытается найти <code>logback.groovy</code></p>
+</li>
+<li>
+<p>Иначе пытается найти <code>logback-test.xml</code></p>
+</li>
+<li>
+<p>Иначе пытается найти <code>logback.xml</code></p>
+</li>
+<li>
+<p>Иначе использует базовую конфигурацию — выводим сообщения на консоль</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Основными элементами конфигурации являются loggers, appenders, layout, и фильтры.</p>
+</div>
+<div class="paragraph">
+<p><strong>Logback-classic</strong> предлагает два типа фильтров:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>обычные фильтры</p>
+</li>
+<li>
+<p>турбофильтры</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Имеются следующие фильтры:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Regular filters</strong></p>
+</li>
+<li>
+<p><strong>LevelFilter</strong> - фильтрует события на основе точного соответствия уровней.</p>
+</li>
+<li>
+<p><strong>ThresholdFilter</strong> - фильтрует события ниже указанного порогового значения.</p>
+</li>
+<li>
+<p><strong>EvaluatorFilter</strong> - это универсальный фильтр, инкапсулирующий. Как следует из названия, <strong>EventEvaluator</strong> оценивает, соответствует ли заданный критерий для данного события.</p>
+</li>
+<li>
+<p><strong>Matchers</strong></p>
+</li>
+<li>
+<p><strong>CountingFilter</strong></p>
+</li>
+<li>
+<p><strong>TurboFilters</strong> - предназначены для высокопроизводительной фильтрации регистрирования событий еще до их создания.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Имеются следующие appenders:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>OutputStreamAppender</strong></p>
+</li>
+<li>
+<p><strong>ConsoleAppender</strong></p>
+</li>
+<li>
+<p><strong>FileAppender</strong></p>
+</li>
+<li>
+<p><strong>RollingFileAppender</strong></p>
+</li>
+<li>
+<p><strong>SocketAppender</strong> и <strong>SSLSocketAppender</strong></p>
+</li>
+<li>
+<p><strong>ServerSocketAppender</strong> и <strong>SSLServerSocketAppender</strong></p>
+</li>
+<li>
+<p><strong>SMTPAppender</strong></p>
+</li>
+<li>
+<p><strong>SyslogAppender</strong></p>
+</li>
+<li>
+<p><strong>SiftingAppender</strong></p>
+</li>
+<li>
+<p><strong>AsyncAppender</strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Encoders</strong> (кодировщики) отвечают за преобразование входящего события в массив байтов и запись результирующего массива байтов в соответствующий массив. Таким образом, кодировщики имеют полный контроль над тем, что и когда записываются в <strong>appender</strong>.</p>
+</div>
+<div class="paragraph">
+<p><strong>Layouts</strong>  — это компоненты, отвечающие за преобразование входящего события в строку. Метод в интерфейсе <strong>Layout</strong> принимает объект, представляющий событие (любого типа), и возвращает объект <code>String</code>.</p>
+</div>
+<div class="listingblock">
+<div class="title">Простой пример файла <code>logback.xml</code>:</div>
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;configuration&gt;
+    &lt;!--Аппендеры --&gt;
+    &lt;!--Файловый appender --&gt;
+    &lt;appender name="file" class="ch.qos.logback.core.FileAppender"&gt;
+        &lt;file&gt;log.log&lt;/file&gt;
+        &lt;layout class="ch.qos.logback.classic.PatternLayout"&gt;
+            &lt;Pattern&gt;%date %level [%thread] %logger{10} [%file:%line] %msg%n&lt;/Pattern&gt;
+        &lt;/layout&gt;
+    &lt;/appender&gt;
+    &lt;!--Консольный appender --&gt;
+    &lt;appender name="sout" class="ch.qos.logback.core.ConsoleAppender"&gt;
+        &lt;layout class="ch.qos.logback.classic.PatternLayout"&gt;
+            &lt;Pattern&gt;%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n&lt;/Pattern&gt;
+        &lt;/layout&gt;
+    &lt;/appender&gt;
+    &lt;!-- Фильтры --&gt;
+    &lt;!-- Фильтр по маркеру --&gt;
+    &lt;turboFilter class="ch.qos.logback.classic.turbo.MarkerFilter"&gt;
+        &lt;Marker&gt;marker&lt;/Marker&gt;
+        &lt;OnMatch&gt;DENY&lt;/OnMatch&gt;
+    &lt;/turboFilter&gt;
+    &lt;!-- Loggers --&gt;
+    &lt;!-- Корневой logger --&gt;
+    &lt;root level="info"&gt;
+        &lt;appender-ref ref="file" /&gt;
+    &lt;/root&gt;
+    &lt;!-- Logger нашего класса --&gt;
+    &lt;logger name="logging.logback.LoggingLogback" level="info" &gt;
+        &lt;appender-ref ref="sout" /&gt;
+    &lt;/logger&gt;
+&lt;/configuration&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_slf4j">SLF4J</h5>
+<div class="paragraph">
+<p><strong>SLF4J</strong> является оберткой над <strong>logback</strong>, а также над <strong>JUL</strong>, <strong>log4j</strong>, или <strong>JCL</strong>, а также над любым logger, который реализует ее интерфейс. Для работы с <strong>SLF4J</strong> нужны библиотека <code>slf4j-api-1.x.x</code> и реализация одного из loggers либо заглушка. Как правило, реализации всех loggers (кроме <strong>logback</strong>) поставляются вместе с SLF4J и имеют названия на подобии <code>slf4j-jcl-1.x</code>, <code>slf4j-log4j12-1.x</code>, <code>slf4j-nop-1.x</code> и т.п. Если в <strong>classpath</strong> не будет найдена реализация logger (или заглушка <strong>nop</strong>) <strong>SLF4J</strong> гневно ругнется и работать откажется. Конфигурация соответственно будет искаться в зависимости от положенной в <strong>classpath</strong> реализации.</p>
+</div>
+<div class="paragraph">
+<p>Вся обертка делится на две части:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>API</strong><br>
+Используется приложениями</p>
+</li>
+<li>
+<p><strong>Реализация logger</strong>
+Представлена отдельными jar-файлами для каждого вида логирования. Такие реализации для <strong>slf4j</strong> называются <strong>binding</strong>. Например, <code>slf4j-log4j12</code> или <code>logback-classic</code>. Достаточно только положить в <strong>CLASSPATH</strong> нужный <strong>binding</strong> и весь код проекта и все используемые библиотеки (при условии, что они обращаются к <strong>SLF4J</strong>) будут выполнять logging в нужном направлении.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>API SLF4J</strong> было рассмотрено в реализации <strong>logback</strong>.</p>
+</div>
+<div class="paragraph">
+<p>Чтобы использовать <strong>SLF4J</strong> вместе с <strong>log4j 2</strong> необходимо подключить зависимость:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.apache.logging.log4j&lt;/groupId&gt;
+        &lt;artifactId&gt;log4j-api&lt;/artifactId&gt;
+        &lt;version&gt;2.7&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.apache.logging.log4j&lt;/groupId&gt;
+        &lt;artifactId&gt;log4j-core&lt;/artifactId&gt;
+        &lt;version&gt;2.7&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.apache.logging.log4j&lt;/groupId&gt;
+        &lt;artifactId&gt;log4j-slf4j-impl&lt;/artifactId&gt;
+        &lt;version&gt;2.7&lt;/version&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_links_4">5.4.7. Links</h4>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://javarush.ru/groups/posts/2388-logirovanie-chto-kak-gde-i-chem">Логирование: что, как, где и чем?</a></p>
+</li>
+<li>
+<p><a href="https://javarush.ru/groups/posts/2293-zachem-nuzhno-logirovanie">Зачем нужно логирование</a></p>
+</li>
+<li>
+<p><a href="https://javarush.ru/quests/lectures/questcollections.level04.lecture09">Logger</a></p>
+</li>
+<li>
+<p><a href="https://habr.com/ru/post/113145/">Java Logging: история кошмара</a></p>
+</li>
+<li>
+<p><a href="https://habr.com/ru/post/247647/">Java logging. Hello World</a></p>
+</li>
+<li>
+<p><a href="https://github.com/qcha/JBook/blob/master/other/logging.md">Логирование в Java</a></p>
+</li>
+<li>
+<p><a href="https://codernet.ru/articles/drugoe/logirovanie_java_terminologiya_urovni_logirovaniya_log-fajlyi/">Логирование Java: терминология, уровни логирования, log-файлы</a></p>
+</li>
+<li>
+<p><a href="https://coderlessons.com/tutorials/java-tekhnologii/vyuchi-slf4j/slf4j-kratkoe-rukovodstvo">SLF4J — Краткое руководство</a></p>
+</li>
+<li>
+<p><a href="https://www.youtube.com/watch?v=j-i3NQiKbcc&amp;t=2052s&amp;ab_channel=JUG.ru">Владимир Красильщик — Что надо знать о логировании прагматичному Java-программисту</a></p>
+</li>
+<li>
+<p><a href="http://logging.apache.org/log4j/2.x/">Apache Log4j 2</a></p>
+</li>
+<li>
+<p><a href="http://logback.qos.ch/">Logback</a></p>
+</li>
+<li>
+<p><a href="http://www.slf4j.org//">Simple Logging Facade for Java (SLF4J)</a></p>
+</li>
+<li>
+<p><a href="http://skipy.ru/useful/logging.html#log4j_fa">Ведение лога приложения</a></p>
 </li>
 </ul>
 </div>
@@ -12843,7 +13914,7 @@ ssb   4096R/42B317FD4BA89E7A 2016-03-10</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_links_4">7.2.4. Links</h4>
+<h4 id="_links_5">7.2.4. Links</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -12975,7 +14046,7 @@ ssb   4096R/42B317FD4BA89E7A 2016-03-10</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-10-30 03:06:01 UTC
+Last updated 2021-11-17 10:59:09 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/run_prettify.min.js"></script>

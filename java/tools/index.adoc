@@ -8,4 +8,6 @@ include::mockito.adoc[]
 
 include::liquibase.adoc[]
 
+include::logging.adoc[]
+
 :leveloffset: -1
