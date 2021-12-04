@@ -1,5 +1,5 @@
 = Wiki for lab
-:source-highlighter: prettify
+:source-highlighter: rouge
 :sectnums:
 :toc: left
 :toclevels: 2
