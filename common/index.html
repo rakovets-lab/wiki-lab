@@ -1114,10 +1114,680 @@ ssb   4096R/42B317FD4BA89E7A 2016-03-10</code></pre>
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="_web_services">Web services</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>В каждой отрасли бизнеса, каждой компании, как правило, используется огромное количество ПО, которым нужно взаимодействовать между собой. За десятилетия существования <strong>Web</strong> как отрасли сформировались следующие практики межсетевого взаимодействия:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Обмен файлами по <strong>FTP</strong>.</p>
+</li>
+<li>
+<p>Неструктурированные <strong>HTTP</strong>-запросы, договорённости между разработчиками.</p>
+</li>
+<li>
+<p><strong>Web services</strong>.</p>
+</li>
+<li>
+<p><strong>Sockets</strong>, порты, бинарные объекты.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Web services</strong> (<strong>веб сервисы</strong>, <strong>веб службы</strong>) - это технология, позволяющая системам обмениваться данными друг с другом через сетевое подключение. Обычно веб-сервисы работают поверх протокола <strong>HTTP</strong> или протокола более высокого уровня. <strong>Web service</strong> — просто адрес, ссылка, обращение к которому позволяет получить данные или выполнить действие.</p>
+</div>
+<div class="paragraph">
+<p>Другими словами <strong>web service</strong> это код, доступный по протоколу (например <strong>HTTP</strong>) и возвращающий информацию в каком-то формате (например <strong>XML</strong>, <strong>JSON</strong>) конкретному приложению.</p>
+</div>
+<div class="paragraph">
+<p><strong>Web service</strong> можно использовать для одного приложения на компьютере или предоставить к нему доступ через <strong>Интернет</strong> любому числу приложений. Поскольку доступ к <strong>web service</strong> выполняется через стандартный интерфейс, с нем могут работать различные системы, образуя единую вычислительную сеть.</p>
+</div>
+<div class="paragraph">
+<p>В <strong>web services</strong> всегда есть клиент и сервер. Сервер – это и есть наш <strong>web service</strong> и иногда его называют <strong>endpoint</strong> (типа как, конечная точка, куда доходят сообщения от клиента).</p>
+</div>
+<div class="paragraph">
+<p>Самые известные способы реализации веб-сервисов:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>XML-RPC</strong> (<strong>XML Remote Procedure Call</strong>) — протокол удаленного вызова процедур с использованием <strong>XML</strong>. Прародитель <strong>SOAP</strong>. Предельно прост в реализации.</p>
+</li>
+<li>
+<p><strong>SOAP</strong> (<strong>Simple Object Access Protocol</strong>) — стандартный протокол по версии <strong>W3C</strong>. Четко структурирован и задокументирован.</p>
+</li>
+<li>
+<p><strong>JSON-RPC</strong> (<strong>JSON Remote Procedure Call</strong>) — более современный аналог <strong>XML-RPC</strong>. Основное отличие — данные передаются в формате <strong>JSON</strong>.</p>
+</li>
+<li>
+<p><strong>REST</strong> (<strong>Representational State Transfer</strong>) — архитектурный стиль взаимодействия компьютерных систем в сети основанный на методах протокола <strong>HTTP</strong>.</p>
+</li>
+<li>
+<p>Специализированные протоколы для конкретного вида задач, такие как <strong>GraphQL</strong>.</p>
+</li>
+<li>
+<p>Менее распространенный, но более эффективный <strong>gRPC</strong>, передающий данные в бинарном виде и использующий <strong>HTTP/2</strong> в качестве транспорта.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Главное отличие web service</strong> от других способов передачи данных: <strong>стандартизированность</strong>. Приняв решение использовать веб-сервисы, можно сразу переходить к структуре данных и доступным функциям. Например, В <strong>SOAP</strong> (как более строгом протоколе), уже решён вопрос уведомления об ошибках.</p>
+</div>
+<div class="sect2">
+<h3 id="_soap_web_services">SOAP web-services</h3>
+<div class="paragraph">
+<p><strong>SOAP</strong> <strong>web-services</strong> ("<strong>Big web-service</strong>", классический <strong>web-service</strong>) - это протокол, предназначенный для обмена структурированной информацией в децентрализованной распределенной среде. Первоначально <strong>SOAP</strong> расшифровывался как <strong>Simple Object Access Protocol</strong> и предназначался в основном для реализации удалённого вызова процедур (<strong>RPC</strong>). Сейчас протокол используется для обмена произвольными сообщениями в формате <strong>XML</strong>, а не только для вызова процедур.</p>
+</div>
+<div class="paragraph">
+<p><strong>SOAP</strong> использует технологии <strong>XML</strong> для определения расширяемой инфраструктуры обмена сообщениями, обеспечивающей конструкцию сообщения, которой можно обмениваться по множеству базовых протоколов. Платформа была разработана так, чтобы быть независимой от какого-либо языка программирования и другой специфической семантики реализации.</p>
+</div>
+<div class="paragraph">
+<p>Протокол <strong>SOAP</strong> не различает вызов процедуры и ответ на него, а просто определяет формат послания (<strong>message</strong>) в виде документа <strong>XML</strong>. Послание может содержать вызов процедуры, ответ на него, запрос на выполнение каких-то других действий или просто текст. Спецификацию <strong>SOAP</strong> не интересует содержимое послания, она задает только его оформление.</p>
+</div>
+<div class="paragraph">
+<p>Две основные цели разработки <strong>SOAP</strong> - это простота и расширяемость. <strong>SOAP</strong> пытается достичь этих целей, исключая из инфраструктуры обмена сообщениями функции, которые часто встречаются в распределенных системах. Такие функции включают, помимо прочего, «надежность», «безопасность», «корреляцию», «маршрутизацию» и «шаблоны обмена сообщениями» (<strong>MEP</strong>). Хотя ожидается, что будут определены многие функции, эта спецификация предоставляет подробные сведения только для двух <strong>MEP</strong>. Остальные функции оставлены для определения как расширения другими спецификациями.</p>
+</div>
+<div class="paragraph">
+<p>Как было сказано выше, <strong>SOAP</strong> является протоколом и имеет спецификацию. В качестве транспортного протокола может использовать <strong>HTTP</strong>, <strong>SMTP</strong>, <strong>FTP</strong>, <strong>JMS</strong>. Все детали сообщений (в обе стороны – от клиента к серверу и обратно) передаются в стандартизованном <strong>XML</strong>-документе. <strong>SOAP</strong> чаще всего применяется поверх <strong>HTTP</strong>(<strong>S</strong>).</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../assets/img/common/web-services/soap-architecture.png" alt="soap architecture"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>SOAP</strong> – это базовая однонаправленная модель соединения, обеспечивающая согласованную передачу сообщения от отправителя к получателю, потенциально допускающая наличие посредников, которые могут обрабатывать часть сообщения или добавлять к нему дополнительные элементы. Спецификация <strong>SOAP</strong> содержит соглашения по преобразованию однонаправленного обмена сообщениями в соответствии с принципом «запрос/ответ», а также определяет как осуществлять передачу всего <strong>XML</strong>-документа.</p>
+</div>
+<div class="paragraph">
+<p>Нужно отметить, что определение <strong>SOAP</strong> <strong>web-services</strong> состоит из набора протоколов (спецификаций):</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Протокол <strong>SOAP</strong> необходим для реализации возможностей обратного вызова</p>
+</li>
+<li>
+<p>Протокол <strong>WSDL</strong> (<strong>Web-Service Description Language</strong>) язык определения <strong>web-services</strong> или язык описания внешних интерфейсов web-службы на базе <strong>XML</strong></p>
+</li>
+<li>
+<p>Протокол <strong>UDDI</strong> (<strong>необязательный</strong>) (<strong>Universal Description, Discovery, Interoperability</strong>) универсальное описание или каталог веб-служб и сведений предоставляющих <strong>WSDL</strong>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../assets/img/common/web-services/web-service-soap.png" alt="web service soap"></span></p>
+</div>
+<div class="sect3">
+<h4 id="_soap_message">SOAP message</h4>
+<div class="paragraph">
+<p>Любое сообщение в протоколе <strong>SOAP</strong> — это <strong>XML</strong> документ.</p>
+</div>
+<div class="paragraph">
+<p>Данный документ состоит из следующих элементов (тегов):</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>SOAP Envelope</strong> — конверт (корневой обязательный элемент), который определяет сообщение и пространство имен, использованное в документе.</p>
+</li>
+<li>
+<p><strong>SOAP Header</strong> — заголовок, необязательный элемент, содержит атрибуты сообщения, например: информация о безопасности или о сетевой маршрутизации.</p>
+</li>
+<li>
+<p><strong>SOAP Body</strong> — основной элемент, содержит сообщение, которым обмениваются приложения.</p>
+</li>
+<li>
+<p><strong>Fault</strong> — необязательный элемент, предоставляет информацию об ошибках, которые произошли при обработке сообщений.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../assets/img/common/web-services/soap-message.png" alt="soap message"></span></p>
+</div>
+<div class="paragraph">
+<p>Конверт является самым «верхним» элементом <strong>SOAP</strong> сообщения. Описывается с помощью элемента <code>Envelope</code> с обязательным пространством имен <code><a href="http://www.w3.org/2003/05/soap-envelope" class="bare">http://www.w3.org/2003/05/soap-envelope</a></code> для версии 1.2 и <code><a href="http://schemas.xmlsoap.org/soap/" class="bare">http://schemas.xmlsoap.org/soap/</a></code> для версии 1.1. У элемента <code>Envelope</code> могут быть атрибуты <code>xmlns</code>, определяющие пространства имен, и другие атрибуты, снабженные префиксами.</p>
+</div>
+<div class="paragraph">
+<p>Заголовок <strong>SOAP</strong> является не обязательный. Заголовок кроме атрибутов <code>xmlns</code> может содержать 0 или более стандартных атрибутов:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>encodingStyle</code></p>
+</li>
+<li>
+<p><code>actor</code> (или role для версии 1.2)</p>
+</li>
+<li>
+<p><code>mustUnderstand</code></p>
+</li>
+<li>
+<p><code>relay</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Элемент <code>Body</code> обязательно записывается сразу за элементом <code>Header</code>, если он есть в сообщении, или первым в <strong>SOAP</strong>-сообщении, если заголовок отсутствует. В элемент <code>Body</code> можно вложить произвольные элементы, спецификация никак не определяет их структуру. Определен только один стандартный элемент, который может быть в теле сообщения - <code>Fault</code>, содержащий сообщение об ошибке.</p>
+</div>
+<div class="paragraph">
+<p>Если <strong>SOAP</strong>-сервер, обрабатывая поступившее <strong>SOAP</strong>-сообщение, обнаружит ошибку, то он прекратит обработку и отправит клиенту <strong>SOAP</strong>-сообщение, содержащее один элемент <code>Fault</code> с сообщением об ошибке.</p>
+</div>
+<div class="paragraph">
+<p>Пример запроса на сервер:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"&gt;
+   &lt;soap:Body&gt;
+     &lt;getProductDetails xmlns="www.example.com"&gt;
+       &lt;productID&gt;12345&lt;/productID&gt;
+     &lt;/getProductDetails&gt;
+   &lt;/soap:Body&gt;
+&lt;/soap:Envelope&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Пример ответа:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"&gt;
+   &lt;soap:Body&gt;
+     &lt;getProductDetailsResponse xmlns="www.example.com"&gt;
+       &lt;getProductDetailsResult&gt;
+         &lt;productID&gt;12345&lt;/productID&gt;
+         &lt;productName&gt;Стакан граненый&lt;/productName&gt;
+         &lt;description&gt;Стакан граненый. 250 мл.&lt;/description&gt;
+         &lt;price&gt;9.95&lt;/price&gt;
+         &lt;currency&gt;
+             &lt;code&gt;840&lt;/code&gt;
+             &lt;alpha3&gt;USD&lt;/alpha3&gt;
+             &lt;sign&gt;$&lt;/sign&gt;
+             &lt;name&gt;US dollar&lt;/name&gt;
+             &lt;accuracy&gt;2&lt;/accuracy&gt;
+         &lt;/currency&gt;
+         &lt;inStock&gt;true&lt;/inStock&gt;
+       &lt;/getProductDetailsResult&gt;
+     &lt;/getProductDetailsResponse&gt;
+   &lt;/soap:Body&gt;
+&lt;/soap:Envelope&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_wsdl">WSDL</h4>
+<div class="paragraph">
+<p><strong>WSDL</strong> (<strong>Web Services Description Language</strong>) — язык описания веб-сервисов и доступа к ним, основанный на языке <strong>XML</strong>.</p>
+</div>
+<div class="paragraph">
+<p>Другими словами, определения <strong>WSDL</strong> описывают, как получить доступ к веб-службе и какие операции она будет выполнять.</p>
+</div>
+<div class="paragraph">
+<p>Каждый документ <strong>WSDL 1.1</strong> можно разбить на следующие логические части:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Определение типов данных (<strong>types</strong>) — определение вида отправляемых и получаемых сервисом <strong>XML</strong>-сообщений</p>
+</li>
+<li>
+<p>Элементы данных (<strong>message</strong>) — сообщения, используемые web-сервисом</p>
+</li>
+<li>
+<p>Абстрактные операции (<strong>portType</strong>) — список операций, которые могут быть выполнены с сообщениями</p>
+</li>
+<li>
+<p>Связывание сервисов (<strong>binding</strong>) — способ, которым сообщение будет доставлено</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../assets/img/common/web-services/wsdl-file.png" alt="wsdl file"></span></p>
+</div>
+<div class="paragraph">
+<p>Документ WSDL содержит следующие элементы:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Определение</strong> — это корневой элемент всех документов <strong>WSDL</strong>. Он определяет имя веб-службы, объявляет несколько пространств имен, используемых в оставшейся части документа, и содержит все элементы службы, описанные здесь.</p>
+</li>
+<li>
+<p><strong>Типы данных</strong> — типы данных, которые будут использоваться в сообщениях, представлены в форме схем <strong>XML</strong>.</p>
+</li>
+<li>
+<p><strong>Сообщение — это абстрактное определение данных в форме сообщения, представленного либо в виде всего документа, либо в качестве аргументов, которые</strong> должны быть сопоставлены с вызовом метода.</p>
+</li>
+<li>
+<p><strong>Операция</strong> — это абстрактное определение операции для сообщения, например, присвоение имени методу, очереди сообщений или бизнес-процессу, которое примет и обработает сообщение.</p>
+</li>
+<li>
+<p><strong>Тип порта</strong> — это абстрактный набор операций, сопоставленный с одной или несколькими конечными точками, определяющий набор операций для привязки; коллекция операций, как она абстрактна, может быть сопоставлена с несколькими транспортными средствами через различные привязки.</p>
+</li>
+<li>
+<p><strong>Связывание</strong> — это конкретный протокол и форматы данных для операций и сообщений, определенных для определенного типа порта.</p>
+</li>
+<li>
+<p><strong>Порт</strong> — это сочетание привязки и сетевого адреса, обеспечивающее целевой адрес службы связи.</p>
+</li>
+<li>
+<p><strong>Сервис</strong> — это набор связанных конечных точек, охватывающий определения сервиса в файле; службы сопоставляют привязку с портом и включают любые определения расширяемости.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>В дополнение к этим основным элементам спецификация <strong>WSDL</strong> также определяет следующие служебные элементы:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Документация</strong> — Этот элемент используется для предоставления удобочитаемой документации и может быть включен в любой другой элемент <strong>WSDL</strong>.</p>
+</li>
+<li>
+<p><strong>Импорт</strong> — этот элемент используется для импорта других документов WSDL или схем XML.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Файл <strong>WSDL</strong> выглядит следующим образом:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;definitions name = "HelloService"
+   targetNamespace = "http://www.examples.com/wsdl/HelloService.wsdl"
+   xmlns = "http://schemas.xmlsoap.org/wsdl/"
+   xmlns:soap = "http://schemas.xmlsoap.org/wsdl/soap/"
+   xmlns:tns = "http://www.examples.com/wsdl/HelloService.wsdl"
+   xmlns:xsd = "http://www.w3.org/2001/XMLSchema"&gt;
+
+   &lt;message name = "SayHelloRequest"&gt;
+      &lt;part name = "firstName" type = "xsd:string"/&gt;
+   &lt;/message&gt;
+
+   &lt;message name = "SayHelloResponse"&gt;
+      &lt;part name = "greeting" type = "xsd:string"/&gt;
+   &lt;/message&gt;
+
+   &lt;portType name = "Hello_PortType"&gt;
+      &lt;operation name = "sayHello"&gt;
+         &lt;input message = "tns:SayHelloRequest"/&gt;
+         &lt;output message = "tns:SayHelloResponse"/&gt;
+      &lt;/operation&gt;
+   &lt;/portType&gt;
+
+   &lt;binding name = "Hello_Binding" type = "tns:Hello_PortType"&gt;
+      &lt;soap:binding style = "rpc"
+         transport = "http://schemas.xmlsoap.org/soap/http"/&gt;
+      &lt;operation name = "sayHello"&gt;
+         &lt;soap:operation soapAction = "sayHello"/&gt;
+         &lt;input&gt;
+            &lt;soap:body
+               encodingStyle = "http://schemas.xmlsoap.org/soap/encoding/"
+               namespace = "urn:examples:helloservice"
+               use = "encoded"/&gt;
+         &lt;/input&gt;
+
+         &lt;output&gt;
+            &lt;soap:body
+               encodingStyle = "http://schemas.xmlsoap.org/soap/encoding/"
+               namespace = "urn:examples:helloservice"
+               use = "encoded"/&gt;
+         &lt;/output&gt;
+      &lt;/operation&gt;
+   &lt;/binding&gt;
+
+   &lt;service name = "Hello_Service"&gt;
+      &lt;documentation&gt;WSDL File for HelloService&lt;/documentation&gt;
+      &lt;port binding = "tns:Hello_Binding" name = "Hello_Port"&gt;
+         &lt;soap:address
+            location = "http://www.examples.com/SayHello/" /&gt;
+      &lt;/port&gt;
+   &lt;/service&gt;
+&lt;/definitions&gt;</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Definitions</strong> - <code>HelloService</code></p>
+</li>
+<li>
+<p><strong>Type</strong> - использование встроенных типов данных, которые определены в <strong>XMLSchema</strong>.</p>
+</li>
+<li>
+<p><strong>Message</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>sayHelloRequest</code> - параметр firstName</p>
+</li>
+<li>
+<p><code>sayHelloresponse</code> - возвращаемое значение приветствия</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Port Type</strong> - операция <code>sayHello</code>, состоящая из службы запроса и ответа.</p>
+</li>
+<li>
+<p><strong>Binding</strong>  - Направление использования транспортного протокола <strong>SOAP</strong> <strong>HTTP</strong>.</p>
+</li>
+<li>
+<p><strong>Service</strong>  - Сервис доступен по адресу <code><a href="http://www.examples.com/SayHello/" class="bare">http://www.examples.com/SayHello/</a></code>.</p>
+</li>
+<li>
+<p><strong>Port</strong>  - связывает привязку с <strong>URI</strong> <code><a href="http://www.examples.com/SayHello/" class="bare">http://www.examples.com/SayHello/</a></code>, по которому можно получить доступ к работающей службе.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_преимущества">Преимущества</h4>
+<div class="paragraph">
+<p>Преимущества:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Работа с методами</p>
+</li>
+<li>
+<p>Наличие строгой спецификации</p>
+</li>
+<li>
+<p>Большое количества спецификаций</p>
+</li>
+<li>
+<p>Поддержка транзакций, уровней безопасности и пр.</p>
+</li>
+<li>
+<p>Различные транспортные уровни (<strong>HTTP</strong>, <strong>SMTP</strong>, <strong>FTP</strong>, <strong>JMS</strong>)</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_недостатки">Недостатки</h4>
+<div class="paragraph">
+<p>Недостатки:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Сложность реализации (по сравнению с <strong>REST</strong>);</p>
+</li>
+<li>
+<p>Работа только через <strong>XML</strong></p>
+</li>
+<li>
+<p>Сложность/ресурсоемкость парсинга XML-данных</p>
+</li>
+<li>
+<p>При изменениях необходимо обновлять <strong>WSDL</strong>, и, следовательно, вносить изменения на клиенте</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_restful">RESTful</h3>
+<div class="paragraph">
+<p><strong>REST</strong> (<strong>Representational State Transfer</strong>) — на самом деле архитектурный стиль, а не протокол. Фактически, он основывается на соглашениях. Сервис построенный в стиле REST называется REST-сервисом. Веб-сервис, построенный с учетом всех требований и ограничений архитектурного стиля, можно назвать <strong>RESTful</strong> веб-сервисом.</p>
+</div>
+<div class="paragraph">
+<p><strong>REST</strong> не зависит от какого-либо протокола, но почти каждый <strong>RESTful</strong> сервис использует <strong>HTTP</strong> как основной протокол.</p>
+</div>
+<div class="paragraph">
+<p>Существует шесть обязательных ограничений для построения распределённых <strong>REST</strong>-приложений:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Модель клиент-сервер</p>
+</li>
+<li>
+<p>Отсутствие состояния</p>
+</li>
+<li>
+<p>Кэширование</p>
+</li>
+<li>
+<p>Единообразие интерфейса</p>
+</li>
+<li>
+<p>Слои</p>
+</li>
+<li>
+<p>Код по требованию (необязательное ограничение)</p>
+</li>
+</ul>
+</div>
+<div class="sect3">
+<h4 id="_модель_клиент_сервер">Модель клиент-сервер</h4>
+<div class="paragraph">
+<p>Первым ограничением, применимым к гибридной модели, является приведение архитектуры к модели клиент-сервер. Разграничение потребностей является принципом, лежащим в основе данного накладываемого ограничения. Отделение потребности интерфейса клиента от потребностей сервера, хранящего данные, повышает переносимость кода клиентского интерфейса на другие платформы, а упрощение серверной части улучшает масштабируемость. Наибольшее же влияние на всемирную паутину, пожалуй, имеет само разграничение, которое позволяет отдельным частям развиваться независимо друг от друга, поддерживая потребности в развитии интернета со стороны различных организаций.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_отсутствие_состояния">Отсутствие состояния</h4>
+<div class="paragraph">
+<p>Протокол взаимодействия между клиентом и сервером требует соблюдения следующего условия: в период между запросами клиента никакая информация о состоянии клиента на сервере не хранится (Stateless protocol или «протокол без сохранения состояния»). Все запросы от клиента должны быть составлены так, чтобы сервер получил всю необходимую информацию для выполнения запроса. Состояние сессии при этом сохраняется на стороне клиента. Информация о состоянии сессии может быть передана сервером какому-либо другому сервису (например, в службу базы данных) для поддержания устойчивого состояния, например, на период установления аутентификации. Клиент инициирует отправку запросов, когда он готов (возникает необходимость) перейти в новое состояние.</p>
+</div>
+<div class="paragraph">
+<p>Во время обработки клиентских запросов считается, что клиент находится в переходном состоянии. Каждое отдельное состояние приложения представлено связями, которые могут быть задействованы при следующем обращении клиента.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_кэширование">Кэширование</h4>
+<div class="paragraph">
+<p>Как и во Всемирной паутине, клиенты, а также промежуточные узлы, могут выполнять кэширование ответов сервера. Ответы сервера, в свою очередь, должны иметь явное или неявное обозначение как кэшируемые или некэшируемые с целью предотвращения получения клиентами устаревших или неверных данных в ответ на последующие запросы. Правильное использование кэширования способно частично или полностью устранить некоторые клиент-серверные взаимодействия, ещё больше повышая производительность и масштабируемость системы.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_единообразие_интерфейса">Единообразие интерфейса</h4>
+<div class="paragraph">
+<p>К фундаментальным требованиям <strong>REST</strong> архитектуры относится и унифицированный, единообразный интерфейс. Клиент должен всегда понимать, в каком формате и на какие адреса ему нужно слать запрос, а сервер, в свою очередь, также должен понимать, в каком формате ему следует отвечать на запросы клиента. Этот единый формат клиент-серверного взаимодействия, который описывает, что, куда, в каком виде и как отсылать и является унифицированным интерфейсом.</p>
+</div>
+<div class="paragraph">
+<p>Наличие унифицированного интерфейса является фундаментальным требованием дизайна <strong>REST</strong>-сервисов. Унифицированные интерфейсы позволяют каждому из сервисов развиваться независимо.</p>
+</div>
+<div class="paragraph">
+<p>К унифицированным интерфейсам предъявляются следующие четыре ограничительных условия:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Идентификация ресурсов</strong>. Все ресурсы идентифицируются в запросах, например, с использованием <strong>URI</strong> в интернет-системах. Ресурсы концептуально отделены от представлений, которые возвращаются клиентам. Например, сервер может отсылать данные из базы данных в виде <strong>HTML</strong>, <strong>XML</strong> или <strong>JSON</strong>, ни один из которых не является типом хранения внутри сервера.</p>
+</li>
+<li>
+<p><strong>Манипуляция ресурсами через представление</strong>. Если клиент хранит представление ресурса, включая метаданные — он обладает достаточной информацией для модификации или удаления ресурса.</p>
+</li>
+<li>
+<p><strong>«Самоописываемые» сообщения</strong>. Каждое сообщение содержит достаточно информации, чтобы понять, каким образом его обрабатывать. К примеру, обработчик сообщения (<strong>parser</strong>), необходимый для извлечения данных, может быть указан в списке <strong>MIME</strong>-типов.</p>
+</li>
+<li>
+<p><strong>Гипермедиа как средство изменения состояния приложения</strong> (<strong>HATEOAS</strong>). Клиенты изменяют состояние системы только через действия, которые динамически определены в гипермедиа на сервере (к примеру, гиперссылки в гипертексте). Исключая простые точки входа в приложение, клиент не может предположить, что доступна какая-то операция над каким-то ресурсом, если не получил информацию об этом в предыдущих запросах к серверу. Не существует универсального формата для предоставления ссылок между ресурсами, <strong>Web Linking</strong> (<strong>RFC 5988</strong> &#8594; <strong>RFC 8288</strong>) и J<strong>SON Hypermedia API Language</strong> являются двумя популярными форматами предоставления ссылок в <strong>REST HYPERMEDIA</strong> сервисах.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_слои">Слои</h4>
+<div class="paragraph">
+<p>Клиент обычно не способен точно определить, взаимодействует он напрямую с сервером или же с промежуточным узлом, в связи с иерархической структурой сетей (подразумевая, что такая структура образует слои). Применение промежуточных серверов способно повысить масштабируемость за счёт балансировки нагрузки и распределённого кэширования. Промежуточные узлы также могут подчиняться политике безопасности с целью обеспечения конфиденциальности информации</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_код_по_требованию_необязательное_ограничение">Код по требованию (необязательное ограничение)</h4>
+<div class="paragraph">
+<p><strong>REST</strong> может позволить расширить функциональность клиента за счёт загрузки кода с сервера в виде апплетов или сценариев. Филдинг утверждает, что дополнительное ограничение позволяет проектировать архитектуру, поддерживающую желаемую функциональность в общем случае, но, возможно, за исключением некоторых контекстов.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_преимущества_2">Преимущества</h4>
+<div class="paragraph">
+<p>Преимущества:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Легко разрабатывать</p>
+</li>
+<li>
+<p>Производительность (за счёт использования кэша);</p>
+</li>
+<li>
+<p>Может возвращать ответ в разных видах (<strong>HTML</strong>, <strong>XML</strong>, <strong>JSON</strong>, строка и т.д.)</p>
+</li>
+<li>
+<p>Легко вносить изменения без изменения клиента</p>
+</li>
+<li>
+<p>Надёжность (за счёт отсутствия необходимости сохранять информацию о состоянии клиента, которая может быть утеряна);</p>
+</li>
+<li>
+<p>Масштабируемость;</p>
+</li>
+<li>
+<p>Простота интерфейсов;</p>
+</li>
+<li>
+<p>Портативность компонентов;</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_недостатки_2">Недостатки</h4>
+<div class="paragraph">
+<p>Недостатки:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Не сохраняет состояния (<strong>HTTP</strong> не сохраняет состояние)</p>
+</li>
+<li>
+<p>Важный недостаток <strong>REST API</strong> — слабая устойчивость к взлому.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_отличия_rest_от_soap">Отличия <code>REST</code> от <code>SOAP</code></h3>
+<div class="paragraph">
+<p><strong>REST</strong> и <strong>SOAP</strong> на самом деле не сопоставимы. <strong>REST</strong> — это архитектурный стиль. <strong>SOAP</strong> — это протокол отправки сообщения. Давайте сравним популярные реализации стилей <strong>REST</strong> и <strong>SOAP</strong>.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>SOAP</strong> это протокол, <strong>REST</strong> – это архитектурный стиль, <strong>SOAP</strong> имеет веб-сервис <strong>WSDL</strong> с прописанными методами, которые можно удаленно вызывать.</p>
+</li>
+<li>
+<p><strong>REST</strong> использует <strong>JSON</strong> и <strong>XML</strong>, <strong>SOAP</strong> только <strong>XML</strong>.</p>
+</li>
+<li>
+<p><strong>REST</strong> работает только по <strong>HTTP/HTTPS</strong>, <strong>SOAP</strong> с любым протоколом прикладного уровня: <strong>SMPT</strong>, <strong>FTP</strong>, <strong>HTTP</strong>, <strong>HTTPS</strong>, <strong>POP3</strong></p>
+</li>
+<li>
+<p><strong>REST</strong> более простой, гибкий и быстрый, <strong>SOAP</strong> типизированный, но в некоторых случаях лучше визуализируется за счет применения им синтаксиса похожего на <strong>HTML</strong> разметку.</p>
+</li>
+<li>
+<p><strong>RESTFful</strong> веб-сервисы, как правило, гораздо проще реализовать, чем веб-сервисы на основе <strong>SOAP</strong>.</p>
+</li>
+<li>
+<p>В <strong>REST</strong> легко изменять функционал без изменения клиента, в то время в <strong>SOAP</strong> после изменений необходимо изменять WSDL и, следовательно, вносить изменения на клиенте.</p>
+</li>
+<li>
+<p><strong>REST</strong> может работать с ресурсами. Каждый <strong>URL</strong> это представление какого-либо ресурса. <strong>SOAP</strong> работает с операциями, которые реализуют какую-то бизнес-логику с помощью нескольких интерфейсов.</p>
+</li>
+<li>
+<p><strong>SOAP</strong> на основе чтения не может быть помещена в кэш, а <strong>REST</strong> в этом случае может быть закэширован.</p>
+</li>
+<li>
+<p><strong>SOAP</strong> поддерживает <strong>TLS</strong> и <strong>WS-security</strong>, в то время как <strong>REST</strong> - только <strong>TLS</strong>.</p>
+</li>
+<li>
+<p><strong>SOAP</strong> поддерживает <strong>ACID</strong> (<strong>Atomicity</strong>, <strong>Consistency</strong>, <strong>Isolation</strong>, <strong>Durability</strong>). <strong>REST</strong> поддерживает транзакции, но не один из <strong>ACID</strong> не совместим с двух фазовым коммитом.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_links_2">Links</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://habr.com/ru/post/46374/">Веб-сервисы в теории и на практике для начинающих</a></p>
+</li>
+<li>
+<p><a href="https://javarush.ru/groups/posts/1168-veb-servisih-shag-1-chto-takoe-veb-servis-i-kak-s-nim-rabotatjh">Веб-сервисы. Шаг 1. Что такое веб-сервис и как с ним работать?</a></p>
+</li>
+<li>
+<p><a href="https://ru.wikipedia.org/wiki/SOAP">Wikipedia: SOAP</a></p>
+</li>
+<li>
+<p><a href="http://khpi-iip.mipk.kharkiv.edu/library/sotii/lectures/Lecture5.pdf">Стандарт SOAP – протокол взаимодействия сервисов</a></p>
+</li>
+<li>
+<p><a href="https://www.tutorialspoint.com/wsdl/wsdl_example.htm">WSDL - Example</a></p>
+</li>
+<li>
+<p><a href="https://coderlessons.com/tutorials/xml-tekhnologii/uznaite-wsdl/wsdl-kratkoe-rukovodstvo">WSDL — Краткое руководство</a></p>
+</li>
+<li>
+<p><a href="http://java-online.ru/web-service.xhtml">Описание WEB-сервисов, XML-RPC</a></p>
+</li>
+<li>
+<p><a href="https://glebradchenko.susu.ru/courses/bachelor/odp/2013/SUSU_Distr_09_SOAP_01.pdf">Распределенные вычислительные системы</a></p>
+</li>
+<li>
+<p><a href="http://art-in-stamps.ru/development/restful-web-services.shtml">Веб-сервисы RESTful</a></p>
+</li>
+<li>
+<p><a href="https://habr.com/ru/post/483202/">Введение в REST API — RESTful веб-сервисы</a></p>
+</li>
+<li>
+<p><a href="https://javarush.ru/groups/posts/2486-obzor-rest-chastjh-1-chto-takoe-rest">Обзор REST. Часть 1: что такое REST</a></p>
+</li>
+<li>
+<p><a href="https://www.intervolga.ru/blog/projects/relsy-veb-integratsii-rest-i-soap/">Рельсы веб-интеграции. REST и SOAP</a></p>
+</li>
+<li>
+<p><a href="http://citforum.ru/internet/webservice/soap_rest/">SOAP и REST, вместе или порознь?</a></p>
+</li>
+<li>
+<p><a href="https://qastart.by/class-2/23-rest-soap">REST / SOAP</a></p>
+</li>
+<li>
+<p><a href="https://habr.com/ru/post/483204/">Различия REST и SOAP</a></p>
+</li>
+<li>
+<p><a href="https://jsehelper.blogspot.com/2016/04/web-services.html">Ответы на вопросы на собеседование Web services</a></p>
+</li>
+<li>
+<p><a href="https://www.youtube.com/watch?v=P2wA_JehjK8&amp;ab_channel=SergeyNemchinskiy">YouTube: Rest web-services vs SOAP Services</a></p>
+</li>
+<li>
+<p><a href="https://www.youtube.com/watch?v=oetMZo2PEFc&amp;t=794s&amp;ab_channel=javabegin">YouTube: Введение в веб сервисы</a></p>
+</li>
+<li>
+<p><a href="https://www.youtube.com/watch?v=2YWfJHDNQy0&amp;t=40s&amp;ab_channel=okiseleva">YouTube: Введение в SOAP и REST: что это и с чем едят</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-12-01 07:32:33 UTC
+Last updated 2021-12-04 05:22:16 UTC
 </div>
 </div>
 </body>

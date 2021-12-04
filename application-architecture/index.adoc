@@ -8,6 +8,4 @@ include::client-server-architecture.adoc[]
 
 include::n-tier architecture.adoc[]
 
-include::web-services.adoc[]
-
 :leveloffset: -1
