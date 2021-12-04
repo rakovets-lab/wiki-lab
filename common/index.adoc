@@ -6,4 +6,6 @@ include::github-keys.adoc[]
 
 include::testing.adoc[]
 
+include::web-services.adoc[]
+
 :leveloffset: -1
