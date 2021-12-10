@@ -1,5 +1,9 @@
 = Java Core
 
+Moved to https://github.com/rakovets/wiki.
+
 :leveloffset: +1
+
+
 
 :leveloffset: -1

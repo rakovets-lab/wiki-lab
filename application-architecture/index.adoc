@@ -1,5 +1,7 @@
 = Application Architecture
 
+Moved to https://github.com/rakovets/wiki.
+
 :leveloffset: +1
 
 :leveloffset: -1
