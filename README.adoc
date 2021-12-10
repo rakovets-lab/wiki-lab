@@ -2,6 +2,35 @@
 
 Wiki for Rakovets Lab
 
+== Getting Started
+
+Need to install:
+
+* Docker
+
+=== Build image
+
+[source,sh]
+----
+docker build -t rakovets/wiki-lab:latest .
+----
+
+=== Run container
+
+[source,sh]
+----
+docker run -dp 3004:80 rakovets/wiki-lab
+----
+
+=== Stop container
+
+Force remove container on `3004` port
+
+[source,sh]
+----
+docker ps -aqf "publish=3004" | xargs docker rm -f
+----
+
 == Process
 
 1. Клонируем репозиторий.
