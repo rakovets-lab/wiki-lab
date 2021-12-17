@@ -1,9 +1,7 @@
 = Jakarta Servlet
 
+Moved to https://github.com/rakovets/wiki.
+
 :leveloffset: +1
-
-include::filters.adoc[]
-
-include::listeners.adoc[]
 
 :leveloffset: -1
