@@ -529,6 +529,7 @@ select topic0_.id as id1_1_0_, comments1_.id as id1_0_1_,
 from topic topic0_ inner join comment comments1_
 on topic0_.id=comments1_.topic_id
 where topic0_.id=?
+
 delete from comment where id=?
 ----
 
@@ -563,6 +564,7 @@ select topic0_.id as id1_1_0_, comments1_.id as id1_0_1_,
 from topic topic0_ inner join comment comments1_
 on topic0_.id=comments1_.topic_id
 where topic0_.id=?
+
 update comment set text=?, topic_id=? where id=?
 ----
 
