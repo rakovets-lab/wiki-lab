@@ -312,6 +312,85 @@ public class Book {
 }
 ----
 
+=== Стратегии генерации первичного ключа
+
+Один из главных требований к `Entity` является наличие первичного ключа.
+В `JPA` на этот случай предусмотрены механизмы автоматической генерации значений суррогатных ключей, которые включается аннотацией `@GeneratedValue`. `JPA` поддерживает четыре страгегии генерации значений суррогатного ключа:
+
+* `GenerationType.IDENTITY`
+* `GenerationType.SEQUENCE`
+* `GenerationType.TABLE`
+* `GenerationType.AUTO`
+
+
+Рассмотрим каждый из них поподробнее.
+
+====  Стратегия GenerationType.IDENTITY
+
+Такая стратегия работает с базами, у которых есть специальные `IDENTITY` поля, например с *MySQL* или *DB2*. В таких базах данных возможно создавать первичный ключ с автоматическим инкрементом.
+
+.Создание таблицы с первичным ключом
+[source,sql]
+----
+CREATE TABLE JOURNAL (ID BIGINT PRIMARY KEY AUTO_INCREMENT);
+----
+
+==== Стратегия GenerationType.SEQUENCE
+
+Такая стратегия использует встроенный в базы данных, такие как *PostgreSQL* или *Oracle*, механизм генерации последовательных значений. Использование этого генератора требует как создания отдельной *sequence* в базе данных:
+
+.Создание таблицы с первичным ключом
+[source,sql]
+----
+CREATE TABLE JOURNAL (ID BIGINT PRIMARY KEY);
+----
+
+.Создание последовательности
+[source,sql]
+----
+CREATE SEQUENCE JPA_SEQUENCE START WITH 1 INCREMENT BY 1 NOCACHE NOCYCLE;
+----
+
+Так и задания имени этой sequence в описании ключа:
+
+.Создание последовательности
+[source,java]
+----
+@Id
+@SequenceGenerator(name = "jpaSequence", sequenceName = "JPA_SEQUENCE")
+@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "jpaSequence")
+@Column(name = "id", nullable = false, updatable = false)
+private Long rowId;
+----
+
+==== Стратегия GenerationType.TABLE
+
+Такая стратегия не зависит от поддержки конкретной базой данных и хранит счётчики значений в отдельной таблице. С одной стороны это более гибкое и настраиваемое решение, с другой стороны более медленное и требующее большей настройки. Вначале требуется создать и проинициализировать таблицу для значений ключей:
+
+.Создание таблицы для сохранения ключей
+[source,sql]
+----
+CREATE TABLE SEQ_STORE
+(SEQ_NAME VARCHAR(255) PRIMARY KEY,
+ SEQ_VALUE BIGINT NOT NULL);
+
+----
+
+.Entity реализующая стратегию GenerationType.TABLE
+[source,java]
+----
+@Id
+@TableGenerator(name = "seqStore", table = "SEQ_STORE", pkColumnName = "SEQ_NAME", pkColumnValue = "JOURNAL.ID.PK", valueColumnName = "SEQ_VALUE", initialValue = 1, allocationSize = 1)
+@GeneratedValue(strategy = GenerationType.TABLE, generator = "seqStore" )
+@Column(name = "id", nullable = false, updatable = false)
+private Long rowId;
+
+----
+
+==== Стратегия GenerationType.AUTO
+
+Позволяет автоматически выбрать стратегию в соответствии с используемой базой данных.
+
 === FETCH STRATEGIES
 
 В `JPA` описаны два типа `FETCH STRATEGY`:
