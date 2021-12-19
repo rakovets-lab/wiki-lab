@@ -380,7 +380,7 @@ private Long rowId;
 
 Позволяет автоматически выбрать стратегию в соответствии с используемой базой данных.
 
-== FETCH STRATEGIES
+== Fetch strategies
 
 В `JPA` описаны два типа `FETCH STRATEGY`:
 
