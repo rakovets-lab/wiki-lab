@@ -446,7 +446,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="_нормализация_и_денормализация_баз_данных">Нормализация и денормализация баз данных</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><strong>Нормализация базы данных</strong> - это процесс эффективной организации данных в базе данных. Есть две причины процесса нормализации:</p>
+<p><strong>Нормализация базы данных</strong> — это процесс эффективной организации данных в базе данных. Есть две причины процесса нормализации:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -459,10 +459,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </ul>
 </div>
 <div class="paragraph">
-<p><strong>Денормализация</strong> — намеренное приведение структуры базы данных в состояние, не соответствующее критериям нормализации, обычно проводимое с целью ускорения операций чтения из базы за счет добавления избыточных данных.</p>
+<p><strong>Denormalization</strong> (<strong>денормализация</strong>) — намеренное приведение структуры базы данных в состояние, не соответствующее критериям нормализации, обычно проводимое с целью ускорения операций чтения из базы за счет добавления избыточных данных.</p>
 </div>
 <div class="paragraph">
-<p><strong>Нормализация</strong> состоит из ряда принципов, которые помогают в создании хорошей структуры базы данных. Эти принципы делятся на нормальные формы, их цель в организации структуры базы данных таким образом, чтобы правильно организовать структуру базы данных.</p>
+<p><strong>Normalization</strong> (<strong>нормализация</strong>) состоит из ряда принципов, которые помогают в создании хорошей структуры базы данных. Эти принципы делятся на нормальные формы, их цель в организации структуры базы данных таким образом, чтобы правильно организовать структуру базы данных.</p>
 </div>
 <div class="sect2">
 <h3 id="_первая_нормальная_форма">Первая нормальная форма</h3>
@@ -498,13 +498,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <col style="width: 25%;">
 <col style="width: 25%;">
 </colgroup>
-<tbody>
+<thead>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ID покупателя</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ФИО</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Заказ</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Телефон</p></td>
+<th class="tableblock halign-left valign-top">ID покупателя</th>
+<th class="tableblock halign-left valign-top">ФИО</th>
+<th class="tableblock halign-left valign-top">Заказ</th>
+<th class="tableblock halign-left valign-top">Телефон</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Егоров Егор</p></td>
@@ -536,13 +538,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <col style="width: 25%;">
 <col style="width: 25%;">
 </colgroup>
-<tbody>
+<thead>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ID покупателя</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ФИО</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Мобильный телефон</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Домашний телефон</p></td>
+<th class="tableblock halign-left valign-top">ID покупателя</th>
+<th class="tableblock halign-left valign-top">ФИО</th>
+<th class="tableblock halign-left valign-top">Мобильный телефон</th>
+<th class="tableblock halign-left valign-top">Домашний телефон</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Егоров Егор</p></td>
@@ -558,12 +562,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <col style="width: 33.3333%;">
 <col style="width: 33.3334%;">
 </colgroup>
-<tbody>
+<thead>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ID заказа</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ID клиента</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Заказ</p></td>
+<th class="tableblock halign-left valign-top">ID заказа</th>
+<th class="tableblock halign-left valign-top">ID клиента</th>
+<th class="tableblock halign-left valign-top">Заказ</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
@@ -595,12 +601,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <col style="width: 33.3333%;">
 <col style="width: 33.3334%;">
 </colgroup>
-<tbody>
+<thead>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ФИО</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Должность</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Подразделение</p></td>
+<th class="tableblock halign-left valign-top">ФИО</th>
+<th class="tableblock halign-left valign-top">Должность</th>
+<th class="tableblock halign-left valign-top">Подразделение</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Егоров Егор</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Программист</p></td>
@@ -628,13 +636,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <col style="width: 25%;">
 <col style="width: 25%;">
 </colgroup>
-<tbody>
+<thead>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Табельный номер</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ФИО</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Должность</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Подразделение</p></td>
+<th class="tableblock halign-left valign-top">Табельный номер</th>
+<th class="tableblock halign-left valign-top">ФИО</th>
+<th class="tableblock halign-left valign-top">Должность</th>
+<th class="tableblock halign-left valign-top">Подразделение</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">660</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Егоров Егор</p></td>
@@ -671,13 +681,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <col style="width: 25%;">
 <col style="width: 25%;">
 </colgroup>
-<tbody>
+<thead>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">CourseID</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Course</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">TeacherID</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Teacher</p></td>
+<th class="tableblock halign-left valign-top">CourseID</th>
+<th class="tableblock halign-left valign-top">Course</th>
+<th class="tableblock halign-left valign-top">TeacherID</th>
+<th class="tableblock halign-left valign-top">Teacher</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Математика</p></td>
@@ -706,11 +718,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <col style="width: 50%;">
 <col style="width: 50%;">
 </colgroup>
-<tbody>
+<thead>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">TeacherID</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Teacher</p></td>
+<th class="tableblock halign-left valign-top">TeacherID</th>
+<th class="tableblock halign-left valign-top">Teacher</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Егоров Егор</p></td>
@@ -730,12 +744,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <col style="width: 33.3333%;">
 <col style="width: 33.3334%;">
 </colgroup>
-<tbody>
+<thead>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">CourseID</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Course</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">TeacherID</p></td>
+<th class="tableblock halign-left valign-top">CourseID</th>
+<th class="tableblock halign-left valign-top">Course</th>
+<th class="tableblock halign-left valign-top">TeacherID</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Математика</p></td>
@@ -774,12 +790,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <col style="width: 33.3333%;">
 <col style="width: 33.3334%;">
 </colgroup>
-<tbody>
+<thead>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Проект</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Направление</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Куратор</p></td>
+<th class="tableblock halign-left valign-top">Проект</th>
+<th class="tableblock halign-left valign-top">Направление</th>
+<th class="tableblock halign-left valign-top">Куратор</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Разработка</p></td>
@@ -812,12 +830,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <col style="width: 33.3333%;">
 <col style="width: 33.3334%;">
 </colgroup>
-<tbody>
+<thead>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Идентификатор куратора</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ФИО</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Направление</p></td>
+<th class="tableblock halign-left valign-top">Идентификатор куратора</th>
+<th class="tableblock halign-left valign-top">ФИО</th>
+<th class="tableblock halign-left valign-top">Направление</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Егоров Егор</p></td>
@@ -841,11 +861,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <col style="width: 50%;">
 <col style="width: 50%;">
 </colgroup>
-<tbody>
+<thead>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Проект</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Идентификатор куратора</p></td>
+<th class="tableblock halign-left valign-top">Проект</th>
+<th class="tableblock halign-left valign-top">Идентификатор куратора</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
@@ -871,7 +893,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-12-17 03:24:35 UTC
+Last updated 2021-12-25 06:12:12 UTC
 </div>
 </div>
 </body>

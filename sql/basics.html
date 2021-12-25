@@ -448,7 +448,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p><strong>SQL</strong> - это язык структурированных запросов, с помощью которого можно обрабатывать и извлекать данные из реляционных баз данных.</p>
 </div>
 <div class="paragraph">
-<p><strong>SQL</strong> (<strong>Structured Query Language</strong> — <strong>язык структурированных запросов</strong>) - это непроцедурный язык программирования, используемый для работы с информацией реляционной базы данных, которая управляется соответствующей <strong>системой управления базами данных</strong> (<strong>СУБД</strong>).</p>
+<p><strong>SQL</strong> (<strong>Structured Query Language</strong> — <strong>язык структурированных запросов</strong>) — это непроцедурный язык программирования, используемый для работы с информацией реляционной базы данных, которая управляется соответствующей <strong>системой управления базами данных</strong> (<strong>СУБД</strong>).</p>
 </div>
 <div class="paragraph">
 <p>Первоначально SQL был основным средством доступа пользователя к информации базы данных и позволял выполнять следующие операции с таблицами <strong>БД</strong>:</p>
@@ -547,7 +547,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="ulist">
 <ul>
 <li>
-<p><code>SELECT</code> - чтение инфомации (из одной или нескольких таблиц);</p>
+<p><code>SELECT</code> - чтение информации (из одной или нескольких таблиц);</p>
 </li>
 <li>
 <p><code>INSERT</code> - добавить строки в таблицу;</p>
@@ -629,7 +629,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>Оператор <code>CREATE DATABASE</code> используется для создания новой базы данных SQL.</p>
 </div>
 <div class="paragraph">
-<p><strong>Синтаксис:</strong></p>
+<p><strong>Синтаксис</strong>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -651,7 +651,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>Оператор <code>DROP DATABASE</code> используется для удаления существующей базы данных SQL.</p>
 </div>
 <div class="paragraph">
-<p><strong>Синтаксис:</strong></p>
+<p><strong>Синтаксис</strong>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -753,11 +753,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <col style="width: 50%;">
 <col style="width: 50%;">
 </colgroup>
-<tbody>
+<thead>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Тип данных</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Возможные значения</p></td>
+<th class="tableblock halign-left valign-top">Тип данных</th>
+<th class="tableblock halign-left valign-top">Возможные значения</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>float</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">От <code>-1.79E + 308</code>, до <code>1.79E + 308</code></p></td>
@@ -779,11 +781,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <col style="width: 50%;">
 <col style="width: 50%;">
 </colgroup>
-<tbody>
+<thead>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Тип данных</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Примечание</p></td>
+<th class="tableblock halign-left valign-top">Тип данных</th>
+<th class="tableblock halign-left valign-top">Примечание</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>datetime</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">От <code>1 января 1753</code>, до <code>31 декабря, 9999</code></p></td>
@@ -813,11 +817,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <col style="width: 50%;">
 <col style="width: 50%;">
 </colgroup>
-<tbody>
+<thead>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Тип данных</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Возможные значения</p></td>
+<th class="tableblock halign-left valign-top">Тип данных</th>
+<th class="tableblock halign-left valign-top">Возможные значения</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>char</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Максимальная длина 8000 символов. (Фиксированная длина без Unicode символов)</p></td>
@@ -881,26 +887,28 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <col style="width: 50%;">
 <col style="width: 50%;">
 </colgroup>
-<tbody>
+<thead>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Тип данных</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Возможные значения</p></td>
+<th class="tableblock halign-left valign-top">Тип данных</th>
+<th class="tableblock halign-left valign-top">Возможные значения</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>binary</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Максимальная длина 8000 байт (фиксированная длина двоичных данных)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>varbinary</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Максимальная длина 8000 байт.(Переменная длина двоичных данных)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Максимальная длина 8000 байт. (Переменная длина двоичных данных)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>varbinary(max)</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Максимальная длина 231 байт (SQL Server 2005).(Переменная длина двоичных данных)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Максимальная длина 231 байт (SQL Server 2005). (Переменная длина двоичных данных)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>image</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Максимальная длина 2147483647 байт.(Переменная длина двоичных данных)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Максимальная длина 2147483647 байт. (Переменная длина двоичных данных)</p></td>
 </tr>
 </tbody>
 </table>
@@ -946,7 +954,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>Оператор <code>DROP TABLE</code> используется для удаления существующей таблицы в базе данных.</p>
 </div>
 <div class="paragraph">
-<p><strong>Синтаксис:</strong></p>
+<p><strong>Синтаксис</strong>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -974,7 +982,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p><strong>Ограничения</strong> могут быть указаны при создании таблицы с помощью оператора <code>CREATE TABLE</code> или после создания таблицы с помощью инструкции <code>ALTER TABLE</code>.</p>
 </div>
 <div class="paragraph">
-<p><strong>Синтаксис:</strong></p>
+<p><strong>Синтаксис</strong>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1521,7 +1529,7 @@ SELECT * FROM category;</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-12-17 03:24:35 UTC
+Last updated 2021-12-25 06:12:12 UTC
 </div>
 </div>
 </body>

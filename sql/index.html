@@ -449,7 +449,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p><strong>SQL</strong> - это язык структурированных запросов, с помощью которого можно обрабатывать и извлекать данные из реляционных баз данных.</p>
 </div>
 <div class="paragraph">
-<p><strong>SQL</strong> (<strong>Structured Query Language</strong> — <strong>язык структурированных запросов</strong>) - это непроцедурный язык программирования, используемый для работы с информацией реляционной базы данных, которая управляется соответствующей <strong>системой управления базами данных</strong> (<strong>СУБД</strong>).</p>
+<p><strong>SQL</strong> (<strong>Structured Query Language</strong> — <strong>язык структурированных запросов</strong>) — это непроцедурный язык программирования, используемый для работы с информацией реляционной базы данных, которая управляется соответствующей <strong>системой управления базами данных</strong> (<strong>СУБД</strong>).</p>
 </div>
 <div class="paragraph">
 <p>Первоначально SQL был основным средством доступа пользователя к информации базы данных и позволял выполнять следующие операции с таблицами <strong>БД</strong>:</p>
@@ -548,7 +548,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="ulist">
 <ul>
 <li>
-<p><code>SELECT</code> - чтение инфомации (из одной или нескольких таблиц);</p>
+<p><code>SELECT</code> - чтение информации (из одной или нескольких таблиц);</p>
 </li>
 <li>
 <p><code>INSERT</code> - добавить строки в таблицу;</p>
@@ -627,7 +627,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>Оператор <code>CREATE DATABASE</code> используется для создания новой базы данных SQL.</p>
 </div>
 <div class="paragraph">
-<p><strong>Синтаксис:</strong></p>
+<p><strong>Синтаксис</strong>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -649,7 +649,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>Оператор <code>DROP DATABASE</code> используется для удаления существующей базы данных SQL.</p>
 </div>
 <div class="paragraph">
-<p><strong>Синтаксис:</strong></p>
+<p><strong>Синтаксис</strong>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -749,11 +749,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <col style="width: 50%;">
 <col style="width: 50%;">
 </colgroup>
-<tbody>
+<thead>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Тип данных</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Возможные значения</p></td>
+<th class="tableblock halign-left valign-top">Тип данных</th>
+<th class="tableblock halign-left valign-top">Возможные значения</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>float</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">От <code>-1.79E + 308</code>, до <code>1.79E + 308</code></p></td>
@@ -775,11 +777,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <col style="width: 50%;">
 <col style="width: 50%;">
 </colgroup>
-<tbody>
+<thead>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Тип данных</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Примечание</p></td>
+<th class="tableblock halign-left valign-top">Тип данных</th>
+<th class="tableblock halign-left valign-top">Примечание</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>datetime</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">От <code>1 января 1753</code>, до <code>31 декабря, 9999</code></p></td>
@@ -809,11 +813,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <col style="width: 50%;">
 <col style="width: 50%;">
 </colgroup>
-<tbody>
+<thead>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Тип данных</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Возможные значения</p></td>
+<th class="tableblock halign-left valign-top">Тип данных</th>
+<th class="tableblock halign-left valign-top">Возможные значения</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>char</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Максимальная длина 8000 символов. (Фиксированная длина без Unicode символов)</p></td>
@@ -877,26 +883,28 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <col style="width: 50%;">
 <col style="width: 50%;">
 </colgroup>
-<tbody>
+<thead>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Тип данных</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Возможные значения</p></td>
+<th class="tableblock halign-left valign-top">Тип данных</th>
+<th class="tableblock halign-left valign-top">Возможные значения</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>binary</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Максимальная длина 8000 байт (фиксированная длина двоичных данных)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>varbinary</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Максимальная длина 8000 байт.(Переменная длина двоичных данных)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Максимальная длина 8000 байт. (Переменная длина двоичных данных)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>varbinary(max)</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Максимальная длина 231 байт (SQL Server 2005).(Переменная длина двоичных данных)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Максимальная длина 231 байт (SQL Server 2005). (Переменная длина двоичных данных)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>image</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Максимальная длина 2147483647 байт.(Переменная длина двоичных данных)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Максимальная длина 2147483647 байт. (Переменная длина двоичных данных)</p></td>
 </tr>
 </tbody>
 </table>
@@ -940,7 +948,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>Оператор <code>DROP TABLE</code> используется для удаления существующей таблицы в базе данных.</p>
 </div>
 <div class="paragraph">
-<p><strong>Синтаксис:</strong></p>
+<p><strong>Синтаксис</strong>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -966,7 +974,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p><strong>Ограничения</strong> могут быть указаны при создании таблицы с помощью оператора <code>CREATE TABLE</code> или после создания таблицы с помощью инструкции <code>ALTER TABLE</code>.</p>
 </div>
 <div class="paragraph">
-<p><strong>Синтаксис:</strong></p>
+<p><strong>Синтаксис</strong>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -2152,7 +2160,7 @@ WHERE column_name IN (value1, value2, ...);</code></pre>
 </div>
 </div>
 <div class="listingblock">
-<div class="title">Синтаксис  подзапросом</div>
+<div class="title">Синтаксис с подзапросом</div>
 <div class="content">
 <pre class="highlight"><code class="language-sql" data-lang="sql">SELECT column_name(s)
 FROM table_name
@@ -2312,7 +2320,7 @@ FROM table_name AS alias_name;</code></pre>
 <p>Следующий оператор создает два псевдонима: один для столбца <code>user_id</code> и один для столбца <code>name</code>:</p>
 </div>
 <div class="paragraph">
-<p><strong>Пример:</strong></p>
+<p><strong>Пример</strong>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -2372,7 +2380,7 @@ WHERE name = 'Game of Thrones';</code></pre>
 <div class="sect2">
 <h3 id="_удаление_записей_из_таблицы_delete">Удаление записей из таблицы (<code>DELETE</code>)</h3>
 <div class="paragraph">
-<p>Удаление записи из таблицы очень простая операция, всё что нужно - это обозначить, что необходимо удалить.</p>
+<p>Удаление записи из таблицы очень простая операция, всё что нужно — это обозначить, что необходимо удалить.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -2838,7 +2846,7 @@ ORDER BY city;</code></pre>
 <p>Ключевое слово <code>INNER JOIN</code> выбирает записи, имеющие соответствующие значения в обеих таблицах</p>
 </div>
 <div class="paragraph">
-<p><strong>Синтаксиc:</strong></p>
+<p><strong>Синтаксис</strong>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -2848,7 +2856,7 @@ INNER JOIN table2 ON table1.column_name = table2.column_name;</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p><strong>Пример:</strong></p>
+<p><strong>Пример</strong>:</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 3. Таблица users</caption>
@@ -2920,7 +2928,7 @@ INNER JOIN users ON invoice.user_id = users.user_id;</code></pre>
 <p>Следующий оператор выбирает все счета с информацией о пользователях и отправителях:</p>
 </div>
 <div class="paragraph">
-<p><strong>Пример:</strong></p>
+<p><strong>Пример</strong>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -2938,7 +2946,7 @@ INNER JOIN addresser ON invoice.addresser_id = addresser.addresser_id);</code></
 <p>Ключевое слово <code>LEFT JOIN</code> возвращает все записи из левой таблицы и сопоставленные записи из правой таблицы. Результат равен <code>NULL</code> с правой стороны, если нет совпадения.</p>
 </div>
 <div class="paragraph">
-<p><strong>Синтаксис:</strong></p>
+<p><strong>Синтаксис</strong>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -2965,7 +2973,7 @@ ORDER BY users.name;</code></pre>
 <p>Ключевое слово <code>RIGHT JOIN</code> возвращает все записи из правой таблицы и сопоставленные записи из левой таблицы. Результат равен <code>NULL</code> с левой стороны, когда нет совпадения.</p>
 </div>
 <div class="paragraph">
-<p><strong>Синтаксис:</strong></p>
+<p><strong>Синтаксис</strong>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -2992,7 +3000,7 @@ ORDER BY invoice.invoice_id;</code></pre>
 <p>Ключевое слово <code>FULL OUTER JOIN</code> возвращает все записи, когда есть совпадение в обеих таблицах таблицы или справа.</p>
 </div>
 <div class="paragraph">
-<p><strong>Синтаксис:</strong></p>
+<p><strong>Синтаксис</strong>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -3019,7 +3027,7 @@ ORDER BY users.name;</code></pre>
 <p><code>Self JOIN</code> - это регулярное соединение, но таблица соединяется сама с собой.</p>
 </div>
 <div class="paragraph">
-<p><strong>Синтаксис:</strong></p>
+<p><strong>Синтаксис</strong>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -3099,7 +3107,7 @@ FROM product;</code></pre>
 <p>Функция <code>COUNT()</code> возвращает количество строк, соответствующих заданным критериям.</p>
 </div>
 <div class="paragraph">
-<p><strong>Синтаксис:</strong></p>
+<p><strong>Синтаксис</strong>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -3109,7 +3117,7 @@ WHERE condition;</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p><strong>Пример:</strong></p>
+<p><strong>Пример</strong>:</p>
 </div>
 <div class="paragraph">
 <p>Следующий оператор SQL находит количество товаров.</p>
@@ -3127,7 +3135,7 @@ FROM product;</code></pre>
 <p>Функция <code>AVG()</code> возвращает среднее значение числового столбца.</p>
 </div>
 <div class="paragraph">
-<p><strong>Синтаксис:</strong></p>
+<p><strong>Синтаксис</strong>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -3152,7 +3160,7 @@ FROM product;</code></pre>
 <p>Функция <code>SUM()</code> возвращает общую сумму числового столбца.</p>
 </div>
 <div class="paragraph">
-<p><strong>Синтаксис:</strong></p>
+<p><strong>Синтаксис</strong>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -3233,7 +3241,7 @@ GROUP BY name;</code></pre>
 <p>Предложение <code>HAVING</code> используется в SQL, для работы с агрегатными функциями, так как <code>WHERE</code> не могло с ними использоваться.</p>
 </div>
 <div class="paragraph">
-<p><strong>Синтаксис:</strong>`</p>
+<p><strong>Синтаксис</strong>:`</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -3277,7 +3285,7 @@ ORDER BY COUNT(user_id) DESC;</code></pre>
 <div class="sect2">
 <h3 id="_нормализация_и_денормализация_баз_данных">Нормализация и денормализация баз данных</h3>
 <div class="paragraph">
-<p><strong>Нормализация базы данных</strong> - это процесс эффективной организации данных в базе данных. Есть две причины процесса нормализации:</p>
+<p><strong>Нормализация базы данных</strong> — это процесс эффективной организации данных в базе данных. Есть две причины процесса нормализации:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -3290,10 +3298,10 @@ ORDER BY COUNT(user_id) DESC;</code></pre>
 </ul>
 </div>
 <div class="paragraph">
-<p><strong>Денормализация</strong> — намеренное приведение структуры базы данных в состояние, не соответствующее критериям нормализации, обычно проводимое с целью ускорения операций чтения из базы за счет добавления избыточных данных.</p>
+<p><strong>Denormalization</strong> (<strong>денормализация</strong>) — намеренное приведение структуры базы данных в состояние, не соответствующее критериям нормализации, обычно проводимое с целью ускорения операций чтения из базы за счет добавления избыточных данных.</p>
 </div>
 <div class="paragraph">
-<p><strong>Нормализация</strong> состоит из ряда принципов, которые помогают в создании хорошей структуры базы данных. Эти принципы делятся на нормальные формы, их цель в организации структуры базы данных таким образом, чтобы правильно организовать структуру базы данных.</p>
+<p><strong>Normalization</strong> (<strong>нормализация</strong>) состоит из ряда принципов, которые помогают в создании хорошей структуры базы данных. Эти принципы делятся на нормальные формы, их цель в организации структуры базы данных таким образом, чтобы правильно организовать структуру базы данных.</p>
 </div>
 <div class="sect3">
 <h4 id="_первая_нормальная_форма">Первая нормальная форма</h4>
@@ -3329,13 +3337,15 @@ ORDER BY COUNT(user_id) DESC;</code></pre>
 <col style="width: 25%;">
 <col style="width: 25%;">
 </colgroup>
-<tbody>
+<thead>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ID покупателя</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ФИО</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Заказ</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Телефон</p></td>
+<th class="tableblock halign-left valign-top">ID покупателя</th>
+<th class="tableblock halign-left valign-top">ФИО</th>
+<th class="tableblock halign-left valign-top">Заказ</th>
+<th class="tableblock halign-left valign-top">Телефон</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Егоров Егор</p></td>
@@ -3367,13 +3377,15 @@ ORDER BY COUNT(user_id) DESC;</code></pre>
 <col style="width: 25%;">
 <col style="width: 25%;">
 </colgroup>
-<tbody>
+<thead>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ID покупателя</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ФИО</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Мобильный телефон</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Домашний телефон</p></td>
+<th class="tableblock halign-left valign-top">ID покупателя</th>
+<th class="tableblock halign-left valign-top">ФИО</th>
+<th class="tableblock halign-left valign-top">Мобильный телефон</th>
+<th class="tableblock halign-left valign-top">Домашний телефон</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Егоров Егор</p></td>
@@ -3389,12 +3401,14 @@ ORDER BY COUNT(user_id) DESC;</code></pre>
 <col style="width: 33.3333%;">
 <col style="width: 33.3334%;">
 </colgroup>
-<tbody>
+<thead>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ID заказа</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ID клиента</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Заказ</p></td>
+<th class="tableblock halign-left valign-top">ID заказа</th>
+<th class="tableblock halign-left valign-top">ID клиента</th>
+<th class="tableblock halign-left valign-top">Заказ</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
@@ -3426,12 +3440,14 @@ ORDER BY COUNT(user_id) DESC;</code></pre>
 <col style="width: 33.3333%;">
 <col style="width: 33.3334%;">
 </colgroup>
-<tbody>
+<thead>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ФИО</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Должность</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Подразделение</p></td>
+<th class="tableblock halign-left valign-top">ФИО</th>
+<th class="tableblock halign-left valign-top">Должность</th>
+<th class="tableblock halign-left valign-top">Подразделение</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Егоров Егор</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Программист</p></td>
@@ -3459,13 +3475,15 @@ ORDER BY COUNT(user_id) DESC;</code></pre>
 <col style="width: 25%;">
 <col style="width: 25%;">
 </colgroup>
-<tbody>
+<thead>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Табельный номер</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ФИО</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Должность</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Подразделение</p></td>
+<th class="tableblock halign-left valign-top">Табельный номер</th>
+<th class="tableblock halign-left valign-top">ФИО</th>
+<th class="tableblock halign-left valign-top">Должность</th>
+<th class="tableblock halign-left valign-top">Подразделение</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">660</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Егоров Егор</p></td>
@@ -3502,13 +3520,15 @@ ORDER BY COUNT(user_id) DESC;</code></pre>
 <col style="width: 25%;">
 <col style="width: 25%;">
 </colgroup>
-<tbody>
+<thead>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">CourseID</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Course</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">TeacherID</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Teacher</p></td>
+<th class="tableblock halign-left valign-top">CourseID</th>
+<th class="tableblock halign-left valign-top">Course</th>
+<th class="tableblock halign-left valign-top">TeacherID</th>
+<th class="tableblock halign-left valign-top">Teacher</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Математика</p></td>
@@ -3537,11 +3557,13 @@ ORDER BY COUNT(user_id) DESC;</code></pre>
 <col style="width: 50%;">
 <col style="width: 50%;">
 </colgroup>
-<tbody>
+<thead>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">TeacherID</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Teacher</p></td>
+<th class="tableblock halign-left valign-top">TeacherID</th>
+<th class="tableblock halign-left valign-top">Teacher</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Егоров Егор</p></td>
@@ -3561,12 +3583,14 @@ ORDER BY COUNT(user_id) DESC;</code></pre>
 <col style="width: 33.3333%;">
 <col style="width: 33.3334%;">
 </colgroup>
-<tbody>
+<thead>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">CourseID</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Course</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">TeacherID</p></td>
+<th class="tableblock halign-left valign-top">CourseID</th>
+<th class="tableblock halign-left valign-top">Course</th>
+<th class="tableblock halign-left valign-top">TeacherID</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Математика</p></td>
@@ -3605,12 +3629,14 @@ ORDER BY COUNT(user_id) DESC;</code></pre>
 <col style="width: 33.3333%;">
 <col style="width: 33.3334%;">
 </colgroup>
-<tbody>
+<thead>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Проект</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Направление</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Куратор</p></td>
+<th class="tableblock halign-left valign-top">Проект</th>
+<th class="tableblock halign-left valign-top">Направление</th>
+<th class="tableblock halign-left valign-top">Куратор</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Разработка</p></td>
@@ -3643,12 +3669,14 @@ ORDER BY COUNT(user_id) DESC;</code></pre>
 <col style="width: 33.3333%;">
 <col style="width: 33.3334%;">
 </colgroup>
-<tbody>
+<thead>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Идентификатор куратора</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ФИО</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Направление</p></td>
+<th class="tableblock halign-left valign-top">Идентификатор куратора</th>
+<th class="tableblock halign-left valign-top">ФИО</th>
+<th class="tableblock halign-left valign-top">Направление</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Егоров Егор</p></td>
@@ -3672,11 +3700,13 @@ ORDER BY COUNT(user_id) DESC;</code></pre>
 <col style="width: 50%;">
 <col style="width: 50%;">
 </colgroup>
-<tbody>
+<thead>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Проект</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Идентификатор куратора</p></td>
+<th class="tableblock halign-left valign-top">Проект</th>
+<th class="tableblock halign-left valign-top">Идентификатор куратора</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
@@ -3873,26 +3903,26 @@ DROP INDEX index_name;</code></pre>
 <div class="sect2">
 <h3 id="_поле_auto_increment">Поле <code>AUTO INCREMENT</code></h3>
 <div class="paragraph">
-<p><code>Auto-increment</code> позволяет создавать уникальный номер автоматически, когда новая запись вставляется в таблицу. Часто это поле основного ключа, которое необходимо создать автоматически каждый раз, когда будет вставлена новая запись.</p>
+<p><code>AUTO INCREMENT</code> позволяет создавать уникальный номер автоматически, когда новая запись вставляется в таблицу. Часто это поле основного ключа, которое необходимо создать автоматически каждый раз, когда будет вставлена новая запись.</p>
 </div>
 <div class="sect3">
-<h4 id="_синтаксис_для_mysql">Синтаксис для <code>MySQL</code></h4>
+<h4 id="_синтаксис_для_mariadb">Синтаксис для <code>MariaDB</code></h4>
 <div class="paragraph">
-<p>Следующий оператор SQL определяет столбец <code>user_id</code> как поле первичного ключа с автоматическим приращением в таблице «users»:</p>
+<p>Следующий оператор SQL определяет столбец <code>user_id</code> как поле первичного ключа с автоматическим приращением в таблице <code>users</code>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-sql" data-lang="sql">CREATE TABLE users (
-user_id int NOT NULL AUTO_INCREMENT,
-name varchar(255) NOT NULL,
-fullname varchar(255),
-balance int,
-PRIMARY KEY (user_id)
+    user_id int NOT NULL AUTO_INCREMENT,
+    name varchar(255) NOT NULL,
+    fullname varchar(255),
+    balance int,
+    PRIMARY KEY (user_id)
 );</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>MySQL использует ключевое слово <code>AUTO_INCREMENT</code> для выполнения функции автоматического увеличения.</p>
+<p>MariaDB использует ключевое слово <code>AUTO_INCREMENT</code> для выполнения функции автоматического увеличения.</p>
 </div>
 <div class="paragraph">
 <p>По умолчанию начальное значение для <code>AUTO_INCREMENT</code> равно <code>1</code>, и оно будет увеличиваться на 1 для каждой новой записи.</p>
@@ -3924,7 +3954,7 @@ VALUES ('Том','Эдисон');</code></pre>
 <div class="sect3">
 <h4 id="_типы_данных_sql_date">Типы данных <code>SQL Date</code></h4>
 <div class="paragraph">
-<p>MySQL имеет следующие типы данных для хранения даты или значения даты/времени в базе данных:</p>
+<p>MariaDB имеет следующие типы данных для хранения даты или значения даты/времени в базе данных:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -4688,7 +4718,7 @@ VALUES ('Том','Эдисон');</code></pre>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>CURRENT_USER</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Возвращает имя пользователя и имя хоста для учетной записи MySQL, используемой сервером, для проверки подлинности текущего клиента</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Возвращает имя пользователя и имя хоста для учетной записи MariaDB, используемой сервером, для проверки подлинности текущего клиента</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>DATABASE</code></p></td>
@@ -4696,19 +4726,19 @@ VALUES ('Том','Эдисон');</code></pre>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>IF</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Возвращает одно значение, если условие TRUE или другое значение, если условие FALSE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Возвращает одно значение, если условие <code>TRUE</code> или другое значение, если условие <code>FALSE</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>IFNULL</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Позволяет вернуть альтернативное значение, если выражение равно NULL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Позволяет вернуть альтернативное значение, если выражение равно <code>NULL</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>ISNULL</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Проверяет, является ли выражение NULL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Проверяет, является ли выражение <code>NULL</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>LAST_INSERT_ID</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Возвращает первое значение AUTO_INCREMENT, заданное последним оператором INSERT или UPDATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Возвращает первое значение <code>AUTO_INCREMENT</code>, заданное последним оператором <code>INSERT</code> или <code>UPDATE</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>NULLIF</code></p></td>
@@ -4716,19 +4746,19 @@ VALUES ('Том','Эдисон');</code></pre>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>SESSION_USER</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Возвращает имя пользователя и имя хоста для текущего пользователя MySQL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Возвращает имя пользователя и имя хоста для текущего пользователя MariaDB</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>SYSTEM_USER</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Возвращает имя пользователя и имя хоста для текущего пользователя MySQL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Возвращает имя пользователя и имя хоста для текущего пользователя MariaDB</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>USER</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Возвращает имя пользователя и имя хоста для текущего пользователя MySQL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Возвращает имя пользователя и имя хоста для текущего пользователя MariaDB</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>VERSION</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Возвращает версию базы данных MySQL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Возвращает версию базы данных MariaDB</p></td>
 </tr>
 </tbody>
 </table>
@@ -4736,7 +4766,7 @@ VALUES ('Том','Эдисон');</code></pre>
 <div class="sect2">
 <h3 id="_блокировки">Блокировки</h3>
 <div class="paragraph">
-<p><strong>Блокировки</strong> - это механизм поддержки требований об изолированности транзакций.</p>
+<p><strong>Блокировки</strong> — это механизм поддержки требований об изолированности транзакций.</p>
 </div>
 <div class="paragraph">
 <p>Одновременный конкурентный доступ может вызывать разные отрицательные эффекты, например <strong>чтение несуществующих данных</strong> или <strong>потерю модифицированных данных</strong>.</p>
@@ -4756,13 +4786,13 @@ VALUES ('Том','Эдисон');</code></pre>
 <div class="sect3">
 <h4 id="_монопольная_блокировка_exclusive_lock">Монопольная блокировка (exclusive lock)</h4>
 <div class="paragraph">
-<p>Резервирует страницу или строку для монопольного использования одной транзакции. Блокировка этого типа применяется такими инструкциями как <em>INSERT</em>, <em>UPDATE</em> и <em>DELETE</em>, которые модифицируют ресурс. Монопольную блокировку нельзя установить, если на ресурс уже установлена разделяемая или монопольная блокировка другим процессом, т.е. на ресурс может быть установлена только одна монопольная блокировка.</p>
+<p>Резервирует страницу или строку для монопольного использования одной транзакции. Блокировка этого типа применяется такими инструкциями как <code>INSERT</code>, <code>UPDATE</code> и <code>DELETE</code>, которые модифицируют ресурс. Монопольную блокировку нельзя установить, если на ресурс уже установлена разделяемая или монопольная блокировка другим процессом, т.е. на ресурс может быть установлена только одна монопольная блокировка.</p>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_блокировка_обновления_update_lock">Блокировка обновления (update lock)</h4>
 <div class="paragraph">
-<p>Является промежуточной между разделяемой блокировкой и монопольной. Блокировка обновления устанавливается при намерении транзакции изменить данные, но при этом само изменение не происходит. В этом случае другим транзакциям разрешается устанавливать разделяемые блокировки, но не позволяется устанавливать монопольные блокировки, до тех пор пока транзакция не завершится.</p>
+<p>Является промежуточной между разделяемой и монопольной блокировкой. Блокировка обновления устанавливается при намерении транзакции изменить данные, но при этом само изменение не происходит. В этом случае другим транзакциям разрешается устанавливать разделяемые блокировки, но не позволяется устанавливать монопольные блокировки, до тех пор пока транзакция не завершится.</p>
 </div>
 </div>
 <div class="sect3">
@@ -4862,7 +4892,7 @@ VALUES ('Том','Эдисон');</code></pre>
 </div>
 <div class="paragraph">
 <p>Если первая транзакция один раз прочитала данные, а вторая транзакция сразу же их изменила и зафиксировала, то повторное чтение данных первой транзакции вернет измененные значения.
-В таком случае может возникнуть ситуация, при которой первая транзакция, к концу своего выполнения, обладает недостоверной информацией, которая может повлиять на вносимые данные.</p>
+В таком случае может возникнуть ситуация, где: первая транзакция, к концу своего выполнения, обладает недостоверной информацией, которая может повлиять на вносимые данные.</p>
 </div>
 </div>
 <div class="sect4">
@@ -7946,15 +7976,18 @@ GROUP BY c ORDER BY c;</code></pre>
 </tbody>
 </table>
 </div>
-<div class="sect2">
-<h3 id="_рекурсия_recursive">Рекурсия (<code>RECURSIVE</code>)</h3>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_рекурсия_recursive">Рекурсия (<code>RECURSIVE</code>)</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>Рекурсивная функция позволяет многократно выполнятся, чтобы возвращать подмножество данных до тех пор, пока не получится конечный результирующий набор.</p>
 </div>
 <div class="listingblock">
 <div class="title">Синтаксис</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">WITH [RECURSIVE]
+<pre class="highlight"><code class="language-sql" data-lang="sql">WITH [RECURSIVE]
     table_name(parameters) AS (select-stmt)
 UNION [ALL]
     Recursive-select
@@ -7962,7 +7995,7 @@ UNION [ALL]
 </div>
 </div>
 <div class="paragraph">
-<p>параметры:</p>
+<p>Параметры:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -7988,7 +8021,7 @@ UNION [ALL]
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">WITH RECURSIVE
+<pre class="highlight"><code class="language-sql" data-lang="sql">WITH RECURSIVE
   table1(col1) AS (
       SELECT(1)
     UNION ALL
@@ -8005,7 +8038,7 @@ SELECT col1 FROM table1;</code></pre>
 <p>Важно понять, что не нужно создавать <code>table1</code> до создания рекурсии, она будет создана автоматически и не сохранится после завершения работы рекурсивной функции.</p>
 </div>
 <div class="paragraph">
-<p>После указания <code>UNION ALL</code> описывается логика работы рекурсии - прибавление к значению <code>col1</code> единицы, до тех пор, пока функция не достигнет значения  <code>col1 = 1000</code>.</p>
+<p>После указания <code>UNION ALL</code> описывается логика работы рекурсии — прибавление к значению <code>col1</code> единицы, до тех пор, пока функция не достигнет значения  <code>col1 = 1000</code>.</p>
 </div>
 <div class="paragraph">
 <p>После отработки каждого цикла рекурсии, произойдет вывод значения <code>SELECT col1 FROM table1</code> на экран.</p>
@@ -8046,7 +8079,7 @@ SELECT col1 FROM table1;</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">CREATE TABLE org(
+<pre class="highlight"><code class="language-sql" data-lang="sql">CREATE TABLE org(
   name varchar(100) PRIMARY KEY,
   boss varchar(100) REFERENCES org(name)
 );</code></pre>
@@ -8057,7 +8090,7 @@ SELECT col1 FROM table1;</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">INSERT INTO org VALUES('Alice',NULL);
+<pre class="highlight"><code class="language-sql" data-lang="sql">INSERT INTO org VALUES('Alice',NULL);
 INSERT INTO org VALUES('Bob','Alice');
 INSERT INTO org VALUES('Cindy','Alice');
 INSERT INTO org VALUES('Dave','Bob');
@@ -8067,14 +8100,14 @@ INSERT INTO org VALUES('Gail','Cindy');</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Первый параметр - имя сотрудника, второй - ссылка на имя начальника. Например у Алисы нет начальник – значение <code>NULL</code>. Подчиненные <strong>Алисы</strong> – <strong>Bob</strong>, <strong>Cindy</strong> и т.д.</p>
+<p>Первый параметр — имя сотрудника, второй — ссылка на имя начальника. Например: у <code>Alice</code> нет начальник – значение <code>NULL</code>. Подчиненные <code>Alice</code> – <code>Bob</code>, <code>Cindy</code> и т.д.</p>
 </div>
 <div class="paragraph">
 <p>Можно вывести одним рекурсивным запросом таблицу, содержащую иерархию сотрудников в компании. Используем следующий запрос:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">WITH RECURSIVE
+<pre class="highlight"><code class="language-sql" data-lang="sql">WITH RECURSIVE
   under_alice(name,level) AS (
     VALUES('Alice',0)
 
@@ -8095,11 +8128,13 @@ SELECT level, name FROM under_alice;</code></pre>
 <col style="width: 50%;">
 <col style="width: 50%;">
 </colgroup>
-<tbody>
+<thead>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>level</strong></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>name</strong></p></td>
+<th class="tableblock halign-left valign-top">level</th>
+<th class="tableblock halign-left valign-top">name</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Alice</p></td>
@@ -8134,7 +8169,7 @@ SELECT level, name FROM under_alice;</code></pre>
 <p>Последовательность работы такого запроса:</p>
 </div>
 <div class="paragraph">
-<p>1) Создание и инициализация таблицы <code>under_alice</code>(<code>name,level</code>) с значениями <code>Alice</code>,<code>0</code>.</p>
+<p>1) Создание и инициализация таблицы <code>under_alice</code>(<code>name</code>, <code>level</code>) со значениями <code>Alice</code>,<code>0</code>.</p>
 </div>
 <div class="paragraph">
 <p>2) Соединение инициализирующего блока с рекурсивным благодаря <code>UNION</code>, благодаря чему выведется первая строка.</p>
@@ -8144,11 +8179,13 @@ SELECT level, name FROM under_alice;</code></pre>
 <col style="width: 50%;">
 <col style="width: 50%;">
 </colgroup>
-<tbody>
+<thead>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>level</strong></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>name</strong></p></td>
+<th class="tableblock halign-left valign-top">level</th>
+<th class="tableblock halign-left valign-top">name</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Alice</p></td>
@@ -8160,7 +8197,7 @@ SELECT level, name FROM under_alice;</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">SELECT org.name, under_alice.level+1
+<pre class="highlight"><code class="language-sql" data-lang="sql">SELECT org.name, under_alice.level+1
     FROM org JOIN under_alice ON org.boss=under_alice.name</code></pre>
 </div>
 </div>
@@ -8175,11 +8212,13 @@ SELECT level, name FROM under_alice;</code></pre>
 <col style="width: 50%;">
 <col style="width: 50%;">
 </colgroup>
-<tbody>
+<thead>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>level</strong></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>name</strong></p></td>
+<th class="tableblock halign-left valign-top">level</th>
+<th class="tableblock halign-left valign-top">name</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Bob</p></td>
@@ -8196,10 +8235,9 @@ SELECT level, name FROM under_alice;</code></pre>
 </div>
 </div>
 </div>
-</div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-12-17 03:24:35 UTC
+Last updated 2021-12-25 06:12:12 UTC
 </div>
 </div>
 </body>

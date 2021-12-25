@@ -684,6 +684,7 @@ pre.rouge {
 <li><a href="#_продвинутый_sql">6.6. Продвинутый SQL</a></li>
 <li><a href="#_объекты_бд">6.7. Объекты БД</a></li>
 <li><a href="#_analytical_functions">6.8. Analytical functions</a></li>
+<li><a href="#_рекурсия_recursive">6.9. Рекурсия (<code>RECURSIVE</code>)</a></li>
 </ul>
 </li>
 <li><a href="#_common">7. Common</a>
@@ -4347,7 +4348,7 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 <p><strong>SQL</strong> - это язык структурированных запросов, с помощью которого можно обрабатывать и извлекать данные из реляционных баз данных.</p>
 </div>
 <div class="paragraph">
-<p><strong>SQL</strong> (<strong>Structured Query Language</strong> — <strong>язык структурированных запросов</strong>) - это непроцедурный язык программирования, используемый для работы с информацией реляционной базы данных, которая управляется соответствующей <strong>системой управления базами данных</strong> (<strong>СУБД</strong>).</p>
+<p><strong>SQL</strong> (<strong>Structured Query Language</strong> — <strong>язык структурированных запросов</strong>) — это непроцедурный язык программирования, используемый для работы с информацией реляционной базы данных, которая управляется соответствующей <strong>системой управления базами данных</strong> (<strong>СУБД</strong>).</p>
 </div>
 <div class="paragraph">
 <p>Первоначально SQL был основным средством доступа пользователя к информации базы данных и позволял выполнять следующие операции с таблицами <strong>БД</strong>:</p>
@@ -4446,7 +4447,7 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 <div class="ulist">
 <ul>
 <li>
-<p><code>SELECT</code> - чтение инфомации (из одной или нескольких таблиц);</p>
+<p><code>SELECT</code> - чтение информации (из одной или нескольких таблиц);</p>
 </li>
 <li>
 <p><code>INSERT</code> - добавить строки в таблицу;</p>
@@ -4525,7 +4526,7 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 <p>Оператор <code>CREATE DATABASE</code> используется для создания новой базы данных SQL.</p>
 </div>
 <div class="paragraph">
-<p><strong>Синтаксис:</strong></p>
+<p><strong>Синтаксис</strong>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -4547,7 +4548,7 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 <p>Оператор <code>DROP DATABASE</code> используется для удаления существующей базы данных SQL.</p>
 </div>
 <div class="paragraph">
-<p><strong>Синтаксис:</strong></p>
+<p><strong>Синтаксис</strong>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -4647,11 +4648,13 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 <col style="width: 50%;">
 <col style="width: 50%;">
 </colgroup>
-<tbody>
+<thead>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Тип данных</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Возможные значения</p></td>
+<th class="tableblock halign-left valign-top">Тип данных</th>
+<th class="tableblock halign-left valign-top">Возможные значения</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>float</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">От <code>-1.79E + 308</code>, до <code>1.79E + 308</code></p></td>
@@ -4673,11 +4676,13 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 <col style="width: 50%;">
 <col style="width: 50%;">
 </colgroup>
-<tbody>
+<thead>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Тип данных</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Примечание</p></td>
+<th class="tableblock halign-left valign-top">Тип данных</th>
+<th class="tableblock halign-left valign-top">Примечание</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>datetime</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">От <code>1 января 1753</code>, до <code>31 декабря, 9999</code></p></td>
@@ -4707,11 +4712,13 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 <col style="width: 50%;">
 <col style="width: 50%;">
 </colgroup>
-<tbody>
+<thead>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Тип данных</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Возможные значения</p></td>
+<th class="tableblock halign-left valign-top">Тип данных</th>
+<th class="tableblock halign-left valign-top">Возможные значения</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>char</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Максимальная длина 8000 символов. (Фиксированная длина без Unicode символов)</p></td>
@@ -4775,26 +4782,28 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 <col style="width: 50%;">
 <col style="width: 50%;">
 </colgroup>
-<tbody>
+<thead>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Тип данных</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Возможные значения</p></td>
+<th class="tableblock halign-left valign-top">Тип данных</th>
+<th class="tableblock halign-left valign-top">Возможные значения</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>binary</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Максимальная длина 8000 байт (фиксированная длина двоичных данных)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>varbinary</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Максимальная длина 8000 байт.(Переменная длина двоичных данных)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Максимальная длина 8000 байт. (Переменная длина двоичных данных)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>varbinary(max)</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Максимальная длина 231 байт (SQL Server 2005).(Переменная длина двоичных данных)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Максимальная длина 231 байт (SQL Server 2005). (Переменная длина двоичных данных)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>image</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Максимальная длина 2147483647 байт.(Переменная длина двоичных данных)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Максимальная длина 2147483647 байт. (Переменная длина двоичных данных)</p></td>
 </tr>
 </tbody>
 </table>
@@ -4838,7 +4847,7 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 <p>Оператор <code>DROP TABLE</code> используется для удаления существующей таблицы в базе данных.</p>
 </div>
 <div class="paragraph">
-<p><strong>Синтаксис:</strong></p>
+<p><strong>Синтаксис</strong>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -4864,7 +4873,7 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 <p><strong>Ограничения</strong> могут быть указаны при создании таблицы с помощью оператора <code>CREATE TABLE</code> или после создания таблицы с помощью инструкции <code>ALTER TABLE</code>.</p>
 </div>
 <div class="paragraph">
-<p><strong>Синтаксис:</strong></p>
+<p><strong>Синтаксис</strong>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -6048,7 +6057,7 @@ SELECT * FROM invoice;*/</span>
 </div>
 </div>
 <div class="listingblock">
-<div class="title">Синтаксис  подзапросом</div>
+<div class="title">Синтаксис с подзапросом</div>
 <div class="content">
 <pre class="rouge highlight"><code data-lang="sql"><span class="k">SELECT</span> <span class="k">column_name</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
 <span class="k">FROM</span> <span class="k">table_name</span>
@@ -6208,7 +6217,7 @@ SELECT * FROM invoice;*/</span>
 <p>Следующий оператор создает два псевдонима: один для столбца <code>user_id</code> и один для столбца <code>name</code>:</p>
 </div>
 <div class="paragraph">
-<p><strong>Пример:</strong></p>
+<p><strong>Пример</strong>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -6268,7 +6277,7 @@ SELECT * FROM invoice;*/</span>
 <div class="sect3">
 <h4 id="_удаление_записей_из_таблицы_delete">6.2.6. Удаление записей из таблицы (<code>DELETE</code>)</h4>
 <div class="paragraph">
-<p>Удаление записи из таблицы очень простая операция, всё что нужно - это обозначить, что необходимо удалить.</p>
+<p>Удаление записи из таблицы очень простая операция, всё что нужно — это обозначить, что необходимо удалить.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -6732,7 +6741,7 @@ SELECT * FROM invoice;*/</span>
 <p>Ключевое слово <code>INNER JOIN</code> выбирает записи, имеющие соответствующие значения в обеих таблицах</p>
 </div>
 <div class="paragraph">
-<p><strong>Синтаксиc:</strong></p>
+<p><strong>Синтаксис</strong>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -6742,7 +6751,7 @@ SELECT * FROM invoice;*/</span>
 </div>
 </div>
 <div class="paragraph">
-<p><strong>Пример:</strong></p>
+<p><strong>Пример</strong>:</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 3. Таблица users</caption>
@@ -6814,7 +6823,7 @@ SELECT * FROM invoice;*/</span>
 <p>Следующий оператор выбирает все счета с информацией о пользователях и отправителях:</p>
 </div>
 <div class="paragraph">
-<p><strong>Пример:</strong></p>
+<p><strong>Пример</strong>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -6832,7 +6841,7 @@ SELECT * FROM invoice;*/</span>
 <p>Ключевое слово <code>LEFT JOIN</code> возвращает все записи из левой таблицы и сопоставленные записи из правой таблицы. Результат равен <code>NULL</code> с правой стороны, если нет совпадения.</p>
 </div>
 <div class="paragraph">
-<p><strong>Синтаксис:</strong></p>
+<p><strong>Синтаксис</strong>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -6859,7 +6868,7 @@ SELECT * FROM invoice;*/</span>
 <p>Ключевое слово <code>RIGHT JOIN</code> возвращает все записи из правой таблицы и сопоставленные записи из левой таблицы. Результат равен <code>NULL</code> с левой стороны, когда нет совпадения.</p>
 </div>
 <div class="paragraph">
-<p><strong>Синтаксис:</strong></p>
+<p><strong>Синтаксис</strong>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -6886,7 +6895,7 @@ SELECT * FROM invoice;*/</span>
 <p>Ключевое слово <code>FULL OUTER JOIN</code> возвращает все записи, когда есть совпадение в обеих таблицах таблицы или справа.</p>
 </div>
 <div class="paragraph">
-<p><strong>Синтаксис:</strong></p>
+<p><strong>Синтаксис</strong>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -6913,7 +6922,7 @@ SELECT * FROM invoice;*/</span>
 <p><code>Self JOIN</code> - это регулярное соединение, но таблица соединяется сама с собой.</p>
 </div>
 <div class="paragraph">
-<p><strong>Синтаксис:</strong></p>
+<p><strong>Синтаксис</strong>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -6991,7 +7000,7 @@ SELECT * FROM invoice;*/</span>
 <p>Функция <code>COUNT()</code> возвращает количество строк, соответствующих заданным критериям.</p>
 </div>
 <div class="paragraph">
-<p><strong>Синтаксис:</strong></p>
+<p><strong>Синтаксис</strong>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -7001,7 +7010,7 @@ SELECT * FROM invoice;*/</span>
 </div>
 </div>
 <div class="paragraph">
-<p><strong>Пример:</strong></p>
+<p><strong>Пример</strong>:</p>
 </div>
 <div class="paragraph">
 <p>Следующий оператор SQL находит количество товаров.</p>
@@ -7019,7 +7028,7 @@ SELECT * FROM invoice;*/</span>
 <p>Функция <code>AVG()</code> возвращает среднее значение числового столбца.</p>
 </div>
 <div class="paragraph">
-<p><strong>Синтаксис:</strong></p>
+<p><strong>Синтаксис</strong>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -7044,7 +7053,7 @@ SELECT * FROM invoice;*/</span>
 <p>Функция <code>SUM()</code> возвращает общую сумму числового столбца.</p>
 </div>
 <div class="paragraph">
-<p><strong>Синтаксис:</strong></p>
+<p><strong>Синтаксис</strong>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -7125,7 +7134,7 @@ SELECT * FROM invoice;*/</span>
 <p>Предложение <code>HAVING</code> используется в SQL, для работы с агрегатными функциями, так как <code>WHERE</code> не могло с ними использоваться.</p>
 </div>
 <div class="paragraph">
-<p><strong>Синтаксис:</strong>`</p>
+<p><strong>Синтаксис</strong>:`</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -7167,7 +7176,7 @@ SELECT * FROM invoice;*/</span>
 <div class="sect3">
 <h4 id="_нормализация_и_денормализация_баз_данных">6.5.1. Нормализация и денормализация баз данных</h4>
 <div class="paragraph">
-<p><strong>Нормализация базы данных</strong> - это процесс эффективной организации данных в базе данных. Есть две причины процесса нормализации:</p>
+<p><strong>Нормализация базы данных</strong> — это процесс эффективной организации данных в базе данных. Есть две причины процесса нормализации:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -7180,10 +7189,10 @@ SELECT * FROM invoice;*/</span>
 </ul>
 </div>
 <div class="paragraph">
-<p><strong>Денормализация</strong> — намеренное приведение структуры базы данных в состояние, не соответствующее критериям нормализации, обычно проводимое с целью ускорения операций чтения из базы за счет добавления избыточных данных.</p>
+<p><strong>Denormalization</strong> (<strong>денормализация</strong>) — намеренное приведение структуры базы данных в состояние, не соответствующее критериям нормализации, обычно проводимое с целью ускорения операций чтения из базы за счет добавления избыточных данных.</p>
 </div>
 <div class="paragraph">
-<p><strong>Нормализация</strong> состоит из ряда принципов, которые помогают в создании хорошей структуры базы данных. Эти принципы делятся на нормальные формы, их цель в организации структуры базы данных таким образом, чтобы правильно организовать структуру базы данных.</p>
+<p><strong>Normalization</strong> (<strong>нормализация</strong>) состоит из ряда принципов, которые помогают в создании хорошей структуры базы данных. Эти принципы делятся на нормальные формы, их цель в организации структуры базы данных таким образом, чтобы правильно организовать структуру базы данных.</p>
 </div>
 <div class="sect4">
 <h5 id="_первая_нормальная_форма">Первая нормальная форма</h5>
@@ -7219,13 +7228,15 @@ SELECT * FROM invoice;*/</span>
 <col style="width: 25%;">
 <col style="width: 25%;">
 </colgroup>
-<tbody>
+<thead>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ID покупателя</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ФИО</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Заказ</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Телефон</p></td>
+<th class="tableblock halign-left valign-top">ID покупателя</th>
+<th class="tableblock halign-left valign-top">ФИО</th>
+<th class="tableblock halign-left valign-top">Заказ</th>
+<th class="tableblock halign-left valign-top">Телефон</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Егоров Егор</p></td>
@@ -7257,13 +7268,15 @@ SELECT * FROM invoice;*/</span>
 <col style="width: 25%;">
 <col style="width: 25%;">
 </colgroup>
-<tbody>
+<thead>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ID покупателя</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ФИО</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Мобильный телефон</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Домашний телефон</p></td>
+<th class="tableblock halign-left valign-top">ID покупателя</th>
+<th class="tableblock halign-left valign-top">ФИО</th>
+<th class="tableblock halign-left valign-top">Мобильный телефон</th>
+<th class="tableblock halign-left valign-top">Домашний телефон</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Егоров Егор</p></td>
@@ -7279,12 +7292,14 @@ SELECT * FROM invoice;*/</span>
 <col style="width: 33.3333%;">
 <col style="width: 33.3334%;">
 </colgroup>
-<tbody>
+<thead>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ID заказа</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ID клиента</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Заказ</p></td>
+<th class="tableblock halign-left valign-top">ID заказа</th>
+<th class="tableblock halign-left valign-top">ID клиента</th>
+<th class="tableblock halign-left valign-top">Заказ</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
@@ -7316,12 +7331,14 @@ SELECT * FROM invoice;*/</span>
 <col style="width: 33.3333%;">
 <col style="width: 33.3334%;">
 </colgroup>
-<tbody>
+<thead>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ФИО</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Должность</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Подразделение</p></td>
+<th class="tableblock halign-left valign-top">ФИО</th>
+<th class="tableblock halign-left valign-top">Должность</th>
+<th class="tableblock halign-left valign-top">Подразделение</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Егоров Егор</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Программист</p></td>
@@ -7349,13 +7366,15 @@ SELECT * FROM invoice;*/</span>
 <col style="width: 25%;">
 <col style="width: 25%;">
 </colgroup>
-<tbody>
+<thead>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Табельный номер</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ФИО</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Должность</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Подразделение</p></td>
+<th class="tableblock halign-left valign-top">Табельный номер</th>
+<th class="tableblock halign-left valign-top">ФИО</th>
+<th class="tableblock halign-left valign-top">Должность</th>
+<th class="tableblock halign-left valign-top">Подразделение</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">660</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Егоров Егор</p></td>
@@ -7392,13 +7411,15 @@ SELECT * FROM invoice;*/</span>
 <col style="width: 25%;">
 <col style="width: 25%;">
 </colgroup>
-<tbody>
+<thead>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">CourseID</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Course</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">TeacherID</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Teacher</p></td>
+<th class="tableblock halign-left valign-top">CourseID</th>
+<th class="tableblock halign-left valign-top">Course</th>
+<th class="tableblock halign-left valign-top">TeacherID</th>
+<th class="tableblock halign-left valign-top">Teacher</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Математика</p></td>
@@ -7427,11 +7448,13 @@ SELECT * FROM invoice;*/</span>
 <col style="width: 50%;">
 <col style="width: 50%;">
 </colgroup>
-<tbody>
+<thead>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">TeacherID</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Teacher</p></td>
+<th class="tableblock halign-left valign-top">TeacherID</th>
+<th class="tableblock halign-left valign-top">Teacher</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Егоров Егор</p></td>
@@ -7451,12 +7474,14 @@ SELECT * FROM invoice;*/</span>
 <col style="width: 33.3333%;">
 <col style="width: 33.3334%;">
 </colgroup>
-<tbody>
+<thead>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">CourseID</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Course</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">TeacherID</p></td>
+<th class="tableblock halign-left valign-top">CourseID</th>
+<th class="tableblock halign-left valign-top">Course</th>
+<th class="tableblock halign-left valign-top">TeacherID</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Математика</p></td>
@@ -7495,12 +7520,14 @@ SELECT * FROM invoice;*/</span>
 <col style="width: 33.3333%;">
 <col style="width: 33.3334%;">
 </colgroup>
-<tbody>
+<thead>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Проект</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Направление</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Куратор</p></td>
+<th class="tableblock halign-left valign-top">Проект</th>
+<th class="tableblock halign-left valign-top">Направление</th>
+<th class="tableblock halign-left valign-top">Куратор</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Разработка</p></td>
@@ -7533,12 +7560,14 @@ SELECT * FROM invoice;*/</span>
 <col style="width: 33.3333%;">
 <col style="width: 33.3334%;">
 </colgroup>
-<tbody>
+<thead>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Идентификатор куратора</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ФИО</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Направление</p></td>
+<th class="tableblock halign-left valign-top">Идентификатор куратора</th>
+<th class="tableblock halign-left valign-top">ФИО</th>
+<th class="tableblock halign-left valign-top">Направление</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Егоров Егор</p></td>
@@ -7562,11 +7591,13 @@ SELECT * FROM invoice;*/</span>
 <col style="width: 50%;">
 <col style="width: 50%;">
 </colgroup>
-<tbody>
+<thead>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Проект</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Идентификатор куратора</p></td>
+<th class="tableblock halign-left valign-top">Проект</th>
+<th class="tableblock halign-left valign-top">Идентификатор куратора</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
@@ -7761,26 +7792,26 @@ SELECT * FROM invoice;*/</span>
 <div class="sect3">
 <h4 id="_поле_auto_increment">6.6.5. Поле <code>AUTO INCREMENT</code></h4>
 <div class="paragraph">
-<p><code>Auto-increment</code> позволяет создавать уникальный номер автоматически, когда новая запись вставляется в таблицу. Часто это поле основного ключа, которое необходимо создать автоматически каждый раз, когда будет вставлена новая запись.</p>
+<p><code>AUTO INCREMENT</code> позволяет создавать уникальный номер автоматически, когда новая запись вставляется в таблицу. Часто это поле основного ключа, которое необходимо создать автоматически каждый раз, когда будет вставлена новая запись.</p>
 </div>
 <div class="sect4">
-<h5 id="_синтаксис_для_mysql">Синтаксис для <code>MySQL</code></h5>
+<h5 id="_синтаксис_для_mariadb">Синтаксис для <code>MariaDB</code></h5>
 <div class="paragraph">
-<p>Следующий оператор SQL определяет столбец <code>user_id</code> как поле первичного ключа с автоматическим приращением в таблице «users»:</p>
+<p>Следующий оператор SQL определяет столбец <code>user_id</code> как поле первичного ключа с автоматическим приращением в таблице <code>users</code>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="sql"><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">users</span> <span class="p">(</span>
-<span class="n">user_id</span> <span class="nb">int</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="n">AUTO_INCREMENT</span><span class="p">,</span>
-<span class="n">name</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
-<span class="n">fullname</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">),</span>
-<span class="n">balance</span> <span class="nb">int</span><span class="p">,</span>
-<span class="k">PRIMARY</span> <span class="k">KEY</span> <span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
+    <span class="n">user_id</span> <span class="nb">int</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="n">AUTO_INCREMENT</span><span class="p">,</span>
+    <span class="n">name</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+    <span class="n">fullname</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">),</span>
+    <span class="n">balance</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="k">PRIMARY</span> <span class="k">KEY</span> <span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
 <span class="p">);</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>MySQL использует ключевое слово <code>AUTO_INCREMENT</code> для выполнения функции автоматического увеличения.</p>
+<p>MariaDB использует ключевое слово <code>AUTO_INCREMENT</code> для выполнения функции автоматического увеличения.</p>
 </div>
 <div class="paragraph">
 <p>По умолчанию начальное значение для <code>AUTO_INCREMENT</code> равно <code>1</code>, и оно будет увеличиваться на 1 для каждой новой записи.</p>
@@ -7812,7 +7843,7 @@ SELECT * FROM invoice;*/</span>
 <div class="sect4">
 <h5 id="_типы_данных_sql_date">Типы данных <code>SQL Date</code></h5>
 <div class="paragraph">
-<p>MySQL имеет следующие типы данных для хранения даты или значения даты/времени в базе данных:</p>
+<p>MariaDB имеет следующие типы данных для хранения даты или значения даты/времени в базе данных:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -8576,7 +8607,7 @@ SELECT * FROM invoice;*/</span>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>CURRENT_USER</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Возвращает имя пользователя и имя хоста для учетной записи MySQL, используемой сервером, для проверки подлинности текущего клиента</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Возвращает имя пользователя и имя хоста для учетной записи MariaDB, используемой сервером, для проверки подлинности текущего клиента</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>DATABASE</code></p></td>
@@ -8584,19 +8615,19 @@ SELECT * FROM invoice;*/</span>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>IF</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Возвращает одно значение, если условие TRUE или другое значение, если условие FALSE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Возвращает одно значение, если условие <code>TRUE</code> или другое значение, если условие <code>FALSE</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>IFNULL</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Позволяет вернуть альтернативное значение, если выражение равно NULL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Позволяет вернуть альтернативное значение, если выражение равно <code>NULL</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>ISNULL</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Проверяет, является ли выражение NULL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Проверяет, является ли выражение <code>NULL</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>LAST_INSERT_ID</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Возвращает первое значение AUTO_INCREMENT, заданное последним оператором INSERT или UPDATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Возвращает первое значение <code>AUTO_INCREMENT</code>, заданное последним оператором <code>INSERT</code> или <code>UPDATE</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>NULLIF</code></p></td>
@@ -8604,19 +8635,19 @@ SELECT * FROM invoice;*/</span>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>SESSION_USER</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Возвращает имя пользователя и имя хоста для текущего пользователя MySQL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Возвращает имя пользователя и имя хоста для текущего пользователя MariaDB</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>SYSTEM_USER</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Возвращает имя пользователя и имя хоста для текущего пользователя MySQL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Возвращает имя пользователя и имя хоста для текущего пользователя MariaDB</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>USER</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Возвращает имя пользователя и имя хоста для текущего пользователя MySQL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Возвращает имя пользователя и имя хоста для текущего пользователя MariaDB</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>VERSION</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Возвращает версию базы данных MySQL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Возвращает версию базы данных MariaDB</p></td>
 </tr>
 </tbody>
 </table>
@@ -8624,7 +8655,7 @@ SELECT * FROM invoice;*/</span>
 <div class="sect3">
 <h4 id="_блокировки">6.6.9. Блокировки</h4>
 <div class="paragraph">
-<p><strong>Блокировки</strong> - это механизм поддержки требований об изолированности транзакций.</p>
+<p><strong>Блокировки</strong> — это механизм поддержки требований об изолированности транзакций.</p>
 </div>
 <div class="paragraph">
 <p>Одновременный конкурентный доступ может вызывать разные отрицательные эффекты, например <strong>чтение несуществующих данных</strong> или <strong>потерю модифицированных данных</strong>.</p>
@@ -8644,13 +8675,13 @@ SELECT * FROM invoice;*/</span>
 <div class="sect4">
 <h5 id="_монопольная_блокировка_exclusive_lock">Монопольная блокировка (exclusive lock)</h5>
 <div class="paragraph">
-<p>Резервирует страницу или строку для монопольного использования одной транзакции. Блокировка этого типа применяется такими инструкциями как <em>INSERT</em>, <em>UPDATE</em> и <em>DELETE</em>, которые модифицируют ресурс. Монопольную блокировку нельзя установить, если на ресурс уже установлена разделяемая или монопольная блокировка другим процессом, т.е. на ресурс может быть установлена только одна монопольная блокировка.</p>
+<p>Резервирует страницу или строку для монопольного использования одной транзакции. Блокировка этого типа применяется такими инструкциями как <code>INSERT</code>, <code>UPDATE</code> и <code>DELETE</code>, которые модифицируют ресурс. Монопольную блокировку нельзя установить, если на ресурс уже установлена разделяемая или монопольная блокировка другим процессом, т.е. на ресурс может быть установлена только одна монопольная блокировка.</p>
 </div>
 </div>
 <div class="sect4">
 <h5 id="_блокировка_обновления_update_lock">Блокировка обновления (update lock)</h5>
 <div class="paragraph">
-<p>Является промежуточной между разделяемой блокировкой и монопольной. Блокировка обновления устанавливается при намерении транзакции изменить данные, но при этом само изменение не происходит. В этом случае другим транзакциям разрешается устанавливать разделяемые блокировки, но не позволяется устанавливать монопольные блокировки, до тех пор пока транзакция не завершится.</p>
+<p>Является промежуточной между разделяемой и монопольной блокировкой. Блокировка обновления устанавливается при намерении транзакции изменить данные, но при этом само изменение не происходит. В этом случае другим транзакциям разрешается устанавливать разделяемые блокировки, но не позволяется устанавливать монопольные блокировки, до тех пор пока транзакция не завершится.</p>
 </div>
 </div>
 <div class="sect4">
@@ -8750,7 +8781,7 @@ SELECT * FROM invoice;*/</span>
 </div>
 <div class="paragraph">
 <p>Если первая транзакция один раз прочитала данные, а вторая транзакция сразу же их изменила и зафиксировала, то повторное чтение данных первой транзакции вернет измененные значения.
-В таком случае может возникнуть ситуация, при которой первая транзакция, к концу своего выполнения, обладает недостоверной информацией, которая может повлиять на вносимые данные.</p>
+В таком случае может возникнуть ситуация, где: первая транзакция, к концу своего выполнения, обладает недостоверной информацией, которая может повлиять на вносимые данные.</p>
 </div>
 </div>
 <div class="sect5">
@@ -11830,23 +11861,24 @@ SELECT * FROM invoice;*/</span>
 </tbody>
 </table>
 </div>
-<div class="sect3">
-<h4 id="_рекурсия_recursive">6.8.6. Рекурсия (<code>RECURSIVE</code>)</h4>
+</div>
+<div class="sect2">
+<h3 id="_рекурсия_recursive">6.9. Рекурсия (<code>RECURSIVE</code>)</h3>
 <div class="paragraph">
 <p>Рекурсивная функция позволяет многократно выполнятся, чтобы возвращать подмножество данных до тех пор, пока не получится конечный результирующий набор.</p>
 </div>
 <div class="listingblock">
 <div class="title">Синтаксис</div>
 <div class="content">
-<pre class="rouge highlight"><code data-lang="java"><span class="no">WITH</span> <span class="o">[</span><span class="no">RECURSIVE</span><span class="o">]</span>
-    <span class="nf">table_name</span><span class="o">(</span><span class="n">parameters</span><span class="o">)</span> <span class="no">AS</span> <span class="o">(</span><span class="n">select</span><span class="o">-</span><span class="n">stmt</span><span class="o">)</span>
-<span class="no">UNION</span> <span class="o">[</span><span class="no">ALL</span><span class="o">]</span>
-    <span class="nc">Recursive</span><span class="o">-</span><span class="n">select</span>
-    <span class="nc">Cte</span><span class="o">-</span><span class="n">select</span><span class="o">;</span></code></pre>
+<pre class="rouge highlight"><code data-lang="sql"><span class="k">WITH</span> <span class="p">[</span><span class="k">RECURSIVE</span><span class="p">]</span>
+    <span class="k">table_name</span><span class="p">(</span><span class="k">parameters</span><span class="p">)</span> <span class="k">AS</span> <span class="p">(</span><span class="k">select</span><span class="o">-</span><span class="n">stmt</span><span class="p">)</span>
+<span class="k">UNION</span> <span class="p">[</span><span class="k">ALL</span><span class="p">]</span>
+    <span class="k">Recursive</span><span class="o">-</span><span class="k">select</span>
+    <span class="n">Cte</span><span class="o">-</span><span class="k">select</span><span class="p">;</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>параметры:</p>
+<p>Параметры:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -11872,14 +11904,14 @@ SELECT * FROM invoice;*/</span>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="java"><span class="no">WITH</span> <span class="no">RECURSIVE</span>
-  <span class="nf">table1</span><span class="o">(</span><span class="n">col1</span><span class="o">)</span> <span class="no">AS</span> <span class="o">(</span>
-      <span class="no">SELECT</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
-    <span class="no">UNION</span> <span class="no">ALL</span>
-    <span class="no">SELECT</span> <span class="n">col1</span><span class="o">+</span><span class="mi">1</span> <span class="no">FROM</span> <span class="n">table1</span>
-    <span class="no">WHERE</span> <span class="n">col1</span><span class="o">&lt;</span><span class="mi">1000</span><span class="o">)</span>
+<pre class="rouge highlight"><code data-lang="sql"><span class="k">WITH</span> <span class="k">RECURSIVE</span>
+  <span class="n">table1</span><span class="p">(</span><span class="n">col1</span><span class="p">)</span> <span class="k">AS</span> <span class="p">(</span>
+      <span class="k">SELECT</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">UNION</span> <span class="k">ALL</span>
+    <span class="k">SELECT</span> <span class="n">col1</span><span class="o">+</span><span class="mi">1</span> <span class="k">FROM</span> <span class="n">table1</span>
+    <span class="k">WHERE</span> <span class="n">col1</span><span class="o">&lt;</span><span class="mi">1000</span><span class="p">)</span>
 
-<span class="no">SELECT</span> <span class="n">col1</span> <span class="no">FROM</span> <span class="n">table1</span><span class="o">;</span></code></pre>
+<span class="k">SELECT</span> <span class="n">col1</span> <span class="k">FROM</span> <span class="n">table1</span><span class="p">;</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -11889,7 +11921,7 @@ SELECT * FROM invoice;*/</span>
 <p>Важно понять, что не нужно создавать <code>table1</code> до создания рекурсии, она будет создана автоматически и не сохранится после завершения работы рекурсивной функции.</p>
 </div>
 <div class="paragraph">
-<p>После указания <code>UNION ALL</code> описывается логика работы рекурсии - прибавление к значению <code>col1</code> единицы, до тех пор, пока функция не достигнет значения  <code>col1 = 1000</code>.</p>
+<p>После указания <code>UNION ALL</code> описывается логика работы рекурсии — прибавление к значению <code>col1</code> единицы, до тех пор, пока функция не достигнет значения  <code>col1 = 1000</code>.</p>
 </div>
 <div class="paragraph">
 <p>После отработки каждого цикла рекурсии, произойдет вывод значения <code>SELECT col1 FROM table1</code> на экран.</p>
@@ -11930,10 +11962,10 @@ SELECT * FROM invoice;*/</span>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="java"><span class="no">CREATE</span> <span class="no">TABLE</span> <span class="nf">org</span><span class="o">(</span>
-  <span class="n">name</span> <span class="nf">varchar</span><span class="o">(</span><span class="mi">100</span><span class="o">)</span> <span class="no">PRIMARY</span> <span class="no">KEY</span><span class="o">,</span>
-  <span class="n">boss</span> <span class="nf">varchar</span><span class="o">(</span><span class="mi">100</span><span class="o">)</span> <span class="no">REFERENCES</span> <span class="nf">org</span><span class="o">(</span><span class="n">name</span><span class="o">)</span>
-<span class="o">);</span></code></pre>
+<pre class="rouge highlight"><code data-lang="sql"><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">org</span><span class="p">(</span>
+  <span class="n">name</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span> <span class="k">PRIMARY</span> <span class="k">KEY</span><span class="p">,</span>
+  <span class="n">boss</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span> <span class="k">REFERENCES</span> <span class="n">org</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+<span class="p">);</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -11941,34 +11973,34 @@ SELECT * FROM invoice;*/</span>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="java"><span class="no">INSERT</span> <span class="no">INTO</span> <span class="n">org</span> <span class="nf">VALUES</span><span class="o">(</span><span class="err">'</span><span class="nc">Alice</span><span class="err">'</span><span class="o">,</span><span class="no">NULL</span><span class="o">);</span>
-<span class="no">INSERT</span> <span class="no">INTO</span> <span class="n">org</span> <span class="nf">VALUES</span><span class="o">(</span><span class="err">'</span><span class="nc">Bob</span><span class="sc">','</span><span class="nc">Alice</span><span class="err">'</span><span class="o">);</span>
-<span class="no">INSERT</span> <span class="no">INTO</span> <span class="n">org</span> <span class="nf">VALUES</span><span class="o">(</span><span class="err">'</span><span class="nc">Cindy</span><span class="sc">','</span><span class="nc">Alice</span><span class="err">'</span><span class="o">);</span>
-<span class="no">INSERT</span> <span class="no">INTO</span> <span class="n">org</span> <span class="nf">VALUES</span><span class="o">(</span><span class="err">'</span><span class="nc">Dave</span><span class="sc">','</span><span class="nc">Bob</span><span class="err">'</span><span class="o">);</span>
-<span class="no">INSERT</span> <span class="no">INTO</span> <span class="n">org</span> <span class="nf">VALUES</span><span class="o">(</span><span class="err">'</span><span class="nc">Emma</span><span class="sc">','</span><span class="nc">Bob</span><span class="err">'</span><span class="o">);</span>
-<span class="no">INSERT</span> <span class="no">INTO</span> <span class="n">org</span> <span class="nf">VALUES</span><span class="o">(</span><span class="err">'</span><span class="nc">Fred</span><span class="sc">','</span><span class="nc">Cindy</span><span class="err">'</span><span class="o">);</span>
-<span class="no">INSERT</span> <span class="no">INTO</span> <span class="n">org</span> <span class="nf">VALUES</span><span class="o">(</span><span class="err">'</span><span class="nc">Gail</span><span class="sc">','</span><span class="nc">Cindy</span><span class="err">'</span><span class="o">);</span></code></pre>
+<pre class="rouge highlight"><code data-lang="sql"><span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">org</span> <span class="k">VALUES</span><span class="p">(</span><span class="s1">'Alice'</span><span class="p">,</span><span class="k">NULL</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">org</span> <span class="k">VALUES</span><span class="p">(</span><span class="s1">'Bob'</span><span class="p">,</span><span class="s1">'Alice'</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">org</span> <span class="k">VALUES</span><span class="p">(</span><span class="s1">'Cindy'</span><span class="p">,</span><span class="s1">'Alice'</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">org</span> <span class="k">VALUES</span><span class="p">(</span><span class="s1">'Dave'</span><span class="p">,</span><span class="s1">'Bob'</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">org</span> <span class="k">VALUES</span><span class="p">(</span><span class="s1">'Emma'</span><span class="p">,</span><span class="s1">'Bob'</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">org</span> <span class="k">VALUES</span><span class="p">(</span><span class="s1">'Fred'</span><span class="p">,</span><span class="s1">'Cindy'</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">org</span> <span class="k">VALUES</span><span class="p">(</span><span class="s1">'Gail'</span><span class="p">,</span><span class="s1">'Cindy'</span><span class="p">);</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Первый параметр - имя сотрудника, второй - ссылка на имя начальника. Например у Алисы нет начальник – значение <code>NULL</code>. Подчиненные <strong>Алисы</strong> – <strong>Bob</strong>, <strong>Cindy</strong> и т.д.</p>
+<p>Первый параметр — имя сотрудника, второй — ссылка на имя начальника. Например: у <code>Alice</code> нет начальник – значение <code>NULL</code>. Подчиненные <code>Alice</code> – <code>Bob</code>, <code>Cindy</code> и т.д.</p>
 </div>
 <div class="paragraph">
 <p>Можно вывести одним рекурсивным запросом таблицу, содержащую иерархию сотрудников в компании. Используем следующий запрос:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="java"><span class="no">WITH</span> <span class="no">RECURSIVE</span>
-  <span class="nf">under_alice</span><span class="o">(</span><span class="n">name</span><span class="o">,</span><span class="n">level</span><span class="o">)</span> <span class="no">AS</span> <span class="o">(</span>
-    <span class="no">VALUES</span><span class="o">(</span><span class="err">'</span><span class="nc">Alice</span><span class="err">'</span><span class="o">,</span><span class="mi">0</span><span class="o">)</span>
+<pre class="rouge highlight"><code data-lang="sql"><span class="k">WITH</span> <span class="k">RECURSIVE</span>
+  <span class="n">under_alice</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="k">level</span><span class="p">)</span> <span class="k">AS</span> <span class="p">(</span>
+    <span class="k">VALUES</span><span class="p">(</span><span class="s1">'Alice'</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
 
-    <span class="no">UNION</span> <span class="no">ALL</span>
+    <span class="k">UNION</span> <span class="k">ALL</span>
 
-    <span class="no">SELECT</span> <span class="n">org</span><span class="o">.</span><span class="na">name</span><span class="o">,</span> <span class="n">under_alice</span><span class="o">.</span><span class="na">level</span><span class="o">+</span><span class="mi">1</span>
-      <span class="no">FROM</span> <span class="n">org</span> <span class="no">JOIN</span> <span class="n">under_alice</span> <span class="no">ON</span> <span class="n">org</span><span class="o">.</span><span class="na">boss</span><span class="o">=</span><span class="n">under_alice</span><span class="o">.</span><span class="na">name</span>
-  <span class="o">)</span>
+    <span class="k">SELECT</span> <span class="n">org</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">under_alice</span><span class="p">.</span><span class="k">level</span><span class="o">+</span><span class="mi">1</span>
+      <span class="k">FROM</span> <span class="n">org</span> <span class="k">JOIN</span> <span class="n">under_alice</span> <span class="k">ON</span> <span class="n">org</span><span class="p">.</span><span class="n">boss</span><span class="o">=</span><span class="n">under_alice</span><span class="p">.</span><span class="n">name</span>
+  <span class="p">)</span>
 
-<span class="no">SELECT</span> <span class="n">level</span><span class="o">,</span> <span class="n">name</span> <span class="no">FROM</span> <span class="n">under_alice</span><span class="o">;</span></code></pre>
+<span class="k">SELECT</span> <span class="k">level</span><span class="p">,</span> <span class="n">name</span> <span class="k">FROM</span> <span class="n">under_alice</span><span class="p">;</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -11979,11 +12011,13 @@ SELECT * FROM invoice;*/</span>
 <col style="width: 50%;">
 <col style="width: 50%;">
 </colgroup>
-<tbody>
+<thead>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>level</strong></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>name</strong></p></td>
+<th class="tableblock halign-left valign-top">level</th>
+<th class="tableblock halign-left valign-top">name</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Alice</p></td>
@@ -12018,7 +12052,7 @@ SELECT * FROM invoice;*/</span>
 <p>Последовательность работы такого запроса:</p>
 </div>
 <div class="paragraph">
-<p>1) Создание и инициализация таблицы <code>under_alice</code>(<code>name,level</code>) с значениями <code>Alice</code>,<code>0</code>.</p>
+<p>1) Создание и инициализация таблицы <code>under_alice</code>(<code>name</code>, <code>level</code>) со значениями <code>Alice</code>,<code>0</code>.</p>
 </div>
 <div class="paragraph">
 <p>2) Соединение инициализирующего блока с рекурсивным благодаря <code>UNION</code>, благодаря чему выведется первая строка.</p>
@@ -12028,11 +12062,13 @@ SELECT * FROM invoice;*/</span>
 <col style="width: 50%;">
 <col style="width: 50%;">
 </colgroup>
-<tbody>
+<thead>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>level</strong></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>name</strong></p></td>
+<th class="tableblock halign-left valign-top">level</th>
+<th class="tableblock halign-left valign-top">name</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Alice</p></td>
@@ -12044,8 +12080,8 @@ SELECT * FROM invoice;*/</span>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="java"><span class="no">SELECT</span> <span class="n">org</span><span class="o">.</span><span class="na">name</span><span class="o">,</span> <span class="n">under_alice</span><span class="o">.</span><span class="na">level</span><span class="o">+</span><span class="mi">1</span>
-    <span class="no">FROM</span> <span class="n">org</span> <span class="no">JOIN</span> <span class="n">under_alice</span> <span class="no">ON</span> <span class="n">org</span><span class="o">.</span><span class="na">boss</span><span class="o">=</span><span class="n">under_alice</span><span class="o">.</span><span class="na">name</span></code></pre>
+<pre class="rouge highlight"><code data-lang="sql"><span class="k">SELECT</span> <span class="n">org</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">under_alice</span><span class="p">.</span><span class="k">level</span><span class="o">+</span><span class="mi">1</span>
+    <span class="k">FROM</span> <span class="n">org</span> <span class="k">JOIN</span> <span class="n">under_alice</span> <span class="k">ON</span> <span class="n">org</span><span class="p">.</span><span class="n">boss</span><span class="o">=</span><span class="n">under_alice</span><span class="p">.</span><span class="n">name</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -12059,11 +12095,13 @@ SELECT * FROM invoice;*/</span>
 <col style="width: 50%;">
 <col style="width: 50%;">
 </colgroup>
-<tbody>
+<thead>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>level</strong></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>name</strong></p></td>
+<th class="tableblock halign-left valign-top">level</th>
+<th class="tableblock halign-left valign-top">name</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Bob</p></td>
@@ -12076,7 +12114,6 @@ SELECT * FROM invoice;*/</span>
 </table>
 <div class="paragraph">
 <p>5) Выполнение рекурсивного запроса, благодаря чему выведутся на экран имена <code>Dave</code>, <code>Emma</code>, <code>Fred</code>, <code>Fail</code> с <code>level = 2</code>.</p>
-</div>
 </div>
 </div>
 </div>
@@ -13419,7 +13456,7 @@ ssb   4096R/42B317FD4BA89E7A 2016-03-10</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-12-17 03:24:35 UTC
+Last updated 2021-12-25 06:12:12 UTC
 </div>
 </div>
 </body>

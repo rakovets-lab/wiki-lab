@@ -439,18 +439,16 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article">
 <div id="header">
+<h1>Рекурсия (<code>RECURSIVE</code>)</h1>
 </div>
 <div id="content">
-<div class="sect1">
-<h2 id="_рекурсия_recursive">Рекурсия (<code>RECURSIVE</code>)</h2>
-<div class="sectionbody">
 <div class="paragraph">
 <p>Рекурсивная функция позволяет многократно выполнятся, чтобы возвращать подмножество данных до тех пор, пока не получится конечный результирующий набор.</p>
 </div>
 <div class="listingblock">
 <div class="title">Синтаксис</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">WITH [RECURSIVE]
+<pre class="highlight"><code class="language-sql" data-lang="sql">WITH [RECURSIVE]
     table_name(parameters) AS (select-stmt)
 UNION [ALL]
     Recursive-select
@@ -458,7 +456,7 @@ UNION [ALL]
 </div>
 </div>
 <div class="paragraph">
-<p>параметры:</p>
+<p>Параметры:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -484,7 +482,7 @@ UNION [ALL]
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">WITH RECURSIVE
+<pre class="highlight"><code class="language-sql" data-lang="sql">WITH RECURSIVE
   table1(col1) AS (
       SELECT(1)
     UNION ALL
@@ -501,7 +499,7 @@ SELECT col1 FROM table1;</code></pre>
 <p>Важно понять, что не нужно создавать <code>table1</code> до создания рекурсии, она будет создана автоматически и не сохранится после завершения работы рекурсивной функции.</p>
 </div>
 <div class="paragraph">
-<p>После указания <code>UNION ALL</code> описывается логика работы рекурсии - прибавление к значению <code>col1</code> единицы, до тех пор, пока функция не достигнет значения  <code>col1 = 1000</code>.</p>
+<p>После указания <code>UNION ALL</code> описывается логика работы рекурсии — прибавление к значению <code>col1</code> единицы, до тех пор, пока функция не достигнет значения  <code>col1 = 1000</code>.</p>
 </div>
 <div class="paragraph">
 <p>После отработки каждого цикла рекурсии, произойдет вывод значения <code>SELECT col1 FROM table1</code> на экран.</p>
@@ -542,7 +540,7 @@ SELECT col1 FROM table1;</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">CREATE TABLE org(
+<pre class="highlight"><code class="language-sql" data-lang="sql">CREATE TABLE org(
   name varchar(100) PRIMARY KEY,
   boss varchar(100) REFERENCES org(name)
 );</code></pre>
@@ -553,7 +551,7 @@ SELECT col1 FROM table1;</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">INSERT INTO org VALUES('Alice',NULL);
+<pre class="highlight"><code class="language-sql" data-lang="sql">INSERT INTO org VALUES('Alice',NULL);
 INSERT INTO org VALUES('Bob','Alice');
 INSERT INTO org VALUES('Cindy','Alice');
 INSERT INTO org VALUES('Dave','Bob');
@@ -563,14 +561,14 @@ INSERT INTO org VALUES('Gail','Cindy');</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Первый параметр - имя сотрудника, второй - ссылка на имя начальника. Например у Алисы нет начальник – значение <code>NULL</code>. Подчиненные <strong>Алисы</strong> – <strong>Bob</strong>, <strong>Cindy</strong> и т.д.</p>
+<p>Первый параметр — имя сотрудника, второй — ссылка на имя начальника. Например: у <code>Alice</code> нет начальник – значение <code>NULL</code>. Подчиненные <code>Alice</code> – <code>Bob</code>, <code>Cindy</code> и т.д.</p>
 </div>
 <div class="paragraph">
 <p>Можно вывести одним рекурсивным запросом таблицу, содержащую иерархию сотрудников в компании. Используем следующий запрос:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">WITH RECURSIVE
+<pre class="highlight"><code class="language-sql" data-lang="sql">WITH RECURSIVE
   under_alice(name,level) AS (
     VALUES('Alice',0)
 
@@ -591,11 +589,13 @@ SELECT level, name FROM under_alice;</code></pre>
 <col style="width: 50%;">
 <col style="width: 50%;">
 </colgroup>
-<tbody>
+<thead>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>level</strong></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>name</strong></p></td>
+<th class="tableblock halign-left valign-top">level</th>
+<th class="tableblock halign-left valign-top">name</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Alice</p></td>
@@ -630,7 +630,7 @@ SELECT level, name FROM under_alice;</code></pre>
 <p>Последовательность работы такого запроса:</p>
 </div>
 <div class="paragraph">
-<p>1) Создание и инициализация таблицы <code>under_alice</code>(<code>name,level</code>) с значениями <code>Alice</code>,<code>0</code>.</p>
+<p>1) Создание и инициализация таблицы <code>under_alice</code>(<code>name</code>, <code>level</code>) со значениями <code>Alice</code>,<code>0</code>.</p>
 </div>
 <div class="paragraph">
 <p>2) Соединение инициализирующего блока с рекурсивным благодаря <code>UNION</code>, благодаря чему выведется первая строка.</p>
@@ -640,11 +640,13 @@ SELECT level, name FROM under_alice;</code></pre>
 <col style="width: 50%;">
 <col style="width: 50%;">
 </colgroup>
-<tbody>
+<thead>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>level</strong></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>name</strong></p></td>
+<th class="tableblock halign-left valign-top">level</th>
+<th class="tableblock halign-left valign-top">name</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Alice</p></td>
@@ -656,7 +658,7 @@ SELECT level, name FROM under_alice;</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">SELECT org.name, under_alice.level+1
+<pre class="highlight"><code class="language-sql" data-lang="sql">SELECT org.name, under_alice.level+1
     FROM org JOIN under_alice ON org.boss=under_alice.name</code></pre>
 </div>
 </div>
@@ -671,11 +673,13 @@ SELECT level, name FROM under_alice;</code></pre>
 <col style="width: 50%;">
 <col style="width: 50%;">
 </colgroup>
-<tbody>
+<thead>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>level</strong></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>name</strong></p></td>
+<th class="tableblock halign-left valign-top">level</th>
+<th class="tableblock halign-left valign-top">name</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Bob</p></td>
@@ -690,11 +694,9 @@ SELECT level, name FROM under_alice;</code></pre>
 <p>5) Выполнение рекурсивного запроса, благодаря чему выведутся на экран имена <code>Dave</code>, <code>Emma</code>, <code>Fred</code>, <code>Fail</code> с <code>level = 2</code>.</p>
 </div>
 </div>
-</div>
-</div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-12-17 03:24:35 UTC
+Last updated 2021-12-25 06:12:12 UTC
 </div>
 </div>
 </body>
