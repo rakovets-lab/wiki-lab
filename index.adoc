@@ -20,7 +20,7 @@ include::java/jakarta-ee/servlet/index.adoc[]
 
 include::java/tools/index.adoc[]
 
-include::java/orm/orm.adoc[]
+include::java/data-persistence/jpa.adoc[]
 
 include::sql/index.adoc[]
 

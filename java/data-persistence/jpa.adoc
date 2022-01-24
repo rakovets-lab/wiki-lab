@@ -1,0 +1,581 @@
+= ORM (на примере Hibernate)
+
+== Основные понятия JPA и ORM
+
+*Java Persistence API* (*JPA*) — спецификация, предоставляет возможность сохранять в удобном виде объекты в базе данных. *JPA* описывает систему управления сохранением объектов в таблицы реляционных баз данных в удобном виде. *JPA* реализует концепцию *ORM*.
+
+*ORM* — *Object-Relational Mapping* (*объектно-реляционное отображение*). Это технология программирования, которая связывает базы данных с концепциями объектно-ориентированных языков программирования. Если упростить, то *ORM* это связь объектов в *Java* и записей в базе данных. Самой популярной на данный момент такой системой является *Hibernate*. Так же к ним можно отнести такие программы как *EclipseLink*, *Toplink*, их ещё называют *JPA-провайдерами*.
+
+Непосредственно *JPA* представлен в пакете `javax.persistence`.
+
+== `DataSource`
+
+`DataSource` — используется для создания соединения с базой данных. Это альтернатива `DriverManager` используемого в `JDBC`. В документации сказано, что `DataSource` использовать предпочтительнее. В частности, одним из преимуществ `DataSource` является возможность создания пула соединений *Database Connection Pool* (*DBCP*).
+
+Существует много библиотек, которые выступают как `DataSource`. Например, такие, как:
+
+* *Hikari* – это реализация `DataSource`, которая обеспечивает механизм пула соединений. По сравнению с другими реализациями, он обещает быть легким и более производительным. Является самой популярной библиотекой для пула соединений.
+* *Tomcat jdbc pool* - это реализация `DataSource` из пакета `tomcat-jdbc`. Является достаточно производительной.
+* *DBCP* и *C3P0* - устаревшие реализации `DataSource`, являются однопоточными и очень непроизводительными.
+
+== Entity
+
+`Entity` - это легковесный хранимый объект бизнес логики (*persistent domain object*), является основной программной сущностью.
+
+Главная аннотация `@Entity` позволяет объектам класса быть связанными с базой данных. Чтобы класс мог быть сущностью, к нему предъявляются следующие требования:
+
+* `Entity` класс должен быть отмечен аннотацией `Entity` или описан в `XML` файле конфигурации *JPA*.
+* `Entity` класс должен содержать `public` или `protected` конструктор без аргументов (он также может иметь конструкторы с аргументами).
+* `Entity` класс должен быть классом верхнего уровня.
+* `Entity` класс не может быть enum или интерфейсом.
+* `Entity` класс не может быть финальным классом.
+* `Entity` класс не может содержать *final* поля или методы, если они участвуют в mapping.
+* Если объект `Entity` класса будет передаваться по значению как отдельный объект, например через удаленный интерфейс он так же должен реализовывать `Serializable` интерфейс.
+* Поля `Entity` класс должны быть напрямую доступны только методам самого `Entity` класса и не должны быть напрямую доступны другим классам, использующим этот `Entity`.
+* `Entity` класс должен содержать первичный ключ, то есть атрибут или группу атрибутов которые уникально определяют запись этого `Entity` класса в базе данных.
+
+== Типы ассоциаций между Entity
+
+Существуют следующие типы ассоциаций:
+
+* `@OneToOne` - используется тогда, когда сущность одной таблицы связанная с одной сущностью другой таблицы.
+* `@OneToMany` - используется тогда, когда сущность одной таблицы связанная с несколькими сущностями другой таблицы.
+* `@ManyToOne` - используется тогда, когда сущности одной таблицы связанны с одной сущностью другой таблицы.
+* `@ManyToMany` - используется тогда, когда сущности одной таблицы связанны с несколькими сущностями другой таблицы.
+
+=== `@OneToOne`
+
+Для того чтобы связать сущности отношением один-к-одному, используется аннотация `@OneToOne`. В целом, может быть 3 варианта ее использования:
+
+* Связанные сущности используют одно и то же значение первичного ключа.
+* Внешний ключ определяется полем одной из сущностей (это поле в базе данных должно быть уникальным для имитации отношения один-к-одному).
+* Используется таблица для хранения ссылки между двумя сущностями (ограничение уникальности должно быть установлено на каждом из полей для того, чтобы соответствовать кратности один-к-одному).
+
+==== Связанные сущности используют одно и то же значение первичного ключа
+
+.Сущность User
+[source,java]
+----
+@Entity
+@Table(name = "users")
+public class User {
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    // Поля общие для всех пользователей
+}
+----
+
+.Сущность Partner
+[source,java]
+----
+@Entity
+@Table(name = "partners")
+public class Partner {
+    @OneToOne(cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private User user;
+
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    // Поля данных партнеров системы
+}
+----
+
+Аннотация `@PrimaryKeyJoinColumn` указывает на то, что первичный ключ сущности `Partner` используется в качестве внешнего ключа для связи с сущностью `User`.
+
+==== Связь один-к-одному с использованием явного внешнего ключа
+
+.Сущность User
+[source,java]
+----
+@Entity
+@Table(name = "users")
+public class User {
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="passport_id")
+    private Passport passport;
+}
+----
+
+Связь в базе данных между таблицами `users` и `passports` осуществляется посредством поля `passport_id` в таблице `users`. Связанное поле в `User` объявлено с помощью аннотации `@JoinColumn`, ее параметр обозначает поле в базе данных, которое будет использоваться для создания связи.
+
+Связь один-к-одному может быть *двунаправленной*. В двунаправленных отношениях одна из сторон (и только одна) должна быть владельцем и нести ответственность за обновление связанных полей. В случае когда владельцем выступает сущность `User`. Для того чтобы объявить сторону, которая не несет ответственности за отношения, используется атрибут `mappedBy`. Он ссылается на имя свойства связи на стороне владельца (`passport`).
+
+.Сущность `Passport`
+[source,java]
+----
+@Entity
+@Table(name = "passports")
+public class Passport {
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    @OneToOne(mappedBy = "passport")
+    private User user;
+}
+----
+
+*Двунаправленное отношение* не создает дополнительного внешнего ключа. Фактически, двунаправленная связь никак не влияет на то, как таблицы связаны друг с другом в базе данных. Просто она позволяет работать с сущностями в обоих направлениях, все также используя единственный внешний ключ. В случае, если на стороне владельца нет связанного поля `@JoinColumn`, то выполнятся следующие умолчания: в таблице владельца будет создано поле для связи, имя которого собирается из имени связи на стороне владельца, нижнего подчеркивания и имени уникального ключа на зависящей стороне.
+
+Преимуществом однонаправленной связи, является то, что ею легче управлять, потому что необходимо поддерживать только одну сторону. Преимущество же двунаправленной связи заключается в возможности доступа между связанными сущностями в обоих направлениях. Но обычно это приводит к формированию лишних запросов к базе данных, поэтому использовать двунаправленные связи необходимо осторожно.
+
+==== Связь один-к-одному с использованием таблицы отношений
+
+.Сущность `User`
+[source,java]
+----
+@Entity
+@Table(name = "users")
+public class User {
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinTable(name = "user_passport",
+        joinColumns = @JoinColumn(name="user_id"),
+        inverseJoinColumns = @JoinColumn(name="passport_id")
+    )
+
+    private Passport passport;
+}
+----
+
+.Сущность `Passport`
+[source,java]
+----
+@Entity
+@Table(name = "passports")
+public class Passport {
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    @OneToOne(mappedBy = "passport")
+    private User user;
+}
+----
+
+В базе данных таблица `users` связана с `passports` с помощью таблицы отношений `user_passport`. Эта таблица содержит внешний ключ `user_id`, указывающий на таблицу `users` и внешний ключ `passport_id`, указывающий на `passports`. `@JoinTable` позволяет избежать создания отдельной сущности для таблицы отношений `user_passport`, и непосредственно связать сущности `User` и `Password` между собой. Связь может быть двунаправленной точно так же, как в случае с использованием явного внешнего ключа.
+
+=== `@OneToMany` и `@ManyToOne`
+
+`@OneToMany` — случай, когда у одного автора может быть несколько книг.
+
+.Сущность `Author`
+[source,java]
+----
+@Data
+@Entity
+@Table(name = "author")
+public class Author {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Long id;
+
+    @Column(name = "first_name", nullable = false)
+    private String firstName;
+
+    @Column(name = "last_name", nullable = false)
+    private String lastName;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "book_id", unique = true, nullable = false)
+    private Set<Book> books;
+}
+----
+
+Оно уже является сетом, так как у автора может быть несколько книг. `@OneToMany` говорит о типе отношения. `FetchType.LAZY` говорит, что не нужно подгружать весь список книг, если это не указанно в запросе.
+
+В классе `Book` устанавливаем обратную связь `@ManyToOne`:
+
+.Сущность `Book`
+[source,java]
+----
+@Data
+@Entity
+@Table(name = "book")
+public class Book {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Long id;
+
+    @Column(name = "name", nullable = false)
+    private String name;
+
+    @Column(name = "print_year", nullable = false)
+    private int printYear;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "author_id", nullable = false)
+    private Author author;
+}
+----
+
+=== `@ManyToMany`
+
+Такая зависимость реализовывается через создание дополнительной таблицы. Допустим ситуацию, когда у нескольких книг может быть несколько авторов, а у авторов – несколько книг.
+
+.Сущность Author
+[source,java]
+----
+@Data
+@ToString(exclude = "books")
+@Entity
+@Table(name = "author")
+public class Author {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Long id;
+
+    @Column(name = "first_name", nullable = false)
+    private String firstName;
+
+    @Column(name = "second_name", nullable = false)
+    private String secondName;
+
+    @ManyToMany
+    @JoinTable(
+            name = "author_book_link",
+            joinColumns = @JoinColumn(name = "author_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id")
+    )
+    private Set<Book> books;
+}
+----
+
+Для связи сущностей создаётся таблица `author_book_link`.
+
+`@JoinTable` — будет связывать атрибут с дополнительной таблицей `author_book_link`. В ней указываются два атрибута, которые будут указывать на *primary keys* двух сущностей.
+
+.Сущность `Book`
+[source,java]
+----
+@Data
+@ToString(exclude = "authors")
+@Entity
+@Table(name = "book")
+public class Book {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Long id;
+
+    @Column(name = "name", nullable = false)
+    private String name;
+
+    @Column(name = "print_year", nullable = false)
+    private int printYear;
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "books")
+    private Set<Author> authors;
+}
+----
+
+== Стратегии генерации первичного ключа
+
+Один из главных требований к `Entity` является наличие первичного ключа. В *JPA* на этот случай предусмотрены механизмы автоматической генерации значений суррогатных ключей, которые включаются аннотацией `@GeneratedValue`.
+
+*JPA* поддерживает четыре стратегии генерации ключа:
+
+* `GenerationType.IDENTITY`
+* `GenerationType.SEQUENCE`
+* `GenerationType.TABLE`
+* `GenerationType.AUTO`
+
+===  Стратегия `GenerationType.IDENTITY`
+
+Такая стратегия работает с базами, у которых есть специальные `IDENTITY` поля, например с *MySQL* или *DB2*. В таких базах данных возможно создавать первичный ключ с автоматическим инкрементом.
+
+.Создание таблицы с первичным ключом
+[source,sql]
+----
+CREATE TABLE journal (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT
+);
+----
+
+=== Стратегия `GenerationType.SEQUENCE`
+
+Такая стратегия использует встроенный в базы данных, такие как *PostgreSQL* или *Oracle*, механизм генерации последовательных значений. Использование этого генератора требует как создания отдельной *sequence* в базе данных:
+
+.Создание таблицы с первичным ключом
+[source,sql]
+----
+CREATE TABLE journal (
+    id BIGINT PRIMARY KEY
+);
+----
+
+.Создание последовательности
+[source,sql]
+----
+CREATE SEQUENCE book_sequence START WITH 1 INCREMENT BY 1 NOCACHE NOCYCLE;
+----
+
+Так и задания имени этой последовательности в описании ключа:
+
+.Создание последовательности
+[source,java]
+----
+private class ExampleEntity {
+    @Id
+    @SequenceGenerator(name = "bookSequence", sequenceName = "book_sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bookSequence")
+    @Column(name = "id", nullable = false, updatable = false)
+    private Long rowId;
+}
+----
+
+=== Стратегия `GenerationType.TABLE`
+
+Такая стратегия не зависит от поддержки конкретной базой данных и хранит счётчики значений в отдельной таблице. С одной стороны это более гибкое и настраиваемое решение, с другой стороны более медленное и требующее большей настройки. Вначале требуется создать и проинициализировать таблицу для значений ключей:
+
+.Создание таблицы для сохранения ключей
+[source,sql]
+----
+CREATE TABLE sequence_store (
+    sequence_name VARCHAR(255) PRIMARY KEY,
+    sequence_value BIGINT NOT NULL
+);
+----
+
+.Entity реализующая стратегию `GenerationType.TABLE`
+[source,java]
+----
+private class ExampleEntity {
+    @Id
+    @TableGenerator(
+            name = "seqStore", table = "sequence_store",
+            pkColumnName = "sequence_name", pkColumnValue = "journal.id.pk",
+            valueColumnName = "sequence_value", initialValue = 1, allocationSize = 1
+    )
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "seqStore" )
+    @Column(name = "id", nullable = false, updatable = false)
+    private Long rowId;
+}
+----
+
+=== Стратегия `GenerationType.AUTO`
+
+Позволяет автоматически выбрать стратегию в соответствии с используемой базой данных.
+
+== Fetch strategies
+
+В *JPA* описаны два типа *Fetch strategies*:
+
+* `LAZY` — данные поля будут загружены только во время первого обращения к этому полю.
+* `EAGER` — данные поля будут загружены сразу, при инициализации корневой сущности.
+
+Каждый тип связи имеет свою *Fetch strategy*` по умолчанию:
+
+* `@OneToMany`: `LAZY`
+* `@ManyToOne`: `EAGER`
+* `@ManyToMany`: `LAZY`
+* `@OneToOne`: `EAGER`
+
+В *JPA* есть два типа загрузки `FetchType`: `EAGER` and `LAZY`. `FetchType.EAGER` загрузка заставляет *ORM* загружать связанные сущности и коллекции сразу, вместе с корневой сущностью. `FetchType.LAZY` загрузка означает, что *ORM* загрузит сущность или коллекцию отложено, при первом обращении к ней из кода.
+
+`FetchType` в *JPA* говорит когда связанная сущность или коллекция будет загружена. По умолчанию *JPA* провайдер загружает связанные коллекции (отношения один-ко-многим и многие-ко-многим) отложено. В большинстве случаев отложенная загрузка — оптимальный вариант. Нет смысла инициализировать все связанные коллекции, если к ним не будет обращений.
+
+=== Каскадные типы
+
+*Каскадирование* — это стратегия работы со связанными объектами, т.е. когда выполняется какое-либо действие над целевым объектом, то же самое действие будет применено к связанному объекту. Все каскадные операции:
+
+.Каскадные операции
+[options="header"]
+|===
+|Параметр | Описание
+|`CascadeType.PERSIST`| При сохранении экземпляра сущности с помощью метода `persist()` любой связанный экземпляр сущности также перейдёт в хранимое состояние.
+|`CascadeType.REMOVE`| При удалении экземпляра сущности с помощью метода `remove()` любой связанный экземпляр сущности также будет удален.
+|`CascadeType.DETACH`| При отсоединении экземпляра сущности от контекста хранения с помощью `detach()` любой ассоциированный экземпляр сущности также будет отсоединен.
+|`CascadeType.MERGE`| При слиянии временной или отсоединенной сущности с *persistence context* с помощью `merge()` для любого связанного временного или отсоединенного экземпляра сущности также будет выполнено слияние.
+|`CascadeType.REFRESH`| При изменении экземпляра сущности с помощью `refresh()` любой связанный экземпляр сущности также будет изменен.
+|`CascadeType.ALL`| Сокращенная запись для применения всех способов каскадирования.
+|===
+
+== Состояния сущности
+
+Сущности могут находиться в следующих состояниях:
+
+* *transient* — объект создан, но при этом ещё не имеет сгенерированных первичных ключей и пока ещё не сохранен в базе данных.
+* *managed* — объект создан, управляется *JPA*, имеет сгенерированные первичные ключи.
+* *detached* — объект был создан, но не управляется (или больше не управляется) *JPA*.
+* *removed* — объект создан, управляется *JPA*, но будет удален после завершения транзакции.
+
+Рассмотрим как операция `persist()` на `Entity` объекты каждого из четырех статусов:
+
+* Если статус у сущности *transient*, то он меняется на *managed*, и объект будет сохранен в базу при завершении транзакции или в результате `flush()` операций.
+* Если статус уже *managed*, операция игнорируется, однако зависимые `Entity` могут поменять статус на *managed*, если у них есть аннотации каскадных изменений.
+* Если статус *removed*, то он меняется на *managed*.
+* Если статус *detached*, будет выкинут Exception сразу или на этапе завершении транзакции.
+
+Рассмотрим как операция `remove()` на `Entity` объекты каждого из четырех статусов:
+
+* Если статус *transient*, операция игнорируется, однако зависимые `Entity` могут поменять статус на *removed*, если у них есть аннотации каскадных изменений и они имели статус *managed*.
+* Если статус *managed*, то статус меняется на *removed* и запись объект в базе данных будет удалена при завершении транзакции (так же произойдут операции `remove` для всех каскадно зависимых объектов).
+* Если статус *removed*, то операция игнорируется.
+* Если статус *detached*, будет выкинут Exception сразу или на этапе завершения транзакции.
+
+Рассмотрим как операция `merge()` на `Entity` объекты каждого из четырех статусов:
+
+* Если статус у сущности *detached*, то либо данные будет скопированы в существующей *managed* `entity` с тем же первичным ключом, либо создан новый *managed* в который скопируются данные.
+* Если статус *transient*, то будет создана новый *managed* `entity`, в который будут скопированы данные прошлого объекта.
+* Если статус *managed*, операция игнорируется, однако операция `merge()` сработает на каскадно зависимые `Entity`, если их статус не *managed*.
+* Если статус *removed*, будет выкинута ошибка сразу или на этапе завершения транзакции.
+
+Рассмотрим как операция `refresh()` на `Entity` объекты каждого из четырех статусов:
+
+* Если статус у сущности *managed*, то в результате операции будут восстановлены все изменения из базы данных данного `Entity`, так же произойдет `refresh()` всех каскадно зависимых объектов.
+* Если статус *transient*, *removed* или *detached*, будет выброшен Exception.
+
+Рассмотрим как операция `detach()` на `Entity` объекты каждого из четырех статусов:
+
+* Если статус у сущности *managed* или *removed*, то в результате операции статус `Entity` (и всех каскадно-зависимых объектов) станет *detached*.
+* Если статус *transient* или `*detached*, то операция игнорируется.
+
+== Удаление сирот
+
+Рассмотрим настройку `orphanRemoval`, которая касается удаления элементов из коллекции. У нас это будет удаление комментария из списка комментариев топика.
+
+.Сущность `Comment`
+[source,java]
+----
+@Entity
+public class Comment {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private long id;
+
+    private String text;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Topic topic;
+
+    // getters/setters/constructors
+}
+----
+
+.Сущность `Topic`
+[source,java]
+----
+@Entity
+public class Topic {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private long id;
+
+    private String title;
+
+    @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments=new ArrayList<>();
+
+    public void addComment(Comment comment) {
+        comments.add(comment);
+        comment.setTopic(this);
+    }
+
+    public void removeComment(Comment comment) {
+        comments.remove(comment);
+        comment.setTopic(null);
+    }
+
+    // getters/setters/constructors
+}
+----
+
+Следует обратить внимание на метод `removeComment()`, он удаляет комментарий из коллекции и устанавливает его полю `topic` значение `null`.
+
+Чтобы понять смысл настройки `orphanRemoval`, надо представить, что теоретически может подразумеваться под удалением комментария из списка комментариев топика. Очевидно это означает, что у данного топика больше нет комментария.
+
+Но остается ли он вообще в базе, то есть можно ли его вывести в общем списке комментариев всех топиков? Или же удаляется из базы? За эти два варианта и отвечает `orphanRemoval`.
+
+=== `orphanRemoval` равен `true`
+
+Если `orphanRemoval` равен `true`, то при удалении комментария из списка комментариев топика, он удаляется из базы. Проверим это в тесте:
+
+.Метод для тестирования работы `orphanRemoval = true`
+[source,java]
+----
+private class RemoveTests {
+    @Test
+    @DisplayName("если orphanRemoval=true, то при удалении комментария из топика он удаляется из базы")
+    public void givenOrphanRemovalTrue_whenRemoveCommentFromTopic_thenItRemovedFromDatabase() {
+       Topic topic = topicRepository.getById(-1L);
+       topic.removeComment(topic.getComments().get(0));
+       Assertions.assertEquals(2, commentRepository.count());
+    }
+}
+----
+
+Генерируются следующие команды:
+
+[source,sql]
+----
+select topic0_.id as id1_1_0_, comments1_.id as id1_0_1_,
+       topic0_.title as title2_1_0_,
+       comments1_.text as text2_0_1_, comments1_.topic_id as topic_id3_0_1_,
+       comments1_.topic_id as topic_id3_0_0__, comments1_.id as id1_0_0__
+from topic topic0_ inner join comment comments1_
+on topic0_.id=comments1_.topic_id
+where topic0_.id=?
+
+delete from comment where id=?
+----
+
+Можно заметить оператор `delete`, он и удаляет комментарий из базы.
+
+=== `orphanRemoval` равен `false`
+
+Если `orphanRemoval` равен `false`, то при удалении комментария из списка, в базе комментарий остается. Его внешний ключ обнуляется, и  больше комментарий не ссылается на `Topic`.
+
+Проверим это:
+
+.Метод для тестирования работы `orphanRemoval = false`
+[source,java]
+----
+private class RemoveTests {
+    @Test
+    @DisplayName("если orphanRemoval = false, то при удалении комментария из топика остается в базе")
+    public void givenOrphanRemovalFalse_whenRemoveCommentFromTopic_thenItRemovedFromDatabase() {
+        Topic topic = topicRepository.getById(-1L);
+        topic.removeComment(topic.getComments().get(0));
+        Assertions.assertEquals(3, commentRepository.count());
+    }
+}
+----
+
+Генерируются следующие команды:
+
+[source,sql]
+----
+select topic0_.id as id1_1_0_, comments1_.id as id1_0_1_,
+       topic0_.title as title2_1_0_, comments1_.text as text2_0_1_,
+       comments1_.topic_id as topic_id3_0_1_, comments1_.topic_id as topic_id3_0_0__,
+       comments1_.id as id1_0_0__
+from topic topic0_ inner join comment comments1_
+on topic0_.id=comments1_.topic_id
+where topic0_.id=?
+
+update comment set text=?, topic_id=? where id=?
+----
+
+Здесь происходит обновление таблицы `comment`: столбцу `topic_id` присваивается значение `NULL`. Комментарий остается в базе, просто ни на какой `Topic` он больше не ссылается. В свою очередь оператор `delete` отсутствует.
