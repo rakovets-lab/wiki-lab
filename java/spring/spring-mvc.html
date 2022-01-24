@@ -452,10 +452,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p><strong>Spring MVC</strong> — это старый добрый <strong>MVC</strong>-фреймворк, который позволяет довольно легко писать <strong>web</strong>-сайты или <strong>web</strong>-сервисы.</p>
 </li>
 <li>
-<p>Он прекрасно интегрируется со множеством шаблонных библиотек и библиотек преобразования данных, а также с остальной частью экосистемы <strong>Spring</strong>, такой как <strong>Spring Boot</strong>.</p>
+<p>Он прекрасно интегрируется со множеством шаблонных библиотек и библиотек преобразования данных, а также с остальной частью экосистемы <strong>Spring</strong>, такой, как <strong>Spring Boot</strong>.</p>
 </li>
 <li>
-<p>Главным образом он позволяет вам сосредоточиться на написании своей бизнес-логики, не беспокоясь о стандартном коде сервлета, разборе <strong>HTTP</strong>-запросов/ответов и преобразовании данных.</p>
+<p>Главным образом он позволяет вам сосредоточиться на написании своей бизнес-логики, не беспокоясь о стандартном коде для Servlet, разборе <strong>HTTP</strong>-запросов/ответов и преобразовании данных.</p>
 </li>
 </ul>
 </div>
@@ -465,13 +465,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Model</strong> (Модель) инкапсулирует (объединяет) данные приложения, в целом они будут состоять из <strong>POJO</strong>.</p>
+<p><strong>Model</strong> (<strong>Модель</strong>) инкапсулирует (объединяет) данные приложения, в целом они будут состоять из <strong>POJO</strong>.</p>
 </li>
 <li>
-<p><strong>View</strong> (Отображение, Вид) отвечает за отображение данных Модели, — как правило, генерируя <strong>HTML</strong>, которые мы видим в своём браузере.</p>
+<p><strong>View</strong> (<strong>Отображение</strong>, <strong>Вид</strong>) отвечает за отображение данных <strong>Модели</strong>, — как правило, генерируя <strong>HTML</strong>, которые мы видим в своём браузере.</p>
 </li>
 <li>
-<p><strong>Controller</strong> (Контроллер) обрабатывает запрос пользователя, создаёт соответствующую Модель и передаёт её для отображения в Вид.</p>
+<p><strong>Controller</strong> (<strong>Контроллер</strong>) обрабатывает запрос пользователя, создаёт соответствующую <strong>Модель</strong> и передаёт её для отображения в <strong>Вид</strong>.</p>
 </li>
 </ul>
 </div>
@@ -479,7 +479,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>Рабочий процесс обработки запроса проиллюстрирован на следующей диаграмме:</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../../assets/img/java/spring/mvc/schema-working-dispatcherservlet.png" alt="schema working dispatcherservlet"></span></p>
+<p><span class="image"><img src="../../assets/img/java/spring/mvc/schema-working-dispatcher-servlet.png" alt="schema working dispatcher servlet"></span></p>
 </div>
 <div class="paragraph">
 <p>После получения <strong>HTTP</strong>-запроса <strong>DispatcherServlet</strong>  выполняет следующие действия.</p>
@@ -487,10 +487,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="ulist">
 <ul>
 <li>
-<p>После получения <strong>HTTP</strong>-запроса <strong>DispatcherServlet</strong> даёт указание объекту <strong>HandlerMapping</strong> (обработка связывания), который вызывает следующий объект.</p>
+<p>После получения <strong>HTTP</strong>-запроса <strong>DispatcherServlet</strong> даёт указание объекту <strong>HandlerMapping</strong> (<strong>обработка связывания</strong>), который вызывает следующий объект.</p>
 </li>
 <li>
-<p><strong>DispatcherServlet</strong> посылает запрос контроллеру и вызывает соответствующие методы. Эти методы возвращают объект, в соответствии с бизнес-логикой метода и передают название (название ссылки) обратно в <strong>DispatcherServlet</strong>.</p>
+<p><strong>DispatcherServlet</strong> посылает запрос контроллеру и вызывает соответствующие методы. Эти методы возвращают объект, в соответствии с бизнес-логикой метода и передают название ссылки обратно в <strong>DispatcherServlet</strong>.</p>
 </li>
 <li>
 <p>C помощью <strong>ViewResolver</strong>, <strong>DispatcherServlet</strong> подбирает необходимый вид для запроса.</p>
@@ -503,27 +503,28 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="_dispatcherservlet">DispatcherServlet</h2>
+<h2 id="_dispatcherservlet"><code>DispatcherServlet</code></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Вся логика работы <strong>Spring MVC</strong> построена вокруг <strong>DispatcherServlet</strong>.</p>
+<p>Вся логика работы <strong>Spring MVC</strong> построена вокруг <code>DispatcherServlet</code>.</p>
 </div>
 <div class="paragraph">
-<p><strong>DispatcherServlet</strong> — полностью интегрированный сервлет в <strong>Spring IoC</strong> контейнер и таким образом получает доступ ко всем возможностям <strong>Spring</strong>.</p>
+<p><code>DispatcherServlet</code> — полностью интегрированный Servlet в <strong>Spring IoC</strong> контейнер и таким образом получает доступ ко всем возможностям <strong>Spring</strong>.</p>
 </div>
 <div class="paragraph">
-<p>При обработке запросов используется паттерн <code>«pattern-savvy reader»</code>, который распознает <strong>DispatcherServlet</strong> как выражение из шаблона проектирования <code>«Front Controller»</code>.</p>
+<p>При обработке запросов используется паттерн <strong>pattern-savvy reader</strong>, который распознает <code>DispatcherServlet</code> как выражение из шаблона проектирования <strong>Front Controller</strong>.</p>
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="../../assets/img/java/spring/mvc/front-contreoller.png" alt="front contreoller"></span></p>
 </div>
 <div class="paragraph">
-<p><strong>DispatcherServlet</strong> является основным контроллером <strong>Spring MVC Application</strong>. Все входящие веб-запросы проходят через <strong>DispatcherServlet</strong> перед обработкой отдельными контроллерами <strong>Spring</strong>, то есть классами, аннотированными с помощью аннотации <code>@Controller</code>.</p>
+<p><code>DispatcherServlet</code> является основным контроллером <strong>Spring MVC Application</strong>. Все входящие веб-запросы проходят через <code>DispatcherServlet</code> перед обработкой отдельными контроллерами <strong>Spring</strong>, то есть классами, аннотированными с помощью аннотации <code>@Controller</code>.</p>
 </div>
 <div class="paragraph">
-<p><strong>DispatcherServlet</strong> — это обычный сервлет (наследуется от базового класса <strong>HttpServlet</strong>). Как и любой другой сервлет, <strong>DispatcherServlet</strong> необходимо зарегистрировать и настроить. Сделать это можно или в файле <strong>web.xml</strong></p>
+<p><code>DispatcherServlet</code> — это обычный Servlet (наследуется от базового класса <code>HttpServlet</code>). Как и любой другой Servlet, <code>DispatcherServlet</code> необходимо зарегистрировать и настроить. Сделать это можно или в файле <code>web.xml</code></p>
 </div>
 <div class="listingblock">
+<div class="title"><code>web.xml</code></div>
 <div class="content">
 <pre class="highlight"><code class="language-xml" data-lang="xml">&lt;web-app&gt;
     &lt;servlet&gt;
@@ -539,7 +540,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="paragraph">
-<p>Либо в <strong>Java</strong>-коде переопределив метод <code>onStartup()</code> интерфейса <code>WebApplicationInitializer</code> :</p>
+<p>Либо в <strong>Java</strong>-коде переопределив метод <code>onStartup()</code> интерфейса <code>WebApplicationInitializer</code>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -560,33 +561,33 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p><code>WebApplicationInitializer</code> — интерфейс, предоставляемый <strong>Spring MVC</strong>, который гарантирует инициализацию при старте контейнера.</p>
 </div>
 <div class="paragraph">
-<p>Сервлет диспетчера настроен как <code>load-on-startup = 1</code>, что означает, что этот сервлет должен создаваться контейнером сервлета при развертывании приложения, а не при получении запроса на этот запрос.</p>
+<p>Servlet диспетчера настроен как <code>load-on-startup = 1</code>, что означает, что этот Servlet должен создаваться контейнером Servlets при развертывании приложения, а не при получении запроса на этот запрос.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_handlermapping">HandlerMapping</h2>
+<h2 id="_handlermapping"><code>HandlerMapping</code></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Одним из важных интерфейсов в Spring является HandlerMapping.</p>
+<p>Одним из важных интерфейсов в Spring является <code>HandlerMapping</code>.</p>
 </div>
 <div class="paragraph">
-<p><strong>DisptacherSevlet</strong> с помощью <strong>HandlerMapping</strong> определяет какой контроллер он должен использовать для определенного запроса <strong>request</strong>.</p>
+<p><code>DispatcherServlet</code> с помощью <code>HandlerMapping</code> определяет какой контроллер он должен использовать для определенного <strong>request</strong>.</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../../assets/img/java/spring/mvc/schema-springMVC-detail.png" alt="schema springMVC detail"></span></p>
+<p><span class="image"><img src="../../assets/img/java/spring/mvc/schema-spring-mvc-detail.png" alt="schema spring mvc detail"></span></p>
 </div>
 <div class="paragraph">
-<p>По определению <strong>HandlerMapping</strong> — интерфейс, который реализуется объектами, которые определяют отображение между запросами и объектами обработчиков.</p>
+<p>По определению <code>HandlerMapping</code> — интерфейс реализующийся объектами, которые определяют отображение между запросами и объектами обработчиков.</p>
 </div>
 <div class="paragraph">
-<p>Реализации <strong>HandlerMapping</strong> могут поддерживать перехватчики (<strong>interceptors</strong>), но не содержат их. Обработчик будет всегда обернут в экземпляре <strong>HandlerExecutionChain</strong>, возможно в сопровождении некоторых экземпляров <strong>HandlerInterceptor</strong>. <strong>DispatcherServlet</strong> сначала вызывает  метод preHandle каждого <strong>HandlerInterceptor</strong> в заданном порядке, и в конце, внедряет обработчик, если все методы <code>preHandle</code> вернули <strong>true</strong>.</p>
+<p>Реализации <code>HandlerMapping</code> могут поддерживать перехватчики (<strong>interceptors</strong>), но не содержат их. Обработчик будет всегда обернут в экземпляре <code>HandlerExecutionChain</code>, возможно в сопровождении некоторых экземпляров <code>HandlerInterceptor</code>. <code>DispatcherServlet</code> сначала вызывает  метод <code>preHandle()</code> каждого <code>HandlerInterceptor</code> в заданном порядке, и в конце, внедряет обработчик, если все методы <code>preHandle()</code> вернули <code>true</code>.</p>
 </div>
 <div class="paragraph">
-<p>Возможность параметризации такого отображения является мощной и необычной способностью в рамках <strong>MVC</strong> фреймворка. Например, можно написать пользовательское отображение на основе состояния сеанса, состояние <strong>cookie</strong> или многих других переменных.</p>
+<p>Возможность параметризации такого отображения является мощной и необычной способностью в рамках <strong>MVC</strong> фреймворка. Например, можно написать пользовательское отображение на основе состояния <strong>session</strong>, состояние <strong>cookie</strong> или многих других переменных.</p>
 </div>
 <div class="paragraph">
-<p>По умолчанию интерфейс <strong>HandlerMapping</strong> в <strong>Spring MVC</strong> реализуется классом <strong>RequestMappingHandlerMapping</strong>. Существуют другие реализации интерфейса, которые используют другие параметры для поиска контроллера, соответствующего запросу. В <strong>Spring MVC</strong> вы можете встретить реализацию интерфейса, когда применяете аннотацию <code>@RequestMapping</code></p>
+<p>По умолчанию интерфейс <code>HandlerMapping</code> в <strong>Spring MVC</strong> реализуется классом <code>RequestMappingHandlerMapping</code>. Существуют другие реализации интерфейса, которые используют другие параметры для поиска контроллера, соответствующего запросу. В <strong>Spring MVC</strong> вы можете встретить реализацию интерфейса, когда применяете аннотацию <code>@RequestMapping</code></p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -602,22 +603,22 @@ public class Main{
 </div>
 </div>
 <div class="sect1">
-<h2 id="_controller">Controller</h2>
+<h2 id="_controller"><code>Controller</code></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><strong>DispatcherServlet</strong> отправляет запрос контроллерам для выполнения определённых функций.</p>
+<p><code>DispatcherServlet</code> отправляет запрос контроллерам для выполнения определённых функций.</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../../assets/img/java/spring/mvc/RequestLifecycle.png" alt="RequestLifecycle"></span></p>
+<p><span class="image"><img src="../../assets/img/java/spring/mvc/request-lifecycle.png" alt="Request Lifecycle"></span></p>
 </div>
 <div class="paragraph">
-<p>Аннотации <code>@Controller</code> или <code>@RestController</code> указывают, что конкретный класс является контроллером. Аннотация <code>@RestController</code> равна одновременно <code>@Controller + @ResponseBody</code>.</p>
+<p>Аннотации <code>@Controller</code> или <code>@RestController</code> указывают, что конкретный класс является контроллером. Аннотация <code>@RestController</code> равна одновременно <code>@Controller</code> + <code>@ResponseBody</code>.</p>
 </div>
 <div class="paragraph">
-<p><code>@ResponseBody</code> - дает фреймворку понять, что объект, который вы вернули из метода надо прогнать через <code>HttpMessageConverter</code>, чтобы получить готовое к отправке на клиент представление.</p>
+<p><code>@ResponseBody</code> - дает фреймворку понять, что объект, который вы вернули из метода надо прогнать через <code>HttpMessageConverter</code>, чтобы получить готовое представление к отправке клиенту.</p>
 </div>
 <div class="paragraph">
-<p>Аннотация <code>@RequestMapping</code> используется для мапинга (связывания) с <strong>URL</strong> для всего класса или для конкретного метода обработчика.</p>
+<p>Аннотация <code>@RequestMapping</code> используется для <strong>mapping</strong> (<strong>связывания</strong>) с <strong>URL</strong> для всего класса или для конкретного метода обработчика.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -633,7 +634,7 @@ public class HelloController {
 </div>
 </div>
 <div class="paragraph">
-<p>В первом случае, <code>@RequestMapping</code> указывает, что все методы в данном Контроллере относятся к <strong>URL</strong>-адресу <code>"/hello"</code>, а во втором как дефолтного метода для обработки <strong>HTTP</strong>-запросов <strong>GET</strong> (в данном Контроллере). Также можно данную аннотацию объявить над методом <code>@RequestMapping(value = "/hello", method = RequestMethod.GET)</code>.</p>
+<p>В первом случае, <code>@RequestMapping</code> указывает, что все методы в данном <strong>Controller</strong> относятся к <strong>URL</strong>-адресу <code>/hello</code>, а во втором как дефолтного метода для обработки <strong>HTTP</strong>-запросов <strong>GET</strong> (в данном <strong>Controller</strong>). Также можно данную аннотацию объявить над методом <code>@RequestMapping(value = "/hello", method = RequestMethod.GET)</code>.</p>
 </div>
 <div class="paragraph">
 <p>Также в контроллере может использоваться аннотация <code>@ModelAttribute</code>, которая ставится над методом или в аргументах методов.</p>
@@ -643,13 +644,13 @@ public class HelloController {
 <pre class="highlight"><code class="language-java" data-lang="java">@Controller
 public class HelloController {
     @RequestMapping("/processForm")
-    public String processForm(@ModelAttribute("student") Student theStudent){
+    public String processForm(@ModelAttribute("student") Student theStudent) {
         System.out.println("theStudent :"+ theStudent.getLastName());
         return "form-details";
     }
 
     @ModelAttribute("object")
-    public Object checkOptions(){
+    public Object checkOptions() {
         return new Object();
     }
 }</code></pre>
@@ -667,8 +668,10 @@ public class HelloController {
 </div>
 </div>
 <div class="paragraph">
-<p>В зависимости от места ее применения, работать она будет по-разному. В первом случае она позволяет связать <strong>html</strong>-форму с <strong>java</strong>-объектом. А во-втором случае добавит в модель каждого метода контроллера объект с ключ-значением - <code>"object":new Object()</code>.</p>
+<p>В зависимости от места ее применения, работать она будет по-разному. В первом случае она позволяет связать <strong>html</strong>-форму с <strong>java</strong>-объектом. А во втором случае, добавит в модель каждого метода контроллера объект с ключ-значением - <code>object</code> и <code>new Object()</code>.</p>
 </div>
+<div class="sect2">
+<h3 id="_requestparam_и_pathvariable"><code>@RequestParam</code> и <code>@PathVariable</code></h3>
 <div class="paragraph">
 <p>Часто используются аннотации <code>@RequestParam</code> и <code>@PathVariable</code>.</p>
 </div>
@@ -691,34 +694,35 @@ public class HelloController {
 </div>
 </div>
 <div class="paragraph">
-<p>При использовании <code>@RequestParam</code> передача значений будет типа <code><a href="http://localhost:8080/api/test/filter?id=abc" class="bare">http://localhost:8080/api/test/filter?id=abc</a></code>. В этом случае данный параметр является не обязательным, но при установке атрибута <code>required = true</code> (по умолчанию <strong>false</strong>) станет обязательным для заполнения.</p>
+<p>При использовании <code>@RequestParam</code> передача значений будет в виде <code><a href="http://localhost:8080/api/test/filter?id=abc" class="bare">http://localhost:8080/api/test/filter?id=abc</a></code>. В этом случае данный параметр является не обязательным, но при установке атрибута <code>required = true</code> (по умолчанию <code>false</code>) станет обязательным для заполнения.</p>
 </div>
 <div class="paragraph">
-<p>При использовании <code>@PathVariable</code> передача значений будет типа <code><a href="http://localhost:8080/api/test/abc" class="bare">http://localhost:8080/api/test/abc</a></code>. В этом случае данный параметр является обязательным, но при установке атрибута <code>required = false</code> (по умолчанию <strong>true</strong>) станет не обязательным для заполнения.</p>
+<p>При использовании <code>@PathVariable</code> передача значений будет в виде <code><a href="http://localhost:8080/api/test/abc" class="bare">http://localhost:8080/api/test/abc</a></code>. В этом случае данный параметр является обязательным, но при установке атрибута <code>required = false</code> (по умолчанию <code>true</code>) станет не обязательным для заполнения.</p>
+</div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_viewresolver">ViewResolver</h2>
+<h2 id="_viewresolver"><code>ViewResolver</code></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><strong>DisptacherServlet</strong> с помощью <strong>ViewResolver</strong> определяет какое представление необходимо использовать на основании полученного имени.</p>
+<p><code>DispatcherServlet</code> с помощью <code>ViewResolver</code> определяет какое представление необходимо использовать на основании полученного имени.</p>
 </div>
 <div class="paragraph">
-<p><strong>ViewResolver</strong> — интерфейс, реализуемый объектами, которые способны находить представления <strong>View</strong> по имени <strong>View Name</strong></p>
+<p><code>ViewResolver</code> — интерфейс, реализуемый объектами, которые способны находить представления <strong>View</strong> по имени <strong>View Name</strong></p>
 </div>
 <div class="paragraph">
-<p><strong>Spring MVC</strong> поддерживает множество типов <strong>View</strong> для различных технологий отображения страницы. В том числе — <strong>JSP</strong>, <strong>HTML</strong>, <strong>PDF</strong>, <strong>Excel</strong>, <strong>XML</strong>, <strong>Velocity</strong> <strong>templates</strong>, <strong>XSLT</strong>, <strong>JSON,</strong> каналы <strong>Atom</strong> и <strong>RSS</strong>, <strong>JasperReports</strong> и другие.</p>
+<p><strong>Spring MVC</strong> поддерживает множество типов <strong>View</strong> для различных технологий отображения страницы. В том числе — <strong>JSP</strong>, <strong>HTML</strong>, <strong>PDF</strong>, <strong>Excel</strong>, <strong>XML</strong>, <strong>Velocity</strong> <strong>templates</strong>, <strong>XSLT</strong>, <strong>JSON</strong>, каналы <strong>Atom</strong> и <strong>RSS</strong>, <strong>JasperReports</strong> и другие.</p>
 </div>
 <div class="paragraph">
-<p>По умолчанию реализацией интерфейса <strong>ViewResolver</strong> является класс <code>InternalResourceViewResolver</code>. Также могут использоваться <code>FreeMarkerViewResolver</code>, <code>BeanNameViewResolver</code>, <code>ResourceBundleViewResolver</code>, <code>TilesViewResolver</code> и многие другие.</p>
+<p>По умолчанию реализацией интерфейса <code>ViewResolver</code> является класс <code>InternalResourceViewResolver</code>. Также могут использоваться <code>FreeMarkerViewResolver</code>, <code>BeanNameViewResolver</code>, <code>ResourceBundleViewResolver</code>, <code>TilesViewResolver</code> и многие другие.</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-java" data-lang="java">@Configuration
-public class WebConfiguration{
+public class WebConfiguration {
     @Bean
-    public InternalResourceViewResolver internalResourceViewResolver(){
+    public InternalResourceViewResolver internalResourceViewResolver() {
         InternalResourceViewResolver resolver = new InternalResourceViewResolver();
         resolver.setPrefix("/WEB-INF/views/");
         resolver.setSuffix(".jsp");
@@ -744,11 +748,11 @@ public class WebConfiguration{
 </div>
 </div>
 <div class="paragraph">
-<p>После того как в модель <strong>modelAndView</strong> было записано имя представления <code>viewName = ‘index’</code> и произошел выход из метода, то в действие включается <strong>ViewResolver</strong>. Для этого примера согласно настройкам в класс InternalResourceViewResolver будет искать представление с именем index, у которого префикс <code>/WEB-INF/views/</code>, а суффикс <code>.jsp</code>. Другими словами он должен найти представление с именем <code>/WEB-INF/views/index.jsp</code>.</p>
+<p>После того как в модель <code>modelAndView</code> было записано имя представления <code>"index"</code> и произошел выход из метода, то в действие включается <strong>ViewResolver</strong>. Для этого примера согласно настройкам в класс <code>InternalResourceViewResolver</code> будет искать представление с именем <code>index</code>, у которого префикс <code>/WEB-INF/views/</code>, а суффикс <code>.jsp</code>. Другими словами он должен найти представление с именем <code>/WEB-INF/views/index.jsp</code>.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-html" data-lang="html">&lt;html&gt;
+<pre class="highlight"><code class="language-html" data-lang="html">&lt;html lang=""&gt;
    &lt;head&gt;
       &lt;title&gt;Hello Spring MVC&lt;/title&gt;
    &lt;/head&gt;
@@ -760,23 +764,36 @@ public class WebConfiguration{
 </div>
 </div>
 <div class="paragraph">
-<p>В данном случае, переменная <code>${userJSP}</code> выводит тот самый атрибут, установленный нами в Контроллере. Внутри Вида Вы можете отобразить любое количество атрибутов.</p>
+<p>В данном случае, переменная <code>${userJSP}</code> выводит тот самый атрибут, установленный в <strong>Controller</strong>. Внутри <strong>View</strong> можно отобразить любое количество атрибутов.</p>
 </div>
 <div class="paragraph">
-<p>Если представление найдено, то произойдет переход на эту страницу. В противном случае результат зависит от настроек реализации интерфейса <strong>ViewResolver</strong>. По умолчанию возвращается <strong>null</strong>, но можно возвращать имя или исключение, если вам это необходимо.</p>
+<p>Если представление найдено, то произойдет переход на эту страницу. В противном случае результат зависит от настроек реализации интерфейса <code>ViewResolver</code>. По умолчанию возвращается <code>null</code>, но можно возвращать имя или исключение, если вам это необходимо.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_exceptionhandler">ExceptionHandler</h2>
+<h2 id="_exceptionhandler"><code>ExceptionHandler</code></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Для обработки ошибки существует три варианта: для каждого исключения, для каждого контроллера или глобально.</p>
+<p>Для обработки ошибки существует три варианта обработки:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>для каждого контроллера</p>
+</li>
+<li>
+<p>для каждого исключения</p>
+</li>
+<li>
+<p>глобально</p>
+</li>
+</ul>
 </div>
 <div class="sect2">
 <h3 id="_уровень_контроллера">Уровень контроллера</h3>
 <div class="paragraph">
-<p>Изначально основными способами обработки исключений в приложении были <code>HandlerExceptionResolver</code> и аннотация   <code>@ExceptionHandler</code>, которая позволяла обрабатывать исключения на уровне отдельного контроллера. Для этого достаточно было объявить метод, в котором будет содержаться вся логика обработки нужного исключения, и проаннотировать его.</p>
+<p>Изначально основными способами обработки исключений в приложении были <code>HandlerExceptionResolver</code> и аннотация <code>@ExceptionHandler</code>, которая позволяла обрабатывать исключения на уровне отдельного контроллера. Для этого достаточно было объявить метод, в котором будет содержаться вся логика обработки нужного исключения, и проаннотировать его.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -795,7 +812,7 @@ public class ExampleController {
 </div>
 </div>
 <div class="paragraph">
-<p>Метод <code>handleException</code> предназначен для обработки ошибок. У него есть аннотация <code>@ExceptionHandler(BusinessException.class)</code>, которая говорит о том, что для последующей обработки будут перехвачены все исключения типа <code>BusinessException</code>. В аннотации <code>@ExceptionHandler</code> можно прописать сразу несколько типов исключений, например так: <code>@ExceptionHandler({BusinessException.class, ServiceException.class})</code>.</p>
+<p>Метод <code>handleException()</code> предназначен для обработки ошибок. У него есть аннотация <code>@ExceptionHandler(BusinessException.class)</code>, которая говорит о том, что для последующей обработки будут перехвачены все исключения типа <code>BusinessException</code>. В аннотации <code>@ExceptionHandler</code> можно прописать сразу несколько типов исключений, например так: <code>@ExceptionHandler({BusinessException.class, ServiceException.class})</code>.</p>
 </div>
 <div class="paragraph">
 <p>Основной недостаток <code>@ExceptionHandler</code> в том что он определяется для каждого контроллера отдельно, а не глобально для всего приложения.</p>
@@ -815,7 +832,7 @@ public class ExampleController {
 </div>
 </div>
 <div class="paragraph">
-<p>Выбрасывая <code>ResponseStatusException</code> можно также возвращать пользователю определённый код статуса, в зависимости от того, что произошло в логике приложения. При этом не нужно создавать кастомное исключение и прописывать аннотацию <code>@ResponseStatus</code></p>
+<p>Выбрасывая <code>ResponseStatusException</code> можно также возвращать пользователю определённый код статуса, в зависимости от того, что произошло в логике приложения. При этом не нужно создавать собственное исключение и прописывать аннотацию <code>@ResponseStatus</code></p>
 </div>
 </div>
 <div class="sect2">
@@ -866,10 +883,10 @@ public class DefaultAdvice {
 </div>
 </div>
 <div class="paragraph">
-<p>Любой класс с аннотацией <code>@ControllerAdvice</code> является глобальным обработчиком исключений, который очень гибко настраивается. Метод <code>handleException</code> имеет аннотацию <code>@ExceptionHandler</code>, в которой можно определить список обрабатываемых исключений.</p>
+<p>Любой класс с аннотацией <code>@ControllerAdvice</code> является глобальным обработчиком исключений, который очень гибко настраивается. Метод <code>handleException()</code> имеет аннотацию <code>@ExceptionHandler</code>, в которой можно определить список обрабатываемых исключений.</p>
 </div>
 <div class="paragraph">
-<p>Так же можно в рамках эдвайса сделать сразу несколько методов с аннотациями <code>@ExceptionHandler</code> для обработки разных исключений.</p>
+<p>Так же можно в рамках <code>@ControllerAdvice</code> сделать сразу несколько методов с аннотациями <code>@ExceptionHandler</code> для обработки разных исключений.</p>
 </div>
 </div>
 </div>
@@ -922,7 +939,7 @@ public class DefaultAdvice {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-01-24 03:07:20 UTC
+Last updated 2022-01-24 03:32:05 UTC
 </div>
 </div>
 </body>
