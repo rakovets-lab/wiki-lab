@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.16">
+<meta name="generator" content="Asciidoctor 2.0.17">
 <title>Wiki for lab</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -193,7 +193,8 @@ body.toc2.toc-right{padding-left:0;padding-right:20em}}
 #content h1>a.link:hover,h2>a.link:hover,h3>a.link:hover,#toctitle>a.link:hover,.sidebarblock>.content>.title>a.link:hover,h4>a.link:hover,h5>a.link:hover,h6>a.link:hover{color:#a53221}
 details,.audioblock,.imageblock,.literalblock,.listingblock,.stemblock,.videoblock{margin-bottom:1.25em}
 details{margin-left:1.25rem}
-details>summary{cursor:pointer;display:block;position:relative;line-height:1.6;margin-bottom:.625rem;-webkit-tap-highlight-color:transparent}
+details>summary{cursor:pointer;display:block;position:relative;line-height:1.6;margin-bottom:.625rem;outline:none;-webkit-tap-highlight-color:transparent}
+details>summary::-webkit-details-marker{display:none}
 details>summary::before{content:"";border:solid transparent;border-left:solid;border-width:.3em 0 .3em .5em;position:absolute;top:.5em;left:-1.25rem;transform:translateX(15%)}
 details[open]>summary::before{border:solid transparent;border-top:solid;border-width:.5em .3em 0;transform:translateY(15%)}
 details>summary::after{content:"";width:1.25rem;height:1em;position:absolute;top:.3em;left:-1.25rem}
@@ -235,9 +236,8 @@ pre.prettyprint li:not(:first-child) code[data-lang]::before{display:none}
 table.linenotable{border-collapse:separate;border:0;margin-bottom:0;background:none}
 table.linenotable td[class]{color:inherit;vertical-align:top;padding:0;line-height:inherit;white-space:normal}
 table.linenotable td.code{padding-left:.75em}
-table.linenotable td.linenos{border-right:1px solid;opacity:.35;padding-right:.5em}
-pre.pygments .lineno{border-right:1px solid;opacity:.35;display:inline-block;margin-right:.75em}
-pre.pygments .lineno::before{content:"";margin-right:-.125em}
+table.linenotable td.linenos,pre.pygments .linenos{border-right:1px solid;opacity:.35;padding-right:.5em;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
+pre.pygments span.linenos{display:inline-block;margin-right:.75em}
 .quoteblock{margin:0 1em 1.25em 1.5em;display:table}
 .quoteblock:not(.excerpt)>.title{margin-left:-1.5em;margin-bottom:.75em}
 .quoteblock blockquote,.quoteblock p{color:rgba(0,0,0,.85);font-size:1.15rem;line-height:1.75;word-spacing:.1em;letter-spacing:0;font-style:italic;text-align:justify}
@@ -274,7 +274,7 @@ table.frame-none>colgroup+*>:first-child>*,table.frame-sides>colgroup+*>:first-c
 table.frame-none>:last-child>:last-child>*,table.frame-sides>:last-child>:last-child>*{border-bottom-width:0}
 table.frame-none>*>tr>:first-child,table.frame-ends>*>tr>:first-child{border-left-width:0}
 table.frame-none>*>tr>:last-child,table.frame-ends>*>tr>:last-child{border-right-width:0}
-table.stripes-all tr,table.stripes-odd tr:nth-of-type(odd),table.stripes-even tr:nth-of-type(even),table.stripes-hover tr:hover{background:#f8f8f7}
+table.stripes-all>*>tr,table.stripes-odd>*>tr:nth-of-type(odd),table.stripes-even>*>tr:nth-of-type(even),table.stripes-hover>*>tr:hover{background:#f8f8f7}
 th.halign-left,td.halign-left{text-align:left}
 th.halign-right,td.halign-right{text-align:right}
 th.halign-center,td.halign-center{text-align:center}
@@ -290,10 +290,11 @@ ol{margin-left:1.75em}
 ul li ol{margin-left:1.5em}
 dl dd{margin-left:1.125em}
 dl dd:last-child,dl dd:last-child>:last-child{margin-bottom:0}
-ol>li p,ul>li p,ul dd,ol dd,.olist .olist,.ulist .ulist,.ulist .olist,.olist .ulist{margin-bottom:.625em}
+li p,ul dd,ol dd,.olist .olist,.ulist .ulist,.ulist .olist,.olist .ulist{margin-bottom:.625em}
 ul.checklist,ul.none,ol.none,ul.no-bullet,ol.no-bullet,ol.unnumbered,ul.unstyled,ol.unstyled{list-style-type:none}
 ul.no-bullet,ol.no-bullet,ol.unnumbered{margin-left:.625em}
 ul.unstyled,ol.unstyled{margin-left:0}
+li>p:empty:only-child::before{content:"";display:inline-block}
 ul.checklist>li>p:first-child{margin-left:-1em}
 ul.checklist>li>p:first-child>.fa-square-o:first-child,ul.checklist>li>p:first-child>.fa-check-square-o:first-child{width:1.25em;font-size:.8em;position:relative;bottom:.125em}
 ul.checklist>li>p:first-child>input[type=checkbox]:first-child{margin-right:.25em}
@@ -336,8 +337,6 @@ sup.footnote a:active,sup.footnoteref a:active{text-decoration:underline}
 #footnotes .footnote a:first-of-type{font-weight:bold;text-decoration:none;margin-left:-1.05em}
 #footnotes .footnote:last-of-type{margin-bottom:0}
 #content #footnotes{margin-top:-.625em;margin-bottom:0;padding:.75em 0}
-.gist .file-data>table{border:0;background:#fff;width:100%;margin-bottom:0}
-.gist .file-data>table td.line-data{width:99%}
 div.unbreakable{page-break-inside:avoid}
 .big{font-size:larger}
 .small{font-size:smaller}
@@ -663,6 +662,7 @@ pre.rouge {
 <li><a href="#_spring_framework">3. Spring Framework</a>
 <ul class="sectlevel2">
 <li><a href="#_spring_core">3.1. Spring Core</a></li>
+<li><a href="#_spring_mvc">3.2. Spring MVC</a></li>
 </ul>
 </li>
 <li><a href="#_jakarta_servlet">4. Jakarta Servlet</a></li>
@@ -1586,6 +1586,471 @@ pre.rouge {
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_spring_mvc">3.2. Spring MVC</h3>
+<div class="paragraph">
+<p><strong>Spring MVC</strong> – это фреймворк для создания <strong>web</strong>-приложений на <strong>Java</strong>, в основе которого лежит шаблон проектирования <strong>MVC</strong>.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Spring MVC</strong> — это старый добрый <strong>MVC</strong>-фреймворк, который позволяет довольно легко писать <strong>web</strong>-сайты или <strong>web</strong>-сервисы.</p>
+</li>
+<li>
+<p>Он прекрасно интегрируется со множеством шаблонных библиотек и библиотек преобразования данных, а также с остальной частью экосистемы <strong>Spring</strong>, такой как <strong>Spring Boot</strong>.</p>
+</li>
+<li>
+<p>Главным образом он позволяет вам сосредоточиться на написании своей бизнес-логики, не беспокоясь о стандартном коде сервлета, разборе <strong>HTTP</strong>-запросов/ответов и преобразовании данных.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Паттерн <strong>MVC</strong> разделяет аспекты приложения (логику ввода, бизнес-логику и логику <strong>UI</strong>), обеспечивая при этом свободную связь между ними.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Model</strong> (Модель) инкапсулирует (объединяет) данные приложения, в целом они будут состоять из <strong>POJO</strong>.</p>
+</li>
+<li>
+<p><strong>View</strong> (Отображение, Вид) отвечает за отображение данных Модели, — как правило, генерируя <strong>HTML</strong>, которые мы видим в своём браузере.</p>
+</li>
+<li>
+<p><strong>Controller</strong> (Контроллер) обрабатывает запрос пользователя, создаёт соответствующую Модель и передаёт её для отображения в Вид.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Рабочий процесс обработки запроса проиллюстрирован на следующей диаграмме:</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../assets/img/java/spring/mvc/schema-working-dispatcherservlet.png" alt="schema working dispatcherservlet"></span></p>
+</div>
+<div class="paragraph">
+<p>После получения <strong>HTTP</strong>-запроса <strong>DispatcherServlet</strong>  выполняет следующие действия.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>После получения <strong>HTTP</strong>-запроса <strong>DispatcherServlet</strong> даёт указание объекту <strong>HandlerMapping</strong> (обработка связывания), который вызывает следующий объект.</p>
+</li>
+<li>
+<p><strong>DispatcherServlet</strong> посылает запрос контроллеру и вызывает соответствующие методы. Эти методы возвращают объект, в соответствии с бизнес-логикой метода и передают название (название ссылки) обратно в <strong>DispatcherServlet</strong>.</p>
+</li>
+<li>
+<p>C помощью <strong>ViewResolver</strong>, <strong>DispatcherServlet</strong> подбирает необходимый вид для запроса.</p>
+</li>
+<li>
+<p>Когда внешний вид сформирован, <strong>DispatcherServlet</strong> передаёт эти данные в модуль <strong>View</strong>, который обрабатывается браузером пользователя.</p>
+</li>
+</ul>
+</div>
+<div class="sect3">
+<h4 id="_dispatcherservlet">3.2.1. DispatcherServlet</h4>
+<div class="paragraph">
+<p>Вся логика работы <strong>Spring MVC</strong> построена вокруг <strong>DispatcherServlet</strong>.</p>
+</div>
+<div class="paragraph">
+<p><strong>DispatcherServlet</strong> — полностью интегрированный сервлет в <strong>Spring IoC</strong> контейнер и таким образом получает доступ ко всем возможностям <strong>Spring</strong>.</p>
+</div>
+<div class="paragraph">
+<p>При обработке запросов используется паттерн <code>«pattern-savvy reader»</code>, который распознает <strong>DispatcherServlet</strong> как выражение из шаблона проектирования <code>«Front Controller»</code>.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../assets/img/java/spring/mvc/front-contreoller.png" alt="front contreoller"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>DispatcherServlet</strong> является основным контроллером <strong>Spring MVC Application</strong>. Все входящие веб-запросы проходят через <strong>DispatcherServlet</strong> перед обработкой отдельными контроллерами <strong>Spring</strong>, то есть классами, аннотированными с помощью аннотации <code>@Controller</code>.</p>
+</div>
+<div class="paragraph">
+<p><strong>DispatcherServlet</strong> — это обычный сервлет (наследуется от базового класса <strong>HttpServlet</strong>). Как и любой другой сервлет, <strong>DispatcherServlet</strong> необходимо зарегистрировать и настроить. Сделать это можно или в файле <strong>web.xml</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="xml"><span class="nt">&lt;web-app&gt;</span>
+    <span class="nt">&lt;servlet&gt;</span>
+        <span class="nt">&lt;servlet-name&gt;</span>SpringMVC<span class="nt">&lt;/servlet-name&gt;</span>
+        <span class="nt">&lt;servlet-class&gt;</span>org.springframework.web.servlet.DispatcherServlet<span class="nt">&lt;/servlet-class&gt;</span>
+        <span class="nt">&lt;load-on-startup&gt;</span>1<span class="nt">&lt;/load-on-startup&gt;</span>
+    <span class="nt">&lt;/servlet&gt;</span>
+    <span class="nt">&lt;servlet-mapping&gt;</span>
+        <span class="nt">&lt;servlet-name&gt;</span>SpringMVC<span class="nt">&lt;/servlet-name&gt;</span>
+        <span class="nt">&lt;url-pattern&gt;</span>*<span class="nt">&lt;/url-pattern&gt;</span>
+    <span class="nt">&lt;/servlet-mapping&gt;</span>
+<span class="nt">&lt;/web-app&gt;</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Либо в <strong>Java</strong>-коде переопределив метод <code>onStartup()</code> интерфейса <code>WebApplicationInitializer</code> :</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">WebInitializer</span> <span class="kd">implements</span> <span class="nc">WebApplicationInitializer</span> <span class="o">{</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onStartup</span><span class="o">(</span><span class="nc">ServletContext</span> <span class="n">servletContext</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">ServletException</span> <span class="o">{</span>
+        <span class="nc">AnnotationConfigWebApplicationContext</span> <span class="n">context</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">AnnotationConfigWebApplicationContext</span><span class="o">();</span>
+        <span class="n">context</span><span class="o">.</span><span class="na">register</span><span class="o">(</span><span class="nc">WebConfiguration</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="nc">DispatcherServlet</span> <span class="n">servlet</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">DispatcherServlet</span><span class="o">(</span><span class="n">context</span><span class="o">);</span>
+        <span class="nc">ServletRegistration</span><span class="o">.</span><span class="na">Dynamic</span> <span class="n">dispatcher</span> <span class="o">=</span> <span class="n">servletContext</span><span class="o">.</span><span class="na">addServlet</span><span class="o">(</span><span class="s">"dispatcher"</span><span class="o">,</span> <span class="n">servlet</span><span class="o">);</span>
+        <span class="n">dispatcher</span><span class="o">.</span><span class="na">setLoadOnStartup</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
+        <span class="n">dispatcher</span><span class="o">.</span><span class="na">addMapping</span><span class="o">(</span><span class="s">"/"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>WebApplicationInitializer</code> — интерфейс, предоставляемый <strong>Spring MVC</strong>, который гарантирует инициализацию при старте контейнера.</p>
+</div>
+<div class="paragraph">
+<p>Сервлет диспетчера настроен как <code>load-on-startup = 1</code>, что означает, что этот сервлет должен создаваться контейнером сервлета при развертывании приложения, а не при получении запроса на этот запрос.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_handlermapping">3.2.2. HandlerMapping</h4>
+<div class="paragraph">
+<p>Одним из важных интерфейсов в Spring является HandlerMapping.</p>
+</div>
+<div class="paragraph">
+<p><strong>DisptacherSevlet</strong> с помощью <strong>HandlerMapping</strong> определяет какой контроллер он должен использовать для определенного запроса <strong>request</strong>.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../assets/img/java/spring/mvc/schema-springMVC-detail.png" alt="schema springMVC detail"></span></p>
+</div>
+<div class="paragraph">
+<p>По определению <strong>HandlerMapping</strong> — интерфейс, который реализуется объектами, которые определяют отображение между запросами и объектами обработчиков.</p>
+</div>
+<div class="paragraph">
+<p>Реализации <strong>HandlerMapping</strong> могут поддерживать перехватчики (<strong>interceptors</strong>), но не содержат их. Обработчик будет всегда обернут в экземпляре <strong>HandlerExecutionChain</strong>, возможно в сопровождении некоторых экземпляров <strong>HandlerInterceptor</strong>. <strong>DispatcherServlet</strong> сначала вызывает  метод preHandle каждого <strong>HandlerInterceptor</strong> в заданном порядке, и в конце, внедряет обработчик, если все методы <code>preHandle</code> вернули <strong>true</strong>.</p>
+</div>
+<div class="paragraph">
+<p>Возможность параметризации такого отображения является мощной и необычной способностью в рамках <strong>MVC</strong> фреймворка. Например, можно написать пользовательское отображение на основе состояния сеанса, состояние <strong>cookie</strong> или многих других переменных.</p>
+</div>
+<div class="paragraph">
+<p>По умолчанию интерфейс <strong>HandlerMapping</strong> в <strong>Spring MVC</strong> реализуется классом <strong>RequestMappingHandlerMapping</strong>. Существуют другие реализации интерфейса, которые используют другие параметры для поиска контроллера, соответствующего запросу. В <strong>Spring MVC</strong> вы можете встретить реализацию интерфейса, когда применяете аннотацию <code>@RequestMapping</code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"/"</span><span class="o">,</span> <span class="n">method</span> <span class="o">=</span> <span class="nc">RequestMethod</span><span class="o">.</span><span class="na">GET</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span><span class="o">{</span>
+    <span class="kd">public</span> <span class="nc">ModelAndView</span> <span class="nf">main</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">ModelAndView</span> <span class="n">modelAndView</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ModelAndView</span><span class="o">();</span>
+        <span class="k">return</span> <span class="n">modelAndView</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_controller">3.2.3. Controller</h4>
+<div class="paragraph">
+<p><strong>DispatcherServlet</strong> отправляет запрос контроллерам для выполнения определённых функций.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../assets/img/java/spring/mvc/RequestLifecycle.png" alt="RequestLifecycle"></span></p>
+</div>
+<div class="paragraph">
+<p>Аннотации <code>@Controller</code> или <code>@RestController</code> указывают, что конкретный класс является контроллером. Аннотация <code>@RestController</code> равна одновременно <code>@Controller + @ResponseBody</code>.</p>
+</div>
+<div class="paragraph">
+<p><code>@ResponseBody</code> - дает фреймворку понять, что объект, который вы вернули из метода надо прогнать через <code>HttpMessageConverter</code>, чтобы получить готовое к отправке на клиент представление.</p>
+</div>
+<div class="paragraph">
+<p>Аннотация <code>@RequestMapping</code> используется для мапинга (связывания) с <strong>URL</strong> для всего класса или для конкретного метода обработчика.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="nd">@Controller</span>
+<span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">"/hello"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">HelloController</span> <span class="o">{</span>
+   <span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">method</span> <span class="o">=</span> <span class="nc">RequestMethod</span><span class="o">.</span><span class="na">GET</span><span class="o">)</span>
+   <span class="kd">public</span> <span class="nc">String</span> <span class="nf">printHello</span><span class="o">(</span><span class="nc">ModelMap</span> <span class="n">model</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">"message"</span><span class="o">,</span> <span class="s">"Hello Spring MVC Framework!"</span><span class="o">);</span>
+      <span class="k">return</span> <span class="s">"hello"</span><span class="o">;</span>
+   <span class="o">}</span>
+<span class="o">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>В первом случае, <code>@RequestMapping</code> указывает, что все методы в данном Контроллере относятся к <strong>URL</strong>-адресу <code>"/hello"</code>, а во втором как дефолтного метода для обработки <strong>HTTP</strong>-запросов <strong>GET</strong> (в данном Контроллере). Также можно данную аннотацию объявить над методом <code>@RequestMapping(value = "/hello", method = RequestMethod.GET)</code>.</p>
+</div>
+<div class="paragraph">
+<p>Также в контроллере может использоваться аннотация <code>@ModelAttribute</code>, которая ставится над методом или в аргументах методов.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="nd">@Controller</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">HelloController</span> <span class="o">{</span>
+    <span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">"/processForm"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">processForm</span><span class="o">(</span><span class="nd">@ModelAttribute</span><span class="o">(</span><span class="s">"student"</span><span class="o">)</span> <span class="nc">Student</span> <span class="n">theStudent</span><span class="o">){</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"theStudent :"</span><span class="o">+</span> <span class="n">theStudent</span><span class="o">.</span><span class="na">getLastName</span><span class="o">());</span>
+        <span class="k">return</span> <span class="s">"form-details"</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@ModelAttribute</span><span class="o">(</span><span class="s">"object"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">Object</span> <span class="nf">checkOptions</span><span class="o">(){</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">Object</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="html"><span class="nt">&lt;form:form</span> <span class="na">action=</span><span class="s">"processForm"</span> <span class="na">modelAttribute=</span><span class="s">"student"</span><span class="nt">&gt;</span>
+    First Name : <span class="nt">&lt;form:input</span> <span class="na">path=</span><span class="s">"firstName"</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;br&gt;&lt;br&gt;</span>
+    Last Name : <span class="nt">&lt;form:input</span> <span class="na">path=</span><span class="s">"lastName"</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;br&gt;&lt;br&gt;</span>
+    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"submit"</span> <span class="na">value=</span><span class="s">"submit"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/form:form&gt;</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>В зависимости от места ее применения, работать она будет по-разному. В первом случае она позволяет связать <strong>html</strong>-форму с <strong>java</strong>-объектом. А во-втором случае добавит в модель каждого метода контроллера объект с ключ-значением - <code>"object":new Object()</code>.</p>
+</div>
+<div class="paragraph">
+<p>Часто используются аннотации <code>@RequestParam</code> и <code>@PathVariable</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="nd">@Controller</span>
+<span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">"api/test"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">HelloController</span> <span class="o">{</span>
+    <span class="nd">@GetMapping</span><span class="o">(</span><span class="n">path</span> <span class="o">=</span> <span class="s">"/filter"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">Test</span> <span class="nf">getByFilter</span><span class="o">(</span><span class="nd">@RequestParam</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"text"</span><span class="o">,</span> <span class="n">required</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span> <span class="nc">String</span> <span class="n">text</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">testService</span><span class="o">.</span><span class="na">getByFilter</span><span class="o">(</span><span class="n">filterTest</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@GetMapping</span><span class="o">(</span><span class="n">path</span> <span class="o">=</span> <span class="s">"/{id}"</span><span class="o">)</span>
+    <span class="nd">@ResponseBody</span>
+    <span class="kd">public</span> <span class="nc">Test</span> <span class="nf">findById</span><span class="o">(</span><span class="nd">@PathVariable</span> <span class="nc">String</span> <span class="n">id</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">testService</span><span class="o">.</span><span class="na">findById</span><span class="o">(</span><span class="n">id</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>При использовании <code>@RequestParam</code> передача значений будет типа <code><a href="http://localhost:8080/api/test/filter?id=abc" class="bare">http://localhost:8080/api/test/filter?id=abc</a></code>. В этом случае данный параметр является не обязательным, но при установке атрибута <code>required = true</code> (по умолчанию <strong>false</strong>) станет обязательным для заполнения.</p>
+</div>
+<div class="paragraph">
+<p>При использовании <code>@PathVariable</code> передача значений будет типа <code><a href="http://localhost:8080/api/test/abc" class="bare">http://localhost:8080/api/test/abc</a></code>. В этом случае данный параметр является обязательным, но при установке атрибута <code>required = false</code> (по умолчанию <strong>true</strong>) станет не обязательным для заполнения.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_viewresolver">3.2.4. ViewResolver</h4>
+<div class="paragraph">
+<p><strong>DisptacherServlet</strong> с помощью <strong>ViewResolver</strong> определяет какое представление необходимо использовать на основании полученного имени.</p>
+</div>
+<div class="paragraph">
+<p><strong>ViewResolver</strong> — интерфейс, реализуемый объектами, которые способны находить представления <strong>View</strong> по имени <strong>View Name</strong></p>
+</div>
+<div class="paragraph">
+<p><strong>Spring MVC</strong> поддерживает множество типов <strong>View</strong> для различных технологий отображения страницы. В том числе — <strong>JSP</strong>, <strong>HTML</strong>, <strong>PDF</strong>, <strong>Excel</strong>, <strong>XML</strong>, <strong>Velocity</strong> <strong>templates</strong>, <strong>XSLT</strong>, <strong>JSON,</strong> каналы <strong>Atom</strong> и <strong>RSS</strong>, <strong>JasperReports</strong> и другие.</p>
+</div>
+<div class="paragraph">
+<p>По умолчанию реализацией интерфейса <strong>ViewResolver</strong> является класс <code>InternalResourceViewResolver</code>. Также могут использоваться <code>FreeMarkerViewResolver</code>, <code>BeanNameViewResolver</code>, <code>ResourceBundleViewResolver</code>, <code>TilesViewResolver</code> и многие другие.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="nd">@Configuration</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">WebConfiguration</span><span class="o">{</span>
+    <span class="nd">@Bean</span>
+    <span class="kd">public</span> <span class="nc">InternalResourceViewResolver</span> <span class="nf">internalResourceViewResolver</span><span class="o">(){</span>
+        <span class="nc">InternalResourceViewResolver</span> <span class="n">resolver</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">InternalResourceViewResolver</span><span class="o">();</span>
+        <span class="n">resolver</span><span class="o">.</span><span class="na">setPrefix</span><span class="o">(</span><span class="s">"/WEB-INF/views/"</span><span class="o">);</span>
+        <span class="n">resolver</span><span class="o">.</span><span class="na">setSuffix</span><span class="o">(</span><span class="s">".jsp"</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">resolver</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../assets/img/java/spring/mvc/prefix-suffix.png" alt="prefix suffix"></span></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span><span class="o">{</span>
+    <span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"/"</span><span class="o">,</span> <span class="n">method</span> <span class="o">=</span> <span class="nc">RequestMethod</span><span class="o">.</span><span class="na">GET</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">ModelAndView</span> <span class="nf">main</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">ModelAndView</span> <span class="n">modelAndView</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ModelAndView</span><span class="o">();</span>
+        <span class="n">modelAndView</span><span class="o">.</span><span class="na">addObject</span><span class="o">(</span><span class="s">"userJSP"</span><span class="o">,</span> <span class="k">new</span> <span class="nc">User</span><span class="o">());</span>
+        <span class="n">modelAndView</span><span class="o">.</span><span class="na">setViewName</span><span class="o">(</span><span class="s">"index"</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">modelAndView</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>После того как в модель <strong>modelAndView</strong> было записано имя представления <code>viewName = ‘index’</code> и произошел выход из метода, то в действие включается <strong>ViewResolver</strong>. Для этого примера согласно настройкам в класс InternalResourceViewResolver будет искать представление с именем index, у которого префикс <code>/WEB-INF/views/</code>, а суффикс <code>.jsp</code>. Другими словами он должен найти представление с именем <code>/WEB-INF/views/index.jsp</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="html"><span class="nt">&lt;html&gt;</span>
+   <span class="nt">&lt;head&gt;</span>
+      <span class="nt">&lt;title&gt;</span>Hello Spring MVC<span class="nt">&lt;/title&gt;</span>
+   <span class="nt">&lt;/head&gt;</span>
+
+   <span class="nt">&lt;body&gt;</span>
+      <span class="nt">&lt;h2&gt;</span>${userJSP}<span class="nt">&lt;/h2&gt;</span>
+   <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>В данном случае, переменная <code>${userJSP}</code> выводит тот самый атрибут, установленный нами в Контроллере. Внутри Вида Вы можете отобразить любое количество атрибутов.</p>
+</div>
+<div class="paragraph">
+<p>Если представление найдено, то произойдет переход на эту страницу. В противном случае результат зависит от настроек реализации интерфейса <strong>ViewResolver</strong>. По умолчанию возвращается <strong>null</strong>, но можно возвращать имя или исключение, если вам это необходимо.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_exceptionhandler">3.2.5. ExceptionHandler</h4>
+<div class="paragraph">
+<p>Для обработки ошибки существует три варианта: для каждого исключения, для каждого контроллера или глобально.</p>
+</div>
+<div class="sect4">
+<h5 id="_уровень_контроллера">Уровень контроллера</h5>
+<div class="paragraph">
+<p>Изначально основными способами обработки исключений в приложении были <code>HandlerExceptionResolver</code> и аннотация   <code>@ExceptionHandler</code>, которая позволяла обрабатывать исключения на уровне отдельного контроллера. Для этого достаточно было объявить метод, в котором будет содержаться вся логика обработки нужного исключения, и проаннотировать его.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="nd">@RestController</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ExampleController</span> <span class="o">{</span>
+    <span class="nd">@GetMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"/testExceptionHandler"</span><span class="o">,</span> <span class="n">produces</span> <span class="o">=</span> <span class="no">APPLICATION_JSON_VALUE</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">Response</span> <span class="nf">testExceptionHandler</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">BusinessException</span> <span class="o">{</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nf">BusinessException</span><span class="o">(</span><span class="s">"BusinessException in testExceptionHandler"</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@ExceptionHandler</span><span class="o">(</span><span class="nc">BusinessException</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">Response</span> <span class="nf">handleException</span><span class="o">(</span><span class="nc">BusinessException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">Response</span><span class="o">(</span><span class="n">e</span><span class="o">.</span><span class="na">getMessage</span><span class="o">());</span>
+    <span class="o">}</span>
+<span class="o">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Метод <code>handleException</code> предназначен для обработки ошибок. У него есть аннотация <code>@ExceptionHandler(BusinessException.class)</code>, которая говорит о том, что для последующей обработки будут перехвачены все исключения типа <code>BusinessException</code>. В аннотации <code>@ExceptionHandler</code> можно прописать сразу несколько типов исключений, например так: <code>@ExceptionHandler({BusinessException.class, ServiceException.class})</code>.</p>
+</div>
+<div class="paragraph">
+<p>Основной недостаток <code>@ExceptionHandler</code> в том что он определяется для каждого контроллера отдельно, а не глобально для всего приложения.</p>
+</div>
+<div class="paragraph">
+<p>Также, на уровне контроллера можно формировать ответ путём выброса исключения <code>ResponseStatusException</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="nd">@RestController</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ExampleController</span> <span class="o">{</span>
+    <span class="nd">@GetMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"/testResponseStatusException"</span><span class="o">,</span> <span class="n">produces</span> <span class="o">=</span> <span class="no">APPLICATION_JSON_VALUE</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">Response</span> <span class="nf">testResponseStatusException</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nf">ResponseStatusException</span><span class="o">(</span><span class="nc">HttpStatus</span><span class="o">.</span><span class="na">INTERNAL_SERVER_ERROR</span><span class="o">,</span> <span class="s">"ResponseStatusException in testResponseStatusException"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Выбрасывая <code>ResponseStatusException</code> можно также возвращать пользователю определённый код статуса, в зависимости от того, что произошло в логике приложения. При этом не нужно создавать кастомное исключение и прописывать аннотацию <code>@ResponseStatus</code></p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_уровень_исключений">Уровень исключений</h5>
+<div class="paragraph">
+<p>Для обработки ошибок на уровне исключений используется <code>ResponseStatusExceptionResolver</code>. Он позволяет настроить код ответа для любого исключения с помощью аннотации <code>@ResponseStatus</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="nd">@ResponseStatus</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="nc">HttpStatus</span><span class="o">.</span><span class="na">INTERNAL_SERVER_ERROR</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ServiceException</span> <span class="kd">extends</span> <span class="nc">Exception</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nf">ServiceException</span><span class="o">(</span><span class="nc">String</span> <span class="n">message</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kd">super</span><span class="o">(</span><span class="n">message</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="nd">@RestController</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ExampleController</span> <span class="o">{</span>
+    <span class="nd">@GetMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"/testResponseStatusExceptionResolver"</span><span class="o">,</span> <span class="n">produces</span> <span class="o">=</span> <span class="no">APPLICATION_JSON_VALUE</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">Response</span> <span class="nf">testResponseStatusExceptionResolver</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">ServiceException</span> <span class="o">{</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nf">ServiceException</span><span class="o">(</span><span class="s">"ServiceException in testResponseStatusExceptionResolver"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Из недостатков такого подхода — как и в предыдущем случае отсутствует тело ответа.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_уровень_глобальной_обработки">Уровень глобальной обработки</h5>
+<div class="paragraph">
+<p>Глобально и централизованно обрабатывать исключения с помощью классов с аннотацией <code>@ControllerAdvice</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="nd">@ControllerAdvice</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">DefaultAdvice</span> <span class="o">{</span>
+    <span class="nd">@ExceptionHandler</span><span class="o">(</span><span class="nc">BusinessException</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">ResponseEntity</span><span class="o">&lt;</span><span class="nc">Response</span><span class="o">&gt;</span> <span class="nf">handleException</span><span class="o">(</span><span class="nc">BusinessException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Response</span> <span class="n">response</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Response</span><span class="o">(</span><span class="n">e</span><span class="o">.</span><span class="na">getMessage</span><span class="o">());</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nc">ResponseEntity</span><span class="o">&lt;&gt;(</span><span class="n">response</span><span class="o">,</span> <span class="nc">HttpStatus</span><span class="o">.</span><span class="na">OK</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Любой класс с аннотацией <code>@ControllerAdvice</code> является глобальным обработчиком исключений, который очень гибко настраивается. Метод <code>handleException</code> имеет аннотацию <code>@ExceptionHandler</code>, в которой можно определить список обрабатываемых исключений.</p>
+</div>
+<div class="paragraph">
+<p>Так же можно в рамках эдвайса сделать сразу несколько методов с аннотациями <code>@ExceptionHandler</code> для обработки разных исключений.</p>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_links_2">3.2.6. Links</h4>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://docs.spring.io/spring-framework/docs/3.2.x/spring-framework-reference/html/mvc.html">Web MVC framework</a></p>
+</li>
+<li>
+<p><a href="https://habr.com/ru/post/336816/">Spring MVC — основные принципы</a></p>
+</li>
+<li>
+<p><a href="https://habr.com/ru/post/500572/">Spring MVC: создание веб-сайтов и RESTful сервисов</a></p>
+</li>
+<li>
+<p><a href="https://habr.com/ru/post/528116/">Обработка исключений в контроллерах Spring</a></p>
+</li>
+<li>
+<p><a href="https://javastudy.ru/spring-mvc/spring-mvc-basic/">Spring MVC — основные понятия, архитектура</a></p>
+</li>
+<li>
+<p><a href="https://javastudy.ru/spring-mvc/spring-mvc-webapplicationcontext/">Spring MVC — WebApplicationContext. Описание интерфейса</a></p>
+</li>
+<li>
+<p><a href="https://javastudy.ru/spring-mvc/spring-mvc-handler-mapping/">Spring MVC — Handler Mapping. Описание интерфейса HandlerMapping</a></p>
+</li>
+<li>
+<p><a href="https://javastudy.ru/spring-mvc/spring-mvc-viewresolver/">Spring MVC — описание интерфейса ViewResolver</a></p>
+</li>
+<li>
+<p><a href="https://proselyte.net/tutorials/spring-tutorial-full-version/spring-mvc-framework/">Руководство по Spring. Spring MVC Framework (основы)</a></p>
+</li>
+<li>
+<p><a href="https://www.youtube.com/watch?v=1vyf-_5OkW8&amp;list=PLAma_mKffTOR5o0WNHnY0mTjKxnCgSXrZ&amp;index=14&amp;t=1s&amp;ab_channel=alishev">YouTube: Spring Framework. Урок 14: Spring MVC. Теория.</a></p>
+</li>
+<li>
+<p><a href="https://www.youtube.com/watch?v=JHTqKQgrVKE&amp;list=PLAma_mKffTOR5o0WNHnY0mTjKxnCgSXrZ&amp;index=18&amp;ab_channel=alishev">YouTube: Spring Framework. Урок 17: Контроллеры. Аннотация @Controller.</a></p>
+</li>
+<li>
+<p><a href="https://www.youtube.com/watch?v=w1FjeTZxQrQ&amp;ab_channel=alishev">YouTube: Spring Framework. Урок 22: Аннотация @ModelAttribute. HTML Формы (Thymeleaf).</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -2253,7 +2718,7 @@ pre.rouge {
 </div>
 </div>
 <div class="sect3">
-<h4 id="_links_2">5.2.7. Links</h4>
+<h4 id="_links_3">5.2.7. Links</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -3102,7 +3567,7 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 </div>
 </div>
 <div class="sect3">
-<h4 id="_links_3">5.3.11. Links</h4>
+<h4 id="_links_4">5.3.11. Links</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -4279,7 +4744,7 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 </div>
 </div>
 <div class="sect3">
-<h4 id="_links_4">5.4.7. Links</h4>
+<h4 id="_links_5">5.4.7. Links</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -4873,7 +5338,7 @@ ssb   4096R/42B317FD4BA89E7A 2016-03-10</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_links_5">7.2.4. Links</h4>
+<h4 id="_links_6">7.2.4. Links</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -5604,7 +6069,7 @@ ssb   4096R/42B317FD4BA89E7A 2016-03-10</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_links_6">7.3.4. Links</h4>
+<h4 id="_links_7">7.3.4. Links</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -5673,7 +6138,7 @@ ssb   4096R/42B317FD4BA89E7A 2016-03-10</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-12-25 07:43:37 UTC
+Last updated 2022-01-24 03:07:20 UTC
 </div>
 </div>
 </body>

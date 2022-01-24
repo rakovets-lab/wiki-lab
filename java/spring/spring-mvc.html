@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.17">
-<title>Spring Framework</title>
+<title>Spring MVC</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -438,887 +438,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article">
 <div id="header">
-<h1>Spring Framework</h1>
+<h1>Spring MVC</h1>
 </div>
 <div id="content">
-<div class="sect1">
-<h2 id="_spring_core">Spring Core</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p><strong>Spring Framework</strong> – это framework, который облегчает и ускоряет разработку приложений на Java.</p>
-</div>
-<div class="paragraph">
-<p>Ключевым элементом <strong>Spring Framework</strong> является <strong>Spring Container</strong>, который выполняет основные функции:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>IoC</strong> – <strong>Inversion of Control</strong> (Создание и управление объектами);</p>
-</li>
-<li>
-<p><strong>DI</strong> – <strong>Dependency Injection</strong> (внедрение зависимостей).</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p><strong>Container</strong> создаёт объекты, связывает их вместе, настраивает и управляет ими от создания до момента уничтожения. Эти объекты называются <strong>Spring Bean</strong>. Beans после создания помещаются в <strong>Spring Container</strong>.</p>
-</div>
-<div class="paragraph">
-<p><span class="image"><img src="../../assets/img/java/spring/core/spring-container.png" alt="spring container"></span></p>
-</div>
-<div class="paragraph">
-<p>В <strong>Spring</strong> имеется 2 различных вида контейнеров:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>BeanFactory</strong>;</p>
-</li>
-<li>
-<p><strong>ApplicationContext</strong>.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p><strong>BeanFactory Container</strong> самый простой контейнер, обеспечивающий базовую поддержку <strong>DI</strong> и который основан на интерфейсе <code>org.springframework.beans.factory.BeanFactory</code>. Такие интерфейсы, как <code>BeanFactoryAware</code> и <code>DisposableBean</code> всё ещё присутствуют в <strong>Spring</strong> для обеспечения обратной совместимости. Наиболее часто используемая реализация интерфейса <code>BeanFactory</code> – <code>XmlBeanFactory</code>. <code>XmlBeanFactory</code> получает метаданные из конфигурационного <strong>XML</strong> файла и использует его для создания настроенного приложения или системы.</p>
-</div>
-<div class="paragraph">
-<p><strong>BeanFactory Container</strong> обычно используется тогда, когда ресурсы ограничены (мобильные устройства). Поэтому, если ресурсы не сильно ограничены, то лучше использовать <strong>ApplicationContext</strong>.</p>
-</div>
-<div class="paragraph">
-<p>Для того чтобы <strong>Spring Container</strong> мог создать и поместить в себя Beans необходимы:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>Java</strong> классы (<strong>POJO</strong>), из которых создаются Beans</p>
-</li>
-<li>
-<p>метаданные, которые подсказывают что и как создавать</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p><span class="image"><img src="../../assets/img/java/spring/core/spring-ioc-container.png" alt="spring ioc container"></span></p>
-</div>
-<div class="paragraph">
-<p>Эти метаданные можно сконфигурировать несколькими способами:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>Xml</strong> конфигурация;</p>
-</li>
-<li>
-<p><strong>Groovy</strong> конфигурация;</p>
-</li>
-<li>
-<p>Конфигурация через аннотации;</p>
-</li>
-<li>
-<p>Конфигурация через <strong>Java</strong>-код.</p>
-</li>
-<li>
-<p>и т.д.</p>
-</li>
-</ul>
-</div>
-<div class="sect2">
-<h3 id="_bean_и_его_атрибуты">Bean и его атрибуты</h3>
-<div class="paragraph">
-<p><strong>Bean</strong> – это объект, экземпляр которого создается, собирается и иным образом управляется контейнером <strong>IoC Spring</strong> (создание, вызов методов инициализации и конфигурирование объектов путем связывания между собой).</p>
-</div>
-<div class="paragraph">
-<p>Объекты, которые составляют основу приложения и управляются контейнером <strong>IoC Spring</strong>, называются <strong>Components</strong> (<strong>компонентами</strong> или управляемые Java-объект).</p>
-</div>
-<div class="paragraph">
-<p>Определение <strong>Beans</strong> содержит метаданные конфигурации, которые необходимы управляющему контейнеру для получения следующей информации:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Как создать бин;</p>
-</li>
-<li>
-<p>Информацию о жизненном цикле бина;</p>
-</li>
-<li>
-<p>Зависимости бина.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>С помощью этих метаданных (атрибуты бина) мы можем настраивать бины.</p>
-</div>
-<div class="paragraph">
-<p><strong>Bean</strong> имеет следующие атрибуты:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>class</strong> - этот атрибут является обязательным и указывает конкретный класс Java-приложения, который будет использоваться для создания бина.</p>
-</li>
-<li>
-<p><strong>id</strong>/<strong>name</strong>- уникальный идентификатор бина. В случае конфигурации с помощью <strong>xml</strong>-файла, вы можете использовать свойство <code>id</code> и/или <code>name</code> для идентификации бина.</p>
-</li>
-<li>
-<p><strong>scope</strong> - это свойство определяет область видимости создаваемых объектов.</p>
-</li>
-<li>
-<p><strong>constructor-arg</strong> - определяет конструктор, использующийся для внедрения зависимости. Имеет атрибут <code>ref</code>, который указывает на <code>id</code> бина с которым нужно связываться.</p>
-</li>
-<li>
-<p><strong>properties</strong> - определяет свойства внедрения зависимости.</p>
-</li>
-<li>
-<p><strong>initialization method</strong> - здесь определяется метод инициализации бина</p>
-</li>
-<li>
-<p><strong>destruction method</strong> - метод уничтожения бина, который будет использоваться при уничтожении контейнера, содержащего бин.</p>
-</li>
-<li>
-<p><strong>autowiring mode</strong> - определяет режим автоматического связывания при внедрении зависимости.</p>
-</li>
-<li>
-<p><strong>lazy-initialization mode</strong> - режим ленивой инициализации даёт контейнеру <strong>IoC</strong> команду создавать экземпляр бина при первом запросе, а не при запуске приложения.</p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_bean_scopes">Bean Scopes</h3>
-<div class="paragraph">
-<p>Очень важной особенностью является задание области применения бинов. По умолчанию всегда используется <strong>singleton</strong>.</p>
-</div>
-<div class="paragraph">
-<p><strong>Scope</strong> (область видимости) определяет:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>жизненный цикл бина;</p>
-</li>
-<li>
-<p>возможное количество создаваемых бинов.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Разновидности <strong>bean scope</strong>:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>Singleton</strong> – тип бина, при котором, создается одна сущность на <strong>Spring-контейнер</strong> (значение по умолчанию)</p>
-</li>
-<li>
-<p><strong>Prototype</strong> – тип бина, при котором, каждый раз создается новая сущность бина.</p>
-</li>
-<li>
-<p><strong>Request</strong> – тип бина, при котором сущность бина создается одна на request. Такой тип бина справедлив для контекста веб-приложения.</p>
-</li>
-<li>
-<p><strong>Session</strong> – тип бина, при котором сущность бина создается только одна на объект http-session. Такой тип бина справедлив для контекста веб-приложения.</p>
-</li>
-<li>
-<p><strong>Global-session</strong> – тип бина, при котором сущность бина одна создается на приложение. Такой тип бина справедлив для контекста портлета.</p>
-</li>
-<li>
-<p><strong>Application</strong> – тип бина, задаваемый в единственном экземпляре на контекст сервлета. Действителен для контекста веб-приложения.</p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_конфигурация">Конфигурация</h3>
-<div class="paragraph">
-<p>Как указывалось выше, существует 4 вида конфигурации метаданных для создания бинов:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>Xml конфигурация</strong> — <code>ClassPathXmlApplicationContext("context.xml")</code>;</p>
-</li>
-<li>
-<p><strong>Groovy конфигурация</strong> — <code>GenericGroovyApplicationContext("context.groovy")</code>;</p>
-</li>
-<li>
-<p>Конфигурация через аннотации с указанием пакета для сканирования — <code>AnnotationConfigApplicationContext("package.name")</code>;</p>
-</li>
-<li>
-<p><strong>JavaConfig</strong> — конфигурация через аннотации с указанием класса (или массива классов) помеченного аннотацией <code>@Configuration</code> — <code>AnnotationConfigApplicationContext(JavaConfig.class)</code>.</p>
-</li>
-</ul>
-</div>
-<div class="sect3">
-<h4 id="_xml_конфигурация">Xml конфигурация</h4>
-<div class="paragraph">
-<p>Чтобы использовать настройку через xml-файл, необходимо создать <code>ClassPathXmlApplicationContext</code> и в параметры передать <strong>CLASSPATH</strong> xml-файла.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Ниже приведен пример простого конфигурационного файла <strong>xml</strong> <code>applicationContext.xml</code></p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans
-    http://www.springframework.org/schema/beans/spring-beans.xsd
-    http://www.springframework.org/schema/context
-    http://www.springframework.org/schema/context/spring-context.xsd"&gt;
-
-    &lt;bean id = "villain" class = "film.Villain" lazy-init= "true"&gt;
-        &lt;property name = "name" value = "Vasily"/&gt;
-    &lt;/bean&gt;
-&lt;/beans&gt;</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_groovy_конфигурация">Groovy конфигурация</h4>
-<div class="paragraph">
-<p>При конфигурации контекста с помощью <strong>groovy</strong>-файла, необходимо сформировать <code>GenericGroovyApplicationContext</code>, который принимает на вход строку с конфигурацией контекста. Эта конфигурация работает по сути так же, как и <strong>xml</strong>, только с <strong>groovy</strong>-файлами. К тому же, <code>GroovyApplicationContext</code> нормально работает и с <strong>xml</strong>-файлом.</p>
-</div>
-<div class="paragraph">
-<p>Пример простого конфигурационного <strong>Groovy</strong>-файла:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-groovy" data-lang="groovy">beans {
-    goodOperator(film.Operator) {bean - &gt;
-            bean.lazyInit = 'true' &gt;
-            name = 'Good Oleg'
-         }
-    badOperator(film.BadOperator){bean - &gt;
-            bean.lazyInit = 'true' &gt;
-            name = 'Bad Oleg' / &gt;
-        }
-}</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_конфигурация_через_аннотации">Конфигурация через аннотации</h4>
-<div class="paragraph">
-<p>При конфигурации через аннотации используются следующие аннотации:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>@Component</code></p>
-</li>
-<li>
-<p><code>@Repository</code></p>
-</li>
-<li>
-<p><code>@Service</code></p>
-</li>
-<li>
-<p><code>@Controller</code></p>
-</li>
-<li>
-<p><code>@RestController</code></p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Repository
-public class CoolDaoImpl implements CoolDao {
-    @Override
-    public void doCRUD() {
-        //some logic here
-    }
-}</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Service
-@Scope(BeanDefinition.SCOPE_PROTOTYPE)
-public class CoolServiceImpl implements CoolService {
-    @Autowired
-    private CoolDao dao;
-
-    @PostConstruct
-    public void init() {
-        //init logic here
-    }
-
-    @PreDestroy
-    public void closeResources() {
-        //close resources here
-    }
-
-    @Override
-    public void doWork() {
-        dao.doCRUD();
-    }
-}</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_конфигурация_через_java_код">Конфигурация через Java-код</h4>
-<div class="paragraph">
-<p>Центральными артефактами при конфигурации через <strong>Java</strong> в <strong>Spring</strong> являются <code>@Configuration</code> и <code>@Bean</code></p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Configuration
-public class JavaConfig {
-    @Bean
-    public ClassName getClassName() {
-        return new ClassName();
-    }
-
-    @Bean(initMethod = "init", destroyMethod = "closeResources")
-    @Scope(BeanDefinition.SCOPE_PROTOTYPE)
-    public ClassName2 getClassName2() {
-        ClassName2 className = new ClassName2();
-        className.getClassName();
-        return service;
-    }
-}</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_applicationcontext">ApplicationContext</h3>
-<div class="paragraph">
-<p><code>ApplicationContext</code> — это главный интерфейс в <strong>Spring</strong>-приложении, который предоставляет информацию о конфигурации приложения.</p>
-</div>
-<div class="paragraph">
-<p><code>ApplicationContext</code> представляет собой <strong>Spring Container</strong>, место, где хранятся все созданные бины. Поэтому для получения бина из <strong>Spring Container</strong> нам нужно создать <code>ApplicationContext</code></p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Чаще всего используются следующие реализации <code>ApplicationContext</code>:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>FileSystemXmlApplicationContext</code> - загружает данные о бине из xml-файла. При использовании этой реализации в конструкторе необходимо указать полный адрес конфигурационного файла.</p>
-</li>
-<li>
-<p><code>ClassPathXmlApplicationContext</code> - этот контейнер также получает данные о бине из xml-файла. Но в отличие от <code>FileSystemApplicationContext</code>, в этом случае необходимо указать относительный адрес конфигурационного файла (<strong>CLASSPATH</strong>).</p>
-</li>
-<li>
-<p><code>WebXmlApplicationContext</code> - эта реализация <code>ApplicationContext</code> получает необходимую информацию из веб-приложения.</p>
-</li>
-<li>
-<p><code>AnnotationConfigApplicationContext</code> - конфигурация через аннотации с указанием пакета для сканирования</p>
-</li>
-<li>
-<p><code>GenericGroovyApplicationContext</code> - конфигурация через <strong>groovy</strong>-файл</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>На рисунке ниже приведены этапы формирования <code>ApplicationContext</code>:</p>
-</div>
-<div class="paragraph">
-<p><span class="image"><img src="../../assets/img/java/spring/core/stages-of-context-initialization.png" alt="stages of context initialization"></span></p>
-</div>
-<div class="sect3">
-<h4 id="_парсинг_конфигурации_и_создание_beandefinition">Парсинг конфигурации и создание <code>BeanDefinition</code></h4>
-<div class="paragraph">
-<p>На первом этапе происходит чтение конфигураций и создание <code>BeanDefinition</code>.</p>
-</div>
-<div class="paragraph">
-<p><code>BeanDefinition</code> — это специальный интерфейс, через который можно получить доступ к метаданным будущего бина. В зависимости от того, какая у вас конфигурация, будет использоваться тот или иной механизм парсинга конфигурации.</p>
-</div>
-<div class="sect4">
-<h5 id="_xml_config">XML config</h5>
-<div class="paragraph">
-<p>Для <strong>xml</strong> конфигурации используется класс — <code>XmlBeanDefinitionReader</code>, который реализует интерфейс <code>BeanDefinitionReader</code>. <code>XmlBeanDefinitionReader</code> получает <code>InputStream</code> и загружает <code>Document</code> через <code>DefaultDocumentLoader</code>. Далее обрабатывается каждый элемент документа и если он является бином, то создается <code>BeanDefinition</code> на основе заполненных данных (<code>id</code>, <code>name</code>, <code>class</code>, <code>alias</code>, <code>init-method</code>, <code>destroy-method</code> и др.)</p>
-</div>
-<div class="paragraph">
-<p>Каждый <code>BeanDefinition</code> помещается в <strong>map</strong>. <strong>Map</strong> хранится в классе <code>DefaultListableBeanFactory</code>.</p>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_groovy_config">Groovy config</h5>
-<div class="paragraph">
-<p>Конфигурация через <strong>groovy</strong> очень похожа на конфигурацию через <strong>xml</strong>, за исключением того, что в файл не <strong>xml</strong>, а <strong>groovy</strong>. Чтением и парсинг <strong>groovy</strong> конфигурации занимается класс <code>GroovyBeanDefinitionReader</code>.</p>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_annotations_based_config">Annotations-based config</h5>
-<div class="paragraph">
-<p>Для конфигурации через аннотации с указанием пакета для сканирования или <strong>JavaConfig</strong> используется класс <code>AnnotationConfigApplicationContext</code>. Этот класс имеет следующие поля, с помощью которых происходит создание <code>BeanDefinition</code>:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>AnnotatedBeanDefinitionReader</code>;</p>
-</li>
-<li>
-<p><code>ClassPathBeanDefinitionScanner</code>.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p><code>ClassPathBeanDefinitionScanner</code> сканирует указанный пакет на наличие классов помеченных аннотацией <code>@Component</code> (или любой другой аннотацией которая включает в себя <code>@Component</code>). Найденные классы парсятся и для них создаются <code>BeanDefinition</code>.</p>
-</div>
-<div class="paragraph">
-<p>Чтобы сканирование было запущено, в конфигурации должен быть указан пакет для сканирования. Вся магия работы с аннотациями, как в случае с <strong>xml</strong> и <strong>groovy</strong>, заключается именно в классе <code>ClassReader.class</code> из пакета <code>springframework.asm</code>. Специфика этого ридера заключается в том, что он умеет работать с байт-кодом. То есть, ридер достает <code>InputStream</code> из байт-кода, сканирует его и ищет там аннотации.</p>
-</div>
-<div class="paragraph">
-<p><code>AnnotatedBeanDefinitionReader</code> работает в несколько этапов.</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>Первый этап</strong>: регистрация всех <code>@Configuration</code> для дальнейшего парсинга.<br>
-Если в конфигурации используются <code>@Conditional</code>, то будут зарегистрированы только те конфигурации, для которых Condition вернет <code>true</code>. Аннотация <code>@Conditional</code> появилась в четвертой версии <strong>Spring Framework</strong>. Она используется в случае, когда на момент поднятия контекста нужно решить, создавать бин/конфигурацию или нет. Причем решение принимает специальный класс, который обязан реализовать интерфейс <code>Condition</code>.</p>
-</li>
-<li>
-<p><strong>Второй этап</strong>: регистрация специального <code>BeanFactoryPostProcessor</code><br>
-Если точнее, регистрация <code>BeanDefinitionRegistryPostProcessor</code>, который при помощи класса <code>ConfigurationClassParser</code> парсит <strong>JavaConfig</strong> и создает <code>BeanDefinition</code>.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Каждый <code>BeanDefinition</code> помещается в <strong>map</strong>, который хранится в классе <code>DefaultListableBeanFactory</code>.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">private final Map&lt;String, BeanDefinition&gt; beanDefinitionMap = new ConcurrentHashMap&lt;String, BeanDefinition&gt;();</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_настройка_созданных_beandefinition_beanfactorypostprocessor">Настройка созданных <code>BeanDefinition</code> (<code>BeanFactoryPostProcessor</code>)</h4>
-<div class="paragraph">
-<p>После первого этапа у нас имеется <strong>map</strong>, в котором хранятся <code>BeanDefinition</code>. На этом этапе у нас есть возможность повлиять на то, какими будут наши бины еще до их фактического создания, иначе говоря мы имеем доступ к метаданным класса. Для этого существует специальный интерфейс <code>BeanFactoryPostProcessor</code>, реализовав который, мы получаем доступ к созданным <code>BeanDefinition</code> и можем их изменять.</p>
-</div>
-<div class="paragraph">
-<p>В этом интерфейсе всего один метод:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory)</code>.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Метод <code>postProcessBeanFactory()</code> принимает параметром <code>ConfigurableListableBeanFactory</code>. Данная фабрика содержит много полезных методов, в том числе <code>getBeanDefinitionNames()</code>, через который мы можем получить все <code>BeanDefinitionNames</code>, а уже потом по конкретному имени получить <strong>BeanDefinition</strong> для дальнейшей обработки метаданных</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_создание_собственных_factorybean">Создание собственных <code>FactoryBean</code></h4>
-<div class="paragraph">
-<p>На этом этапе, если не устраивает <strong>BeanFactory</strong> из-под капота, можно создать собственные <code>FactoryBean</code>.</p>
-</div>
-<div class="paragraph">
-<p><code>FactoryBean</code> — это <strong>generic</strong> интерфейс, которому можно делегировать процесс создания бинов необходимого типа. В те времена, когда конфигурация была исключительно в <strong>xml</strong>, разработчикам был необходим механизм с помощью которого они бы могли управлять процессом создания бинов. Именно для этого и был сделан этот интерфейс.</p>
-</div>
-<div class="paragraph">
-<p>Чтобы создать свою фабрику бинов (собственный <code>FactoryBean</code>), необходимо реализовать интерфейс <code>FactoryBean</code> и переопределить три его метода.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Component
-public class ClassNameFactory implements FactoryBean&lt;ClassName&gt; {
-    @Override
-    public ClassName getObject() throws Exception {
-        return new ClassName();
-    }
-
-    @Override
-    public Class&lt;?&gt; getObjectType() {
-        return ClassName.class;
-    }
-
-    @Override
-    public boolean isSingleton() {
-        return false;
-    }
-}</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_создание_экземпляров_бинов">Создание экземпляров бинов</h4>
-<div class="paragraph">
-<p>На этом этапе происходит создание бинов.</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Созданием экземпляров бинов занимается <strong>BeanFactory</strong> при этом, если нужно, делегирует это кастомным <strong>FactoryBean</strong>.</p>
-</li>
-<li>
-<p>Экземпляры бинов создаются на основе ранее созданных <strong>BeanDefinition</strong>.</p>
-</li>
-<li>
-<p>При этом важно знать, что на этапе поднятия контекста создаются только бины с областью видимости <strong>Singleton</strong>.</p>
-</li>
-<li>
-<p>Остальные бины создаются тогда, когда необходимы.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p><span class="image"><img src="../../assets/img/java/spring/core/create-bean-by-bean-factory.png" alt="create bean by bean factory"></span></p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_настройка_созданных_бинов_beanpostprocessor">Настройка созданных бинов (<code>BeanPostProcessor</code>)</h4>
-<div class="paragraph">
-<p>На данном этапе можно производить дополнительную настройку созданных бинов. Настройка производиться через интерфейс <code>BeanPostProcessor</code>.</p>
-</div>
-<div class="paragraph">
-<p><code>BeanPostProcessor</code> - позволяет настраивать бины до того, как они попадут в <strong>Spring</strong> контейнер. Данный интерфейс имеет два метода.</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>postProcessBeforeInitialization(Object bean, String beanName)</code>;</p>
-</li>
-<li>
-<p><code>postProcessAfterInitialization(Object bean, String beanName)</code>.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p><code>BeanFactory</code> вызывает оба метода для каждого бина, и прогоняет бин через все <code>BeanPostProcessor</code>. У обоих методов параметры абсолютно одинаковые. Разница только в порядке их вызова. Первый вызывается до <strong>init</strong>-метода, второй, после.</p>
-</div>
-<div class="paragraph">
-<p>Порядок в котором будут вызваны <strong>BeanPostProcessor</strong> не известен, но мы точно знаем что выполнены они будут последовательно.</p>
-</div>
-<div class="paragraph">
-<p>Важно понимать, что на данном этапе экземпляр бина уже создан и идет его донастройка. Процесс донастройки показан на рисунке ниже.</p>
-</div>
-<div class="paragraph">
-<p><span class="image"><img src="../../assets/img/java/spring/core/bean-post-processor.png" alt="bean post processor"></span></p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Component
-public class ClassBeanPostProcessor implements BeanPostProcessor {
-    @Override
-    public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-        return bean;
-    }
-
-    @Override
-    public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-        return bean;
-    }
-}</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_схема_создания_бинов">Схема создания бинов</h3>
-<div class="paragraph">
-<p>Несмотря на кажущуюся сложность, жизненный цикл бинов крайне прост и лёгок для понимания. После создания экземпляра бина, могут понадобиться некоторые действия для того, чтобы сделать его работоспособным. Также при удалении бина из контейнера, необходима очистка.</p>
-</div>
-<div class="paragraph">
-<p><span class="image"><img src="../../assets/img/java/spring/core/lifecycle-bean.png" alt="lifecycle bean"></span></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>Spring</strong> создает <strong>bean</strong>.</p>
-</li>
-<li>
-<p><strong>Spring</strong> задает значения и ссылки в поля <strong>bean</strong>.</p>
-</li>
-<li>
-<p>Если <strong>bean</strong> реализует <code>BeanNameAware</code>, <strong>Spring</strong> передает <strong>ID</strong> бина в метод <code>setBeanName()</code>.</p>
-</li>
-<li>
-<p>Если <strong>bean</strong> реализует <code>BeanFactoryAware</code>, <strong>Spring</strong> вызывает <code>setBeanFactory()</code>, передавая туда <strong>bean</strong> <strong>factory</strong>.</p>
-</li>
-<li>
-<p>Если <strong>bean</strong> реализует интерфейс <code>ApplicationContextAware</code>, <strong>Spring</strong> вызовет <code>setApplicationContext()</code>, передавая по ссылке контекст приложения.</p>
-</li>
-<li>
-<p>Если <strong>bean</strong> реализует интерфейс <code>BeanPostProcessor</code>, <strong>Spring</strong> вызывает метод бина <code>postProcessBeforeInitialization()</code>.</p>
-</li>
-<li>
-<p>На этом происходит вызов методов init().
-Если <strong>bean</strong> реализуют интерфейс <code>InitializingBean</code>, <strong>Spring</strong> вызывает метод <code>afterPropertiesSet()</code>.</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public class CachingMovieLister {
-    @PostConstruct
-    public void populateMovieCache() {
-    }
-}</code></pre>
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Если <strong>bean</strong> реализует <code>BeanPostProcessor</code>, <strong>Spring</strong> вызовет метод <strong>бина</strong> <code>postProcessAfterInitialization()</code>.</p>
-</li>
-<li>
-<p>В этой точке, <strong>bean</strong> готов для использования приложением и останется в контексте приложения, пока контекст не будет уничтожен.</p>
-</li>
-<li>
-<p>На этом происходит вызов методов destroy().
-Если <strong>bean</strong> реализует интерфейс <code>DisposableBean</code>, <strong>Spring</strong> вызовет <code>destroy()</code> метод.</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public class CachingMovieLister {
-    @PreDestroy
-    public void clearMovieCache() {
-    }
-}</code></pre>
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Компонент перестает существовать.</p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_ioc_di_autowired">IoC, DI, <code>@Autowired</code></h3>
-<div class="paragraph">
-<p>Как было описано выше, ядром <strong>Spring</strong> является контейнер <strong>Inversion of Control</strong>, функция которого создать и управлять объектами (бинами), а благодаря основной реализации <strong>Dependency Injection</strong> и связывать различные объекты между собой.</p>
-</div>
-<div class="paragraph">
-<p>Связывать объекты между собой можно несколькими способами:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>С помощью конструктора</strong></p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public class MovieRecommender {
-    private final CustomerPreferenceDao customerPreferenceDao;
-
-    @Autowired
-    public MovieRecommender(CustomerPreferenceDao customerPreferenceDao) {
-        this.customerPreferenceDao = customerPreferenceDao;
-    }
-}</code></pre>
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>С помощью метода (сеттер)</strong></p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public class SimpleMovieLister {
-    private MovieFinder movieFinder;
-
-    @Autowired
-    public void setMovieFinder(MovieFinder movieFinder) {
-        this.movieFinder = movieFinder;
-    }
-}</code></pre>
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>Через поле</strong></p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public class MovieRecommender {
-    @Autowired
-    private MovieCatalog movieCatalog;
-}</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>По умолчанию внедрение зависимостей через методы или поля рассматриваются как обязательные зависимости. Однако, Вы можете изменить это поведение, устанавливая для <strong>required</strong> атрибута <code>@Autowired</code> значение <strong>false</strong>:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public class SimpleMovieLister {
-    private MovieFinder movieFinder;
-
-    @Autowired(required = false)
-    public void setMovieFinder(MovieFinder movieFinder) {
-        this.movieFinder = movieFinder;
-    }
-}</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>В ситуации, когда имеются два бина для внедрения можно воспользоваться следующими аннотациями:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>@Primary</code> - указывает, что текущий бин будет внедряться по умолчанию, если их несколько</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Configuration
-public class MovieConfiguration {
-    @Bean
-    @Primary
-    public MovieCatalog firstMovieCatalog() { ... }
-
-    @Bean
-    public MovieCatalog secondMovieCatalog() { ... }
-}</code></pre>
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>@Qualifier</code> - указывает какой бин необходимо использовать для внедрения</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Component
-@Qualifier("Action")
-public class ActionMovieCatalog implements MovieCatalog {
-}</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public class MovieRecommender {
-    @Autowired
-    @Qualifier("Action")
-    private MovieCatalog movieCatalog;
-}</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_component_service_и_другие_аннотации"><code>@Component</code>, <code>@Service</code> и другие аннотации</h3>
-<div class="paragraph">
-<p>В <strong>Spring</strong> используются следующие аннотации:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>@Component</code><br>
-Аннотация для любого компонента фреймворка.</p>
-</li>
-<li>
-<p><code>@Repository</code><br>
-(Доменный слой) Аннотация показывает, что класс функционирует как репозиторий и требует наличия прозрачной трансляции исключений. Преимуществом трансляции исключений является то, что слой сервиса будет иметь дело с общей иерархией исключений от <strong>Spring</strong> (<code>DataAccessException</code>) вне зависимости от используемых технологий доступа к данным в слое данных.</p>
-</li>
-<li>
-<p><code>@Service</code><br>
-(Сервис-слой приложения) Аннотация, объявляющая, что этот класс представляет собой сервис – компонент сервис-слоя. Сервис является подтипом класса <code>@Component</code>. Использование данной аннотации позволит искать бины-сервисы автоматически.</p>
-</li>
-<li>
-<p><code>@Controller</code><br>
-(Слой представления) Аннотация для маркировки <strong>java</strong> класса, как класса контроллера. Данный класс представляет собой компонент, похожий на обычный сервлет (<strong>HttpServlet</strong>) (работающий с объектами <strong>HttpServletRequest</strong> и <strong>HttpServletResponse</strong>), но с расширенными возможностями от <strong>Spring</strong> <strong>Framework</strong>.</p>
-</li>
-<li>
-<p><code>@RestController</code><br>
-Аннотация аккумулирует поведение двух аннотаций <code>@Controller</code> и <code>@ResponseBody</code> (показывает что данный метод может возвращать собственный объект в виде <strong>xml</strong>, <strong>json</strong> и другие).</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p><span class="image"><img src="../../assets/img/java/spring/core/annotation.jpg" alt="annotation"></span></p>
-</div>
-<div class="paragraph">
-<p>Данные аннотации используются при конфигурации приложения через аннотации.</p>
-</div>
-<div class="paragraph">
-<p>Основной считается <code>@Component</code>, общий стереотип для любого компонента, управляемого <strong>Spring</strong>. <code>@Repository</code>, <code>@Service</code> И <code>@Controller</code> являются специализациями <code>@Component</code> для более конкретных случаев применения (в настойчивости, обслуживании и презентации слоев, соответственно).</p>
-</div>
-<div class="paragraph">
-<p>Бины, получившиеся при помощи <code>@Repository</code>, дополнительно имеют обработку для <strong>JDBC</strong> <strong>Exception</strong>.</p>
-</div>
-<div class="paragraph">
-<p><code>@RestController = @Controller + @ResponseBody</code>. Этот бин для конвертации входящих/исходящих данных использует <strong>Jackson message converter</strong>. Как правило, целевые данные представлены в <strong>json</strong> или <strong>xml</strong>.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_links">Links</h3>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="https://docs.spring.io/spring-framework/docs/current/reference/html/">Spring Framework Documentation</a></p>
-</li>
-<li>
-<p><a href="https://proselyte.net/tutorials/spring-tutorial-full-version">Руководство по Spring</a></p>
-</li>
-<li>
-<p><a href="https://www.tutorialspoint.com/spring/">Spring Tutorial</a></p>
-</li>
-<li>
-<p><a href="https://javarush.ru/groups/posts/spring-framework-java-1">Spring для ленивых. Основы, базовые концепции и примеры с кодом. Часть 1</a></p>
-</li>
-<li>
-<p><a href="https://javarush.ru/groups/posts/477-spring-dlja-lenivihkh-osnovih-bazovihe-koncepcii-i-primerih-s-kodom-chastjh-2">Spring для ленивых. Основы, базовые концепции и примеры с кодом. Часть 2</a></p>
-</li>
-<li>
-<p><a href="https://habr.com/ru/post/222579/">Spring изнутри. Этапы инициализации контекста</a></p>
-</li>
-<li>
-<p><a href="https://habr.com/ru/post/350682/">Spring: вопросы к собеседованию</a></p>
-</li>
-<li>
-<p><a href="https://www.youtube.com/watch?v=BmBr5diz8WA&amp;ab_channel=JUG.ru">YouTube: Евгений Борисов — Spring-потрошитель, часть 1</a></p>
-</li>
-<li>
-<p><a href="https://www.youtube.com/watch?v=cou_qomYLNU&amp;t=3443s&amp;ab_channel=JUG.ru">YouTube: Евгений Борисов — Spring-потрошитель, часть 2</a></p>
-</li>
-<li>
-<p><a href="https://www.youtube.com/playlist?list=PLxqzxxW1gWwIuSgG8od6N4LZg5V4kKp72">YouTube: Spring Framework для начинающих [Jetbulb</a>]</p>
-</li>
-<li>
-<p><a href="https://www.youtube.com/playlist?list=PLAma_mKffTOR5o0WNHnY0mTjKxnCgSXrZ">YouTube: Spring Framework [alishev</a>]</p>
-</li>
-<li>
-<p><a href="https://www.youtube.com/watch?v=yRr_vzqha-g&amp;ab_channel=AndreiLegan">YouTube: Spring изнутри. Этапы инициализации контекста</a></p>
-</li>
-<li>
-<p><a href="https://www.youtube.com/watch?v=l20USjGgnTo&amp;t=3881s&amp;ab_channel=Jetbulb">YouTube: Java Spring Контекст</a></p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_spring_mvc">Spring MVC</h2>
+<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
 <p><strong>Spring MVC</strong> – это фреймворк для создания <strong>web</strong>-приложений на <strong>Java</strong>, в основе которого лежит шаблон проектирования <strong>MVC</strong>.</p>
@@ -1377,8 +500,11 @@ public class ActionMovieCatalog implements MovieCatalog {
 </li>
 </ul>
 </div>
-<div class="sect2">
-<h3 id="_dispatcherservlet">DispatcherServlet</h3>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_dispatcherservlet">DispatcherServlet</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>Вся логика работы <strong>Spring MVC</strong> построена вокруг <strong>DispatcherServlet</strong>.</p>
 </div>
@@ -1437,8 +563,10 @@ public class ActionMovieCatalog implements MovieCatalog {
 <p>Сервлет диспетчера настроен как <code>load-on-startup = 1</code>, что означает, что этот сервлет должен создаваться контейнером сервлета при развертывании приложения, а не при получении запроса на этот запрос.</p>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_handlermapping">HandlerMapping</h3>
+</div>
+<div class="sect1">
+<h2 id="_handlermapping">HandlerMapping</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>Одним из важных интерфейсов в Spring является HandlerMapping.</p>
 </div>
@@ -1472,8 +600,10 @@ public class Main{
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_controller">Controller</h3>
+</div>
+<div class="sect1">
+<h2 id="_controller">Controller</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p><strong>DispatcherServlet</strong> отправляет запрос контроллерам для выполнения определённых функций.</p>
 </div>
@@ -1567,8 +697,10 @@ public class HelloController {
 <p>При использовании <code>@PathVariable</code> передача значений будет типа <code><a href="http://localhost:8080/api/test/abc" class="bare">http://localhost:8080/api/test/abc</a></code>. В этом случае данный параметр является обязательным, но при установке атрибута <code>required = false</code> (по умолчанию <strong>true</strong>) станет не обязательным для заполнения.</p>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_viewresolver">ViewResolver</h3>
+</div>
+<div class="sect1">
+<h2 id="_viewresolver">ViewResolver</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p><strong>DisptacherServlet</strong> с помощью <strong>ViewResolver</strong> определяет какое представление необходимо использовать на основании полученного имени.</p>
 </div>
@@ -1634,13 +766,15 @@ public class WebConfiguration{
 <p>Если представление найдено, то произойдет переход на эту страницу. В противном случае результат зависит от настроек реализации интерфейса <strong>ViewResolver</strong>. По умолчанию возвращается <strong>null</strong>, но можно возвращать имя или исключение, если вам это необходимо.</p>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_exceptionhandler">ExceptionHandler</h3>
+</div>
+<div class="sect1">
+<h2 id="_exceptionhandler">ExceptionHandler</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>Для обработки ошибки существует три варианта: для каждого исключения, для каждого контроллера или глобально.</p>
 </div>
-<div class="sect3">
-<h4 id="_уровень_контроллера">Уровень контроллера</h4>
+<div class="sect2">
+<h3 id="_уровень_контроллера">Уровень контроллера</h3>
 <div class="paragraph">
 <p>Изначально основными способами обработки исключений в приложении были <code>HandlerExceptionResolver</code> и аннотация   <code>@ExceptionHandler</code>, которая позволяла обрабатывать исключения на уровне отдельного контроллера. Для этого достаточно было объявить метод, в котором будет содержаться вся логика обработки нужного исключения, и проаннотировать его.</p>
 </div>
@@ -1684,8 +818,8 @@ public class ExampleController {
 <p>Выбрасывая <code>ResponseStatusException</code> можно также возвращать пользователю определённый код статуса, в зависимости от того, что произошло в логике приложения. При этом не нужно создавать кастомное исключение и прописывать аннотацию <code>@ResponseStatus</code></p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_уровень_исключений">Уровень исключений</h4>
+<div class="sect2">
+<h3 id="_уровень_исключений">Уровень исключений</h3>
 <div class="paragraph">
 <p>Для обработки ошибок на уровне исключений используется <code>ResponseStatusExceptionResolver</code>. Он позволяет настроить код ответа для любого исключения с помощью аннотации <code>@ResponseStatus</code>.</p>
 </div>
@@ -1714,8 +848,8 @@ public class ExampleController {
 <p>Из недостатков такого подхода — как и в предыдущем случае отсутствует тело ответа.</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_уровень_глобальной_обработки">Уровень глобальной обработки</h4>
+<div class="sect2">
+<h3 id="_уровень_глобальной_обработки">Уровень глобальной обработки</h3>
 <div class="paragraph">
 <p>Глобально и централизованно обрабатывать исключения с помощью классов с аннотацией <code>@ControllerAdvice</code>.</p>
 </div>
@@ -1739,8 +873,10 @@ public class DefaultAdvice {
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_links_2">Links</h3>
+</div>
+<div class="sect1">
+<h2 id="_links">Links</h2>
+<div class="sectionbody">
 <div class="ulist">
 <ul>
 <li>
@@ -1780,7 +916,6 @@ public class DefaultAdvice {
 <p><a href="https://www.youtube.com/watch?v=w1FjeTZxQrQ&amp;ab_channel=alishev">YouTube: Spring Framework. Урок 22: Аннотация @ModelAttribute. HTML Формы (Thymeleaf).</a></p>
 </li>
 </ul>
-</div>
 </div>
 </div>
 </div>

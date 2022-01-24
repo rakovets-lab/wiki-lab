@@ -4,4 +4,6 @@
 
 include::spring-core.adoc[]
 
+include::spring-mvc.adoc[]
+
 :leveloffset: -1
