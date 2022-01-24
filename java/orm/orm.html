@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.17">
+<meta name="author" content="== Основные понятия JPA и ORM">
+<title>ORM (на примере Hibernate)</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
+<style>
+/*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
+/* Uncomment the following line when using as a custom stylesheet */
+/* @import "https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700"; */
+html{font-family:sans-serif;-webkit-text-size-adjust:100%}
+a{background:none}
+a:focus{outline:thin dotted}
+a:active,a:hover{outline:0}
+h1{font-size:2em;margin:.67em 0}
+b,strong{font-weight:bold}
+abbr{font-size:.9em}
+abbr[title]{cursor:help;border-bottom:1px dotted #dddddf;text-decoration:none}
+dfn{font-style:italic}
+hr{height:0}
+mark{background:#ff0;color:#000}
+code,kbd,pre,samp{font-family:monospace;font-size:1em}
+pre{white-space:pre-wrap}
+q{quotes:"\201C" "\201D" "\2018" "\2019"}
+small{font-size:80%}
+sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}
+sup{top:-.5em}
+sub{bottom:-.25em}
+img{border:0}
+svg:not(:root){overflow:hidden}
+figure{margin:0}
+audio,video{display:inline-block}
+audio:not([controls]){display:none;height:0}
+fieldset{border:1px solid silver;margin:0 2px;padding:.35em .625em .75em}
+legend{border:0;padding:0}
+button,input,select,textarea{font-family:inherit;font-size:100%;margin:0}
+button,input{line-height:normal}
+button,select{text-transform:none}
+button,html input[type=button],input[type=reset],input[type=submit]{-webkit-appearance:button;cursor:pointer}
+button[disabled],html input[disabled]{cursor:default}
+input[type=checkbox],input[type=radio]{padding:0}
+button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0}
+textarea{overflow:auto;vertical-align:top}
+table{border-collapse:collapse;border-spacing:0}
+*,::before,::after{box-sizing:border-box}
+html,body{font-size:100%}
+body{background:#fff;color:rgba(0,0,0,.8);padding:0;margin:0;font-family:"Noto Serif","DejaVu Serif",serif;line-height:1;position:relative;cursor:auto;-moz-tab-size:4;-o-tab-size:4;tab-size:4;word-wrap:anywhere;-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased}
+a:hover{cursor:pointer}
+img,object,embed{max-width:100%;height:auto}
+object,embed{height:100%}
+img{-ms-interpolation-mode:bicubic}
+.left{float:left!important}
+.right{float:right!important}
+.text-left{text-align:left!important}
+.text-right{text-align:right!important}
+.text-center{text-align:center!important}
+.text-justify{text-align:justify!important}
+.hide{display:none}
+img,object,svg{display:inline-block;vertical-align:middle}
+textarea{height:auto;min-height:50px}
+select{width:100%}
+.subheader,.admonitionblock td.content>.title,.audioblock>.title,.exampleblock>.title,.imageblock>.title,.listingblock>.title,.literalblock>.title,.stemblock>.title,.openblock>.title,.paragraph>.title,.quoteblock>.title,table.tableblock>.title,.verseblock>.title,.videoblock>.title,.dlist>.title,.olist>.title,.ulist>.title,.qlist>.title,.hdlist>.title{line-height:1.45;color:#7a2518;font-weight:400;margin-top:0;margin-bottom:.25em}
+div,dl,dt,dd,ul,ol,li,h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6,pre,form,p,blockquote,th,td{margin:0;padding:0}
+a{color:#2156a5;text-decoration:underline;line-height:inherit}
+a:hover,a:focus{color:#1d4b8f}
+a img{border:0}
+p{line-height:1.6;margin-bottom:1.25em;text-rendering:optimizeLegibility}
+p aside{font-size:.875em;line-height:1.35;font-style:italic}
+h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{font-family:"Open Sans","DejaVu Sans",sans-serif;font-weight:300;font-style:normal;color:#ba3925;text-rendering:optimizeLegibility;margin-top:1em;margin-bottom:.5em;line-height:1.0125em}
+h1 small,h2 small,h3 small,#toctitle small,.sidebarblock>.content>.title small,h4 small,h5 small,h6 small{font-size:60%;color:#e99b8f;line-height:0}
+h1{font-size:2.125em}
+h2{font-size:1.6875em}
+h3,#toctitle,.sidebarblock>.content>.title{font-size:1.375em}
+h4,h5{font-size:1.125em}
+h6{font-size:1em}
+hr{border:solid #dddddf;border-width:1px 0 0;clear:both;margin:1.25em 0 1.1875em}
+em,i{font-style:italic;line-height:inherit}
+strong,b{font-weight:bold;line-height:inherit}
+small{font-size:60%;line-height:inherit}
+code{font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;font-weight:400;color:rgba(0,0,0,.9)}
+ul,ol,dl{line-height:1.6;margin-bottom:1.25em;list-style-position:outside;font-family:inherit}
+ul,ol{margin-left:1.5em}
+ul li ul,ul li ol{margin-left:1.25em;margin-bottom:0}
+ul.square li ul,ul.circle li ul,ul.disc li ul{list-style:inherit}
+ul.square{list-style-type:square}
+ul.circle{list-style-type:circle}
+ul.disc{list-style-type:disc}
+ol li ul,ol li ol{margin-left:1.25em;margin-bottom:0}
+dl dt{margin-bottom:.3125em;font-weight:bold}
+dl dd{margin-bottom:1.25em}
+blockquote{margin:0 0 1.25em;padding:.5625em 1.25em 0 1.1875em;border-left:1px solid #ddd}
+blockquote,blockquote p{line-height:1.6;color:rgba(0,0,0,.85)}
+@media screen and (min-width:768px){h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{line-height:1.2}
+h1{font-size:2.75em}
+h2{font-size:2.3125em}
+h3,#toctitle,.sidebarblock>.content>.title{font-size:1.6875em}
+h4{font-size:1.4375em}}
+table{background:#fff;margin-bottom:1.25em;border:1px solid #dedede;word-wrap:normal}
+table thead,table tfoot{background:#f7f8f7}
+table thead tr th,table thead tr td,table tfoot tr th,table tfoot tr td{padding:.5em .625em .625em;font-size:inherit;color:rgba(0,0,0,.8);text-align:left}
+table tr th,table tr td{padding:.5625em .625em;font-size:inherit;color:rgba(0,0,0,.8)}
+table tr.even,table tr.alt{background:#f8f8f7}
+table thead tr th,table tfoot tr th,table tbody tr td,table tr td,table tfoot tr td{line-height:1.6}
+h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{line-height:1.2;word-spacing:-.05em}
+h1 strong,h2 strong,h3 strong,#toctitle strong,.sidebarblock>.content>.title strong,h4 strong,h5 strong,h6 strong{font-weight:400}
+.center{margin-left:auto;margin-right:auto}
+.stretch{width:100%}
+.clearfix::before,.clearfix::after,.float-group::before,.float-group::after{content:" ";display:table}
+.clearfix::after,.float-group::after{clear:both}
+:not(pre).nobreak{word-wrap:normal}
+:not(pre).nowrap{white-space:nowrap}
+:not(pre).pre-wrap{white-space:pre-wrap}
+:not(pre):not([class^=L])>code{font-size:.9375em;font-style:normal!important;letter-spacing:0;padding:.1em .5ex;word-spacing:-.15em;background:#f7f7f8;border-radius:4px;line-height:1.45;text-rendering:optimizeSpeed}
+pre{color:rgba(0,0,0,.9);font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;line-height:1.45;text-rendering:optimizeSpeed}
+pre code,pre pre{color:inherit;font-size:inherit;line-height:inherit}
+pre>code{display:block}
+pre.nowrap,pre.nowrap pre{white-space:pre;word-wrap:normal}
+em em{font-style:normal}
+strong strong{font-weight:400}
+.keyseq{color:rgba(51,51,51,.8)}
+kbd{font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;display:inline-block;color:rgba(0,0,0,.8);font-size:.65em;line-height:1.45;background:#f7f7f7;border:1px solid #ccc;border-radius:3px;box-shadow:0 1px 0 rgba(0,0,0,.2),inset 0 0 0 .1em #fff;margin:0 .15em;padding:.2em .5em;vertical-align:middle;position:relative;top:-.1em;white-space:nowrap}
+.keyseq kbd:first-child{margin-left:0}
+.keyseq kbd:last-child{margin-right:0}
+.menuseq,.menuref{color:#000}
+.menuseq b:not(.caret),.menuref{font-weight:inherit}
+.menuseq{word-spacing:-.02em}
+.menuseq b.caret{font-size:1.25em;line-height:.8}
+.menuseq i.caret{font-weight:bold;text-align:center;width:.45em}
+b.button::before,b.button::after{position:relative;top:-1px;font-weight:400}
+b.button::before{content:"[";padding:0 3px 0 2px}
+b.button::after{content:"]";padding:0 2px 0 3px}
+p a>code:hover{color:rgba(0,0,0,.9)}
+#header,#content,#footnotes,#footer{width:100%;margin:0 auto;max-width:62.5em;*zoom:1;position:relative;padding-left:.9375em;padding-right:.9375em}
+#header::before,#header::after,#content::before,#content::after,#footnotes::before,#footnotes::after,#footer::before,#footer::after{content:" ";display:table}
+#header::after,#content::after,#footnotes::after,#footer::after{clear:both}
+#content{margin-top:1.25em}
+#content::before{content:none}
+#header>h1:first-child{color:rgba(0,0,0,.85);margin-top:2.25rem;margin-bottom:0}
+#header>h1:first-child+#toc{margin-top:8px;border-top:1px solid #dddddf}
+#header>h1:only-child,body.toc2 #header>h1:nth-last-child(2){border-bottom:1px solid #dddddf;padding-bottom:8px}
+#header .details{border-bottom:1px solid #dddddf;line-height:1.45;padding-top:.25em;padding-bottom:.25em;padding-left:.25em;color:rgba(0,0,0,.6);display:flex;flex-flow:row wrap}
+#header .details span:first-child{margin-left:-.125em}
+#header .details span.email a{color:rgba(0,0,0,.85)}
+#header .details br{display:none}
+#header .details br+span::before{content:"\00a0\2013\00a0"}
+#header .details br+span.author::before{content:"\00a0\22c5\00a0";color:rgba(0,0,0,.85)}
+#header .details br+span#revremark::before{content:"\00a0|\00a0"}
+#header #revnumber{text-transform:capitalize}
+#header #revnumber::after{content:"\00a0"}
+#content>h1:first-child:not([class]){color:rgba(0,0,0,.85);border-bottom:1px solid #dddddf;padding-bottom:8px;margin-top:0;padding-top:1rem;margin-bottom:1.25rem}
+#toc{border-bottom:1px solid #e7e7e9;padding-bottom:.5em}
+#toc>ul{margin-left:.125em}
+#toc ul.sectlevel0>li>a{font-style:italic}
+#toc ul.sectlevel0 ul.sectlevel1{margin:.5em 0}
+#toc ul{font-family:"Open Sans","DejaVu Sans",sans-serif;list-style-type:none}
+#toc li{line-height:1.3334;margin-top:.3334em}
+#toc a{text-decoration:none}
+#toc a:active{text-decoration:underline}
+#toctitle{color:#7a2518;font-size:1.2em}
+@media screen and (min-width:768px){#toctitle{font-size:1.375em}
+body.toc2{padding-left:15em;padding-right:0}
+#toc.toc2{margin-top:0!important;background:#f8f8f7;position:fixed;width:15em;left:0;top:0;border-right:1px solid #e7e7e9;border-top-width:0!important;border-bottom-width:0!important;z-index:1000;padding:1.25em 1em;height:100%;overflow:auto}
+#toc.toc2 #toctitle{margin-top:0;margin-bottom:.8rem;font-size:1.2em}
+#toc.toc2>ul{font-size:.9em;margin-bottom:0}
+#toc.toc2 ul ul{margin-left:0;padding-left:1em}
+#toc.toc2 ul.sectlevel0 ul.sectlevel1{padding-left:0;margin-top:.5em;margin-bottom:.5em}
+body.toc2.toc-right{padding-left:0;padding-right:15em}
+body.toc2.toc-right #toc.toc2{border-right-width:0;border-left:1px solid #e7e7e9;left:auto;right:0}}
+@media screen and (min-width:1280px){body.toc2{padding-left:20em;padding-right:0}
+#toc.toc2{width:20em}
+#toc.toc2 #toctitle{font-size:1.375em}
+#toc.toc2>ul{font-size:.95em}
+#toc.toc2 ul ul{padding-left:1.25em}
+body.toc2.toc-right{padding-left:0;padding-right:20em}}
+#content #toc{border:1px solid #e0e0dc;margin-bottom:1.25em;padding:1.25em;background:#f8f8f7;border-radius:4px}
+#content #toc>:first-child{margin-top:0}
+#content #toc>:last-child{margin-bottom:0}
+#footer{max-width:none;background:rgba(0,0,0,.8);padding:1.25em}
+#footer-text{color:hsla(0,0%,100%,.8);line-height:1.44}
+#content{margin-bottom:.625em}
+.sect1{padding-bottom:.625em}
+@media screen and (min-width:768px){#content{margin-bottom:1.25em}
+.sect1{padding-bottom:1.25em}}
+.sect1:last-child{padding-bottom:0}
+.sect1+.sect1{border-top:1px solid #e7e7e9}
+#content h1>a.anchor,h2>a.anchor,h3>a.anchor,#toctitle>a.anchor,.sidebarblock>.content>.title>a.anchor,h4>a.anchor,h5>a.anchor,h6>a.anchor{position:absolute;z-index:1001;width:1.5ex;margin-left:-1.5ex;display:block;text-decoration:none!important;visibility:hidden;text-align:center;font-weight:400}
+#content h1>a.anchor::before,h2>a.anchor::before,h3>a.anchor::before,#toctitle>a.anchor::before,.sidebarblock>.content>.title>a.anchor::before,h4>a.anchor::before,h5>a.anchor::before,h6>a.anchor::before{content:"\00A7";font-size:.85em;display:block;padding-top:.1em}
+#content h1:hover>a.anchor,#content h1>a.anchor:hover,h2:hover>a.anchor,h2>a.anchor:hover,h3:hover>a.anchor,#toctitle:hover>a.anchor,.sidebarblock>.content>.title:hover>a.anchor,h3>a.anchor:hover,#toctitle>a.anchor:hover,.sidebarblock>.content>.title>a.anchor:hover,h4:hover>a.anchor,h4>a.anchor:hover,h5:hover>a.anchor,h5>a.anchor:hover,h6:hover>a.anchor,h6>a.anchor:hover{visibility:visible}
+#content h1>a.link,h2>a.link,h3>a.link,#toctitle>a.link,.sidebarblock>.content>.title>a.link,h4>a.link,h5>a.link,h6>a.link{color:#ba3925;text-decoration:none}
+#content h1>a.link:hover,h2>a.link:hover,h3>a.link:hover,#toctitle>a.link:hover,.sidebarblock>.content>.title>a.link:hover,h4>a.link:hover,h5>a.link:hover,h6>a.link:hover{color:#a53221}
+details,.audioblock,.imageblock,.literalblock,.listingblock,.stemblock,.videoblock{margin-bottom:1.25em}
+details{margin-left:1.25rem}
+details>summary{cursor:pointer;display:block;position:relative;line-height:1.6;margin-bottom:.625rem;outline:none;-webkit-tap-highlight-color:transparent}
+details>summary::-webkit-details-marker{display:none}
+details>summary::before{content:"";border:solid transparent;border-left:solid;border-width:.3em 0 .3em .5em;position:absolute;top:.5em;left:-1.25rem;transform:translateX(15%)}
+details[open]>summary::before{border:solid transparent;border-top:solid;border-width:.5em .3em 0;transform:translateY(15%)}
+details>summary::after{content:"";width:1.25rem;height:1em;position:absolute;top:.3em;left:-1.25rem}
+.admonitionblock td.content>.title,.audioblock>.title,.exampleblock>.title,.imageblock>.title,.listingblock>.title,.literalblock>.title,.stemblock>.title,.openblock>.title,.paragraph>.title,.quoteblock>.title,table.tableblock>.title,.verseblock>.title,.videoblock>.title,.dlist>.title,.olist>.title,.ulist>.title,.qlist>.title,.hdlist>.title{text-rendering:optimizeLegibility;text-align:left;font-family:"Noto Serif","DejaVu Serif",serif;font-size:1rem;font-style:italic}
+table.tableblock.fit-content>caption.title{white-space:nowrap;width:0}
+.paragraph.lead>p,#preamble>.sectionbody>[class=paragraph]:first-of-type p{font-size:1.21875em;line-height:1.6;color:rgba(0,0,0,.85)}
+.admonitionblock>table{border-collapse:separate;border:0;background:none;width:100%}
+.admonitionblock>table td.icon{text-align:center;width:80px}
+.admonitionblock>table td.icon img{max-width:none}
+.admonitionblock>table td.icon .title{font-weight:bold;font-family:"Open Sans","DejaVu Sans",sans-serif;text-transform:uppercase}
+.admonitionblock>table td.content{padding-left:1.125em;padding-right:1.25em;border-left:1px solid #dddddf;color:rgba(0,0,0,.6);word-wrap:anywhere}
+.admonitionblock>table td.content>:last-child>:last-child{margin-bottom:0}
+.exampleblock>.content{border:1px solid #e6e6e6;margin-bottom:1.25em;padding:1.25em;background:#fff;border-radius:4px}
+.exampleblock>.content>:first-child{margin-top:0}
+.exampleblock>.content>:last-child{margin-bottom:0}
+.sidebarblock{border:1px solid #dbdbd6;margin-bottom:1.25em;padding:1.25em;background:#f3f3f2;border-radius:4px}
+.sidebarblock>:first-child{margin-top:0}
+.sidebarblock>:last-child{margin-bottom:0}
+.sidebarblock>.content>.title{color:#7a2518;margin-top:0;text-align:center}
+.exampleblock>.content>:last-child>:last-child,.exampleblock>.content .olist>ol>li:last-child>:last-child,.exampleblock>.content .ulist>ul>li:last-child>:last-child,.exampleblock>.content .qlist>ol>li:last-child>:last-child,.sidebarblock>.content>:last-child>:last-child,.sidebarblock>.content .olist>ol>li:last-child>:last-child,.sidebarblock>.content .ulist>ul>li:last-child>:last-child,.sidebarblock>.content .qlist>ol>li:last-child>:last-child{margin-bottom:0}
+.literalblock pre,.listingblock>.content>pre{border-radius:4px;overflow-x:auto;padding:1em;font-size:.8125em}
+@media screen and (min-width:768px){.literalblock pre,.listingblock>.content>pre{font-size:.90625em}}
+@media screen and (min-width:1280px){.literalblock pre,.listingblock>.content>pre{font-size:1em}}
+.literalblock pre,.listingblock>.content>pre:not(.highlight),.listingblock>.content>pre[class=highlight],.listingblock>.content>pre[class^="highlight "]{background:#f7f7f8}
+.literalblock.output pre{color:#f7f7f8;background:rgba(0,0,0,.9)}
+.listingblock>.content{position:relative}
+.listingblock code[data-lang]::before{display:none;content:attr(data-lang);position:absolute;font-size:.75em;top:.425rem;right:.5rem;line-height:1;text-transform:uppercase;color:inherit;opacity:.5}
+.listingblock:hover code[data-lang]::before{display:block}
+.listingblock.terminal pre .command::before{content:attr(data-prompt);padding-right:.5em;color:inherit;opacity:.5}
+.listingblock.terminal pre .command:not([data-prompt])::before{content:"$"}
+.listingblock pre.highlightjs{padding:0}
+.listingblock pre.highlightjs>code{padding:1em;border-radius:4px}
+.listingblock pre.prettyprint{border-width:0}
+.prettyprint{background:#f7f7f8}
+pre.prettyprint .linenums{line-height:1.45;margin-left:2em}
+pre.prettyprint li{background:none;list-style-type:inherit;padding-left:0}
+pre.prettyprint li code[data-lang]::before{opacity:1}
+pre.prettyprint li:not(:first-child) code[data-lang]::before{display:none}
+table.linenotable{border-collapse:separate;border:0;margin-bottom:0;background:none}
+table.linenotable td[class]{color:inherit;vertical-align:top;padding:0;line-height:inherit;white-space:normal}
+table.linenotable td.code{padding-left:.75em}
+table.linenotable td.linenos,pre.pygments .linenos{border-right:1px solid;opacity:.35;padding-right:.5em;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
+pre.pygments span.linenos{display:inline-block;margin-right:.75em}
+.quoteblock{margin:0 1em 1.25em 1.5em;display:table}
+.quoteblock:not(.excerpt)>.title{margin-left:-1.5em;margin-bottom:.75em}
+.quoteblock blockquote,.quoteblock p{color:rgba(0,0,0,.85);font-size:1.15rem;line-height:1.75;word-spacing:.1em;letter-spacing:0;font-style:italic;text-align:justify}
+.quoteblock blockquote{margin:0;padding:0;border:0}
+.quoteblock blockquote::before{content:"\201c";float:left;font-size:2.75em;font-weight:bold;line-height:.6em;margin-left:-.6em;color:#7a2518;text-shadow:0 1px 2px rgba(0,0,0,.1)}
+.quoteblock blockquote>.paragraph:last-child p{margin-bottom:0}
+.quoteblock .attribution{margin-top:.75em;margin-right:.5ex;text-align:right}
+.verseblock{margin:0 1em 1.25em}
+.verseblock pre{font-family:"Open Sans","DejaVu Sans",sans-serif;font-size:1.15rem;color:rgba(0,0,0,.85);font-weight:300;text-rendering:optimizeLegibility}
+.verseblock pre strong{font-weight:400}
+.verseblock .attribution{margin-top:1.25rem;margin-left:.5ex}
+.quoteblock .attribution,.verseblock .attribution{font-size:.9375em;line-height:1.45;font-style:italic}
+.quoteblock .attribution br,.verseblock .attribution br{display:none}
+.quoteblock .attribution cite,.verseblock .attribution cite{display:block;letter-spacing:-.025em;color:rgba(0,0,0,.6)}
+.quoteblock.abstract blockquote::before,.quoteblock.excerpt blockquote::before,.quoteblock .quoteblock blockquote::before{display:none}
+.quoteblock.abstract blockquote,.quoteblock.abstract p,.quoteblock.excerpt blockquote,.quoteblock.excerpt p,.quoteblock .quoteblock blockquote,.quoteblock .quoteblock p{line-height:1.6;word-spacing:0}
+.quoteblock.abstract{margin:0 1em 1.25em;display:block}
+.quoteblock.abstract>.title{margin:0 0 .375em;font-size:1.15em;text-align:center}
+.quoteblock.excerpt>blockquote,.quoteblock .quoteblock{padding:0 0 .25em 1em;border-left:.25em solid #dddddf}
+.quoteblock.excerpt,.quoteblock .quoteblock{margin-left:0}
+.quoteblock.excerpt blockquote,.quoteblock.excerpt p,.quoteblock .quoteblock blockquote,.quoteblock .quoteblock p{color:inherit;font-size:1.0625rem}
+.quoteblock.excerpt .attribution,.quoteblock .quoteblock .attribution{color:inherit;font-size:.85rem;text-align:left;margin-right:0}
+p.tableblock:last-child{margin-bottom:0}
+td.tableblock>.content{margin-bottom:1.25em;word-wrap:anywhere}
+td.tableblock>.content>:last-child{margin-bottom:-1.25em}
+table.tableblock,th.tableblock,td.tableblock{border:0 solid #dedede}
+table.grid-all>*>tr>*{border-width:1px}
+table.grid-cols>*>tr>*{border-width:0 1px}
+table.grid-rows>*>tr>*{border-width:1px 0}
+table.frame-all{border-width:1px}
+table.frame-ends{border-width:1px 0}
+table.frame-sides{border-width:0 1px}
+table.frame-none>colgroup+*>:first-child>*,table.frame-sides>colgroup+*>:first-child>*{border-top-width:0}
+table.frame-none>:last-child>:last-child>*,table.frame-sides>:last-child>:last-child>*{border-bottom-width:0}
+table.frame-none>*>tr>:first-child,table.frame-ends>*>tr>:first-child{border-left-width:0}
+table.frame-none>*>tr>:last-child,table.frame-ends>*>tr>:last-child{border-right-width:0}
+table.stripes-all>*>tr,table.stripes-odd>*>tr:nth-of-type(odd),table.stripes-even>*>tr:nth-of-type(even),table.stripes-hover>*>tr:hover{background:#f8f8f7}
+th.halign-left,td.halign-left{text-align:left}
+th.halign-right,td.halign-right{text-align:right}
+th.halign-center,td.halign-center{text-align:center}
+th.valign-top,td.valign-top{vertical-align:top}
+th.valign-bottom,td.valign-bottom{vertical-align:bottom}
+th.valign-middle,td.valign-middle{vertical-align:middle}
+table thead th,table tfoot th{font-weight:bold}
+tbody tr th{background:#f7f8f7}
+tbody tr th,tbody tr th p,tfoot tr th,tfoot tr th p{color:rgba(0,0,0,.8);font-weight:bold}
+p.tableblock>code:only-child{background:none;padding:0}
+p.tableblock{font-size:1em}
+ol{margin-left:1.75em}
+ul li ol{margin-left:1.5em}
+dl dd{margin-left:1.125em}
+dl dd:last-child,dl dd:last-child>:last-child{margin-bottom:0}
+li p,ul dd,ol dd,.olist .olist,.ulist .ulist,.ulist .olist,.olist .ulist{margin-bottom:.625em}
+ul.checklist,ul.none,ol.none,ul.no-bullet,ol.no-bullet,ol.unnumbered,ul.unstyled,ol.unstyled{list-style-type:none}
+ul.no-bullet,ol.no-bullet,ol.unnumbered{margin-left:.625em}
+ul.unstyled,ol.unstyled{margin-left:0}
+li>p:empty:only-child::before{content:"";display:inline-block}
+ul.checklist>li>p:first-child{margin-left:-1em}
+ul.checklist>li>p:first-child>.fa-square-o:first-child,ul.checklist>li>p:first-child>.fa-check-square-o:first-child{width:1.25em;font-size:.8em;position:relative;bottom:.125em}
+ul.checklist>li>p:first-child>input[type=checkbox]:first-child{margin-right:.25em}
+ul.inline{display:flex;flex-flow:row wrap;list-style:none;margin:0 0 .625em -1.25em}
+ul.inline>li{margin-left:1.25em}
+.unstyled dl dt{font-weight:400;font-style:normal}
+ol.arabic{list-style-type:decimal}
+ol.decimal{list-style-type:decimal-leading-zero}
+ol.loweralpha{list-style-type:lower-alpha}
+ol.upperalpha{list-style-type:upper-alpha}
+ol.lowerroman{list-style-type:lower-roman}
+ol.upperroman{list-style-type:upper-roman}
+ol.lowergreek{list-style-type:lower-greek}
+.hdlist>table,.colist>table{border:0;background:none}
+.hdlist>table>tbody>tr,.colist>table>tbody>tr{background:none}
+td.hdlist1,td.hdlist2{vertical-align:top;padding:0 .625em}
+td.hdlist1{font-weight:bold;padding-bottom:1.25em}
+td.hdlist2{word-wrap:anywhere}
+.literalblock+.colist,.listingblock+.colist{margin-top:-.5em}
+.colist td:not([class]):first-child{padding:.4em .75em 0;line-height:1;vertical-align:top}
+.colist td:not([class]):first-child img{max-width:none}
+.colist td:not([class]):last-child{padding:.25em 0}
+.thumb,.th{line-height:0;display:inline-block;border:4px solid #fff;box-shadow:0 0 0 1px #ddd}
+.imageblock.left{margin:.25em .625em 1.25em 0}
+.imageblock.right{margin:.25em 0 1.25em .625em}
+.imageblock>.title{margin-bottom:0}
+.imageblock.thumb,.imageblock.th{border-width:6px}
+.imageblock.thumb>.title,.imageblock.th>.title{padding:0 .125em}
+.image.left,.image.right{margin-top:.25em;margin-bottom:.25em;display:inline-block;line-height:0}
+.image.left{margin-right:.625em}
+.image.right{margin-left:.625em}
+a.image{text-decoration:none;display:inline-block}
+a.image object{pointer-events:none}
+sup.footnote,sup.footnoteref{font-size:.875em;position:static;vertical-align:super}
+sup.footnote a,sup.footnoteref a{text-decoration:none}
+sup.footnote a:active,sup.footnoteref a:active{text-decoration:underline}
+#footnotes{padding-top:.75em;padding-bottom:.75em;margin-bottom:.625em}
+#footnotes hr{width:20%;min-width:6.25em;margin:-.25em 0 .75em;border-width:1px 0 0}
+#footnotes .footnote{padding:0 .375em 0 .225em;line-height:1.3334;font-size:.875em;margin-left:1.2em;margin-bottom:.2em}
+#footnotes .footnote a:first-of-type{font-weight:bold;text-decoration:none;margin-left:-1.05em}
+#footnotes .footnote:last-of-type{margin-bottom:0}
+#content #footnotes{margin-top:-.625em;margin-bottom:0;padding:.75em 0}
+div.unbreakable{page-break-inside:avoid}
+.big{font-size:larger}
+.small{font-size:smaller}
+.underline{text-decoration:underline}
+.overline{text-decoration:overline}
+.line-through{text-decoration:line-through}
+.aqua{color:#00bfbf}
+.aqua-background{background:#00fafa}
+.black{color:#000}
+.black-background{background:#000}
+.blue{color:#0000bf}
+.blue-background{background:#0000fa}
+.fuchsia{color:#bf00bf}
+.fuchsia-background{background:#fa00fa}
+.gray{color:#606060}
+.gray-background{background:#7d7d7d}
+.green{color:#006000}
+.green-background{background:#007d00}
+.lime{color:#00bf00}
+.lime-background{background:#00fa00}
+.maroon{color:#600000}
+.maroon-background{background:#7d0000}
+.navy{color:#000060}
+.navy-background{background:#00007d}
+.olive{color:#606000}
+.olive-background{background:#7d7d00}
+.purple{color:#600060}
+.purple-background{background:#7d007d}
+.red{color:#bf0000}
+.red-background{background:#fa0000}
+.silver{color:#909090}
+.silver-background{background:#bcbcbc}
+.teal{color:#006060}
+.teal-background{background:#007d7d}
+.white{color:#bfbfbf}
+.white-background{background:#fafafa}
+.yellow{color:#bfbf00}
+.yellow-background{background:#fafa00}
+span.icon>.fa{cursor:default}
+a span.icon>.fa{cursor:inherit}
+.admonitionblock td.icon [class^="fa icon-"]{font-size:2.5em;text-shadow:1px 1px 2px rgba(0,0,0,.5);cursor:default}
+.admonitionblock td.icon .icon-note::before{content:"\f05a";color:#19407c}
+.admonitionblock td.icon .icon-tip::before{content:"\f0eb";text-shadow:1px 1px 2px rgba(155,155,0,.8);color:#111}
+.admonitionblock td.icon .icon-warning::before{content:"\f071";color:#bf6900}
+.admonitionblock td.icon .icon-caution::before{content:"\f06d";color:#bf3400}
+.admonitionblock td.icon .icon-important::before{content:"\f06a";color:#bf0000}
+.conum[data-value]{display:inline-block;color:#fff!important;background:rgba(0,0,0,.8);border-radius:50%;text-align:center;font-size:.75em;width:1.67em;height:1.67em;line-height:1.67em;font-family:"Open Sans","DejaVu Sans",sans-serif;font-style:normal;font-weight:bold}
+.conum[data-value] *{color:#fff!important}
+.conum[data-value]+b{display:none}
+.conum[data-value]::after{content:attr(data-value)}
+pre .conum[data-value]{position:relative;top:-.125em}
+b.conum *{color:inherit!important}
+.conum:not([data-value]):empty{display:none}
+dt,th.tableblock,td.content,div.footnote{text-rendering:optimizeLegibility}
+h1,h2,p,td.content,span.alt,summary{letter-spacing:-.01em}
+p strong,td.content strong,div.footnote strong{letter-spacing:-.005em}
+p,blockquote,dt,td.content,span.alt,summary{font-size:1.0625rem}
+p{margin-bottom:1.25rem}
+.sidebarblock p,.sidebarblock dt,.sidebarblock td.content,p.tableblock{font-size:1em}
+.exampleblock>.content{background:#fffef7;border-color:#e0e0dc;box-shadow:0 1px 4px #e0e0dc}
+.print-only{display:none!important}
+@page{margin:1.25cm .75cm}
+@media print{*{box-shadow:none!important;text-shadow:none!important}
+html{font-size:80%}
+a{color:inherit!important;text-decoration:underline!important}
+a.bare,a[href^="#"],a[href^="mailto:"]{text-decoration:none!important}
+a[href^="http:"]:not(.bare)::after,a[href^="https:"]:not(.bare)::after{content:"(" attr(href) ")";display:inline-block;font-size:.875em;padding-left:.25em}
+abbr[title]{border-bottom:1px dotted}
+abbr[title]::after{content:" (" attr(title) ")"}
+pre,blockquote,tr,img,object,svg{page-break-inside:avoid}
+thead{display:table-header-group}
+svg{max-width:100%}
+p,blockquote,dt,td.content{font-size:1em;orphans:3;widows:3}
+h2,h3,#toctitle,.sidebarblock>.content>.title{page-break-after:avoid}
+#header,#content,#footnotes,#footer{max-width:none}
+#toc,.sidebarblock,.exampleblock>.content{background:none!important}
+#toc{border-bottom:1px solid #dddddf!important;padding-bottom:0!important}
+body.book #header{text-align:center}
+body.book #header>h1:first-child{border:0!important;margin:2.5em 0 1em}
+body.book #header .details{border:0!important;display:block;padding:0!important}
+body.book #header .details span:first-child{margin-left:0!important}
+body.book #header .details br{display:block}
+body.book #header .details br+span::before{content:none!important}
+body.book #toc{border:0!important;text-align:left!important;padding:0!important;margin:0!important}
+body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-break-before:always}
+.listingblock code[data-lang]::before{display:block}
+#footer{padding:0 .9375em}
+.hide-on-print{display:none!important}
+.print-only{display:block!important}
+.hide-for-print{display:none!important}
+.show-for-print{display:inherit!important}}
+@media amzn-kf8,print{#header>h1:first-child{margin-top:1.25rem}
+.sect1{padding:0!important}
+.sect1+.sect1{border:0}
+#footer{background:none}
+#footer-text{color:rgba(0,0,0,.6);font-size:.9em}}
+@media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
+</style>
+</head>
+<body class="article">
+<div id="header">
+<h1>ORM (на примере Hibernate)</h1>
+<div class="details">
+<span id="author" class="author">== Основные понятия JPA и ORM</span><br>
+</div>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p><code>Java Persistence API</code> (<code>JPA</code>) — спецификация, предоставляет возможность сохранять в удобном виде объекты в базе данных. <code>JPA</code> описывает систему управления сохранением объектов в таблицы реляционных баз данных в удобном виде. <code>JPA</code> реализует концепцию <code>ORM</code>.</p>
+</div>
+<div class="paragraph">
+<p><code>ORM</code> — <strong>Object-Relational Mapping</strong> или в переводе на русский <strong>объектно-реляционное отображение</strong>. Это технология программирования, которая связывает базы данных с концепциями объектно-ориентированных языков программирования. Если упростить, то <code>ORM</code> это связь объектов в <code>JAVA</code> и записей в базе данных. Самой популярной на данный момент такой системой является <strong>Hibernate</strong>. Так же к ним можно отнести такие программы как <strong>Eclipselink</strong>, <strong>Toplink</strong>, их ещё называют <strong>JPA-провайдерами</strong>.</p>
+</div>
+<div class="paragraph">
+<p>Непосредственно <code>JPA</code> представлен в пакете <code>javax.persistence</code>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_datasource">DataSource</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><code>DataSource</code> — используется для создания соединения с базой данных. Это альтернатива <code>DriverManager</code> используемого в <code>JDBC</code>. В документации сказано, что <code>DataSource</code> использовать предпочтительнее. В частности, одним из преимуществ <code>DataSource</code> является возможность создания пула соединений <code>Database Connection Pool (DBCP)</code>.</p>
+</div>
+<div class="paragraph">
+<p>Существует много библиотек, которые выступают <code>DataSource</code>. Например, такие, как:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Hikari</strong> – это реализация <code>JDBC DataSource</code>, которая обеспечивает механизм пула соединений. По сравнению с другими реализациями, он обещает быть легким и более производительным. Является самой популярной.</p>
+</li>
+<li>
+<p><strong>Tomcat jdbc pool</strong> - это реализация <code>JDBC DataSource</code> из пакета <code>tomcat-jdbc</code>. Является производительной и предпочтительной для использования.</p>
+</li>
+<li>
+<p><strong>DBCP</strong> и <strong>C3P0</strong> - устаревшие реализации <code>JDBC DataSource</code>, являются однопоточными  и очень непроизводительными.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_entity">Entity</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><code>Entity</code> - это легковесный хранимый объект бизнес логики (<code>persistent domain object</code>), является основной программной сущностью.</p>
+</div>
+<div class="paragraph">
+<p>Главная аннотация <code>@Entity</code> позволяет объектам класса быть связанными с базой данных. Чтобы класс мог быть сущностью, к нему предъявляются следующие требования:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Entity</code> класс должен быть отмечен аннотацией <code>Entity</code> или описан в <code>XML</code> файле конфигурации <code>JPA</code>.</p>
+</li>
+<li>
+<p><code>Entity</code> класс должен содержать <code>public</code> или <code>protected</code> конструктор без аргументов (он также может иметь конструкторы с аргументами).</p>
+</li>
+<li>
+<p><code>Entity</code> класс должен быть классом верхнего уровня.</p>
+</li>
+<li>
+<p><code>Entity</code> класс не может быть enum или интерфейсом.</p>
+</li>
+<li>
+<p><code>Entity</code> класс не может быть финальным классом.</p>
+</li>
+<li>
+<p><code>Entity</code> класс не может содержать финальные поля или методы, если они участвуют маппинге.</p>
+</li>
+<li>
+<p>Если объект <code>Entity</code> класса будет передаваться по значению как отдельный объект, например через удаленный интерфейс он так же должен реализовывать <code>Serializable</code> интерфейс.</p>
+</li>
+<li>
+<p>Поля <code>Entity</code> класс должны быть напрямую доступны только методам самого <code>Entity</code> класса и не должны быть напрямую доступны другим классам, использующим этот <code>Entity</code>.</p>
+</li>
+<li>
+<p><code>Entity</code> класс должен содержать первичный ключ, то есть атрибут или группу атрибутов которые уникально определяют запись этого <code>Entity</code> класса в базе данных.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_типы_ассоциаций_между_entity">Типы ассоциаций между Entity</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Существуют следующие типы ассоциаций:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>@OneToOne</code> - используется тогда, когда сущность одной таблицы связанная с одной сущностью другой таблицы.</p>
+</li>
+<li>
+<p><code>@OneToMany</code> - используется тогда, когда сущность одной таблицы связанная с несколькими сущностями другой таблицы.</p>
+</li>
+<li>
+<p><code>@ManyToOne</code> - используется тогда, когда сущности одной таблицы связанны с одной сущностью другой таблицы.</p>
+</li>
+<li>
+<p><code>@ManyToMany</code> - используется тогда, когда сущности одной таблицы связанны с несколькими сущностями другой таблицы.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Расcмотрим каждую ассоциацию на примере.</p>
+</div>
+<div class="sect2">
+<h3 id="_onetoone_отношение_один_к_одному"><code>@OneToOne</code> — отношение один к одному</h3>
+<div class="paragraph">
+<p>Для того чтобы связать сущности отношением один-к-одному в <code>Hibernate</code> используется аннотация <code>@OneToOne</code>. В целом, может быть 3 варианта ее использования:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Cвязанные сущности используют одно и то же значение первичного ключа.</p>
+</li>
+<li>
+<p>Внешний ключ определяется полем одной из сущностей (это поле в базе данных должно быть уникальным для имитации отношения один-к-одному).</p>
+</li>
+<li>
+<p>Используется таблица для хранения ссылки между двумя сущностями (ограничение уникальности должно быть установлено на каждом из полей для того, чтобы соответствовать кратности один-к-одному).</p>
+</li>
+</ul>
+</div>
+<div class="sect3">
+<h4 id="_cвязанные_сущности_используют_одно_и_то_же_значение_первичного_ключа">Cвязанные сущности используют одно и то же значение первичного ключа</h4>
+<div class="listingblock">
+<div class="title">Сущность User</div>
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@Entity
+@Table(name = "users")
+public class User {
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    /**
+     *  Поля общие для всех пользователей
+     */
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Сущность Partner</div>
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@Entity
+@Table(name = "partners")
+public class Partner {
+    @OneToOne(cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private User user;
+
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    /**
+     * Поля данных партнеров системы
+     */
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Аннотация <code>@PrimaryKeyJoinColumn</code> указывает на то, что первичный ключ сущности <strong>Partner</strong> используется в качестве внешнего ключа для связи с сущностью <strong>User</strong>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_связь_один_к_одному_с_использованием_явного_внешнего_ключа">Связь один-к-одному с использованием явного внешнего ключа</h4>
+<div class="listingblock">
+<div class="title">Сущность User</div>
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@Entity
+@Table(name = "users")
+public class User {
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="passport_id")
+    private Passport passport;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Связь в базе данных между таблицами <strong>users</strong> и <strong>passports</strong> осуществляется посредством поля <strong>passport_id</strong> в таблице <strong>users</strong>. Связанное поле в <strong>User</strong> объявлено с помощью аннотации <code>@JoinColumn</code>, ее параметр обозначает поле в базе данных, которое будет использоваться для создания связи.</p>
+</div>
+<div class="paragraph">
+<p>Связь один-к-одному может быть <strong>двунаправленной</strong>. В двунаправленных отношениях одна из сторон (и только одна) должна быть владельцем и нести ответственность за обновление связанных полей. В случае когда владельцем выступает сущность <strong>User</strong>. Для того чтобы объявить сторону, которая не несет ответственности за отношения, используется атрибут <code>mappedBy</code>. Он ссылается на имя свойства связи на стороне владельца (<strong>passport</strong>).</p>
+</div>
+<div class="listingblock">
+<div class="title">Сущность Passport</div>
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@Entity
+@Table(name = "passports")
+public class Passport {
+
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    @OneToOne(mappedBy = "passport")
+    private User user;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Двунаправленное отношение не создает дополнительного внешнего ключа. Фактически, двунаправленная связь никак не влияет на то, как таблицы связаны друг с другом в базе данных. Просто она позволяет работать с сущностями в обоих направлениях, все также используя единственный внешний ключ. В случае, если на стороне владельца нет связанного поля <code>@JoinColumn</code>, то выполнятся следующие умолчания: в таблице владельца будет создано поле для связи, имя которого собирается из имени связи на стороне владельца, нижнего подчеркивания и имени уникального ключа на зависящей стороне.</p>
+</div>
+<div class="paragraph">
+<p>Преимуществом однонаправленной связи является то, что ею легче управлять, потому что необходимо поддерживать только одну сторону. Преимущество же двунаправленной связи заключается в возможности доступа между связанными сущностями в обоих направлениях. Но обычно это приводит к формированию лишних запросов к базе данных, поэтому использовать двунаправленные связи необходимо осторожно.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_связь_один_к_одному_с_использованием_таблицы_отношений">Связь один-к-одному с использованием таблицы отношений</h4>
+<div class="listingblock">
+<div class="title">Сущность User</div>
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@Entity
+@Table(name = "users")
+public class User {
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinTable(name = "user_passport",
+        joinColumns = @JoinColumn(name="user_id"),
+        inverseJoinColumns = @JoinColumn(name="passport_id")
+    )
+
+    private Passport passport;
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Сущность Passport</div>
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@Entity
+@Table(name = "passports")
+public class Passport {
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    @OneToOne(mappedBy = "passport")
+    private User user;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>В базе данных таблица <strong>users</strong> связана с <strong>passports</strong> с помощью таблицы отношений <strong>user_passport</strong>. Эта таблица содержит внешний ключ <strong>user_id</strong>, указывающий на таблицу <strong>users</strong> и внешний ключ <strong>passport_id</strong>, указывающий на <strong>passports</strong>. <code>@JoinTable</code> позволяет избежать создания отдельной сущности для таблицы отношений <strong>user_passport,</strong> и непосредственно связать сущности <strong>User</strong> и <strong>Password</strong> между собой. Связь может быть двунаправленной точно так же, как в случае с использованием явного внешнего ключа.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_onetomany_и_manytoone"><code>@OneToMany</code> и <code>@ManyToOne</code></h3>
+<div class="paragraph">
+<p><code>@OneToMany</code> — случай, когда у одного автора может быть несколько книг.</p>
+</div>
+<div class="listingblock">
+<div class="title">Сущность Author</div>
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@Data
+@Entity
+@DynamicInsert
+@DynamicUpdate
+@Table(name = "AUTHOR")
+public class Author {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID", nullable = false)
+    private Long id;
+
+    @Column(name = "FIRST_NAME", nullable = false)
+    private String firstName;
+
+    @Column(name = "SECOND_NAME", nullable = false)
+    private String secondName;
+
+    @OneToOne
+    @JoinColumn(name = "BOOK_ID", unique = true, nullable = false)
+    private Book book;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Оно уже является сетом, так как у нас может быть несколько книг. <code>@OneToMany</code> говорит о типе отношения. <code>FetchType.Lazy</code> говорит, что не нужно нам подгружать весь список книг если это не указанно в запросе.
+В классе <strong>Book</strong> устанавливаем обратную связь <code>@ManyToOne</code>:</p>
+</div>
+<div class="listingblock">
+<div class="title">Сущность Book</div>
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@Data
+@Entity
+@DynamicInsert
+@DynamicUpdate
+@Table(name = "BOOK")
+public class Book {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID", nullable = false)
+    private Long id;
+
+    @Column(name = "NAME", nullable = false)
+    private String name;
+
+    @Column(name = "PRINT_YEAR", nullable = false)
+    private int printYear;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "AUTHOR_ID", nullable = false)
+    private Author author;
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_manytomany"><code>@ManyToMany</code></h3>
+<div class="paragraph">
+<p>Такая зависимость реализовывается через создание дополнительной таблицы.
+Допустим ситуацию, когда у нескольких книг может быть несколько авторов, а у авторов – несколько книг.</p>
+</div>
+<div class="listingblock">
+<div class="title">Сущность Author</div>
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@Data
+@ToString(exclude = "books")
+@Entity
+@DynamicInsert
+@DynamicUpdate
+@Table(name = "AUTHOR")
+public class Author {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID", nullable = false)
+    private Long id;
+
+    @Column(name = "FIRST_NAME", nullable = false)
+    private String firstName;
+
+    @Column(name = "SECOND_NAME", nullable = false)
+    private String secondName;
+
+    @ManyToMany
+    @JoinTable(name = "HAS",
+    joinColumns = @JoinColumn(name = "AUTHOR_ID", referencedColumnName = "ID"),
+    inverseJoinColumns = @JoinColumn(name = "BOOK_ID", referencedColumnName = "ID"))
+    private Set&lt;Book&gt; books;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Для связи сущностей создаётся таблица <strong>HAS</strong>.</p>
+</div>
+<div class="paragraph">
+<p><code>@JoinTable</code> — будет связывать атрибут с дополнительной таблицей <strong>HAS</strong>. В ней указываются два атрибута, которые будут указывать на <strong>primary keys</strong> двух сущностей.</p>
+</div>
+<div class="listingblock">
+<div class="title">Сущность Book</div>
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@Data
+@ToString(exclude = "authors")
+@Entity
+@DynamicInsert
+@DynamicUpdate
+@Table(name = "BOOK")
+public class Book {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID", nullable = false)
+    private Long id;
+
+    @Column(name = "NAME", nullable = false)
+    private String name;
+
+    @Column(name = "PRINT_YEAR", nullable = false)
+    private int printYear;
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "books")
+    private Set&lt;Author&gt; authors;
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_стратегии_генерации_первичного_ключа">Стратегии генерации первичного ключа</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Один из главных требований к <code>Entity</code> является наличие первичного ключа.
+В <code>JPA</code> на этот случай предусмотрены механизмы автоматической генерации значений суррогатных ключей, которые включаются аннотацией <code>@GeneratedValue</code>. <code>JPA</code> поддерживает четыре стратегии генерации ключа:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>GenerationType.IDENTITY</code></p>
+</li>
+<li>
+<p><code>GenerationType.SEQUENCE</code></p>
+</li>
+<li>
+<p><code>GenerationType.TABLE</code></p>
+</li>
+<li>
+<p><code>GenerationType.AUTO</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Рассмотрим каждый из них поподробнее.</p>
+</div>
+<div class="sect2">
+<h3 id="_стратегия_generationtype_identity">Стратегия <code>GenerationType.IDENTITY</code></h3>
+<div class="paragraph">
+<p>Такая стратегия работает с базами, у которых есть специальные <code>IDENTITY</code> поля, например с <strong>MySQL</strong> или <strong>DB2</strong>. В таких базах данных возможно создавать первичный ключ с автоматическим инкрементом.</p>
+</div>
+<div class="listingblock">
+<div class="title">Создание таблицы с первичным ключом</div>
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql">CREATE TABLE JOURNAL (ID BIGINT PRIMARY KEY AUTO_INCREMENT);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_стратегия_generationtype_sequence">Стратегия <code>GenerationType.SEQUENCE</code></h3>
+<div class="paragraph">
+<p>Такая стратегия использует встроенный в базы данных, такие как <strong>PostgreSQL</strong> или <strong>Oracle</strong>, механизм генерации последовательных значений. Использование этого генератора требует как создания отдельной <strong>sequence</strong> в базе данных:</p>
+</div>
+<div class="listingblock">
+<div class="title">Создание таблицы с первичным ключом</div>
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql">CREATE TABLE JOURNAL (ID BIGINT PRIMARY KEY);</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Создание последовательности</div>
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql">CREATE SEQUENCE JPA_SEQUENCE START WITH 1 INCREMENT BY 1 NOCACHE NOCYCLE;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Так и задания имени этой последовательности в описании ключа:</p>
+</div>
+<div class="listingblock">
+<div class="title">Создание последовательности</div>
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@Id
+@SequenceGenerator(name = "jpaSequence", sequenceName = "JPA_SEQUENCE")
+@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "jpaSequence")
+@Column(name = "id", nullable = false, updatable = false)
+private Long rowId;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_стратегия_generationtype_table">Стратегия <code>GenerationType.TABLE</code></h3>
+<div class="paragraph">
+<p>Такая стратегия не зависит от поддержки конкретной базой данных и хранит счётчики значений в отдельной таблице. С одной стороны это более гибкое и настраиваемое решение, с другой стороны более медленное и требующее большей настройки. Вначале требуется создать и проинициализировать таблицу для значений ключей:</p>
+</div>
+<div class="listingblock">
+<div class="title">Создание таблицы для сохранения ключей</div>
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql">CREATE TABLE SEQ_STORE
+(SEQ_NAME VARCHAR(255) PRIMARY KEY,
+ SEQ_VALUE BIGINT NOT NULL);</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Entity реализующая стратегию GenerationType.TABLE</div>
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@Id
+@TableGenerator(name = "seqStore", table = "SEQ_STORE", pkColumnName = "SEQ_NAME", pkColumnValue = "JOURNAL.ID.PK", valueColumnName = "SEQ_VALUE", initialValue = 1, allocationSize = 1)
+@GeneratedValue(strategy = GenerationType.TABLE, generator = "seqStore" )
+@Column(name = "id", nullable = false, updatable = false)
+private Long rowId;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_стратегия_generationtype_auto">Стратегия <code>GenerationType.AUTO</code></h3>
+<div class="paragraph">
+<p>Позволяет автоматически выбрать стратегию в соответствии с используемой базой данных.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_fetch_strategies">Fetch strategies</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>В <code>JPA</code> описаны два типа <code>FETCH STRATEGY</code>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>LAZY</code> — данные поля будут загружены только во время первого обращения к этому полю.</p>
+</li>
+<li>
+<p><code>EAGER</code> — данные поля будут загружены сразу, при инициализации корневой сущности.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Каждой ассоциации соответствует своя <code>FETCH STRATEGY</code> по умолчанию:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>@OneToMany</code>: <code>LAZY</code></p>
+</li>
+<li>
+<p><code>@ManyToOne</code>: <code>EAGER</code></p>
+</li>
+<li>
+<p><code>@ManyToMany</code>: <code>LAZY</code></p>
+</li>
+<li>
+<p><code>@OneToOne</code>: <code>EAGER</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>В <code>JPA</code> есть два типа загрузки <code>FetchType</code>: <code>EAGER</code> and <code>LAZY</code>. <code>EAGER</code> загрузка заставляет <code>ORM</code> загружать связанные сущности и коллекции сразу, вместе с корневой сущностью. <code>LAZY</code> загрузка означает, что <code>ORM</code> загрузит сущность или коллекцию отложено, при первом обращении к ней из кода.</p>
+</div>
+<div class="paragraph">
+<p><code>FetchType</code> в <code>JPA</code> говорит когда связанная сущность или коллекция будет загружена. По умолчанию <code>JPA</code> провайдер загружает связанные коллекции (отношения один-ко-многим и многие-ко-многим) отложено. В большинстве случаев отложенная загрузка — оптимальный вариант. Нет смысла инициализировать все связанные коллекции, если к ним не будет обращений.</p>
+</div>
+<div class="sect2">
+<h3 id="_cascadetype_каскадные_типы"><code>CascadeType</code>. Каскадные типы.</h3>
+<div class="paragraph">
+<p><strong>Каскадирование</strong> - когда выполняется какое-либо действие над целевым объектом, то же самое действие будет применено к связанному объекту. Все каскадные операции:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. Каскадные операции</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Параметр</th>
+<th class="tableblock halign-left valign-top">Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>CascadeType.PERSIST</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">При сохранении экземпляра сущности с помощью метода <code>persist()</code> любой связанный экземпляр сущности также перейдёт в хранимое состояние.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>CascadeType.REMOVE</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">При удалении экземпляра сущности с помощью метода <code>remove()</code> любой связанный экземпляр сущности также будет удален.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>CascadeType.DETACH</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">При отсоединении экземпляра сущности от контекста хранения с помощью <code>detach()</code> любой ассоциированный экземпляр сущности также будет отсоединен.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>CascadeType.MERGE</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">При слиянии временной или отсоединенной сущности с контекстом персистентности с помощью <code>merge()</code> для любого связанного временного или отсоединенного экземпляра сущности также будет выполнено слияние.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>CascadeType.REFRESH</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">При изменении экземпляра сущности с помощью <code>refresh()</code> любой связанный экземпляр сущности также будет изменен.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>CascadeType.ALL</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Сокращенная запись для применения всех способов каскадирования.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_состояния_сущности">Состояния сущности</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Сущности могут находиться в следующих состояниях:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>new</code> — объект создан, но при этом ещё не имеет сгенерированных первичных ключей и пока ещё не сохранен в базе данных.</p>
+</li>
+<li>
+<p><code>managed</code> — объект создан, управляется <code>JPA</code>, имеет сгенерированные первичные ключи.</p>
+</li>
+<li>
+<p><code>detache</code> — объект был создан, но не управляется (или больше не управляется) <code>JPA</code>.</p>
+</li>
+<li>
+<p><code>removed</code> — объект создан, управляется <code>JPA</code>, но будет удален после commit&#8217;a транзакции.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Рассмотрим как операция <code>persist()</code> на <code>Entity</code> объекты каждого из четырех статусов:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Если статус у сущности <code>new</code>, то он меняется на <code>managed</code>, и объект будет сохранен в базу при commit&#8217;е транзакции или в результате <code>flush</code> операций.</p>
+</li>
+<li>
+<p>Если статус уже <code>managed</code>, операция игнорируется, однако зависимые <code>Entity</code> могут поменять статус на <code>managed</code>, если у них есть аннотации каскадных изменений.</p>
+</li>
+<li>
+<p>Если статус <code>removed</code>, то он меняется на <code>managed</code>.</p>
+</li>
+<li>
+<p>Если статус <code>detached</code>, будет выкинут <strong>exception</strong> сразу или на этапе commit&#8217;а транзакции.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Рассмотрим как операция <code>remove()</code> на <code>Entity</code> объекты каждого из четырех статусов:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Если статус <code>new</code>, операция игнорируется, однако зависимые <code>Entity</code> могут поменять статус на <code>removed</code>, если у них есть аннотации каскадных изменений и они имели статус <code>managed</code>.</p>
+</li>
+<li>
+<p>Если статус <code>managed</code>, то статус меняется на <code>removed</code> и запись объект в базе данных будет удалена при commit&#8217;е транзакции (так же произойдут операции <code>remove</code> для всех каскадно зависимых объектов).</p>
+</li>
+<li>
+<p>Если статус <code>removed</code>, то операция игнорируется.</p>
+</li>
+<li>
+<p>Если статус <code>detached</code>, будет выкинут <strong>exception</strong> сразу или на этапе commit&#8217;а транзакции.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Рассмотрим как операция <code>merge()</code> на <code>Entity</code> объекты каждого из четырех статусов:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Если статус у сущности <code>detached</code>, то либо данные будет скопированы в существующей <code>managed</code> <code>entity</code> с тем же первичным ключом, либо создан новый <code>managed</code> в который скопируются данные.</p>
+</li>
+<li>
+<p>Если статус <code>new</code>, то будет создана новый <code>managed</code> <code>entity</code>, в который будут скопированы данные прошлого объекта.</p>
+</li>
+<li>
+<p>Если статус <code>managed</code>, операция игнорируется, однако операция <code>merge</code> сработает на каскадно зависимые <code>Entity</code>, если их статус не <code>managed</code>.</p>
+</li>
+<li>
+<p>Если статус <code>removed</code>, будет выкинута ошибка сразу или на этапе commit&#8217;а транзакции.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Рассмотрим как операция <code>refresh()</code> на <code>Entity</code> объекты каждого из четырех статусов:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Если статус у сущности <code>managed</code>, то в результате операции будут восстановлены все изменения из базы данных данного <code>Entity</code>, так же произойдет <code>refresh</code> всех каскадно зависимых объектов.</p>
+</li>
+<li>
+<p>Если статус <code>new</code>, <code>removed</code> или <code>detached</code>, будет выкинут <code>exception</code>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Рассмотрим как операция <code>detach()</code> на <code>Entity</code> объекты каждого из четырех статусов:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Если статус у сущности <code>managed</code> или <code>removed</code>, то в результате операции статус <code>Entity</code> (и всех каскадно-зависимых объектов) станет <code>detached</code>.</p>
+</li>
+<li>
+<p>Если статус new или <code>detached</code>, то операция игнорируется.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_удаление_сирот_orphanremoval">Удаление сирот - orphanRemoval</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Рассмотрим настройку <code>orphanRemoval</code>, которая касается удаления элементов из коллекции. У нас это будет удаление комментария из списка комментариев топика.</p>
+</div>
+<div class="listingblock">
+<div class="title">Сущность Comment</div>
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@Entity
+public class Comment {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private long id;
+    private String text;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Topic topic;
+  // getters/setters/constructors
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Сущность Topic</div>
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@Entity
+public class Topic {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private long id;
+    private String title;
+    @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List&lt;Comment&gt; comments=new ArrayList&lt;&gt;();
+    public void addComment(Comment comment) {
+        comments.add(comment);
+        comment.setTopic(this);
+    }
+    public void removeComment(Comment comment) {
+        comments.remove(comment);
+        comment.setTopic(null);
+    }
+   // getters/setters/constructors
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Следует обратить внимание на метод <code>removeComment()</code>, он удаляет комментарий из коллекции и устанавливает его полю <code>topic</code> значение <code>null</code>.</p>
+</div>
+<div class="paragraph">
+<p>Чтобы понять смысл настройки <code>orphanRemoval</code>, надо представить, что теоретически может подразумеваться под удалением комментария из списка комментариев топика. Очевидно это означает, что у данного топика больше нет комментария.</p>
+</div>
+<div class="paragraph">
+<p>Но остается ли он вообще в базе, то есть можно ли его вывести в общем списке комментариев всех топиков? Или же удаляется из базы? За эти два варианта и отвечает <code>orphanRemoval</code>.</p>
+</div>
+<div class="sect2">
+<h3 id="_orphanremoval_равен_true"><code>orphanRemoval</code> равен <code>true</code></h3>
+<div class="paragraph">
+<p>Если <code>orphanRemoval</code> равен <code>true</code>, то при удалении комментария из списка комментариев топика, он удаляется из базы. Проверим это в тесте:</p>
+</div>
+<div class="listingblock">
+<div class="title">Метод для тестирования работы при <code>orphanRemoval</code> = <code>true</code></div>
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@Test
+@DisplayName("если orphanRomoval=true, то при удалении комментария из топика он удаляется из базы")
+public void givenOrphanRomovalTrue_whenRemoveCommentFromTopic_thenItRemovedFromDatabase() {
+   Topic topic = topicRepository.getById(-1l);
+   topic.removeComment(topic.getComments().get(0));
+   Assertions.assertEquals(2, commentRepository.count());
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Генерируются следующие команды:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql">select topic0_.id as id1_1_0_, comments1_.id as id1_0_1_,
+       topic0_.title as title2_1_0_,
+       comments1_.text as text2_0_1_, comments1_.topic_id as topic_id3_0_1_,
+       comments1_.topic_id as topic_id3_0_0__, comments1_.id as id1_0_0__
+from topic topic0_ inner join comment comments1_
+on topic0_.id=comments1_.topic_id
+where topic0_.id=?
+
+delete from comment where id=?</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Можно заметить оператор <code>delete</code>, он и удаляет комментарий из базы.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_orphanremoval_равен_false"><code>orphanRemoval</code> равен <code>false</code></h3>
+<div class="paragraph">
+<p>Если <code>orphanRemoval</code> равен <code>false</code>, то при удалении комментария из списка, в базе комментарий остается. Его внешний ключ обнуляется, и  больше комментарий не ссылается на топик.</p>
+</div>
+<div class="paragraph">
+<p>Проверим это:</p>
+</div>
+<div class="listingblock">
+<div class="title">Метод для тестирования работы при <code>orphanRemoval</code> = <code>false</code></div>
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@Test
+@DisplayName("если orphanRomoval = false, то при удалении комментария из топика остается в базе")
+public void givenOrphanRomovalFalse_whenRemoveCommentFromTopic_thenItRemovedFromDatabase() {
+    Topic topic = topicRepository.getById(-1l);
+    topic.removeComment(topic.getComments().get(0));
+    Assertions.assertEquals(3, commentRepository.count());
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Генерируются следующие команды:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql">select topic0_.id as id1_1_0_, comments1_.id as id1_0_1_,
+       topic0_.title as title2_1_0_, comments1_.text as text2_0_1_,
+       comments1_.topic_id as topic_id3_0_1_, comments1_.topic_id as topic_id3_0_0__,
+       comments1_.id as id1_0_0__
+from topic topic0_ inner join comment comments1_
+on topic0_.id=comments1_.topic_id
+where topic0_.id=?
+
+update comment set text=?, topic_id=? where id=?</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Здесь происходит обновление таблицы <strong>comment</strong>: столбцу <strong>topic_id</strong> присваивается значение <code>NULL</code>. Комментарий остается в базе, просто ни на какой топик он больше не ссылается. В свою очередь оператор <code>delete</code> отсутствует.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2022-01-24 03:33:52 UTC
+</div>
+</div>
+</body>
+</html>
