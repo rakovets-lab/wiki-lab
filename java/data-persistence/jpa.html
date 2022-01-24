@@ -5,7 +5,6 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.17">
-<meta name="author" content="== Основные понятия JPA и ORM">
 <title>ORM (на примере Hibernate)</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -440,43 +439,41 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <body class="article">
 <div id="header">
 <h1>ORM (на примере Hibernate)</h1>
-<div class="details">
-<span id="author" class="author">== Основные понятия JPA и ORM</span><br>
-</div>
 </div>
 <div id="content">
-<div id="preamble">
+<div class="sect1">
+<h2 id="_основные_понятия_jpa_и_orm">Основные понятия JPA и ORM</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><code>Java Persistence API</code> (<code>JPA</code>) — спецификация, предоставляет возможность сохранять в удобном виде объекты в базе данных. <code>JPA</code> описывает систему управления сохранением объектов в таблицы реляционных баз данных в удобном виде. <code>JPA</code> реализует концепцию <code>ORM</code>.</p>
+<p><strong>Java Persistence API</strong> (<strong>JPA</strong>) — спецификация, предоставляет возможность сохранять в удобном виде объекты в базе данных. <strong>JPA</strong> описывает систему управления сохранением объектов в таблицы реляционных баз данных в удобном виде. <strong>JPA</strong> реализует концепцию <strong>ORM</strong>.</p>
 </div>
 <div class="paragraph">
-<p><code>ORM</code> — <strong>Object-Relational Mapping</strong> или в переводе на русский <strong>объектно-реляционное отображение</strong>. Это технология программирования, которая связывает базы данных с концепциями объектно-ориентированных языков программирования. Если упростить, то <code>ORM</code> это связь объектов в <code>JAVA</code> и записей в базе данных. Самой популярной на данный момент такой системой является <strong>Hibernate</strong>. Так же к ним можно отнести такие программы как <strong>Eclipselink</strong>, <strong>Toplink</strong>, их ещё называют <strong>JPA-провайдерами</strong>.</p>
+<p><strong>ORM</strong> — <strong>Object-Relational Mapping</strong> (<strong>объектно-реляционное отображение</strong>). Это технология программирования, которая связывает базы данных с концепциями объектно-ориентированных языков программирования. Если упростить, то <strong>ORM</strong> это связь объектов в <strong>Java</strong> и записей в базе данных. Самой популярной на данный момент такой системой является <strong>Hibernate</strong>. Так же к ним можно отнести такие программы как <strong>EclipseLink</strong>, <strong>Toplink</strong>, их ещё называют <strong>JPA-провайдерами</strong>.</p>
 </div>
 <div class="paragraph">
-<p>Непосредственно <code>JPA</code> представлен в пакете <code>javax.persistence</code>.</p>
+<p>Непосредственно <strong>JPA</strong> представлен в пакете <code>javax.persistence</code>.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_datasource">DataSource</h2>
+<h2 id="_datasource"><code>DataSource</code></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><code>DataSource</code> — используется для создания соединения с базой данных. Это альтернатива <code>DriverManager</code> используемого в <code>JDBC</code>. В документации сказано, что <code>DataSource</code> использовать предпочтительнее. В частности, одним из преимуществ <code>DataSource</code> является возможность создания пула соединений <code>Database Connection Pool (DBCP)</code>.</p>
+<p><code>DataSource</code> — используется для создания соединения с базой данных. Это альтернатива <code>DriverManager</code> используемого в <code>JDBC</code>. В документации сказано, что <code>DataSource</code> использовать предпочтительнее. В частности, одним из преимуществ <code>DataSource</code> является возможность создания пула соединений <strong>Database Connection Pool</strong> (<strong>DBCP</strong>).</p>
 </div>
 <div class="paragraph">
-<p>Существует много библиотек, которые выступают <code>DataSource</code>. Например, такие, как:</p>
+<p>Существует много библиотек, которые выступают как <code>DataSource</code>. Например, такие, как:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Hikari</strong> – это реализация <code>JDBC DataSource</code>, которая обеспечивает механизм пула соединений. По сравнению с другими реализациями, он обещает быть легким и более производительным. Является самой популярной.</p>
+<p><strong>Hikari</strong> – это реализация <code>DataSource</code>, которая обеспечивает механизм пула соединений. По сравнению с другими реализациями, он обещает быть легким и более производительным. Является самой популярной библиотекой для пула соединений.</p>
 </li>
 <li>
-<p><strong>Tomcat jdbc pool</strong> - это реализация <code>JDBC DataSource</code> из пакета <code>tomcat-jdbc</code>. Является производительной и предпочтительной для использования.</p>
+<p><strong>Tomcat jdbc pool</strong> - это реализация <code>DataSource</code> из пакета <code>tomcat-jdbc</code>. Является достаточно производительной.</p>
 </li>
 <li>
-<p><strong>DBCP</strong> и <strong>C3P0</strong> - устаревшие реализации <code>JDBC DataSource</code>, являются однопоточными  и очень непроизводительными.</p>
+<p><strong>DBCP</strong> и <strong>C3P0</strong> - устаревшие реализации <code>DataSource</code>, являются однопоточными и очень непроизводительными.</p>
 </li>
 </ul>
 </div>
@@ -486,7 +483,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="_entity">Entity</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><code>Entity</code> - это легковесный хранимый объект бизнес логики (<code>persistent domain object</code>), является основной программной сущностью.</p>
+<p><code>Entity</code> - это легковесный хранимый объект бизнес логики (<strong>persistent domain object</strong>), является основной программной сущностью.</p>
 </div>
 <div class="paragraph">
 <p>Главная аннотация <code>@Entity</code> позволяет объектам класса быть связанными с базой данных. Чтобы класс мог быть сущностью, к нему предъявляются следующие требования:</p>
@@ -494,7 +491,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="ulist">
 <ul>
 <li>
-<p><code>Entity</code> класс должен быть отмечен аннотацией <code>Entity</code> или описан в <code>XML</code> файле конфигурации <code>JPA</code>.</p>
+<p><code>Entity</code> класс должен быть отмечен аннотацией <code>Entity</code> или описан в <code>XML</code> файле конфигурации <strong>JPA</strong>.</p>
 </li>
 <li>
 <p><code>Entity</code> класс должен содержать <code>public</code> или <code>protected</code> конструктор без аргументов (он также может иметь конструкторы с аргументами).</p>
@@ -509,7 +506,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p><code>Entity</code> класс не может быть финальным классом.</p>
 </li>
 <li>
-<p><code>Entity</code> класс не может содержать финальные поля или методы, если они участвуют маппинге.</p>
+<p><code>Entity</code> класс не может содержать <strong>final</strong> поля или методы, если они участвуют в mapping.</p>
 </li>
 <li>
 <p>Если объект <code>Entity</code> класса будет передаваться по значению как отдельный объект, например через удаленный интерфейс он так же должен реализовывать <code>Serializable</code> интерфейс.</p>
@@ -546,18 +543,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>Расcмотрим каждую ассоциацию на примере.</p>
-</div>
 <div class="sect2">
-<h3 id="_onetoone_отношение_один_к_одному"><code>@OneToOne</code> — отношение один к одному</h3>
+<h3 id="_onetoone"><code>@OneToOne</code></h3>
 <div class="paragraph">
-<p>Для того чтобы связать сущности отношением один-к-одному в <code>Hibernate</code> используется аннотация <code>@OneToOne</code>. В целом, может быть 3 варианта ее использования:</p>
+<p>Для того чтобы связать сущности отношением один-к-одному, используется аннотация <code>@OneToOne</code>. В целом, может быть 3 варианта ее использования:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Cвязанные сущности используют одно и то же значение первичного ключа.</p>
+<p>Связанные сущности используют одно и то же значение первичного ключа.</p>
 </li>
 <li>
 <p>Внешний ключ определяется полем одной из сущностей (это поле в базе данных должно быть уникальным для имитации отношения один-к-одному).</p>
@@ -568,7 +562,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </ul>
 </div>
 <div class="sect3">
-<h4 id="_cвязанные_сущности_используют_одно_и_то_же_значение_первичного_ключа">Cвязанные сущности используют одно и то же значение первичного ключа</h4>
+<h4 id="_связанные_сущности_используют_одно_и_то_же_значение_первичного_ключа">Связанные сущности используют одно и то же значение первичного ключа</h4>
 <div class="listingblock">
 <div class="title">Сущность User</div>
 <div class="content">
@@ -580,9 +574,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    /**
-     *  Поля общие для всех пользователей
-     */
+    // Поля общие для всех пользователей
 }</code></pre>
 </div>
 </div>
@@ -601,14 +593,12 @@ public class Partner {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    /**
-     * Поля данных партнеров системы
-     */
+    // Поля данных партнеров системы
 }</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Аннотация <code>@PrimaryKeyJoinColumn</code> указывает на то, что первичный ключ сущности <strong>Partner</strong> используется в качестве внешнего ключа для связи с сущностью <strong>User</strong>.</p>
+<p>Аннотация <code>@PrimaryKeyJoinColumn</code> указывает на то, что первичный ключ сущности <code>Partner</code> используется в качестве внешнего ключа для связи с сущностью <code>User</code>.</p>
 </div>
 </div>
 <div class="sect3">
@@ -631,18 +621,17 @@ public class User {
 </div>
 </div>
 <div class="paragraph">
-<p>Связь в базе данных между таблицами <strong>users</strong> и <strong>passports</strong> осуществляется посредством поля <strong>passport_id</strong> в таблице <strong>users</strong>. Связанное поле в <strong>User</strong> объявлено с помощью аннотации <code>@JoinColumn</code>, ее параметр обозначает поле в базе данных, которое будет использоваться для создания связи.</p>
+<p>Связь в базе данных между таблицами <code>users</code> и <code>passports</code> осуществляется посредством поля <code>passport_id</code> в таблице <code>users</code>. Связанное поле в <code>User</code> объявлено с помощью аннотации <code>@JoinColumn</code>, ее параметр обозначает поле в базе данных, которое будет использоваться для создания связи.</p>
 </div>
 <div class="paragraph">
-<p>Связь один-к-одному может быть <strong>двунаправленной</strong>. В двунаправленных отношениях одна из сторон (и только одна) должна быть владельцем и нести ответственность за обновление связанных полей. В случае когда владельцем выступает сущность <strong>User</strong>. Для того чтобы объявить сторону, которая не несет ответственности за отношения, используется атрибут <code>mappedBy</code>. Он ссылается на имя свойства связи на стороне владельца (<strong>passport</strong>).</p>
+<p>Связь один-к-одному может быть <strong>двунаправленной</strong>. В двунаправленных отношениях одна из сторон (и только одна) должна быть владельцем и нести ответственность за обновление связанных полей. В случае когда владельцем выступает сущность <code>User</code>. Для того чтобы объявить сторону, которая не несет ответственности за отношения, используется атрибут <code>mappedBy</code>. Он ссылается на имя свойства связи на стороне владельца (<code>passport</code>).</p>
 </div>
 <div class="listingblock">
-<div class="title">Сущность Passport</div>
+<div class="title">Сущность <code>Passport</code></div>
 <div class="content">
 <pre class="highlight"><code class="language-java" data-lang="java">@Entity
 @Table(name = "passports")
 public class Passport {
-
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -654,16 +643,16 @@ public class Passport {
 </div>
 </div>
 <div class="paragraph">
-<p>Двунаправленное отношение не создает дополнительного внешнего ключа. Фактически, двунаправленная связь никак не влияет на то, как таблицы связаны друг с другом в базе данных. Просто она позволяет работать с сущностями в обоих направлениях, все также используя единственный внешний ключ. В случае, если на стороне владельца нет связанного поля <code>@JoinColumn</code>, то выполнятся следующие умолчания: в таблице владельца будет создано поле для связи, имя которого собирается из имени связи на стороне владельца, нижнего подчеркивания и имени уникального ключа на зависящей стороне.</p>
+<p><strong>Двунаправленное отношение</strong> не создает дополнительного внешнего ключа. Фактически, двунаправленная связь никак не влияет на то, как таблицы связаны друг с другом в базе данных. Просто она позволяет работать с сущностями в обоих направлениях, все также используя единственный внешний ключ. В случае, если на стороне владельца нет связанного поля <code>@JoinColumn</code>, то выполнятся следующие умолчания: в таблице владельца будет создано поле для связи, имя которого собирается из имени связи на стороне владельца, нижнего подчеркивания и имени уникального ключа на зависящей стороне.</p>
 </div>
 <div class="paragraph">
-<p>Преимуществом однонаправленной связи является то, что ею легче управлять, потому что необходимо поддерживать только одну сторону. Преимущество же двунаправленной связи заключается в возможности доступа между связанными сущностями в обоих направлениях. Но обычно это приводит к формированию лишних запросов к базе данных, поэтому использовать двунаправленные связи необходимо осторожно.</p>
+<p>Преимуществом однонаправленной связи, является то, что ею легче управлять, потому что необходимо поддерживать только одну сторону. Преимущество же двунаправленной связи заключается в возможности доступа между связанными сущностями в обоих направлениях. Но обычно это приводит к формированию лишних запросов к базе данных, поэтому использовать двунаправленные связи необходимо осторожно.</p>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_связь_один_к_одному_с_использованием_таблицы_отношений">Связь один-к-одному с использованием таблицы отношений</h4>
 <div class="listingblock">
-<div class="title">Сущность User</div>
+<div class="title">Сущность <code>User</code></div>
 <div class="content">
 <pre class="highlight"><code class="language-java" data-lang="java">@Entity
 @Table(name = "users")
@@ -684,7 +673,7 @@ public class User {
 </div>
 </div>
 <div class="listingblock">
-<div class="title">Сущность Passport</div>
+<div class="title">Сущность <code>Passport</code></div>
 <div class="content">
 <pre class="highlight"><code class="language-java" data-lang="java">@Entity
 @Table(name = "passports")
@@ -700,7 +689,7 @@ public class Passport {
 </div>
 </div>
 <div class="paragraph">
-<p>В базе данных таблица <strong>users</strong> связана с <strong>passports</strong> с помощью таблицы отношений <strong>user_passport</strong>. Эта таблица содержит внешний ключ <strong>user_id</strong>, указывающий на таблицу <strong>users</strong> и внешний ключ <strong>passport_id</strong>, указывающий на <strong>passports</strong>. <code>@JoinTable</code> позволяет избежать создания отдельной сущности для таблицы отношений <strong>user_passport,</strong> и непосредственно связать сущности <strong>User</strong> и <strong>Password</strong> между собой. Связь может быть двунаправленной точно так же, как в случае с использованием явного внешнего ключа.</p>
+<p>В базе данных таблица <code>users</code> связана с <code>passports</code> с помощью таблицы отношений <code>user_passport</code>. Эта таблица содержит внешний ключ <code>user_id</code>, указывающий на таблицу <code>users</code> и внешний ключ <code>passport_id</code>, указывающий на <code>passports</code>. <code>@JoinTable</code> позволяет избежать создания отдельной сущности для таблицы отношений <code>user_passport</code>, и непосредственно связать сущности <code>User</code> и <code>Password</code> между собой. Связь может быть двунаправленной точно так же, как в случае с использованием явного внешнего ключа.</p>
 </div>
 </div>
 </div>
@@ -710,57 +699,55 @@ public class Passport {
 <p><code>@OneToMany</code> — случай, когда у одного автора может быть несколько книг.</p>
 </div>
 <div class="listingblock">
-<div class="title">Сущность Author</div>
+<div class="title">Сущность <code>Author</code></div>
 <div class="content">
 <pre class="highlight"><code class="language-java" data-lang="java">@Data
 @Entity
-@DynamicInsert
-@DynamicUpdate
-@Table(name = "AUTHOR")
+@Table(name = "author")
 public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID", nullable = false)
+    @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "FIRST_NAME", nullable = false)
+    @Column(name = "first_name", nullable = false)
     private String firstName;
 
-    @Column(name = "SECOND_NAME", nullable = false)
-    private String secondName;
+    @Column(name = "last_name", nullable = false)
+    private String lastName;
 
-    @OneToOne
-    @JoinColumn(name = "BOOK_ID", unique = true, nullable = false)
-    private Book book;
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "book_id", unique = true, nullable = false)
+    private Set&lt;Book&gt; books;
 }</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Оно уже является сетом, так как у нас может быть несколько книг. <code>@OneToMany</code> говорит о типе отношения. <code>FetchType.Lazy</code> говорит, что не нужно нам подгружать весь список книг если это не указанно в запросе.
-В классе <strong>Book</strong> устанавливаем обратную связь <code>@ManyToOne</code>:</p>
+<p>Оно уже является сетом, так как у автора может быть несколько книг. <code>@OneToMany</code> говорит о типе отношения. <code>FetchType.LAZY</code> говорит, что не нужно подгружать весь список книг, если это не указанно в запросе.</p>
+</div>
+<div class="paragraph">
+<p>В классе <code>Book</code> устанавливаем обратную связь <code>@ManyToOne</code>:</p>
 </div>
 <div class="listingblock">
-<div class="title">Сущность Book</div>
+<div class="title">Сущность <code>Book</code></div>
 <div class="content">
 <pre class="highlight"><code class="language-java" data-lang="java">@Data
 @Entity
-@DynamicInsert
-@DynamicUpdate
-@Table(name = "BOOK")
+@Table(name = "book")
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID", nullable = false)
+    @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "NAME", nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "PRINT_YEAR", nullable = false)
+    @Column(name = "print_year", nullable = false)
     private int printYear;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "AUTHOR_ID", nullable = false)
+    @JoinColumn(name = "author_id", nullable = false)
     private Author author;
 }</code></pre>
 </div>
@@ -769,8 +756,7 @@ public class Book {
 <div class="sect2">
 <h3 id="_manytomany"><code>@ManyToMany</code></h3>
 <div class="paragraph">
-<p>Такая зависимость реализовывается через создание дополнительной таблицы.
-Допустим ситуацию, когда у нескольких книг может быть несколько авторов, а у авторов – несколько книг.</p>
+<p>Такая зависимость реализовывается через создание дополнительной таблицы. Допустим ситуацию, когда у нескольких книг может быть несколько авторов, а у авторов – несколько книг.</p>
 </div>
 <div class="listingblock">
 <div class="title">Сущность Author</div>
@@ -778,54 +764,52 @@ public class Book {
 <pre class="highlight"><code class="language-java" data-lang="java">@Data
 @ToString(exclude = "books")
 @Entity
-@DynamicInsert
-@DynamicUpdate
-@Table(name = "AUTHOR")
+@Table(name = "author")
 public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID", nullable = false)
+    @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "FIRST_NAME", nullable = false)
+    @Column(name = "first_name", nullable = false)
     private String firstName;
 
-    @Column(name = "SECOND_NAME", nullable = false)
+    @Column(name = "second_name", nullable = false)
     private String secondName;
 
     @ManyToMany
-    @JoinTable(name = "HAS",
-    joinColumns = @JoinColumn(name = "AUTHOR_ID", referencedColumnName = "ID"),
-    inverseJoinColumns = @JoinColumn(name = "BOOK_ID", referencedColumnName = "ID"))
+    @JoinTable(
+            name = "author_book_link",
+            joinColumns = @JoinColumn(name = "author_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id")
+    )
     private Set&lt;Book&gt; books;
 }</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Для связи сущностей создаётся таблица <strong>HAS</strong>.</p>
+<p>Для связи сущностей создаётся таблица <code>author_book_link</code>.</p>
 </div>
 <div class="paragraph">
-<p><code>@JoinTable</code> — будет связывать атрибут с дополнительной таблицей <strong>HAS</strong>. В ней указываются два атрибута, которые будут указывать на <strong>primary keys</strong> двух сущностей.</p>
+<p><code>@JoinTable</code> — будет связывать атрибут с дополнительной таблицей <code>author_book_link</code>. В ней указываются два атрибута, которые будут указывать на <strong>primary keys</strong> двух сущностей.</p>
 </div>
 <div class="listingblock">
-<div class="title">Сущность Book</div>
+<div class="title">Сущность <code>Book</code></div>
 <div class="content">
 <pre class="highlight"><code class="language-java" data-lang="java">@Data
 @ToString(exclude = "authors")
 @Entity
-@DynamicInsert
-@DynamicUpdate
-@Table(name = "BOOK")
+@Table(name = "book")
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID", nullable = false)
+    @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "NAME", nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "PRINT_YEAR", nullable = false)
+    @Column(name = "print_year", nullable = false)
     private int printYear;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "books")
@@ -840,8 +824,10 @@ public class Book {
 <h2 id="_стратегии_генерации_первичного_ключа">Стратегии генерации первичного ключа</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Один из главных требований к <code>Entity</code> является наличие первичного ключа.
-В <code>JPA</code> на этот случай предусмотрены механизмы автоматической генерации значений суррогатных ключей, которые включаются аннотацией <code>@GeneratedValue</code>. <code>JPA</code> поддерживает четыре стратегии генерации ключа:</p>
+<p>Один из главных требований к <code>Entity</code> является наличие первичного ключа. В <strong>JPA</strong> на этот случай предусмотрены механизмы автоматической генерации значений суррогатных ключей, которые включаются аннотацией <code>@GeneratedValue</code>.</p>
+</div>
+<div class="paragraph">
+<p><strong>JPA</strong> поддерживает четыре стратегии генерации ключа:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -859,9 +845,6 @@ public class Book {
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>Рассмотрим каждый из них поподробнее.</p>
-</div>
 <div class="sect2">
 <h3 id="_стратегия_generationtype_identity">Стратегия <code>GenerationType.IDENTITY</code></h3>
 <div class="paragraph">
@@ -870,7 +853,9 @@ public class Book {
 <div class="listingblock">
 <div class="title">Создание таблицы с первичным ключом</div>
 <div class="content">
-<pre class="highlight"><code class="language-sql" data-lang="sql">CREATE TABLE JOURNAL (ID BIGINT PRIMARY KEY AUTO_INCREMENT);</code></pre>
+<pre class="highlight"><code class="language-sql" data-lang="sql">CREATE TABLE journal (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT
+);</code></pre>
 </div>
 </div>
 </div>
@@ -882,13 +867,15 @@ public class Book {
 <div class="listingblock">
 <div class="title">Создание таблицы с первичным ключом</div>
 <div class="content">
-<pre class="highlight"><code class="language-sql" data-lang="sql">CREATE TABLE JOURNAL (ID BIGINT PRIMARY KEY);</code></pre>
+<pre class="highlight"><code class="language-sql" data-lang="sql">CREATE TABLE journal (
+    id BIGINT PRIMARY KEY
+);</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="title">Создание последовательности</div>
 <div class="content">
-<pre class="highlight"><code class="language-sql" data-lang="sql">CREATE SEQUENCE JPA_SEQUENCE START WITH 1 INCREMENT BY 1 NOCACHE NOCYCLE;</code></pre>
+<pre class="highlight"><code class="language-sql" data-lang="sql">CREATE SEQUENCE book_sequence START WITH 1 INCREMENT BY 1 NOCACHE NOCYCLE;</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -897,11 +884,13 @@ public class Book {
 <div class="listingblock">
 <div class="title">Создание последовательности</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Id
-@SequenceGenerator(name = "jpaSequence", sequenceName = "JPA_SEQUENCE")
-@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "jpaSequence")
-@Column(name = "id", nullable = false, updatable = false)
-private Long rowId;</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">private class ExampleEntity {
+    @Id
+    @SequenceGenerator(name = "bookSequence", sequenceName = "book_sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bookSequence")
+    @Column(name = "id", nullable = false, updatable = false)
+    private Long rowId;
+}</code></pre>
 </div>
 </div>
 </div>
@@ -913,19 +902,26 @@ private Long rowId;</code></pre>
 <div class="listingblock">
 <div class="title">Создание таблицы для сохранения ключей</div>
 <div class="content">
-<pre class="highlight"><code class="language-sql" data-lang="sql">CREATE TABLE SEQ_STORE
-(SEQ_NAME VARCHAR(255) PRIMARY KEY,
- SEQ_VALUE BIGINT NOT NULL);</code></pre>
+<pre class="highlight"><code class="language-sql" data-lang="sql">CREATE TABLE sequence_store (
+    sequence_name VARCHAR(255) PRIMARY KEY,
+    sequence_value BIGINT NOT NULL
+);</code></pre>
 </div>
 </div>
 <div class="listingblock">
-<div class="title">Entity реализующая стратегию GenerationType.TABLE</div>
+<div class="title">Entity реализующая стратегию <code>GenerationType.TABLE</code></div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Id
-@TableGenerator(name = "seqStore", table = "SEQ_STORE", pkColumnName = "SEQ_NAME", pkColumnValue = "JOURNAL.ID.PK", valueColumnName = "SEQ_VALUE", initialValue = 1, allocationSize = 1)
-@GeneratedValue(strategy = GenerationType.TABLE, generator = "seqStore" )
-@Column(name = "id", nullable = false, updatable = false)
-private Long rowId;</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">private class ExampleEntity {
+    @Id
+    @TableGenerator(
+            name = "seqStore", table = "sequence_store",
+            pkColumnName = "sequence_name", pkColumnValue = "journal.id.pk",
+            valueColumnName = "sequence_value", initialValue = 1, allocationSize = 1
+    )
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "seqStore" )
+    @Column(name = "id", nullable = false, updatable = false)
+    private Long rowId;
+}</code></pre>
 </div>
 </div>
 </div>
@@ -941,7 +937,7 @@ private Long rowId;</code></pre>
 <h2 id="_fetch_strategies">Fetch strategies</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>В <code>JPA</code> описаны два типа <code>FETCH STRATEGY</code>:</p>
+<p>В <strong>JPA</strong> описаны два типа <strong>Fetch strategies</strong>:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -954,7 +950,7 @@ private Long rowId;</code></pre>
 </ul>
 </div>
 <div class="paragraph">
-<p>Каждой ассоциации соответствует своя <code>FETCH STRATEGY</code> по умолчанию:</p>
+<p>Каждый тип связи имеет свою <strong>Fetch strategy</strong>` по умолчанию:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -973,15 +969,15 @@ private Long rowId;</code></pre>
 </ul>
 </div>
 <div class="paragraph">
-<p>В <code>JPA</code> есть два типа загрузки <code>FetchType</code>: <code>EAGER</code> and <code>LAZY</code>. <code>EAGER</code> загрузка заставляет <code>ORM</code> загружать связанные сущности и коллекции сразу, вместе с корневой сущностью. <code>LAZY</code> загрузка означает, что <code>ORM</code> загрузит сущность или коллекцию отложено, при первом обращении к ней из кода.</p>
+<p>В <strong>JPA</strong> есть два типа загрузки <code>FetchType</code>: <code>EAGER</code> and <code>LAZY</code>. <code>FetchType.EAGER</code> загрузка заставляет <strong>ORM</strong> загружать связанные сущности и коллекции сразу, вместе с корневой сущностью. <code>FetchType.LAZY</code> загрузка означает, что <strong>ORM</strong> загрузит сущность или коллекцию отложено, при первом обращении к ней из кода.</p>
 </div>
 <div class="paragraph">
-<p><code>FetchType</code> в <code>JPA</code> говорит когда связанная сущность или коллекция будет загружена. По умолчанию <code>JPA</code> провайдер загружает связанные коллекции (отношения один-ко-многим и многие-ко-многим) отложено. В большинстве случаев отложенная загрузка — оптимальный вариант. Нет смысла инициализировать все связанные коллекции, если к ним не будет обращений.</p>
+<p><code>FetchType</code> в <strong>JPA</strong> говорит когда связанная сущность или коллекция будет загружена. По умолчанию <strong>JPA</strong> провайдер загружает связанные коллекции (отношения один-ко-многим и многие-ко-многим) отложено. В большинстве случаев отложенная загрузка — оптимальный вариант. Нет смысла инициализировать все связанные коллекции, если к ним не будет обращений.</p>
 </div>
 <div class="sect2">
-<h3 id="_cascadetype_каскадные_типы"><code>CascadeType</code>. Каскадные типы.</h3>
+<h3 id="_каскадные_типы">Каскадные типы</h3>
 <div class="paragraph">
-<p><strong>Каскадирование</strong> - когда выполняется какое-либо действие над целевым объектом, то же самое действие будет применено к связанному объекту. Все каскадные операции:</p>
+<p><strong>Каскадирование</strong> — это стратегия работы со связанными объектами, т.е. когда выполняется какое-либо действие над целевым объектом, то же самое действие будет применено к связанному объекту. Все каскадные операции:</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 1. Каскадные операции</caption>
@@ -1010,7 +1006,7 @@ private Long rowId;</code></pre>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>CascadeType.MERGE</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">При слиянии временной или отсоединенной сущности с контекстом персистентности с помощью <code>merge()</code> для любого связанного временного или отсоединенного экземпляра сущности также будет выполнено слияние.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">При слиянии временной или отсоединенной сущности с <strong>persistence context</strong> с помощью <code>merge()</code> для любого связанного временного или отсоединенного экземпляра сущности также будет выполнено слияние.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>CascadeType.REFRESH</code></p></td>
@@ -1034,16 +1030,16 @@ private Long rowId;</code></pre>
 <div class="ulist">
 <ul>
 <li>
-<p><code>new</code> — объект создан, но при этом ещё не имеет сгенерированных первичных ключей и пока ещё не сохранен в базе данных.</p>
+<p><strong>transient</strong> — объект создан, но при этом ещё не имеет сгенерированных первичных ключей и пока ещё не сохранен в базе данных.</p>
 </li>
 <li>
-<p><code>managed</code> — объект создан, управляется <code>JPA</code>, имеет сгенерированные первичные ключи.</p>
+<p><strong>managed</strong> — объект создан, управляется <strong>JPA</strong>, имеет сгенерированные первичные ключи.</p>
 </li>
 <li>
-<p><code>detache</code> — объект был создан, но не управляется (или больше не управляется) <code>JPA</code>.</p>
+<p><strong>detached</strong> — объект был создан, но не управляется (или больше не управляется) <strong>JPA</strong>.</p>
 </li>
 <li>
-<p><code>removed</code> — объект создан, управляется <code>JPA</code>, но будет удален после commit&#8217;a транзакции.</p>
+<p><strong>removed</strong> — объект создан, управляется <strong>JPA</strong>, но будет удален после завершения транзакции.</p>
 </li>
 </ul>
 </div>
@@ -1053,16 +1049,16 @@ private Long rowId;</code></pre>
 <div class="ulist">
 <ul>
 <li>
-<p>Если статус у сущности <code>new</code>, то он меняется на <code>managed</code>, и объект будет сохранен в базу при commit&#8217;е транзакции или в результате <code>flush</code> операций.</p>
+<p>Если статус у сущности <strong>transient</strong>, то он меняется на <strong>managed</strong>, и объект будет сохранен в базу при завершении транзакции или в результате <code>flush()</code> операций.</p>
 </li>
 <li>
-<p>Если статус уже <code>managed</code>, операция игнорируется, однако зависимые <code>Entity</code> могут поменять статус на <code>managed</code>, если у них есть аннотации каскадных изменений.</p>
+<p>Если статус уже <strong>managed</strong>, операция игнорируется, однако зависимые <code>Entity</code> могут поменять статус на <strong>managed</strong>, если у них есть аннотации каскадных изменений.</p>
 </li>
 <li>
-<p>Если статус <code>removed</code>, то он меняется на <code>managed</code>.</p>
+<p>Если статус <strong>removed</strong>, то он меняется на <strong>managed</strong>.</p>
 </li>
 <li>
-<p>Если статус <code>detached</code>, будет выкинут <strong>exception</strong> сразу или на этапе commit&#8217;а транзакции.</p>
+<p>Если статус <strong>detached</strong>, будет выкинут Exception сразу или на этапе завершении транзакции.</p>
 </li>
 </ul>
 </div>
@@ -1072,16 +1068,16 @@ private Long rowId;</code></pre>
 <div class="ulist">
 <ul>
 <li>
-<p>Если статус <code>new</code>, операция игнорируется, однако зависимые <code>Entity</code> могут поменять статус на <code>removed</code>, если у них есть аннотации каскадных изменений и они имели статус <code>managed</code>.</p>
+<p>Если статус <strong>transient</strong>, операция игнорируется, однако зависимые <code>Entity</code> могут поменять статус на <strong>removed</strong>, если у них есть аннотации каскадных изменений и они имели статус <strong>managed</strong>.</p>
 </li>
 <li>
-<p>Если статус <code>managed</code>, то статус меняется на <code>removed</code> и запись объект в базе данных будет удалена при commit&#8217;е транзакции (так же произойдут операции <code>remove</code> для всех каскадно зависимых объектов).</p>
+<p>Если статус <strong>managed</strong>, то статус меняется на <strong>removed</strong> и запись объект в базе данных будет удалена при завершении транзакции (так же произойдут операции <code>remove</code> для всех каскадно зависимых объектов).</p>
 </li>
 <li>
-<p>Если статус <code>removed</code>, то операция игнорируется.</p>
+<p>Если статус <strong>removed</strong>, то операция игнорируется.</p>
 </li>
 <li>
-<p>Если статус <code>detached</code>, будет выкинут <strong>exception</strong> сразу или на этапе commit&#8217;а транзакции.</p>
+<p>Если статус <strong>detached</strong>, будет выкинут Exception сразу или на этапе завершения транзакции.</p>
 </li>
 </ul>
 </div>
@@ -1091,16 +1087,16 @@ private Long rowId;</code></pre>
 <div class="ulist">
 <ul>
 <li>
-<p>Если статус у сущности <code>detached</code>, то либо данные будет скопированы в существующей <code>managed</code> <code>entity</code> с тем же первичным ключом, либо создан новый <code>managed</code> в который скопируются данные.</p>
+<p>Если статус у сущности <strong>detached</strong>, то либо данные будет скопированы в существующей <strong>managed</strong> <code>entity</code> с тем же первичным ключом, либо создан новый <strong>managed</strong> в который скопируются данные.</p>
 </li>
 <li>
-<p>Если статус <code>new</code>, то будет создана новый <code>managed</code> <code>entity</code>, в который будут скопированы данные прошлого объекта.</p>
+<p>Если статус <strong>transient</strong>, то будет создана новый <strong>managed</strong> <code>entity</code>, в который будут скопированы данные прошлого объекта.</p>
 </li>
 <li>
-<p>Если статус <code>managed</code>, операция игнорируется, однако операция <code>merge</code> сработает на каскадно зависимые <code>Entity</code>, если их статус не <code>managed</code>.</p>
+<p>Если статус <strong>managed</strong>, операция игнорируется, однако операция <code>merge()</code> сработает на каскадно зависимые <code>Entity</code>, если их статус не <strong>managed</strong>.</p>
 </li>
 <li>
-<p>Если статус <code>removed</code>, будет выкинута ошибка сразу или на этапе commit&#8217;а транзакции.</p>
+<p>Если статус <strong>removed</strong>, будет выкинута ошибка сразу или на этапе завершения транзакции.</p>
 </li>
 </ul>
 </div>
@@ -1110,10 +1106,10 @@ private Long rowId;</code></pre>
 <div class="ulist">
 <ul>
 <li>
-<p>Если статус у сущности <code>managed</code>, то в результате операции будут восстановлены все изменения из базы данных данного <code>Entity</code>, так же произойдет <code>refresh</code> всех каскадно зависимых объектов.</p>
+<p>Если статус у сущности <strong>managed</strong>, то в результате операции будут восстановлены все изменения из базы данных данного <code>Entity</code>, так же произойдет <code>refresh()</code> всех каскадно зависимых объектов.</p>
 </li>
 <li>
-<p>Если статус <code>new</code>, <code>removed</code> или <code>detached</code>, будет выкинут <code>exception</code>.</p>
+<p>Если статус <strong>transient</strong>, <strong>removed</strong> или <strong>detached</strong>, будет выброшен Exception.</p>
 </li>
 </ul>
 </div>
@@ -1123,56 +1119,64 @@ private Long rowId;</code></pre>
 <div class="ulist">
 <ul>
 <li>
-<p>Если статус у сущности <code>managed</code> или <code>removed</code>, то в результате операции статус <code>Entity</code> (и всех каскадно-зависимых объектов) станет <code>detached</code>.</p>
+<p>Если статус у сущности <strong>managed</strong> или <strong>removed</strong>, то в результате операции статус <code>Entity</code> (и всех каскадно-зависимых объектов) станет <strong>detached</strong>.</p>
 </li>
 <li>
-<p>Если статус new или <code>detached</code>, то операция игнорируется.</p>
+<p>Если статус <strong>transient</strong> или `<strong>detached</strong>, то операция игнорируется.</p>
 </li>
 </ul>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_удаление_сирот_orphanremoval">Удаление сирот - orphanRemoval</h2>
+<h2 id="_удаление_сирот">Удаление сирот</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Рассмотрим настройку <code>orphanRemoval</code>, которая касается удаления элементов из коллекции. У нас это будет удаление комментария из списка комментариев топика.</p>
 </div>
 <div class="listingblock">
-<div class="title">Сущность Comment</div>
+<div class="title">Сущность <code>Comment</code></div>
 <div class="content">
 <pre class="highlight"><code class="language-java" data-lang="java">@Entity
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
+
     private String text;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private Topic topic;
-  // getters/setters/constructors
+
+    // getters/setters/constructors
 }</code></pre>
 </div>
 </div>
 <div class="listingblock">
-<div class="title">Сущность Topic</div>
+<div class="title">Сущность <code>Topic</code></div>
 <div class="content">
 <pre class="highlight"><code class="language-java" data-lang="java">@Entity
 public class Topic {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
+
     private String title;
+
     @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL, orphanRemoval = true)
     private List&lt;Comment&gt; comments=new ArrayList&lt;&gt;();
+
     public void addComment(Comment comment) {
         comments.add(comment);
         comment.setTopic(this);
     }
+
     public void removeComment(Comment comment) {
         comments.remove(comment);
         comment.setTopic(null);
     }
-   // getters/setters/constructors
+
+    // getters/setters/constructors
 }</code></pre>
 </div>
 </div>
@@ -1191,14 +1195,16 @@ public class Topic {
 <p>Если <code>orphanRemoval</code> равен <code>true</code>, то при удалении комментария из списка комментариев топика, он удаляется из базы. Проверим это в тесте:</p>
 </div>
 <div class="listingblock">
-<div class="title">Метод для тестирования работы при <code>orphanRemoval</code> = <code>true</code></div>
+<div class="title">Метод для тестирования работы <code>orphanRemoval = true</code></div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Test
-@DisplayName("если orphanRomoval=true, то при удалении комментария из топика он удаляется из базы")
-public void givenOrphanRomovalTrue_whenRemoveCommentFromTopic_thenItRemovedFromDatabase() {
-   Topic topic = topicRepository.getById(-1l);
-   topic.removeComment(topic.getComments().get(0));
-   Assertions.assertEquals(2, commentRepository.count());
+<pre class="highlight"><code class="language-java" data-lang="java">private class RemoveTests {
+    @Test
+    @DisplayName("если orphanRemoval=true, то при удалении комментария из топика он удаляется из базы")
+    public void givenOrphanRemovalTrue_whenRemoveCommentFromTopic_thenItRemovedFromDatabase() {
+       Topic topic = topicRepository.getById(-1L);
+       topic.removeComment(topic.getComments().get(0));
+       Assertions.assertEquals(2, commentRepository.count());
+    }
 }</code></pre>
 </div>
 </div>
@@ -1225,20 +1231,22 @@ delete from comment where id=?</code></pre>
 <div class="sect2">
 <h3 id="_orphanremoval_равен_false"><code>orphanRemoval</code> равен <code>false</code></h3>
 <div class="paragraph">
-<p>Если <code>orphanRemoval</code> равен <code>false</code>, то при удалении комментария из списка, в базе комментарий остается. Его внешний ключ обнуляется, и  больше комментарий не ссылается на топик.</p>
+<p>Если <code>orphanRemoval</code> равен <code>false</code>, то при удалении комментария из списка, в базе комментарий остается. Его внешний ключ обнуляется, и  больше комментарий не ссылается на <code>Topic</code>.</p>
 </div>
 <div class="paragraph">
 <p>Проверим это:</p>
 </div>
 <div class="listingblock">
-<div class="title">Метод для тестирования работы при <code>orphanRemoval</code> = <code>false</code></div>
+<div class="title">Метод для тестирования работы <code>orphanRemoval = false</code></div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Test
-@DisplayName("если orphanRomoval = false, то при удалении комментария из топика остается в базе")
-public void givenOrphanRomovalFalse_whenRemoveCommentFromTopic_thenItRemovedFromDatabase() {
-    Topic topic = topicRepository.getById(-1l);
-    topic.removeComment(topic.getComments().get(0));
-    Assertions.assertEquals(3, commentRepository.count());
+<pre class="highlight"><code class="language-java" data-lang="java">private class RemoveTests {
+    @Test
+    @DisplayName("если orphanRemoval = false, то при удалении комментария из топика остается в базе")
+    public void givenOrphanRemovalFalse_whenRemoveCommentFromTopic_thenItRemovedFromDatabase() {
+        Topic topic = topicRepository.getById(-1L);
+        topic.removeComment(topic.getComments().get(0));
+        Assertions.assertEquals(3, commentRepository.count());
+    }
 }</code></pre>
 </div>
 </div>
@@ -1259,7 +1267,7 @@ update comment set text=?, topic_id=? where id=?</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Здесь происходит обновление таблицы <strong>comment</strong>: столбцу <strong>topic_id</strong> присваивается значение <code>NULL</code>. Комментарий остается в базе, просто ни на какой топик он больше не ссылается. В свою очередь оператор <code>delete</code> отсутствует.</p>
+<p>Здесь происходит обновление таблицы <code>comment</code>: столбцу <code>topic_id</code> присваивается значение <code>NULL</code>. Комментарий остается в базе, просто ни на какой <code>Topic</code> он больше не ссылается. В свою очередь оператор <code>delete</code> отсутствует.</p>
 </div>
 </div>
 </div>
@@ -1267,7 +1275,7 @@ update comment set text=?, topic_id=? where id=?</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-01-24 03:33:52 UTC
+Last updated 2022-01-24 04:26:48 UTC
 </div>
 </div>
 </body>

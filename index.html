@@ -677,13 +677,13 @@ pre.rouge {
 <li><a href="#_orm_на_примере_hibernate">6. ORM (на примере Hibernate)</a>
 <ul class="sectlevel2">
 <li><a href="#_основные_понятия_jpa_и_orm">6.1. Основные понятия JPA и ORM</a></li>
-<li><a href="#_datasource">6.2. DataSource</a></li>
+<li><a href="#_datasource">6.2. <code>DataSource</code></a></li>
 <li><a href="#_entity">6.3. Entity</a></li>
 <li><a href="#_типы_ассоциаций_между_entity">6.4. Типы ассоциаций между Entity</a></li>
 <li><a href="#_стратегии_генерации_первичного_ключа">6.5. Стратегии генерации первичного ключа</a></li>
 <li><a href="#_fetch_strategies">6.6. Fetch strategies</a></li>
 <li><a href="#_состояния_сущности">6.7. Состояния сущности</a></li>
-<li><a href="#_удаление_сирот_orphanremoval">6.8. Удаление сирот - orphanRemoval</a></li>
+<li><a href="#_удаление_сирот">6.8. Удаление сирот</a></li>
 </ul>
 </li>
 <li><a href="#_sql">7. SQL</a></li>
@@ -4827,33 +4827,33 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 <div class="sect2">
 <h3 id="_основные_понятия_jpa_и_orm">6.1. Основные понятия JPA и ORM</h3>
 <div class="paragraph">
-<p><code>Java Persistence API</code> (<code>JPA</code>) — спецификация, предоставляет возможность сохранять в удобном виде объекты в базе данных. <code>JPA</code> описывает систему управления сохранением объектов в таблицы реляционных баз данных в удобном виде. <code>JPA</code> реализует концепцию <code>ORM</code>.</p>
+<p><strong>Java Persistence API</strong> (<strong>JPA</strong>) — спецификация, предоставляет возможность сохранять в удобном виде объекты в базе данных. <strong>JPA</strong> описывает систему управления сохранением объектов в таблицы реляционных баз данных в удобном виде. <strong>JPA</strong> реализует концепцию <strong>ORM</strong>.</p>
 </div>
 <div class="paragraph">
-<p><code>ORM</code> — <strong>Object-Relational Mapping</strong> или в переводе на русский <strong>объектно-реляционное отображение</strong>. Это технология программирования, которая связывает базы данных с концепциями объектно-ориентированных языков программирования. Если упростить, то <code>ORM</code> это связь объектов в <code>JAVA</code> и записей в базе данных. Самой популярной на данный момент такой системой является <strong>Hibernate</strong>. Так же к ним можно отнести такие программы как <strong>Eclipselink</strong>, <strong>Toplink</strong>, их ещё называют <strong>JPA-провайдерами</strong>.</p>
+<p><strong>ORM</strong> — <strong>Object-Relational Mapping</strong> (<strong>объектно-реляционное отображение</strong>). Это технология программирования, которая связывает базы данных с концепциями объектно-ориентированных языков программирования. Если упростить, то <strong>ORM</strong> это связь объектов в <strong>Java</strong> и записей в базе данных. Самой популярной на данный момент такой системой является <strong>Hibernate</strong>. Так же к ним можно отнести такие программы как <strong>EclipseLink</strong>, <strong>Toplink</strong>, их ещё называют <strong>JPA-провайдерами</strong>.</p>
 </div>
 <div class="paragraph">
-<p>Непосредственно <code>JPA</code> представлен в пакете <code>javax.persistence</code>.</p>
+<p>Непосредственно <strong>JPA</strong> представлен в пакете <code>javax.persistence</code>.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_datasource">6.2. DataSource</h3>
+<h3 id="_datasource">6.2. <code>DataSource</code></h3>
 <div class="paragraph">
-<p><code>DataSource</code> — используется для создания соединения с базой данных. Это альтернатива <code>DriverManager</code> используемого в <code>JDBC</code>. В документации сказано, что <code>DataSource</code> использовать предпочтительнее. В частности, одним из преимуществ <code>DataSource</code> является возможность создания пула соединений <code>Database Connection Pool (DBCP)</code>.</p>
+<p><code>DataSource</code> — используется для создания соединения с базой данных. Это альтернатива <code>DriverManager</code> используемого в <code>JDBC</code>. В документации сказано, что <code>DataSource</code> использовать предпочтительнее. В частности, одним из преимуществ <code>DataSource</code> является возможность создания пула соединений <strong>Database Connection Pool</strong> (<strong>DBCP</strong>).</p>
 </div>
 <div class="paragraph">
-<p>Существует много библиотек, которые выступают <code>DataSource</code>. Например, такие, как:</p>
+<p>Существует много библиотек, которые выступают как <code>DataSource</code>. Например, такие, как:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Hikari</strong> – это реализация <code>JDBC DataSource</code>, которая обеспечивает механизм пула соединений. По сравнению с другими реализациями, он обещает быть легким и более производительным. Является самой популярной.</p>
+<p><strong>Hikari</strong> – это реализация <code>DataSource</code>, которая обеспечивает механизм пула соединений. По сравнению с другими реализациями, он обещает быть легким и более производительным. Является самой популярной библиотекой для пула соединений.</p>
 </li>
 <li>
-<p><strong>Tomcat jdbc pool</strong> - это реализация <code>JDBC DataSource</code> из пакета <code>tomcat-jdbc</code>. Является производительной и предпочтительной для использования.</p>
+<p><strong>Tomcat jdbc pool</strong> - это реализация <code>DataSource</code> из пакета <code>tomcat-jdbc</code>. Является достаточно производительной.</p>
 </li>
 <li>
-<p><strong>DBCP</strong> и <strong>C3P0</strong> - устаревшие реализации <code>JDBC DataSource</code>, являются однопоточными  и очень непроизводительными.</p>
+<p><strong>DBCP</strong> и <strong>C3P0</strong> - устаревшие реализации <code>DataSource</code>, являются однопоточными и очень непроизводительными.</p>
 </li>
 </ul>
 </div>
@@ -4861,7 +4861,7 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 <div class="sect2">
 <h3 id="_entity">6.3. Entity</h3>
 <div class="paragraph">
-<p><code>Entity</code> - это легковесный хранимый объект бизнес логики (<code>persistent domain object</code>), является основной программной сущностью.</p>
+<p><code>Entity</code> - это легковесный хранимый объект бизнес логики (<strong>persistent domain object</strong>), является основной программной сущностью.</p>
 </div>
 <div class="paragraph">
 <p>Главная аннотация <code>@Entity</code> позволяет объектам класса быть связанными с базой данных. Чтобы класс мог быть сущностью, к нему предъявляются следующие требования:</p>
@@ -4869,7 +4869,7 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 <div class="ulist">
 <ul>
 <li>
-<p><code>Entity</code> класс должен быть отмечен аннотацией <code>Entity</code> или описан в <code>XML</code> файле конфигурации <code>JPA</code>.</p>
+<p><code>Entity</code> класс должен быть отмечен аннотацией <code>Entity</code> или описан в <code>XML</code> файле конфигурации <strong>JPA</strong>.</p>
 </li>
 <li>
 <p><code>Entity</code> класс должен содержать <code>public</code> или <code>protected</code> конструктор без аргументов (он также может иметь конструкторы с аргументами).</p>
@@ -4884,7 +4884,7 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 <p><code>Entity</code> класс не может быть финальным классом.</p>
 </li>
 <li>
-<p><code>Entity</code> класс не может содержать финальные поля или методы, если они участвуют маппинге.</p>
+<p><code>Entity</code> класс не может содержать <strong>final</strong> поля или методы, если они участвуют в mapping.</p>
 </li>
 <li>
 <p>Если объект <code>Entity</code> класса будет передаваться по значению как отдельный объект, например через удаленный интерфейс он так же должен реализовывать <code>Serializable</code> интерфейс.</p>
@@ -4919,18 +4919,15 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>Расcмотрим каждую ассоциацию на примере.</p>
-</div>
 <div class="sect3">
-<h4 id="_onetoone_отношение_один_к_одному">6.4.1. <code>@OneToOne</code> — отношение один к одному</h4>
+<h4 id="_onetoone">6.4.1. <code>@OneToOne</code></h4>
 <div class="paragraph">
-<p>Для того чтобы связать сущности отношением один-к-одному в <code>Hibernate</code> используется аннотация <code>@OneToOne</code>. В целом, может быть 3 варианта ее использования:</p>
+<p>Для того чтобы связать сущности отношением один-к-одному, используется аннотация <code>@OneToOne</code>. В целом, может быть 3 варианта ее использования:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Cвязанные сущности используют одно и то же значение первичного ключа.</p>
+<p>Связанные сущности используют одно и то же значение первичного ключа.</p>
 </li>
 <li>
 <p>Внешний ключ определяется полем одной из сущностей (это поле в базе данных должно быть уникальным для имитации отношения один-к-одному).</p>
@@ -4941,7 +4938,7 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 </ul>
 </div>
 <div class="sect4">
-<h5 id="_cвязанные_сущности_используют_одно_и_то_же_значение_первичного_ключа">Cвязанные сущности используют одно и то же значение первичного ключа</h5>
+<h5 id="_связанные_сущности_используют_одно_и_то_же_значение_первичного_ключа">Связанные сущности используют одно и то же значение первичного ключа</h5>
 <div class="listingblock">
 <div class="title">Сущность User</div>
 <div class="content">
@@ -4953,9 +4950,7 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
     <span class="nd">@GeneratedValue</span><span class="o">(</span><span class="n">strategy</span> <span class="o">=</span> <span class="nc">GenerationType</span><span class="o">.</span><span class="na">AUTO</span><span class="o">)</span>
     <span class="kd">private</span> <span class="nc">Long</span> <span class="n">id</span><span class="o">;</span>
 
-    <span class="cm">/**
-     *  Поля общие для всех пользователей
-     */</span>
+    <span class="c1">// Поля общие для всех пользователей</span>
 <span class="o">}</span></code></pre>
 </div>
 </div>
@@ -4974,14 +4969,12 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
     <span class="nd">@GeneratedValue</span><span class="o">(</span><span class="n">strategy</span> <span class="o">=</span> <span class="nc">GenerationType</span><span class="o">.</span><span class="na">AUTO</span><span class="o">)</span>
     <span class="kd">private</span> <span class="nc">Long</span> <span class="n">id</span><span class="o">;</span>
 
-    <span class="cm">/**
-     * Поля данных партнеров системы
-     */</span>
+    <span class="c1">// Поля данных партнеров системы</span>
 <span class="o">}</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Аннотация <code>@PrimaryKeyJoinColumn</code> указывает на то, что первичный ключ сущности <strong>Partner</strong> используется в качестве внешнего ключа для связи с сущностью <strong>User</strong>.</p>
+<p>Аннотация <code>@PrimaryKeyJoinColumn</code> указывает на то, что первичный ключ сущности <code>Partner</code> используется в качестве внешнего ключа для связи с сущностью <code>User</code>.</p>
 </div>
 </div>
 <div class="sect4">
@@ -5004,18 +4997,17 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 </div>
 </div>
 <div class="paragraph">
-<p>Связь в базе данных между таблицами <strong>users</strong> и <strong>passports</strong> осуществляется посредством поля <strong>passport_id</strong> в таблице <strong>users</strong>. Связанное поле в <strong>User</strong> объявлено с помощью аннотации <code>@JoinColumn</code>, ее параметр обозначает поле в базе данных, которое будет использоваться для создания связи.</p>
+<p>Связь в базе данных между таблицами <code>users</code> и <code>passports</code> осуществляется посредством поля <code>passport_id</code> в таблице <code>users</code>. Связанное поле в <code>User</code> объявлено с помощью аннотации <code>@JoinColumn</code>, ее параметр обозначает поле в базе данных, которое будет использоваться для создания связи.</p>
 </div>
 <div class="paragraph">
-<p>Связь один-к-одному может быть <strong>двунаправленной</strong>. В двунаправленных отношениях одна из сторон (и только одна) должна быть владельцем и нести ответственность за обновление связанных полей. В случае когда владельцем выступает сущность <strong>User</strong>. Для того чтобы объявить сторону, которая не несет ответственности за отношения, используется атрибут <code>mappedBy</code>. Он ссылается на имя свойства связи на стороне владельца (<strong>passport</strong>).</p>
+<p>Связь один-к-одному может быть <strong>двунаправленной</strong>. В двунаправленных отношениях одна из сторон (и только одна) должна быть владельцем и нести ответственность за обновление связанных полей. В случае когда владельцем выступает сущность <code>User</code>. Для того чтобы объявить сторону, которая не несет ответственности за отношения, используется атрибут <code>mappedBy</code>. Он ссылается на имя свойства связи на стороне владельца (<code>passport</code>).</p>
 </div>
 <div class="listingblock">
-<div class="title">Сущность Passport</div>
+<div class="title">Сущность <code>Passport</code></div>
 <div class="content">
 <pre class="rouge highlight"><code data-lang="java"><span class="nd">@Entity</span>
 <span class="nd">@Table</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"passports"</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Passport</span> <span class="o">{</span>
-
     <span class="nd">@Id</span>
     <span class="nd">@Column</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"id"</span><span class="o">)</span>
     <span class="nd">@GeneratedValue</span><span class="o">(</span><span class="n">strategy</span> <span class="o">=</span> <span class="nc">GenerationType</span><span class="o">.</span><span class="na">AUTO</span><span class="o">)</span>
@@ -5027,16 +5019,16 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 </div>
 </div>
 <div class="paragraph">
-<p>Двунаправленное отношение не создает дополнительного внешнего ключа. Фактически, двунаправленная связь никак не влияет на то, как таблицы связаны друг с другом в базе данных. Просто она позволяет работать с сущностями в обоих направлениях, все также используя единственный внешний ключ. В случае, если на стороне владельца нет связанного поля <code>@JoinColumn</code>, то выполнятся следующие умолчания: в таблице владельца будет создано поле для связи, имя которого собирается из имени связи на стороне владельца, нижнего подчеркивания и имени уникального ключа на зависящей стороне.</p>
+<p><strong>Двунаправленное отношение</strong> не создает дополнительного внешнего ключа. Фактически, двунаправленная связь никак не влияет на то, как таблицы связаны друг с другом в базе данных. Просто она позволяет работать с сущностями в обоих направлениях, все также используя единственный внешний ключ. В случае, если на стороне владельца нет связанного поля <code>@JoinColumn</code>, то выполнятся следующие умолчания: в таблице владельца будет создано поле для связи, имя которого собирается из имени связи на стороне владельца, нижнего подчеркивания и имени уникального ключа на зависящей стороне.</p>
 </div>
 <div class="paragraph">
-<p>Преимуществом однонаправленной связи является то, что ею легче управлять, потому что необходимо поддерживать только одну сторону. Преимущество же двунаправленной связи заключается в возможности доступа между связанными сущностями в обоих направлениях. Но обычно это приводит к формированию лишних запросов к базе данных, поэтому использовать двунаправленные связи необходимо осторожно.</p>
+<p>Преимуществом однонаправленной связи, является то, что ею легче управлять, потому что необходимо поддерживать только одну сторону. Преимущество же двунаправленной связи заключается в возможности доступа между связанными сущностями в обоих направлениях. Но обычно это приводит к формированию лишних запросов к базе данных, поэтому использовать двунаправленные связи необходимо осторожно.</p>
 </div>
 </div>
 <div class="sect4">
 <h5 id="_связь_один_к_одному_с_использованием_таблицы_отношений">Связь один-к-одному с использованием таблицы отношений</h5>
 <div class="listingblock">
-<div class="title">Сущность User</div>
+<div class="title">Сущность <code>User</code></div>
 <div class="content">
 <pre class="rouge highlight"><code data-lang="java"><span class="nd">@Entity</span>
 <span class="nd">@Table</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"users"</span><span class="o">)</span>
@@ -5057,7 +5049,7 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 </div>
 </div>
 <div class="listingblock">
-<div class="title">Сущность Passport</div>
+<div class="title">Сущность <code>Passport</code></div>
 <div class="content">
 <pre class="rouge highlight"><code data-lang="java"><span class="nd">@Entity</span>
 <span class="nd">@Table</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"passports"</span><span class="o">)</span>
@@ -5073,7 +5065,7 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 </div>
 </div>
 <div class="paragraph">
-<p>В базе данных таблица <strong>users</strong> связана с <strong>passports</strong> с помощью таблицы отношений <strong>user_passport</strong>. Эта таблица содержит внешний ключ <strong>user_id</strong>, указывающий на таблицу <strong>users</strong> и внешний ключ <strong>passport_id</strong>, указывающий на <strong>passports</strong>. <code>@JoinTable</code> позволяет избежать создания отдельной сущности для таблицы отношений <strong>user_passport,</strong> и непосредственно связать сущности <strong>User</strong> и <strong>Password</strong> между собой. Связь может быть двунаправленной точно так же, как в случае с использованием явного внешнего ключа.</p>
+<p>В базе данных таблица <code>users</code> связана с <code>passports</code> с помощью таблицы отношений <code>user_passport</code>. Эта таблица содержит внешний ключ <code>user_id</code>, указывающий на таблицу <code>users</code> и внешний ключ <code>passport_id</code>, указывающий на <code>passports</code>. <code>@JoinTable</code> позволяет избежать создания отдельной сущности для таблицы отношений <code>user_passport</code>, и непосредственно связать сущности <code>User</code> и <code>Password</code> между собой. Связь может быть двунаправленной точно так же, как в случае с использованием явного внешнего ключа.</p>
 </div>
 </div>
 </div>
@@ -5083,57 +5075,55 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 <p><code>@OneToMany</code> — случай, когда у одного автора может быть несколько книг.</p>
 </div>
 <div class="listingblock">
-<div class="title">Сущность Author</div>
+<div class="title">Сущность <code>Author</code></div>
 <div class="content">
 <pre class="rouge highlight"><code data-lang="java"><span class="nd">@Data</span>
 <span class="nd">@Entity</span>
-<span class="nd">@DynamicInsert</span>
-<span class="nd">@DynamicUpdate</span>
-<span class="nd">@Table</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"AUTHOR"</span><span class="o">)</span>
+<span class="nd">@Table</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"author"</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Author</span> <span class="o">{</span>
     <span class="nd">@Id</span>
     <span class="nd">@GeneratedValue</span><span class="o">(</span><span class="n">strategy</span> <span class="o">=</span> <span class="nc">GenerationType</span><span class="o">.</span><span class="na">IDENTITY</span><span class="o">)</span>
-    <span class="nd">@Column</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"ID"</span><span class="o">,</span> <span class="n">nullable</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
+    <span class="nd">@Column</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"id"</span><span class="o">,</span> <span class="n">nullable</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
     <span class="kd">private</span> <span class="nc">Long</span> <span class="n">id</span><span class="o">;</span>
 
-    <span class="nd">@Column</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"FIRST_NAME"</span><span class="o">,</span> <span class="n">nullable</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
+    <span class="nd">@Column</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"first_name"</span><span class="o">,</span> <span class="n">nullable</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
     <span class="kd">private</span> <span class="nc">String</span> <span class="n">firstName</span><span class="o">;</span>
 
-    <span class="nd">@Column</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"SECOND_NAME"</span><span class="o">,</span> <span class="n">nullable</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
-    <span class="kd">private</span> <span class="nc">String</span> <span class="n">secondName</span><span class="o">;</span>
+    <span class="nd">@Column</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"last_name"</span><span class="o">,</span> <span class="n">nullable</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">lastName</span><span class="o">;</span>
 
-    <span class="nd">@OneToOne</span>
-    <span class="nd">@JoinColumn</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"BOOK_ID"</span><span class="o">,</span> <span class="n">unique</span> <span class="o">=</span> <span class="kc">true</span><span class="o">,</span> <span class="n">nullable</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
-    <span class="kd">private</span> <span class="nc">Book</span> <span class="n">book</span><span class="o">;</span>
+    <span class="nd">@OneToMany</span><span class="o">(</span><span class="n">fetch</span> <span class="o">=</span> <span class="nc">FetchType</span><span class="o">.</span><span class="na">LAZY</span><span class="o">)</span>
+    <span class="nd">@JoinColumn</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"book_id"</span><span class="o">,</span> <span class="n">unique</span> <span class="o">=</span> <span class="kc">true</span><span class="o">,</span> <span class="n">nullable</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
+    <span class="kd">private</span> <span class="nc">Set</span><span class="o">&lt;</span><span class="nc">Book</span><span class="o">&gt;</span> <span class="n">books</span><span class="o">;</span>
 <span class="o">}</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Оно уже является сетом, так как у нас может быть несколько книг. <code>@OneToMany</code> говорит о типе отношения. <code>FetchType.Lazy</code> говорит, что не нужно нам подгружать весь список книг если это не указанно в запросе.
-В классе <strong>Book</strong> устанавливаем обратную связь <code>@ManyToOne</code>:</p>
+<p>Оно уже является сетом, так как у автора может быть несколько книг. <code>@OneToMany</code> говорит о типе отношения. <code>FetchType.LAZY</code> говорит, что не нужно подгружать весь список книг, если это не указанно в запросе.</p>
+</div>
+<div class="paragraph">
+<p>В классе <code>Book</code> устанавливаем обратную связь <code>@ManyToOne</code>:</p>
 </div>
 <div class="listingblock">
-<div class="title">Сущность Book</div>
+<div class="title">Сущность <code>Book</code></div>
 <div class="content">
 <pre class="rouge highlight"><code data-lang="java"><span class="nd">@Data</span>
 <span class="nd">@Entity</span>
-<span class="nd">@DynamicInsert</span>
-<span class="nd">@DynamicUpdate</span>
-<span class="nd">@Table</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"BOOK"</span><span class="o">)</span>
+<span class="nd">@Table</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"book"</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Book</span> <span class="o">{</span>
     <span class="nd">@Id</span>
     <span class="nd">@GeneratedValue</span><span class="o">(</span><span class="n">strategy</span> <span class="o">=</span> <span class="nc">GenerationType</span><span class="o">.</span><span class="na">IDENTITY</span><span class="o">)</span>
-    <span class="nd">@Column</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"ID"</span><span class="o">,</span> <span class="n">nullable</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
+    <span class="nd">@Column</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"id"</span><span class="o">,</span> <span class="n">nullable</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
     <span class="kd">private</span> <span class="nc">Long</span> <span class="n">id</span><span class="o">;</span>
 
-    <span class="nd">@Column</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"NAME"</span><span class="o">,</span> <span class="n">nullable</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
+    <span class="nd">@Column</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"name"</span><span class="o">,</span> <span class="n">nullable</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
     <span class="kd">private</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
 
-    <span class="nd">@Column</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"PRINT_YEAR"</span><span class="o">,</span> <span class="n">nullable</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
+    <span class="nd">@Column</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"print_year"</span><span class="o">,</span> <span class="n">nullable</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
     <span class="kd">private</span> <span class="kt">int</span> <span class="n">printYear</span><span class="o">;</span>
 
     <span class="nd">@ManyToOne</span><span class="o">(</span><span class="n">fetch</span> <span class="o">=</span> <span class="nc">FetchType</span><span class="o">.</span><span class="na">LAZY</span><span class="o">,</span> <span class="n">cascade</span> <span class="o">=</span> <span class="nc">CascadeType</span><span class="o">.</span><span class="na">ALL</span><span class="o">)</span>
-    <span class="nd">@JoinColumn</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"AUTHOR_ID"</span><span class="o">,</span> <span class="n">nullable</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
+    <span class="nd">@JoinColumn</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"author_id"</span><span class="o">,</span> <span class="n">nullable</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
     <span class="kd">private</span> <span class="nc">Author</span> <span class="n">author</span><span class="o">;</span>
 <span class="o">}</span></code></pre>
 </div>
@@ -5142,8 +5132,7 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 <div class="sect3">
 <h4 id="_manytomany">6.4.3. <code>@ManyToMany</code></h4>
 <div class="paragraph">
-<p>Такая зависимость реализовывается через создание дополнительной таблицы.
-Допустим ситуацию, когда у нескольких книг может быть несколько авторов, а у авторов – несколько книг.</p>
+<p>Такая зависимость реализовывается через создание дополнительной таблицы. Допустим ситуацию, когда у нескольких книг может быть несколько авторов, а у авторов – несколько книг.</p>
 </div>
 <div class="listingblock">
 <div class="title">Сущность Author</div>
@@ -5151,54 +5140,52 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 <pre class="rouge highlight"><code data-lang="java"><span class="nd">@Data</span>
 <span class="nd">@ToString</span><span class="o">(</span><span class="n">exclude</span> <span class="o">=</span> <span class="s">"books"</span><span class="o">)</span>
 <span class="nd">@Entity</span>
-<span class="nd">@DynamicInsert</span>
-<span class="nd">@DynamicUpdate</span>
-<span class="nd">@Table</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"AUTHOR"</span><span class="o">)</span>
+<span class="nd">@Table</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"author"</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Author</span> <span class="o">{</span>
     <span class="nd">@Id</span>
     <span class="nd">@GeneratedValue</span><span class="o">(</span><span class="n">strategy</span> <span class="o">=</span> <span class="nc">GenerationType</span><span class="o">.</span><span class="na">IDENTITY</span><span class="o">)</span>
-    <span class="nd">@Column</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"ID"</span><span class="o">,</span> <span class="n">nullable</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
+    <span class="nd">@Column</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"id"</span><span class="o">,</span> <span class="n">nullable</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
     <span class="kd">private</span> <span class="nc">Long</span> <span class="n">id</span><span class="o">;</span>
 
-    <span class="nd">@Column</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"FIRST_NAME"</span><span class="o">,</span> <span class="n">nullable</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
+    <span class="nd">@Column</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"first_name"</span><span class="o">,</span> <span class="n">nullable</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
     <span class="kd">private</span> <span class="nc">String</span> <span class="n">firstName</span><span class="o">;</span>
 
-    <span class="nd">@Column</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"SECOND_NAME"</span><span class="o">,</span> <span class="n">nullable</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
+    <span class="nd">@Column</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"second_name"</span><span class="o">,</span> <span class="n">nullable</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
     <span class="kd">private</span> <span class="nc">String</span> <span class="n">secondName</span><span class="o">;</span>
 
     <span class="nd">@ManyToMany</span>
-    <span class="nd">@JoinTable</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"HAS"</span><span class="o">,</span>
-    <span class="n">joinColumns</span> <span class="o">=</span> <span class="nd">@JoinColumn</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"AUTHOR_ID"</span><span class="o">,</span> <span class="n">referencedColumnName</span> <span class="o">=</span> <span class="s">"ID"</span><span class="o">),</span>
-    <span class="n">inverseJoinColumns</span> <span class="o">=</span> <span class="nd">@JoinColumn</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"BOOK_ID"</span><span class="o">,</span> <span class="n">referencedColumnName</span> <span class="o">=</span> <span class="s">"ID"</span><span class="o">))</span>
+    <span class="nd">@JoinTable</span><span class="o">(</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="s">"author_book_link"</span><span class="o">,</span>
+            <span class="n">joinColumns</span> <span class="o">=</span> <span class="nd">@JoinColumn</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"author_id"</span><span class="o">,</span> <span class="n">referencedColumnName</span> <span class="o">=</span> <span class="s">"id"</span><span class="o">),</span>
+            <span class="n">inverseJoinColumns</span> <span class="o">=</span> <span class="nd">@JoinColumn</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"book_id"</span><span class="o">,</span> <span class="n">referencedColumnName</span> <span class="o">=</span> <span class="s">"id"</span><span class="o">)</span>
+    <span class="o">)</span>
     <span class="kd">private</span> <span class="nc">Set</span><span class="o">&lt;</span><span class="nc">Book</span><span class="o">&gt;</span> <span class="n">books</span><span class="o">;</span>
 <span class="o">}</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Для связи сущностей создаётся таблица <strong>HAS</strong>.</p>
+<p>Для связи сущностей создаётся таблица <code>author_book_link</code>.</p>
 </div>
 <div class="paragraph">
-<p><code>@JoinTable</code> — будет связывать атрибут с дополнительной таблицей <strong>HAS</strong>. В ней указываются два атрибута, которые будут указывать на <strong>primary keys</strong> двух сущностей.</p>
+<p><code>@JoinTable</code> — будет связывать атрибут с дополнительной таблицей <code>author_book_link</code>. В ней указываются два атрибута, которые будут указывать на <strong>primary keys</strong> двух сущностей.</p>
 </div>
 <div class="listingblock">
-<div class="title">Сущность Book</div>
+<div class="title">Сущность <code>Book</code></div>
 <div class="content">
 <pre class="rouge highlight"><code data-lang="java"><span class="nd">@Data</span>
 <span class="nd">@ToString</span><span class="o">(</span><span class="n">exclude</span> <span class="o">=</span> <span class="s">"authors"</span><span class="o">)</span>
 <span class="nd">@Entity</span>
-<span class="nd">@DynamicInsert</span>
-<span class="nd">@DynamicUpdate</span>
-<span class="nd">@Table</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"BOOK"</span><span class="o">)</span>
+<span class="nd">@Table</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"book"</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Book</span> <span class="o">{</span>
     <span class="nd">@Id</span>
     <span class="nd">@GeneratedValue</span><span class="o">(</span><span class="n">strategy</span> <span class="o">=</span> <span class="nc">GenerationType</span><span class="o">.</span><span class="na">IDENTITY</span><span class="o">)</span>
-    <span class="nd">@Column</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"ID"</span><span class="o">,</span> <span class="n">nullable</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
+    <span class="nd">@Column</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"id"</span><span class="o">,</span> <span class="n">nullable</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
     <span class="kd">private</span> <span class="nc">Long</span> <span class="n">id</span><span class="o">;</span>
 
-    <span class="nd">@Column</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"NAME"</span><span class="o">,</span> <span class="n">nullable</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
+    <span class="nd">@Column</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"name"</span><span class="o">,</span> <span class="n">nullable</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
     <span class="kd">private</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
 
-    <span class="nd">@Column</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"PRINT_YEAR"</span><span class="o">,</span> <span class="n">nullable</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
+    <span class="nd">@Column</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"print_year"</span><span class="o">,</span> <span class="n">nullable</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
     <span class="kd">private</span> <span class="kt">int</span> <span class="n">printYear</span><span class="o">;</span>
 
     <span class="nd">@ManyToMany</span><span class="o">(</span><span class="n">fetch</span> <span class="o">=</span> <span class="nc">FetchType</span><span class="o">.</span><span class="na">LAZY</span><span class="o">,</span> <span class="n">mappedBy</span> <span class="o">=</span> <span class="s">"books"</span><span class="o">)</span>
@@ -5211,8 +5198,10 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 <div class="sect2">
 <h3 id="_стратегии_генерации_первичного_ключа">6.5. Стратегии генерации первичного ключа</h3>
 <div class="paragraph">
-<p>Один из главных требований к <code>Entity</code> является наличие первичного ключа.
-В <code>JPA</code> на этот случай предусмотрены механизмы автоматической генерации значений суррогатных ключей, которые включаются аннотацией <code>@GeneratedValue</code>. <code>JPA</code> поддерживает четыре стратегии генерации ключа:</p>
+<p>Один из главных требований к <code>Entity</code> является наличие первичного ключа. В <strong>JPA</strong> на этот случай предусмотрены механизмы автоматической генерации значений суррогатных ключей, которые включаются аннотацией <code>@GeneratedValue</code>.</p>
+</div>
+<div class="paragraph">
+<p><strong>JPA</strong> поддерживает четыре стратегии генерации ключа:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -5230,9 +5219,6 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>Рассмотрим каждый из них поподробнее.</p>
-</div>
 <div class="sect3">
 <h4 id="_стратегия_generationtype_identity">6.5.1. Стратегия <code>GenerationType.IDENTITY</code></h4>
 <div class="paragraph">
@@ -5241,7 +5227,9 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 <div class="listingblock">
 <div class="title">Создание таблицы с первичным ключом</div>
 <div class="content">
-<pre class="rouge highlight"><code data-lang="sql"><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">JOURNAL</span> <span class="p">(</span><span class="n">ID</span> <span class="nb">BIGINT</span> <span class="k">PRIMARY</span> <span class="k">KEY</span> <span class="n">AUTO_INCREMENT</span><span class="p">);</span></code></pre>
+<pre class="rouge highlight"><code data-lang="sql"><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">journal</span> <span class="p">(</span>
+    <span class="n">id</span> <span class="nb">BIGINT</span> <span class="k">PRIMARY</span> <span class="k">KEY</span> <span class="n">AUTO_INCREMENT</span>
+<span class="p">);</span></code></pre>
 </div>
 </div>
 </div>
@@ -5253,13 +5241,15 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 <div class="listingblock">
 <div class="title">Создание таблицы с первичным ключом</div>
 <div class="content">
-<pre class="rouge highlight"><code data-lang="sql"><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">JOURNAL</span> <span class="p">(</span><span class="n">ID</span> <span class="nb">BIGINT</span> <span class="k">PRIMARY</span> <span class="k">KEY</span><span class="p">);</span></code></pre>
+<pre class="rouge highlight"><code data-lang="sql"><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">journal</span> <span class="p">(</span>
+    <span class="n">id</span> <span class="nb">BIGINT</span> <span class="k">PRIMARY</span> <span class="k">KEY</span>
+<span class="p">);</span></code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="title">Создание последовательности</div>
 <div class="content">
-<pre class="rouge highlight"><code data-lang="sql"><span class="k">CREATE</span> <span class="n">SEQUENCE</span> <span class="n">JPA_SEQUENCE</span> <span class="k">START</span> <span class="k">WITH</span> <span class="mi">1</span> <span class="k">INCREMENT</span> <span class="k">BY</span> <span class="mi">1</span> <span class="n">NOCACHE</span> <span class="n">NOCYCLE</span><span class="p">;</span></code></pre>
+<pre class="rouge highlight"><code data-lang="sql"><span class="k">CREATE</span> <span class="n">SEQUENCE</span> <span class="n">book_sequence</span> <span class="k">START</span> <span class="k">WITH</span> <span class="mi">1</span> <span class="k">INCREMENT</span> <span class="k">BY</span> <span class="mi">1</span> <span class="n">NOCACHE</span> <span class="n">NOCYCLE</span><span class="p">;</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -5268,11 +5258,13 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 <div class="listingblock">
 <div class="title">Создание последовательности</div>
 <div class="content">
-<pre class="rouge highlight"><code data-lang="java"><span class="nd">@Id</span>
-<span class="nd">@SequenceGenerator</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"jpaSequence"</span><span class="o">,</span> <span class="n">sequenceName</span> <span class="o">=</span> <span class="s">"JPA_SEQUENCE"</span><span class="o">)</span>
-<span class="nd">@GeneratedValue</span><span class="o">(</span><span class="n">strategy</span> <span class="o">=</span> <span class="nc">GenerationType</span><span class="o">.</span><span class="na">SEQUENCE</span><span class="o">,</span> <span class="n">generator</span> <span class="o">=</span> <span class="s">"jpaSequence"</span><span class="o">)</span>
-<span class="nd">@Column</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"id"</span><span class="o">,</span> <span class="n">nullable</span> <span class="o">=</span> <span class="kc">false</span><span class="o">,</span> <span class="n">updatable</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
-<span class="kd">private</span> <span class="nc">Long</span> <span class="n">rowId</span><span class="o">;</span></code></pre>
+<pre class="rouge highlight"><code data-lang="java"><span class="kd">private</span> <span class="kd">class</span> <span class="nc">ExampleEntity</span> <span class="o">{</span>
+    <span class="nd">@Id</span>
+    <span class="nd">@SequenceGenerator</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"bookSequence"</span><span class="o">,</span> <span class="n">sequenceName</span> <span class="o">=</span> <span class="s">"book_sequence"</span><span class="o">)</span>
+    <span class="nd">@GeneratedValue</span><span class="o">(</span><span class="n">strategy</span> <span class="o">=</span> <span class="nc">GenerationType</span><span class="o">.</span><span class="na">SEQUENCE</span><span class="o">,</span> <span class="n">generator</span> <span class="o">=</span> <span class="s">"bookSequence"</span><span class="o">)</span>
+    <span class="nd">@Column</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"id"</span><span class="o">,</span> <span class="n">nullable</span> <span class="o">=</span> <span class="kc">false</span><span class="o">,</span> <span class="n">updatable</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
+    <span class="kd">private</span> <span class="nc">Long</span> <span class="n">rowId</span><span class="o">;</span>
+<span class="o">}</span></code></pre>
 </div>
 </div>
 </div>
@@ -5284,19 +5276,26 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 <div class="listingblock">
 <div class="title">Создание таблицы для сохранения ключей</div>
 <div class="content">
-<pre class="rouge highlight"><code data-lang="sql"><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">SEQ_STORE</span>
-<span class="p">(</span><span class="n">SEQ_NAME</span> <span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span> <span class="k">PRIMARY</span> <span class="k">KEY</span><span class="p">,</span>
- <span class="n">SEQ_VALUE</span> <span class="nb">BIGINT</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">);</span></code></pre>
+<pre class="rouge highlight"><code data-lang="sql"><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">sequence_store</span> <span class="p">(</span>
+    <span class="n">sequence_name</span> <span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span> <span class="k">PRIMARY</span> <span class="k">KEY</span><span class="p">,</span>
+    <span class="n">sequence_value</span> <span class="nb">BIGINT</span> <span class="k">NOT</span> <span class="k">NULL</span>
+<span class="p">);</span></code></pre>
 </div>
 </div>
 <div class="listingblock">
-<div class="title">Entity реализующая стратегию GenerationType.TABLE</div>
+<div class="title">Entity реализующая стратегию <code>GenerationType.TABLE</code></div>
 <div class="content">
-<pre class="rouge highlight"><code data-lang="java"><span class="nd">@Id</span>
-<span class="nd">@TableGenerator</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"seqStore"</span><span class="o">,</span> <span class="n">table</span> <span class="o">=</span> <span class="s">"SEQ_STORE"</span><span class="o">,</span> <span class="n">pkColumnName</span> <span class="o">=</span> <span class="s">"SEQ_NAME"</span><span class="o">,</span> <span class="n">pkColumnValue</span> <span class="o">=</span> <span class="s">"JOURNAL.ID.PK"</span><span class="o">,</span> <span class="n">valueColumnName</span> <span class="o">=</span> <span class="s">"SEQ_VALUE"</span><span class="o">,</span> <span class="n">initialValue</span> <span class="o">=</span> <span class="mi">1</span><span class="o">,</span> <span class="n">allocationSize</span> <span class="o">=</span> <span class="mi">1</span><span class="o">)</span>
-<span class="nd">@GeneratedValue</span><span class="o">(</span><span class="n">strategy</span> <span class="o">=</span> <span class="nc">GenerationType</span><span class="o">.</span><span class="na">TABLE</span><span class="o">,</span> <span class="n">generator</span> <span class="o">=</span> <span class="s">"seqStore"</span> <span class="o">)</span>
-<span class="nd">@Column</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"id"</span><span class="o">,</span> <span class="n">nullable</span> <span class="o">=</span> <span class="kc">false</span><span class="o">,</span> <span class="n">updatable</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
-<span class="kd">private</span> <span class="nc">Long</span> <span class="n">rowId</span><span class="o">;</span></code></pre>
+<pre class="rouge highlight"><code data-lang="java"><span class="kd">private</span> <span class="kd">class</span> <span class="nc">ExampleEntity</span> <span class="o">{</span>
+    <span class="nd">@Id</span>
+    <span class="nd">@TableGenerator</span><span class="o">(</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="s">"seqStore"</span><span class="o">,</span> <span class="n">table</span> <span class="o">=</span> <span class="s">"sequence_store"</span><span class="o">,</span>
+            <span class="n">pkColumnName</span> <span class="o">=</span> <span class="s">"sequence_name"</span><span class="o">,</span> <span class="n">pkColumnValue</span> <span class="o">=</span> <span class="s">"journal.id.pk"</span><span class="o">,</span>
+            <span class="n">valueColumnName</span> <span class="o">=</span> <span class="s">"sequence_value"</span><span class="o">,</span> <span class="n">initialValue</span> <span class="o">=</span> <span class="mi">1</span><span class="o">,</span> <span class="n">allocationSize</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="o">)</span>
+    <span class="nd">@GeneratedValue</span><span class="o">(</span><span class="n">strategy</span> <span class="o">=</span> <span class="nc">GenerationType</span><span class="o">.</span><span class="na">TABLE</span><span class="o">,</span> <span class="n">generator</span> <span class="o">=</span> <span class="s">"seqStore"</span> <span class="o">)</span>
+    <span class="nd">@Column</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"id"</span><span class="o">,</span> <span class="n">nullable</span> <span class="o">=</span> <span class="kc">false</span><span class="o">,</span> <span class="n">updatable</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
+    <span class="kd">private</span> <span class="nc">Long</span> <span class="n">rowId</span><span class="o">;</span>
+<span class="o">}</span></code></pre>
 </div>
 </div>
 </div>
@@ -5310,7 +5309,7 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 <div class="sect2">
 <h3 id="_fetch_strategies">6.6. Fetch strategies</h3>
 <div class="paragraph">
-<p>В <code>JPA</code> описаны два типа <code>FETCH STRATEGY</code>:</p>
+<p>В <strong>JPA</strong> описаны два типа <strong>Fetch strategies</strong>:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -5323,7 +5322,7 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 </ul>
 </div>
 <div class="paragraph">
-<p>Каждой ассоциации соответствует своя <code>FETCH STRATEGY</code> по умолчанию:</p>
+<p>Каждый тип связи имеет свою <strong>Fetch strategy</strong>` по умолчанию:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -5342,15 +5341,15 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 </ul>
 </div>
 <div class="paragraph">
-<p>В <code>JPA</code> есть два типа загрузки <code>FetchType</code>: <code>EAGER</code> and <code>LAZY</code>. <code>EAGER</code> загрузка заставляет <code>ORM</code> загружать связанные сущности и коллекции сразу, вместе с корневой сущностью. <code>LAZY</code> загрузка означает, что <code>ORM</code> загрузит сущность или коллекцию отложено, при первом обращении к ней из кода.</p>
+<p>В <strong>JPA</strong> есть два типа загрузки <code>FetchType</code>: <code>EAGER</code> and <code>LAZY</code>. <code>FetchType.EAGER</code> загрузка заставляет <strong>ORM</strong> загружать связанные сущности и коллекции сразу, вместе с корневой сущностью. <code>FetchType.LAZY</code> загрузка означает, что <strong>ORM</strong> загрузит сущность или коллекцию отложено, при первом обращении к ней из кода.</p>
 </div>
 <div class="paragraph">
-<p><code>FetchType</code> в <code>JPA</code> говорит когда связанная сущность или коллекция будет загружена. По умолчанию <code>JPA</code> провайдер загружает связанные коллекции (отношения один-ко-многим и многие-ко-многим) отложено. В большинстве случаев отложенная загрузка — оптимальный вариант. Нет смысла инициализировать все связанные коллекции, если к ним не будет обращений.</p>
+<p><code>FetchType</code> в <strong>JPA</strong> говорит когда связанная сущность или коллекция будет загружена. По умолчанию <strong>JPA</strong> провайдер загружает связанные коллекции (отношения один-ко-многим и многие-ко-многим) отложено. В большинстве случаев отложенная загрузка — оптимальный вариант. Нет смысла инициализировать все связанные коллекции, если к ним не будет обращений.</p>
 </div>
 <div class="sect3">
-<h4 id="_cascadetype_каскадные_типы">6.6.1. <code>CascadeType</code>. Каскадные типы.</h4>
+<h4 id="_каскадные_типы">6.6.1. Каскадные типы</h4>
 <div class="paragraph">
-<p><strong>Каскадирование</strong> - когда выполняется какое-либо действие над целевым объектом, то же самое действие будет применено к связанному объекту. Все каскадные операции:</p>
+<p><strong>Каскадирование</strong> — это стратегия работы со связанными объектами, т.е. когда выполняется какое-либо действие над целевым объектом, то же самое действие будет применено к связанному объекту. Все каскадные операции:</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 1. Каскадные операции</caption>
@@ -5379,7 +5378,7 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>CascadeType.MERGE</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">При слиянии временной или отсоединенной сущности с контекстом персистентности с помощью <code>merge()</code> для любого связанного временного или отсоединенного экземпляра сущности также будет выполнено слияние.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">При слиянии временной или отсоединенной сущности с <strong>persistence context</strong> с помощью <code>merge()</code> для любого связанного временного или отсоединенного экземпляра сущности также будет выполнено слияние.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>CascadeType.REFRESH</code></p></td>
@@ -5401,16 +5400,16 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 <div class="ulist">
 <ul>
 <li>
-<p><code>new</code> — объект создан, но при этом ещё не имеет сгенерированных первичных ключей и пока ещё не сохранен в базе данных.</p>
+<p><strong>transient</strong> — объект создан, но при этом ещё не имеет сгенерированных первичных ключей и пока ещё не сохранен в базе данных.</p>
 </li>
 <li>
-<p><code>managed</code> — объект создан, управляется <code>JPA</code>, имеет сгенерированные первичные ключи.</p>
+<p><strong>managed</strong> — объект создан, управляется <strong>JPA</strong>, имеет сгенерированные первичные ключи.</p>
 </li>
 <li>
-<p><code>detache</code> — объект был создан, но не управляется (или больше не управляется) <code>JPA</code>.</p>
+<p><strong>detached</strong> — объект был создан, но не управляется (или больше не управляется) <strong>JPA</strong>.</p>
 </li>
 <li>
-<p><code>removed</code> — объект создан, управляется <code>JPA</code>, но будет удален после commit&#8217;a транзакции.</p>
+<p><strong>removed</strong> — объект создан, управляется <strong>JPA</strong>, но будет удален после завершения транзакции.</p>
 </li>
 </ul>
 </div>
@@ -5420,16 +5419,16 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 <div class="ulist">
 <ul>
 <li>
-<p>Если статус у сущности <code>new</code>, то он меняется на <code>managed</code>, и объект будет сохранен в базу при commit&#8217;е транзакции или в результате <code>flush</code> операций.</p>
+<p>Если статус у сущности <strong>transient</strong>, то он меняется на <strong>managed</strong>, и объект будет сохранен в базу при завершении транзакции или в результате <code>flush()</code> операций.</p>
 </li>
 <li>
-<p>Если статус уже <code>managed</code>, операция игнорируется, однако зависимые <code>Entity</code> могут поменять статус на <code>managed</code>, если у них есть аннотации каскадных изменений.</p>
+<p>Если статус уже <strong>managed</strong>, операция игнорируется, однако зависимые <code>Entity</code> могут поменять статус на <strong>managed</strong>, если у них есть аннотации каскадных изменений.</p>
 </li>
 <li>
-<p>Если статус <code>removed</code>, то он меняется на <code>managed</code>.</p>
+<p>Если статус <strong>removed</strong>, то он меняется на <strong>managed</strong>.</p>
 </li>
 <li>
-<p>Если статус <code>detached</code>, будет выкинут <strong>exception</strong> сразу или на этапе commit&#8217;а транзакции.</p>
+<p>Если статус <strong>detached</strong>, будет выкинут Exception сразу или на этапе завершении транзакции.</p>
 </li>
 </ul>
 </div>
@@ -5439,16 +5438,16 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 <div class="ulist">
 <ul>
 <li>
-<p>Если статус <code>new</code>, операция игнорируется, однако зависимые <code>Entity</code> могут поменять статус на <code>removed</code>, если у них есть аннотации каскадных изменений и они имели статус <code>managed</code>.</p>
+<p>Если статус <strong>transient</strong>, операция игнорируется, однако зависимые <code>Entity</code> могут поменять статус на <strong>removed</strong>, если у них есть аннотации каскадных изменений и они имели статус <strong>managed</strong>.</p>
 </li>
 <li>
-<p>Если статус <code>managed</code>, то статус меняется на <code>removed</code> и запись объект в базе данных будет удалена при commit&#8217;е транзакции (так же произойдут операции <code>remove</code> для всех каскадно зависимых объектов).</p>
+<p>Если статус <strong>managed</strong>, то статус меняется на <strong>removed</strong> и запись объект в базе данных будет удалена при завершении транзакции (так же произойдут операции <code>remove</code> для всех каскадно зависимых объектов).</p>
 </li>
 <li>
-<p>Если статус <code>removed</code>, то операция игнорируется.</p>
+<p>Если статус <strong>removed</strong>, то операция игнорируется.</p>
 </li>
 <li>
-<p>Если статус <code>detached</code>, будет выкинут <strong>exception</strong> сразу или на этапе commit&#8217;а транзакции.</p>
+<p>Если статус <strong>detached</strong>, будет выкинут Exception сразу или на этапе завершения транзакции.</p>
 </li>
 </ul>
 </div>
@@ -5458,16 +5457,16 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 <div class="ulist">
 <ul>
 <li>
-<p>Если статус у сущности <code>detached</code>, то либо данные будет скопированы в существующей <code>managed</code> <code>entity</code> с тем же первичным ключом, либо создан новый <code>managed</code> в который скопируются данные.</p>
+<p>Если статус у сущности <strong>detached</strong>, то либо данные будет скопированы в существующей <strong>managed</strong> <code>entity</code> с тем же первичным ключом, либо создан новый <strong>managed</strong> в который скопируются данные.</p>
 </li>
 <li>
-<p>Если статус <code>new</code>, то будет создана новый <code>managed</code> <code>entity</code>, в который будут скопированы данные прошлого объекта.</p>
+<p>Если статус <strong>transient</strong>, то будет создана новый <strong>managed</strong> <code>entity</code>, в который будут скопированы данные прошлого объекта.</p>
 </li>
 <li>
-<p>Если статус <code>managed</code>, операция игнорируется, однако операция <code>merge</code> сработает на каскадно зависимые <code>Entity</code>, если их статус не <code>managed</code>.</p>
+<p>Если статус <strong>managed</strong>, операция игнорируется, однако операция <code>merge()</code> сработает на каскадно зависимые <code>Entity</code>, если их статус не <strong>managed</strong>.</p>
 </li>
 <li>
-<p>Если статус <code>removed</code>, будет выкинута ошибка сразу или на этапе commit&#8217;а транзакции.</p>
+<p>Если статус <strong>removed</strong>, будет выкинута ошибка сразу или на этапе завершения транзакции.</p>
 </li>
 </ul>
 </div>
@@ -5477,10 +5476,10 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 <div class="ulist">
 <ul>
 <li>
-<p>Если статус у сущности <code>managed</code>, то в результате операции будут восстановлены все изменения из базы данных данного <code>Entity</code>, так же произойдет <code>refresh</code> всех каскадно зависимых объектов.</p>
+<p>Если статус у сущности <strong>managed</strong>, то в результате операции будут восстановлены все изменения из базы данных данного <code>Entity</code>, так же произойдет <code>refresh()</code> всех каскадно зависимых объектов.</p>
 </li>
 <li>
-<p>Если статус <code>new</code>, <code>removed</code> или <code>detached</code>, будет выкинут <code>exception</code>.</p>
+<p>Если статус <strong>transient</strong>, <strong>removed</strong> или <strong>detached</strong>, будет выброшен Exception.</p>
 </li>
 </ul>
 </div>
@@ -5490,54 +5489,62 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 <div class="ulist">
 <ul>
 <li>
-<p>Если статус у сущности <code>managed</code> или <code>removed</code>, то в результате операции статус <code>Entity</code> (и всех каскадно-зависимых объектов) станет <code>detached</code>.</p>
+<p>Если статус у сущности <strong>managed</strong> или <strong>removed</strong>, то в результате операции статус <code>Entity</code> (и всех каскадно-зависимых объектов) станет <strong>detached</strong>.</p>
 </li>
 <li>
-<p>Если статус new или <code>detached</code>, то операция игнорируется.</p>
+<p>Если статус <strong>transient</strong> или `<strong>detached</strong>, то операция игнорируется.</p>
 </li>
 </ul>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_удаление_сирот_orphanremoval">6.8. Удаление сирот - orphanRemoval</h3>
+<h3 id="_удаление_сирот">6.8. Удаление сирот</h3>
 <div class="paragraph">
 <p>Рассмотрим настройку <code>orphanRemoval</code>, которая касается удаления элементов из коллекции. У нас это будет удаление комментария из списка комментариев топика.</p>
 </div>
 <div class="listingblock">
-<div class="title">Сущность Comment</div>
+<div class="title">Сущность <code>Comment</code></div>
 <div class="content">
 <pre class="rouge highlight"><code data-lang="java"><span class="nd">@Entity</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Comment</span> <span class="o">{</span>
     <span class="nd">@Id</span>
     <span class="nd">@GeneratedValue</span><span class="o">(</span><span class="n">strategy</span> <span class="o">=</span> <span class="nc">GenerationType</span><span class="o">.</span><span class="na">SEQUENCE</span><span class="o">)</span>
     <span class="kd">private</span> <span class="kt">long</span> <span class="n">id</span><span class="o">;</span>
+
     <span class="kd">private</span> <span class="nc">String</span> <span class="n">text</span><span class="o">;</span>
+
     <span class="nd">@ManyToOne</span><span class="o">(</span><span class="n">fetch</span> <span class="o">=</span> <span class="nc">FetchType</span><span class="o">.</span><span class="na">LAZY</span><span class="o">)</span>
     <span class="kd">private</span> <span class="nc">Topic</span> <span class="n">topic</span><span class="o">;</span>
-  <span class="c1">// getters/setters/constructors</span>
+
+    <span class="c1">// getters/setters/constructors</span>
 <span class="o">}</span></code></pre>
 </div>
 </div>
 <div class="listingblock">
-<div class="title">Сущность Topic</div>
+<div class="title">Сущность <code>Topic</code></div>
 <div class="content">
 <pre class="rouge highlight"><code data-lang="java"><span class="nd">@Entity</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Topic</span> <span class="o">{</span>
     <span class="nd">@Id</span>
     <span class="nd">@GeneratedValue</span><span class="o">(</span><span class="n">strategy</span> <span class="o">=</span> <span class="nc">GenerationType</span><span class="o">.</span><span class="na">SEQUENCE</span><span class="o">)</span>
     <span class="kd">private</span> <span class="kt">long</span> <span class="n">id</span><span class="o">;</span>
+
     <span class="kd">private</span> <span class="nc">String</span> <span class="n">title</span><span class="o">;</span>
+
     <span class="nd">@OneToMany</span><span class="o">(</span><span class="n">mappedBy</span> <span class="o">=</span> <span class="s">"topic"</span><span class="o">,</span> <span class="n">cascade</span> <span class="o">=</span> <span class="nc">CascadeType</span><span class="o">.</span><span class="na">ALL</span><span class="o">,</span> <span class="n">orphanRemoval</span> <span class="o">=</span> <span class="kc">true</span><span class="o">)</span>
     <span class="kd">private</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Comment</span><span class="o">&gt;</span> <span class="n">comments</span><span class="o">=</span><span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;&gt;();</span>
+
     <span class="kd">public</span> <span class="kt">void</span> <span class="nf">addComment</span><span class="o">(</span><span class="nc">Comment</span> <span class="n">comment</span><span class="o">)</span> <span class="o">{</span>
         <span class="n">comments</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">comment</span><span class="o">);</span>
         <span class="n">comment</span><span class="o">.</span><span class="na">setTopic</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
     <span class="o">}</span>
+
     <span class="kd">public</span> <span class="kt">void</span> <span class="nf">removeComment</span><span class="o">(</span><span class="nc">Comment</span> <span class="n">comment</span><span class="o">)</span> <span class="o">{</span>
         <span class="n">comments</span><span class="o">.</span><span class="na">remove</span><span class="o">(</span><span class="n">comment</span><span class="o">);</span>
         <span class="n">comment</span><span class="o">.</span><span class="na">setTopic</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>
     <span class="o">}</span>
-   <span class="c1">// getters/setters/constructors</span>
+
+    <span class="c1">// getters/setters/constructors</span>
 <span class="o">}</span></code></pre>
 </div>
 </div>
@@ -5556,14 +5563,16 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 <p>Если <code>orphanRemoval</code> равен <code>true</code>, то при удалении комментария из списка комментариев топика, он удаляется из базы. Проверим это в тесте:</p>
 </div>
 <div class="listingblock">
-<div class="title">Метод для тестирования работы при <code>orphanRemoval</code> = <code>true</code></div>
+<div class="title">Метод для тестирования работы <code>orphanRemoval = true</code></div>
 <div class="content">
-<pre class="rouge highlight"><code data-lang="java"><span class="nd">@Test</span>
-<span class="nd">@DisplayName</span><span class="o">(</span><span class="s">"если orphanRomoval=true, то при удалении комментария из топика он удаляется из базы"</span><span class="o">)</span>
-<span class="kd">public</span> <span class="kt">void</span> <span class="nf">givenOrphanRomovalTrue_whenRemoveCommentFromTopic_thenItRemovedFromDatabase</span><span class="o">()</span> <span class="o">{</span>
-   <span class="nc">Topic</span> <span class="n">topic</span> <span class="o">=</span> <span class="n">topicRepository</span><span class="o">.</span><span class="na">getById</span><span class="o">(-</span><span class="mi">1</span><span class="n">l</span><span class="o">);</span>
-   <span class="n">topic</span><span class="o">.</span><span class="na">removeComment</span><span class="o">(</span><span class="n">topic</span><span class="o">.</span><span class="na">getComments</span><span class="o">().</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">));</span>
-   <span class="nc">Assertions</span><span class="o">.</span><span class="na">assertEquals</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="n">commentRepository</span><span class="o">.</span><span class="na">count</span><span class="o">());</span>
+<pre class="rouge highlight"><code data-lang="java"><span class="kd">private</span> <span class="kd">class</span> <span class="nc">RemoveTests</span> <span class="o">{</span>
+    <span class="nd">@Test</span>
+    <span class="nd">@DisplayName</span><span class="o">(</span><span class="s">"если orphanRemoval=true, то при удалении комментария из топика он удаляется из базы"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">givenOrphanRemovalTrue_whenRemoveCommentFromTopic_thenItRemovedFromDatabase</span><span class="o">()</span> <span class="o">{</span>
+       <span class="nc">Topic</span> <span class="n">topic</span> <span class="o">=</span> <span class="n">topicRepository</span><span class="o">.</span><span class="na">getById</span><span class="o">(-</span><span class="mi">1L</span><span class="o">);</span>
+       <span class="n">topic</span><span class="o">.</span><span class="na">removeComment</span><span class="o">(</span><span class="n">topic</span><span class="o">.</span><span class="na">getComments</span><span class="o">().</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">));</span>
+       <span class="nc">Assertions</span><span class="o">.</span><span class="na">assertEquals</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="n">commentRepository</span><span class="o">.</span><span class="na">count</span><span class="o">());</span>
+    <span class="o">}</span>
 <span class="o">}</span></code></pre>
 </div>
 </div>
@@ -5590,20 +5599,22 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 <div class="sect3">
 <h4 id="_orphanremoval_равен_false">6.8.2. <code>orphanRemoval</code> равен <code>false</code></h4>
 <div class="paragraph">
-<p>Если <code>orphanRemoval</code> равен <code>false</code>, то при удалении комментария из списка, в базе комментарий остается. Его внешний ключ обнуляется, и  больше комментарий не ссылается на топик.</p>
+<p>Если <code>orphanRemoval</code> равен <code>false</code>, то при удалении комментария из списка, в базе комментарий остается. Его внешний ключ обнуляется, и  больше комментарий не ссылается на <code>Topic</code>.</p>
 </div>
 <div class="paragraph">
 <p>Проверим это:</p>
 </div>
 <div class="listingblock">
-<div class="title">Метод для тестирования работы при <code>orphanRemoval</code> = <code>false</code></div>
+<div class="title">Метод для тестирования работы <code>orphanRemoval = false</code></div>
 <div class="content">
-<pre class="rouge highlight"><code data-lang="java"><span class="nd">@Test</span>
-<span class="nd">@DisplayName</span><span class="o">(</span><span class="s">"если orphanRomoval = false, то при удалении комментария из топика остается в базе"</span><span class="o">)</span>
-<span class="kd">public</span> <span class="kt">void</span> <span class="nf">givenOrphanRomovalFalse_whenRemoveCommentFromTopic_thenItRemovedFromDatabase</span><span class="o">()</span> <span class="o">{</span>
-    <span class="nc">Topic</span> <span class="n">topic</span> <span class="o">=</span> <span class="n">topicRepository</span><span class="o">.</span><span class="na">getById</span><span class="o">(-</span><span class="mi">1</span><span class="n">l</span><span class="o">);</span>
-    <span class="n">topic</span><span class="o">.</span><span class="na">removeComment</span><span class="o">(</span><span class="n">topic</span><span class="o">.</span><span class="na">getComments</span><span class="o">().</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">));</span>
-    <span class="nc">Assertions</span><span class="o">.</span><span class="na">assertEquals</span><span class="o">(</span><span class="mi">3</span><span class="o">,</span> <span class="n">commentRepository</span><span class="o">.</span><span class="na">count</span><span class="o">());</span>
+<pre class="rouge highlight"><code data-lang="java"><span class="kd">private</span> <span class="kd">class</span> <span class="nc">RemoveTests</span> <span class="o">{</span>
+    <span class="nd">@Test</span>
+    <span class="nd">@DisplayName</span><span class="o">(</span><span class="s">"если orphanRemoval = false, то при удалении комментария из топика остается в базе"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">givenOrphanRemovalFalse_whenRemoveCommentFromTopic_thenItRemovedFromDatabase</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">Topic</span> <span class="n">topic</span> <span class="o">=</span> <span class="n">topicRepository</span><span class="o">.</span><span class="na">getById</span><span class="o">(-</span><span class="mi">1L</span><span class="o">);</span>
+        <span class="n">topic</span><span class="o">.</span><span class="na">removeComment</span><span class="o">(</span><span class="n">topic</span><span class="o">.</span><span class="na">getComments</span><span class="o">().</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">));</span>
+        <span class="nc">Assertions</span><span class="o">.</span><span class="na">assertEquals</span><span class="o">(</span><span class="mi">3</span><span class="o">,</span> <span class="n">commentRepository</span><span class="o">.</span><span class="na">count</span><span class="o">());</span>
+    <span class="o">}</span>
 <span class="o">}</span></code></pre>
 </div>
 </div>
@@ -5624,7 +5635,7 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 </div>
 </div>
 <div class="paragraph">
-<p>Здесь происходит обновление таблицы <strong>comment</strong>: столбцу <strong>topic_id</strong> присваивается значение <code>NULL</code>. Комментарий остается в базе, просто ни на какой топик он больше не ссылается. В свою очередь оператор <code>delete</code> отсутствует.</p>
+<p>Здесь происходит обновление таблицы <code>comment</code>: столбцу <code>topic_id</code> присваивается значение <code>NULL</code>. Комментарий остается в базе, просто ни на какой <code>Topic</code> он больше не ссылается. В свою очередь оператор <code>delete</code> отсутствует.</p>
 </div>
 </div>
 </div>
@@ -6976,7 +6987,7 @@ ssb   4096R/42B317FD4BA89E7A 2016-03-10</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-01-24 03:33:52 UTC
+Last updated 2022-01-24 04:26:48 UTC
 </div>
 </div>
 </body>
