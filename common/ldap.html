@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.17">
-<title>Jakarta Servlet</title>
+<title>LDAP</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -438,11 +438,183 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article">
 <div id="header">
-<h1>Jakarta Servlet</h1>
+<h1>LDAP</h1>
 </div>
 <div id="content">
+<div class="sect1">
+<h2 id="_abbreviations">Abbreviations</h2>
+<div class="sectionbody">
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Термин</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Определение</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Перевод и пояснения</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CN</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Common Name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Общепринятое имя (термин служб каталогов)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DC</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Domain Component</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Доменный компонент (термин служб каталогов)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DIT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Directory Information Tree</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Информационное дерево каталога (термин служб каталогов)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DNS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Domain Name System</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Система доменных имён</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DN</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Distinguished Name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Уникальное имя (термин служб каталогов)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Kerberos</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Kerberos Authentication Service</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Служба аутентификации Kerberos</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">LDAP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Lightweight Directory Access Protocol</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Облегчённый протокол доступа к службам каталогов</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">User Identifier</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Идентификатор пользователя (термин служб каталогов)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_что_такое_ldap">Что такое LDAP?</h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>Moved to <a href="https://github.com/rakovets/wiki" class="bare">https://github.com/rakovets/wiki</a>.</p>
+<p>LDAP - это аббревиатура от Lightweight Directory Access Protocol. Как следует из названия, это облегчённый протокол доступа к службам каталогов, предназначенный для доступа к службам каталогов на основе X.500.</p>
+</div>
+<div class="sect2">
+<h3 id="_какого_рода_информация_может_храниться_в_каталоге">Какого рода информация может храниться в каталоге?</h3>
+<div class="paragraph">
+<p>Информационная модель LDAP основана на <strong>записях</strong> (<strong>entry</strong>). <strong>Запись</strong> - это коллекция <strong>атрибутов</strong> (<strong>attribute</strong>), обладающая <strong>уникальным именем</strong> (<strong>Distinguished Name</strong>, <strong>DN</strong>). <strong>DN</strong> глобально-уникально для всего каталога и служит для однозначного указания на запись. Каждый атрибут записи имеет свой <strong>тип</strong> (<strong>type</strong>) и одно или несколько <strong>значений</strong> (<strong>value</strong>). Обычно типы - это мнемонические строки, в которых отражено назначение атрибута, например <code>cn</code> - для <strong>общепринятого имени</strong> (<strong>common name</strong>), или <code>mail</code> - для адреса <strong>электронной почты</strong>. Синтаксис значений зависит от типа атрибута. Например, атрибут <code>cn</code> может содержать значение <code>Babs Jensen</code>. Атрибут <code>mail</code> может содержать значение <code>babs@example.com</code>. Атрибут <code>jpegPhoto</code> будет содержать фотографию в бинарном формате JPEG.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_как_организовано_размещение_информации">Как организовано размещение информации?</h3>
+<div class="paragraph">
+<p>Записи каталога LDAP выстраиваются в виде иерархической древовидной структуры. Традиционно, эта структура отражает географическое и/или организационное устройство хранимых данных. В вершине дерева располагаются записи, представляющие собой страны. Под ними располагаются записи, представляющие области стран и организации. Еще ниже располагаются записи, отражающие подразделения организаций, людей, принтеры, документы, или просто всё то, что Вы захотите включить в каталог.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../assets/img/common/ldap/tree-catalog-traditional.png" alt="Дерево каталога LDAP (традиционное именование записей)">
+</div>
+</div>
+<div class="paragraph">
+<p>Построение дерева может быть также основано на доменных именах Internet. Этот подход к именованию
+записей становится всё более популярным, поскольку позволяет обращаться к службам каталогов по аналогии с доменами DNS.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../assets/img/common/ldap/tree-catalog-internet.png" alt="Дерево каталога LDAP (Internet-именование записей)">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_как_можно_обратиться_к_информации">Как можно обратиться к информации?</h3>
+<div class="paragraph">
+<p>К записи обращаются по ее уникальному имени, которое состоит из собственно имени записи (так называемое <strong>относительное уникальное имя</strong> (<strong>Relative Distinguished Name</strong>, <strong>RDN</strong>) с прибавлением к нему имён записей-предков. Так, запись, описывающая <code>Barbara Jensen</code>, имеет <strong>RDN</strong> <code>uid=babs</code>, и <strong>DN</strong> - <code>uid=babs,ou=People,dc=example,dc=com</code>. Полное описание формата <strong>DN</strong> можно найти <a href="http://tools.ietf.org/html/rfc4514">RFC4514</a>.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Какие манипуляции можно произвести с информацией?</strong>
+В LDAP определены операции для опроса и обновления каталога. К числу последних относятся операции добавления и удаления записи из каталога, изменения существующей записи и изменения названия записи. Однако, большую часть времени LDAP используется для поиска информации в каталоге. Операции поиска LDAP позволяют производить поиск записей в определённой части каталога по различным критериям, заданным поисковыми фильтрами. У каждой записи, найденной в соответствии с критериями, может быть запрошена информация, содержащаяся в её атрибутах.
+К примеру, Вам захотелось найти записи о человеке по имени <code>Barbara Jensen</code> во всем подкаталоге, начиная с уровня <code>dc=example,dc=com</code> и ниже, и получить адрес электронной почты в каждой найденной записи. LDAP позволяет Вам легко это сделать. Или Вам хочется поискать непосредственно на уровне <code>st=California,c=US</code> записи организаций, названия которых содержат строку <code>Acme</code> и имеющих номер факса. Такой поиск LDAP тоже позволяет сделать.</p>
+</li>
+<li>
+<p><strong>Как информация защищена от несанкционированного доступа?</strong><br>
+Некоторые службы каталогов не предоставляют никакой защиты, позволяя любому просматривать хранящуюся в них информацию. Однако LDAP предоставляет механизмы для аутентификации клиента, либо других способов доказательства его подлинности серверу каталогов, а также богатые возможности контроля доступа к информации, содержащейся на этом сервере. LDAP также обеспечивает защиту информации в каталоге (её целостность и конфиденциальность).</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_для_чего_можно_использовать_ldap">Для чего можно использовать LDAP?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>В общем случае, службу каталогов можно использовать, когда Вам требуется
+надёжное хранение информации с возможностью централизованного управления и доступа к ней, с использованием стандартизированных методов.</p>
+</div>
+<div class="paragraph">
+<p>Вот ряд (но, конечно, не полный) самых распространённых примеров промышленного использования служб каталогов:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Идентификация компьютеров</p>
+</li>
+<li>
+<p>Аутентификация пользователей</p>
+</li>
+<li>
+<p>Группировка пользователей (в том числе системные группы)</p>
+</li>
+<li>
+<p>Адресные книги</p>
+</li>
+<li>
+<p>Представление штатно-кадровой структуры организации</p>
+</li>
+<li>
+<p>Учет закрепления имущества организации за сотрудниками</p>
+</li>
+<li>
+<p>Телефонные справочники</p>
+</li>
+<li>
+<p>Управление пользовательскими ресурсами</p>
+</li>
+<li>
+<p>Справочники адресов электронной почты</p>
+</li>
+<li>
+<p>Хранение конфигурации приложений</p>
+</li>
+<li>
+<p>и т.д. &#8230;&#8203;</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Для организации каталога под столь разные задачи существуют различные, основанные на стандартах файлы наборов схемы, распространяемые с дистрибутивом. Также Вы можете создать свою собственную
+спецификацию схемы для решения Вашей задачи.</p>
+</div>
+<div class="paragraph">
+<p>Всегда найдутся новые способы использования каталогов и применения принципов LDAP для решения
+различных проблем, поэтому не существует простого ответа на вопрос этого подраздела.</p>
+</div>
+<div class="sect2">
+<h3 id="_как_работает_ldap">Как работает LDAP?</h3>
+<div class="paragraph">
+<p>LDAP использует клиент-серверную модель. Один или несколько серверов LDAP содержат информацию, образующую информационное дерево каталога (directory information tree, DIT). Клиент подключается к серверу и делает запрос. В ответ сервер отправляет результаты обработки запроса и/или указатель на то, где клиент может получить дополнительные сведения (обычно, на другой сервер LDAP). Независимо от того, к какому серверу LDAP подключается клиент, он увидит одинаковое представление каталога; на записи, расположенные на одном сервере LDAP, будут указывать правильные ссылки при обращении к другому серверу LDAP, и наоборот. Это важная особенность глобальной службы каталогов.</p>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div id="footer">
