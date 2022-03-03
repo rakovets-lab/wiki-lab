@@ -1,0 +1,9 @@
+= ORM (на примере Hibernate)
+
+:leveloffset: +1
+
+include::jpa.adoc[]
+
+include::hibernate-cache.adoc[]
+
+:leveloffset: -1

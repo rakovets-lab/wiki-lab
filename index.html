@@ -676,14 +676,8 @@ pre.rouge {
 </li>
 <li><a href="#_orm_на_примере_hibernate">6. ORM (на примере Hibernate)</a>
 <ul class="sectlevel2">
-<li><a href="#_основные_понятия_jpa_и_orm">6.1. Основные понятия JPA и ORM</a></li>
-<li><a href="#_datasource">6.2. <code>DataSource</code></a></li>
-<li><a href="#_entity">6.3. Entity</a></li>
-<li><a href="#_типы_ассоциаций_между_entity">6.4. Типы ассоциаций между Entity</a></li>
-<li><a href="#_стратегии_генерации_первичного_ключа">6.5. Стратегии генерации первичного ключа</a></li>
-<li><a href="#_fetch_strategies">6.6. Fetch strategies</a></li>
-<li><a href="#_состояния_сущности">6.7. Состояния сущности</a></li>
-<li><a href="#_удаление_сирот">6.8. Удаление сирот</a></li>
+<li><a href="#_orm_на_примере_hibernate_2">6.1. ORM (на примере Hibernate)</a></li>
+<li><a href="#_hibernate_cache">6.2. Hibernate cache</a></li>
 </ul>
 </li>
 <li><a href="#_sql">7. SQL</a></li>
@@ -4825,7 +4819,9 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 <h2 id="_orm_на_примере_hibernate">6. ORM (на примере Hibernate)</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_основные_понятия_jpa_и_orm">6.1. Основные понятия JPA и ORM</h3>
+<h3 id="_orm_на_примере_hibernate_2">6.1. ORM (на примере Hibernate)</h3>
+<div class="sect3">
+<h4 id="_основные_понятия_jpa_и_orm">6.1.1. Основные понятия JPA и ORM</h4>
 <div class="paragraph">
 <p><strong>Java Persistence API</strong> (<strong>JPA</strong>) — спецификация, предоставляет возможность сохранять в удобном виде объекты в базе данных. <strong>JPA</strong> описывает систему управления сохранением объектов в таблицы реляционных баз данных в удобном виде. <strong>JPA</strong> реализует концепцию <strong>ORM</strong>.</p>
 </div>
@@ -4836,8 +4832,8 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 <p>Непосредственно <strong>JPA</strong> представлен в пакете <code>javax.persistence</code>.</p>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_datasource">6.2. <code>DataSource</code></h3>
+<div class="sect3">
+<h4 id="_datasource">6.1.2. <code>DataSource</code></h4>
 <div class="paragraph">
 <p><code>DataSource</code> — используется для создания соединения с базой данных. Это альтернатива <code>DriverManager</code> используемого в <code>JDBC</code>. В документации сказано, что <code>DataSource</code> использовать предпочтительнее. В частности, одним из преимуществ <code>DataSource</code> является возможность создания пула соединений <strong>Database Connection Pool</strong> (<strong>DBCP</strong>).</p>
 </div>
@@ -4858,8 +4854,8 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 </ul>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_entity">6.3. Entity</h3>
+<div class="sect3">
+<h4 id="_entity">6.1.3. Entity</h4>
 <div class="paragraph">
 <p><code>Entity</code> - это легковесный хранимый объект бизнес логики (<strong>persistent domain object</strong>), является основной программной сущностью.</p>
 </div>
@@ -4898,8 +4894,8 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 </ul>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_типы_ассоциаций_между_entity">6.4. Типы ассоциаций между Entity</h3>
+<div class="sect3">
+<h4 id="_типы_ассоциаций_между_entity">6.1.4. Типы ассоциаций между Entity</h4>
 <div class="paragraph">
 <p>Существуют следующие типы ассоциаций:</p>
 </div>
@@ -4919,8 +4915,8 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 </li>
 </ul>
 </div>
-<div class="sect3">
-<h4 id="_onetoone">6.4.1. <code>@OneToOne</code></h4>
+<div class="sect4">
+<h5 id="_onetoone"><code>@OneToOne</code></h5>
 <div class="paragraph">
 <p>Для того чтобы связать сущности отношением один-к-одному, используется аннотация <code>@OneToOne</code>. В целом, может быть 3 варианта ее использования:</p>
 </div>
@@ -4937,8 +4933,8 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 </li>
 </ul>
 </div>
-<div class="sect4">
-<h5 id="_связанные_сущности_используют_одно_и_то_же_значение_первичного_ключа">Связанные сущности используют одно и то же значение первичного ключа</h5>
+<div class="sect5">
+<h6 id="_связанные_сущности_используют_одно_и_то_же_значение_первичного_ключа">Связанные сущности используют одно и то же значение первичного ключа</h6>
 <div class="listingblock">
 <div class="title">Сущность User</div>
 <div class="content">
@@ -4977,8 +4973,8 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 <p>Аннотация <code>@PrimaryKeyJoinColumn</code> указывает на то, что первичный ключ сущности <code>Partner</code> используется в качестве внешнего ключа для связи с сущностью <code>User</code>.</p>
 </div>
 </div>
-<div class="sect4">
-<h5 id="_связь_один_к_одному_с_использованием_явного_внешнего_ключа">Связь один-к-одному с использованием явного внешнего ключа</h5>
+<div class="sect5">
+<h6 id="_связь_один_к_одному_с_использованием_явного_внешнего_ключа">Связь один-к-одному с использованием явного внешнего ключа</h6>
 <div class="listingblock">
 <div class="title">Сущность User</div>
 <div class="content">
@@ -5025,8 +5021,8 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 <p>Преимуществом однонаправленной связи, является то, что ею легче управлять, потому что необходимо поддерживать только одну сторону. Преимущество же двунаправленной связи заключается в возможности доступа между связанными сущностями в обоих направлениях. Но обычно это приводит к формированию лишних запросов к базе данных, поэтому использовать двунаправленные связи необходимо осторожно.</p>
 </div>
 </div>
-<div class="sect4">
-<h5 id="_связь_один_к_одному_с_использованием_таблицы_отношений">Связь один-к-одному с использованием таблицы отношений</h5>
+<div class="sect5">
+<h6 id="_связь_один_к_одному_с_использованием_таблицы_отношений">Связь один-к-одному с использованием таблицы отношений</h6>
 <div class="listingblock">
 <div class="title">Сущность <code>User</code></div>
 <div class="content">
@@ -5069,8 +5065,8 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_onetomany_и_manytoone">6.4.2. <code>@OneToMany</code> и <code>@ManyToOne</code></h4>
+<div class="sect4">
+<h5 id="_onetomany_и_manytoone"><code>@OneToMany</code> и <code>@ManyToOne</code></h5>
 <div class="paragraph">
 <p><code>@OneToMany</code> — случай, когда у одного автора может быть несколько книг.</p>
 </div>
@@ -5129,8 +5125,8 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_manytomany">6.4.3. <code>@ManyToMany</code></h4>
+<div class="sect4">
+<h5 id="_manytomany"><code>@ManyToMany</code></h5>
 <div class="paragraph">
 <p>Такая зависимость реализовывается через создание дополнительной таблицы. Допустим ситуацию, когда у нескольких книг может быть несколько авторов, а у авторов – несколько книг.</p>
 </div>
@@ -5195,8 +5191,8 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_стратегии_генерации_первичного_ключа">6.5. Стратегии генерации первичного ключа</h3>
+<div class="sect3">
+<h4 id="_стратегии_генерации_первичного_ключа">6.1.5. Стратегии генерации первичного ключа</h4>
 <div class="paragraph">
 <p>Один из главных требований к <code>Entity</code> является наличие первичного ключа. В <strong>JPA</strong> на этот случай предусмотрены механизмы автоматической генерации значений суррогатных ключей, которые включаются аннотацией <code>@GeneratedValue</code>.</p>
 </div>
@@ -5219,8 +5215,8 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 </li>
 </ul>
 </div>
-<div class="sect3">
-<h4 id="_стратегия_generationtype_identity">6.5.1. Стратегия <code>GenerationType.IDENTITY</code></h4>
+<div class="sect4">
+<h5 id="_стратегия_generationtype_identity">Стратегия <code>GenerationType.IDENTITY</code></h5>
 <div class="paragraph">
 <p>Такая стратегия работает с базами, у которых есть специальные <code>IDENTITY</code> поля, например с <strong>MySQL</strong> или <strong>DB2</strong>. В таких базах данных возможно создавать первичный ключ с автоматическим инкрементом.</p>
 </div>
@@ -5233,8 +5229,8 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_стратегия_generationtype_sequence">6.5.2. Стратегия <code>GenerationType.SEQUENCE</code></h4>
+<div class="sect4">
+<h5 id="_стратегия_generationtype_sequence">Стратегия <code>GenerationType.SEQUENCE</code></h5>
 <div class="paragraph">
 <p>Такая стратегия использует встроенный в базы данных, такие как <strong>PostgreSQL</strong> или <strong>Oracle</strong>, механизм генерации последовательных значений. Использование этого генератора требует как создания отдельной <strong>sequence</strong> в базе данных:</p>
 </div>
@@ -5268,8 +5264,8 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_стратегия_generationtype_table">6.5.3. Стратегия <code>GenerationType.TABLE</code></h4>
+<div class="sect4">
+<h5 id="_стратегия_generationtype_table">Стратегия <code>GenerationType.TABLE</code></h5>
 <div class="paragraph">
 <p>Такая стратегия не зависит от поддержки конкретной базой данных и хранит счётчики значений в отдельной таблице. С одной стороны это более гибкое и настраиваемое решение, с другой стороны более медленное и требующее большей настройки. Вначале требуется создать и проинициализировать таблицу для значений ключей:</p>
 </div>
@@ -5299,15 +5295,15 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_стратегия_generationtype_auto">6.5.4. Стратегия <code>GenerationType.AUTO</code></h4>
+<div class="sect4">
+<h5 id="_стратегия_generationtype_auto">Стратегия <code>GenerationType.AUTO</code></h5>
 <div class="paragraph">
 <p>Позволяет автоматически выбрать стратегию в соответствии с используемой базой данных.</p>
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_fetch_strategies">6.6. Fetch strategies</h3>
+<div class="sect3">
+<h4 id="_fetch_strategies">6.1.6. Fetch strategies</h4>
 <div class="paragraph">
 <p>В <strong>JPA</strong> описаны два типа <strong>Fetch strategies</strong>:</p>
 </div>
@@ -5346,8 +5342,8 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 <div class="paragraph">
 <p><code>FetchType</code> в <strong>JPA</strong> говорит когда связанная сущность или коллекция будет загружена. По умолчанию <strong>JPA</strong> провайдер загружает связанные коллекции (отношения один-ко-многим и многие-ко-многим) отложено. В большинстве случаев отложенная загрузка — оптимальный вариант. Нет смысла инициализировать все связанные коллекции, если к ним не будет обращений.</p>
 </div>
-<div class="sect3">
-<h4 id="_каскадные_типы">6.6.1. Каскадные типы</h4>
+<div class="sect4">
+<h5 id="_каскадные_типы">Каскадные типы</h5>
 <div class="paragraph">
 <p><strong>Каскадирование</strong> — это стратегия работы со связанными объектами, т.е. когда выполняется какое-либо действие над целевым объектом, то же самое действие будет применено к связанному объекту. Все каскадные операции:</p>
 </div>
@@ -5392,8 +5388,8 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 </table>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_состояния_сущности">6.7. Состояния сущности</h3>
+<div class="sect3">
+<h4 id="_состояния_сущности">6.1.7. Состояния сущности</h4>
 <div class="paragraph">
 <p>Сущности могут находиться в следующих состояниях:</p>
 </div>
@@ -5497,8 +5493,8 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 </ul>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_удаление_сирот">6.8. Удаление сирот</h3>
+<div class="sect3">
+<h4 id="_удаление_сирот">6.1.8. Удаление сирот</h4>
 <div class="paragraph">
 <p>Рассмотрим настройку <code>orphanRemoval</code>, которая касается удаления элементов из коллекции. У нас это будет удаление комментария из списка комментариев топика.</p>
 </div>
@@ -5557,8 +5553,8 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 <div class="paragraph">
 <p>Но остается ли он вообще в базе, то есть можно ли его вывести в общем списке комментариев всех топиков? Или же удаляется из базы? За эти два варианта и отвечает <code>orphanRemoval</code>.</p>
 </div>
-<div class="sect3">
-<h4 id="_orphanremoval_равен_true">6.8.1. <code>orphanRemoval</code> равен <code>true</code></h4>
+<div class="sect4">
+<h5 id="_orphanremoval_равен_true"><code>orphanRemoval</code> равен <code>true</code></h5>
 <div class="paragraph">
 <p>Если <code>orphanRemoval</code> равен <code>true</code>, то при удалении комментария из списка комментариев топика, он удаляется из базы. Проверим это в тесте:</p>
 </div>
@@ -5596,8 +5592,8 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 <p>Можно заметить оператор <code>delete</code>, он и удаляет комментарий из базы.</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_orphanremoval_равен_false">6.8.2. <code>orphanRemoval</code> равен <code>false</code></h4>
+<div class="sect4">
+<h5 id="_orphanremoval_равен_false"><code>orphanRemoval</code> равен <code>false</code></h5>
 <div class="paragraph">
 <p>Если <code>orphanRemoval</code> равен <code>false</code>, то при удалении комментария из списка, в базе комментарий остается. Его внешний ключ обнуляется, и  больше комментарий не ссылается на <code>Topic</code>.</p>
 </div>
@@ -5636,6 +5632,372 @@ UPDATE databasechangeloglock SET LOCKED = FALSE, LOCKEDBY = NULL, LOCKGRANTED = 
 </div>
 <div class="paragraph">
 <p>Здесь происходит обновление таблицы <code>comment</code>: столбцу <code>topic_id</code> присваивается значение <code>NULL</code>. Комментарий остается в базе, просто ни на какой <code>Topic</code> он больше не ссылается. В свою очередь оператор <code>delete</code> отсутствует.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_hibernate_cache">6.2. Hibernate cache</h3>
+<div class="paragraph">
+<p><strong>Кэш</strong> - это память с большей скоростью доступа, предназначенная для ускорения обращения к данным, содержащимся постоянно в памяти с меньшей скоростью доступа. Кэширование применяется <strong>ЦПУ</strong>, <strong>жёсткими дисками</strong>, <strong>браузерами</strong>, <strong>веб-серверами</strong>, <strong>службами DNS</strong> и <strong>WINS</strong>.</p>
+</div>
+<div class="paragraph">
+<p>Кэш состоит из набора записей. Каждая запись ассоциирована с элементом данных или блоком данных (небольшой части данных), которая является копией элемента данных в основной памяти. Каждая запись имеет идентификатор, часто называемый тегом, определяющий соответствие между элементами данных в кэше и их копиями в основной памяти.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../assets/img/java/data-persistence/hibernate-cache/cache.png" alt="cache"></span></p>
+</div>
+<div class="paragraph">
+<p>Когда клиент кэша (<strong>ЦПУ</strong>, <strong>веб-браузер</strong>, <strong>операционная система</strong>) обращается к данным, прежде всего исследуется кэш. Если в кэше найдена запись с идентификатором, совпадающим с идентификатором затребованного элемента данных, то используются элементы данных в кэше. Такой случай называется <strong>попаданием кэша</strong>. Если в кэше не найдена запись, содержащая затребованный элемент данных, то он читается из основной памяти в кэш, и становится доступным для последующих обращений. Такой случай называется <strong>промахом кэша</strong>.</p>
+</div>
+<div class="paragraph">
+<p>Кеширование является одним из способов оптимизации работы приложения, ключевой задачей которого является уменьшить количество прямых обращений к базе данных.</p>
+</div>
+<div class="paragraph">
+<p>Кэширование, как правило, есть смысл применять в больших, высоконагруженных проектах, с десятками тысяч запросов в минуту. В таких проектах, чтобы не перегружать базу, как правило, кэшируют обращения к репозиторию. Особенно если известно, что данные из какой-нибудь мастер-системы обновляются с некоторой периодичностью. Если же проект маленький и перегрузки ему не грозят, тогда, конечно, лучше ничего не кэшировать — всегда свежие данные всегда лучше периодически обновляемых.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../assets/img/java/data-persistence/hibernate-cache/app-hibernate-db.png" alt="app hibernate db"></span></p>
+</div>
+<div class="paragraph">
+<p>В <strong>Hibernate</strong> имеется 3 вида кеширования:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>First-level cache</strong> (<strong>Кеш первого уровня</strong>);</p>
+</li>
+<li>
+<p><strong>Second-level cache</strong> (<strong>Кеш второго уровня</strong>);</p>
+</li>
+<li>
+<p><strong>Query cache</strong> (<strong>Кеш запросов</strong>);</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../assets/img/java/data-persistence/hibernate-cache/hibernate-first-and-second-level-cache.jpg" alt="hibernate first and second level cache"></span></p>
+</div>
+<div class="sect3">
+<h4 id="_кеш_первого_уровня">6.2.1. Кеш первого уровня</h4>
+<div class="paragraph">
+<p>В <strong>Hibernate</strong> <strong>кэш первого уровня</strong> представлен интерфейсом <code>Session</code>, который является расширением к <strong>JPA</strong> <code>EntityManager</code>. В терминологии <strong>JPA</strong> <strong>кэш первого уровня</strong> называется <strong>Persistence Context</strong>, и он представлен интерфейсом <code>EntityManager</code>.</p>
+</div>
+<div class="paragraph">
+<p><strong>Кеш первого уровня</strong> всегда привязан к объекту <code>Session</code>. <strong>Hibernate</strong> по умолчанию использует этот кеш и его нельзя отключить.</p>
+</div>
+<div class="paragraph">
+<p>В <strong>JPA</strong> и <strong>Hibernate</strong> <strong>кэш первого уровня</strong> - это <strong>Java Map</strong>, в котором <strong>ключ</strong> представлен объектом, инкапсулирующим имя сущности и ее идентификатор, а <strong>значение</strong> - это сам объект сущности. Поэтому в <strong>JPA</strong> <code>EntityManager</code> или <strong>Hibernate</strong> <code>Session</code> может быть только одна сущность, хранящаяся с использованием одного и того же идентификатора и типа класса сущности. Причина, по которой невозможно иметь не более одного представления сущности, хранящегося в <strong>кэше первого уровня</strong>, заключается в том, что в противном случае мы можем получить различные отображения одной и той же строки базы данных, не зная, какая из них является правильной версией, синхронизируемой с соответствующей записью базы данных.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="nc">Session</span> <span class="n">session</span> <span class="o">=</span> <span class="n">sessionFactory</span><span class="o">.</span><span class="na">openSession</span><span class="o">();</span>
+<span class="nc">Pet</span> <span class="n">pet</span> <span class="o">=</span> <span class="o">(</span><span class="nc">Pet</span><span class="o">)</span> <span class="n">session</span><span class="o">.</span><span class="na">load</span><span class="o">(</span><span class="nc">Pet</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">id</span><span class="o">);</span>
+<span class="n">pet</span> <span class="o">=</span> <span class="o">(</span><span class="nc">Pet</span><span class="o">)</span> <span class="n">session</span><span class="o">.</span><span class="na">load</span><span class="o">(</span><span class="nc">Pet</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">id</span><span class="o">);</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>В примере выше будет выполнен 1 запрос в базу, несмотря на то, что делается 2 вызова <code>load()</code>, так как эти вызовы происходят в контексте одной сессии. Во время второй попытки загрузить план с тем же идентификатором будет использован кеш сессии.</p>
+</div>
+<div class="paragraph">
+<p>Сначала <strong>Hibernate</strong> проверяет, хранится ли сущность в <strong>кэше первого уровня</strong>, и если да, то возвращается текущая управляемая ссылка на нее. Если сущность не найдена в <strong>кэше первого уровня</strong>, то <strong>Hibernate</strong> загрузит ее из базы данных с помощью <strong>SQL</strong>-запроса.</p>
+</div>
+<div class="paragraph">
+<p>При использовании методов <code>save()</code>, <code>update()</code>, <code>saveOrUpdate()</code>, <code>load()</code>, <code>get()</code>, <code>list()</code>, <code>iterate()</code>, <code>scroll()</code> всегда будет задействован <strong>кеш первого уровня</strong>.</p>
+</div>
+<div class="paragraph">
+<p>Для работы с данными кеша в сессии имеются следующие методы:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>flush()</code> — обновляет объекты кеша с базой данных.</p>
+</li>
+<li>
+<p><code>evict()</code> — удаляет объект из кеша.</p>
+</li>
+<li>
+<p><code>contains()</code> — определяет, находится ли объект в кеше или нет.</p>
+</li>
+<li>
+<p><code>clear()</code> — очищает весь кеш.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>При <strong>кеше первого уровня</strong> все активные сессии работает изолированно друг от друга, и у каждой сессии соответственно имеется свой кеш, который очищается при закрытии сессии.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_кеш_второго_уровня">6.2.2. Кеш второго уровня</h4>
+<div class="paragraph">
+<p><strong>Кеш второго уровня</strong> привязан к <code>SessionFactory</code>, поэтому видимость этого кеша гораздо шире <strong>кеша первого уровня</strong>. Данный вид кеша доступен на протяжении всего времени работы приложения.</p>
+</div>
+<div class="paragraph">
+<p>По умолчанию <strong>кеш второго уровня</strong> отключен. Для включения необходимо при конфигурировании настроек <strong>Hibernate</strong> в строке <code>hibernate.cache.use_second_level_cache</code> установить значение <code>true</code>.</p>
+</div>
+<div class="paragraph">
+<p>На самом деле, <strong>Hibernate</strong> сам не реализует кеширование как таковое, а лишь предоставляет структуру для его реализации. Поэтому подключить можно любую реализацию, которая соответствует спецификации <strong>ORM</strong> фреймворка.</p>
+</div>
+<div class="paragraph">
+<p>Из сказанного выше следует, что помимо <code>hibernate.cache.use_second_level_cache</code> еще необходимо в настройках указать провайдера кеша <code>hibernate.cache.region.factory_class: org.hibernate.cache.ehcache.EhCacheRegionFactory</code>, которого также нужно добавить в зависимости <strong>Maven</strong>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="yaml"><span class="na">spring</span><span class="pi">:</span>
+  <span class="na">jpa</span><span class="pi">:</span>
+    <span class="na">properties</span><span class="pi">:</span>
+      <span class="na">hibernate</span><span class="pi">:</span>
+        <span class="na">cache</span><span class="pi">:</span>
+          <span class="na">use_second_level_cache</span><span class="pi">:</span> <span class="no">true</span>
+          <span class="na">region</span><span class="pi">:</span>
+            <span class="na">factory_class</span><span class="pi">:</span> <span class="s">org.hibernate.cache.ehcache.EhCacheRegionFactory</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Из популярных реализаций провайдеров можно выделить следующие:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>EHCache</p>
+</li>
+<li>
+<p>OSCache</p>
+</li>
+<li>
+<p>SwarmCache</p>
+</li>
+<li>
+<p>JBoss TreeCache</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Эти провайдеры дополнительно можно настраивать, например в файле <code>ehcache.xml</code>, который должен находиться в директории ресурсов. В данном файле, например, можно ограничить количество записей в кеше <code>maxElementsInMemory="500"</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="xml"><span class="nt">&lt;ehcache</span> <span class="na">xmlns:xsi=</span><span class="s">"http://www.w3.org/2001/XMLSchema-instance"</span>
+	<span class="na">xsi:noNamespaceSchemaLocation=</span><span class="s">"ehcache.xsd"</span> <span class="na">updateCheck=</span><span class="s">"true"</span>
+	<span class="na">monitoring=</span><span class="s">"autodetect"</span> <span class="na">dynamicConfig=</span><span class="s">"true"</span><span class="nt">&gt;</span>
+
+    <span class="nt">&lt;diskStore</span> <span class="na">path=</span><span class="s">"java.io.tmpdir"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;defaultCache</span>
+        <span class="na">maxElementsInMemory=</span><span class="s">"500"</span>
+        <span class="na">eternal=</span><span class="s">"false"</span>
+        <span class="na">timeToIdleSeconds=</span><span class="s">"60"</span>
+        <span class="na">timeToLiveSeconds=</span><span class="s">"60"</span>
+        <span class="na">overflowToDisk=</span><span class="s">"true"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"cache1"</span>
+        <span class="na">maxElementsInMemory=</span><span class="s">"500"</span>
+        <span class="na">maxEntriesLocalHeap=</span><span class="s">"10000"</span>
+        <span class="na">maxEntriesLocalDisk=</span><span class="s">"1000"</span>
+        <span class="na">eternal=</span><span class="s">"false"</span>
+        <span class="na">diskSpoolBufferSizeMB=</span><span class="s">"20"</span>
+        <span class="na">timeToIdleSeconds=</span><span class="s">"300"</span> <span class="na">timeToLiveSeconds=</span><span class="s">"600"</span>
+        <span class="na">memoryStoreEvictionPolicy=</span><span class="s">"LFU"</span>
+        <span class="na">transactionalMode=</span><span class="s">"off"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;persistence</span> <span class="na">strategy=</span><span class="s">"localTempSwap"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/cache&gt;</span>
+<span class="nt">&lt;/ehcache&gt;</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Помимо вышеуказанного нужно еще самому <strong>Hibernate</strong>, что именно кешировать. Делается это с помощью аннотаций <code>@Cacheable</code> и <code>@Cache</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="nd">@Entity</span>
+<span class="nd">@Table</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"shared_doc"</span><span class="o">)</span>
+<span class="nd">@Cacheable</span>
+<span class="nd">@Cache</span><span class="o">(</span><span class="n">usage</span> <span class="o">=</span> <span class="nc">CacheConcurrencyStrategy</span><span class="o">.</span><span class="na">READ_WRITE</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SharedDoc</span><span class="o">{</span>
+    <span class="kd">private</span> <span class="nc">Set</span><span class="o">&lt;</span><span class="nc">User</span><span class="o">&gt;</span> <span class="n">users</span><span class="o">;</span>
+<span class="o">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>@Cacheable</code> это аннотация <strong>JPA</strong> и позволяет объекту быть закэшированным. <strong>Hibernate</strong> поддерживает эту аннотацию в том же ключе. <code>@Cache</code> это аннотация <strong>Hibernate</strong>, настраивающая тонкости кэширования объекта в <strong>кэше второго уровня</strong> <strong>Hibernate</strong>. Аннотации <code>@Cacheable</code>  достаточно, чтобы объект начал кэшироваться с настройками по умолчанию. При этом <code>@Cache</code>, использованная без <code>@Cacheable</code>, не разрешит кэширование объекта.</p>
+</div>
+<div class="paragraph">
+<p>Аннотация <code>@Cache</code> имеет несколько атрибутов:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>usage</code> - отвечает за стратегию кеширования.</p>
+</li>
+<li>
+<p><code>region</code> - это логический разделитель памяти вашего кеша. Для каждого региона можно настроить свою политику кеширования (для <strong>EhCache</strong> в том же <code>ehcache.xml</code>). Если регион не указан, то используется регион по умолчанию, который имеет полное имя вашего класса для которого применяется кеширование.</p>
+</li>
+<li>
+<p><code>include</code> - Могут ли свойства сущности, указанные с <code>lazy=true</code>, кэшироваться, когда разрешена
+"ленивая" выборка на уровне атрибутов. По-умолчанию <strong>all</strong> и может быть также <strong>non-lazy</strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Стратегии кеширования определяют поведения кеша в определенных ситуациях. Выделяют четыре группы:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Read-only</strong> - используется только для сущностей, которые никогда не изменяются (выбрасывается исключение  при попытке обновить такую сущность). Это очень просто и эффективно. Очень подходит для некоторых статических эталонных данных, которые не меняются.</p>
+</li>
+<li>
+<p><strong>Nonstrict-read-write</strong> - кэш обновляется после фиксации транзакции, которая изменила затронутые данные. Таким образом, строгая согласованность не гарантируется, и существует небольшое временное окно, в течение которого устаревшие данные могут быть получены из кэша. Этот тип стратегии подходит для вариантов использования, которые могут допустить возможную согласованность.</p>
+</li>
+<li>
+<p><strong>Read-write</strong> - эта стратегия гарантирует строгую согласованность, которая достигается за счет использования «мягких» блокировок - когда кэшированный объект обновляется, программная блокировка также сохраняется в кэше для этого объекта, которая освобождается после фиксации транзакции. Все параллельные транзакции, которые обращаются к заблокированным записям, будут извлекать соответствующие данные непосредственно из базы данных.</p>
+</li>
+<li>
+<p><strong>Transactional</strong> - изменения кэша выполняются в распределенных транзакциях. Изменение в кэшированном объекте либо фиксируется, либо откатывается как в базе данных, так и в кэше в одной и той же транзакции.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Помимо вышесказанного, следует помнить — зависимости Вашего класса по умолчанию также не кешируются. Например, если рассмотреть класс выше — <code>SharedDoc</code>, то при выборке коллекция <code>users</code> будет доставаться из базы данных, а не из <strong>кеша второго уровня</strong>. Если Вы хотите также кешировать и зависимости, то необходимо также проаннотировать все необходимы объекты аннотацией <code>@Cache</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="nd">@Entity</span>
+<span class="nd">@Table</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"shared_doc"</span><span class="o">)</span>
+<span class="nd">@Cacheable</span>
+<span class="nd">@Cache</span><span class="o">(</span><span class="n">usage</span> <span class="o">=</span> <span class="nc">CacheConcurrencyStrategy</span><span class="o">.</span><span class="na">READ_WRITE</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SharedDoc</span><span class="o">{</span>
+    <span class="nd">@Cache</span><span class="o">(</span><span class="n">usage</span> <span class="o">=</span> <span class="nc">CacheConcurrencyStrategy</span><span class="o">.</span><span class="na">READ_WRITE</span><span class="o">)</span>
+    <span class="kd">private</span> <span class="nc">Set</span><span class="o">&lt;</span><span class="nc">User</span><span class="o">&gt;</span> <span class="n">users</span><span class="o">;</span>
+<span class="o">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Еще одна важная деталь про <strong>кеш второго уровня</strong>. <strong>Hibernate</strong> не хранит сами объекты классов. Он хранит информацию в разобранном (гидратированном) состоянии, в виде массивов строк, чисел и т. д.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Id</code> (первичный ключ) не сохраняется (он хранится как часть ключа кэша)</p>
+</li>
+<li>
+<p>Переходные свойства не сохраняются</p>
+</li>
+<li>
+<p>Коллекции не хранятся</p>
+</li>
+<li>
+<p>Значения свойств, не связанные с ассоциацией, хранятся в исходном виде</p>
+</li>
+<li>
+<p>Для отношений <strong>ToOne</strong> сохраняется только идентификатор (внешний ключ)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Идентификатор объекта выступает указателем на эту информацию. Концептуально это нечто вроде <strong>Map</strong>, в которой <code>id</code> объекта — ключ, а массивы данных — значение. Приблизительно можно представить себе это так - <code>1 &#8594; { "Pupkin", 1, null , {1,2,5} }</code>, что есть очень разумно, учитывая сколько лишней памяти занимает каждый объект.</p>
+</div>
+<div class="paragraph">
+<p>Как уже говорилось выше, сначала <strong>Hibernate</strong> проверяет, хранится ли сущность в <strong>кэше первого уровня</strong>, затем проверяется <strong>кеш второго уровня</strong>, и только после этого, если запрашиваемый объект не найден, <strong>Hibernate</strong> выполнит запрос в базу данных.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="nc">Session</span> <span class="n">session</span> <span class="o">=</span> <span class="n">factory</span><span class="o">.</span><span class="na">openSession</span><span class="o">();</span>
+<span class="nc">Pet</span> <span class="n">pet</span> <span class="o">=</span> <span class="o">(</span><span class="nc">Pet</span><span class="o">)</span> <span class="n">session</span><span class="o">.</span><span class="na">load</span><span class="o">(</span><span class="nc">Pet</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="mi">1L</span><span class="o">);</span>
+<span class="n">session</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+<span class="n">session</span> <span class="o">=</span> <span class="n">factory</span><span class="o">.</span><span class="na">openSession</span><span class="o">();</span>
+<span class="n">pet</span> <span class="o">=</span> <span class="o">(</span><span class="nc">Pet</span><span class="o">)</span> <span class="n">session</span><span class="o">.</span><span class="na">load</span><span class="o">(</span><span class="nc">Pet</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="mi">1L</span><span class="o">);</span>
+<span class="n">session</span><span class="o">.</span><span class="na">close</span><span class="o">();</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>В примере выше, если будет реализован <strong>кеш второго уровня</strong>, то к базе данных будет выполнен всего один запрос.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_кеш_запросов">6.2.3. Кеш запросов</h4>
+<div class="paragraph">
+<p><strong>Кэш запросов</strong>, так же как и <strong>кэш второго уровня</strong>, существует на уровне <code>SessionFactory</code> и доступен во всех <strong>persistence context</strong>. Для <strong>кэша запросов</strong> требуются две дополнительные области физического кэша, в которых хранятся результаты кэшированного запроса и отметки времени последнего обновления таблицы.</p>
+</div>
+<div class="paragraph">
+<p><strong>Кэши первого</strong> и <strong>второго уровней</strong> работают с объектами загружаемыми по <code>id</code>. Но к базе данных чаще выполняются запросы с условиями, чем загружаются какие-то заранее известные объекты. И результат выполнения таких запросов тоже может потребоваться кэшировать. Например, если вы делаете поисковый сайт по автозапчастям, то можете кэшировать запросы пользователей, которые, скорее всего, ищут одни запчасти гораздо чаще других.</p>
+</div>
+<div class="paragraph">
+<p>У <strong>кэша запросов</strong> есть и своя цена — <strong>Hibernate</strong> будет вынужден отслеживать сущности закешированные с определённым запросом и выкидывать запрос из кэша, если кто-то поменяет значение сущности. То есть для <strong>кэша запросов</strong> стратегия параллельного доступа всегда <strong>read-only</strong>. По этим причинам, <strong>Hibernate</strong> по-умолчанию выключает <strong>кэширование запросов</strong>.</p>
+</div>
+<div class="paragraph">
+<p><strong>Кеш запросов</strong> похож на <strong>кеш второго уровня</strong>. Но в отличии от него — ключом к данным кеша выступает не идентификатор объекта, а совокупность параметров запроса. А сами данные — это идентификаторы объектов соответствующих критериям запроса. Таким образом, этот кеш рационально использовать с <strong>кешем второго уровня</strong>.</p>
+</div>
+<div class="paragraph">
+<p>Если у вас есть запросы, выполняющиеся снова и снова, с одними и теми же параметрами, <strong>кэширование запросов</strong> предоставит выигрыш в производительности.</p>
+</div>
+<div class="paragraph">
+<p>Для включения нужно добавить свойства <code>hibernate.cache.use_query_cache=true</code>. Установив свойства значение true, вы заставляете <strong>Hibernate</strong> создавать необходимые кеши в памяти для хранения наборов запросов и идентификаторов. Также надо установить <code>setCacheable(true)</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="yaml"><span class="na">spring</span><span class="pi">:</span>
+  <span class="na">jpa</span><span class="pi">:</span>
+    <span class="na">properties</span><span class="pi">:</span>
+      <span class="na">hibernate</span><span class="pi">:</span>
+        <span class="na">cache</span><span class="pi">:</span>
+          <span class="na">use_query_cache</span><span class="pi">:</span> <span class="no">true</span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="nc">Session</span> <span class="n">session</span> <span class="o">=</span> <span class="nc">SessionFactory</span><span class="o">.</span><span class="na">openSession</span><span class="o">();</span>
+<span class="nc">Query</span> <span class="n">query</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="s">"FROM EMPLOYEE"</span><span class="o">);</span>
+<span class="n">query</span><span class="o">.</span><span class="na">setCacheable</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+<span class="n">query</span><span class="o">.</span><span class="na">setCacheRegion</span><span class="o">(</span><span class="s">"employee"</span><span class="o">);</span>
+<span class="nc">List</span> <span class="n">users</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="na">list</span><span class="o">();</span>
+<span class="nc">SessionFactory</span><span class="o">.</span><span class="na">closeSession</span><span class="o">();</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Hibernate</strong> также поддерживает очень тонкую поддержку кэша благодаря концепции области кэша. Регион кеша является частью кеша, которому дано имя. Пример выше использует метод, чтобы сообщить <strong>Hibernate</strong> хранить и искать запрос в области кэша сотрудников.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_link">6.2.4. Link</h4>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://habr.com/ru/post/135176/">Hibernate cache</a></p>
+</li>
+<li>
+<p><a href="https://habr.com/ru/post/465667/">Spring Cache: от подключения кэширования за 1 минуту до гибкой настройки кэш-менеджера</a></p>
+</li>
+<li>
+<p><a href="https://habr.com/ru/company/ruvds/blog/350310/">Кэширование и производительность веб-приложений</a></p>
+</li>
+<li>
+<p><a href="https://habr.com/ru/company/otus/blog/596087/">Кэш первого уровня JPA и Hibernate</a></p>
+</li>
+<li>
+<p><a href="https://www.baeldung.com/hibernate-second-level-cache">Hibernate Second-Level Cache</a></p>
+</li>
+<li>
+<p><a href="https://coderlessons.com/tutorials/java-tekhnologii/vyuchit-hibernate/hibernate-keshirovanie">Hibernate — Кэширование</a></p>
+</li>
+<li>
+<p><a href="https://sysout.ru/kesh-pervogo-i-vtorogo-urovnya-v-hibernate-i-read_only-cacheconcurrencystrategy/">Кэш первого и второго уровня в Hibernate и READ_ONLY CacheConcurrencyStrategy</a></p>
+</li>
+<li>
+<p><a href="https://easyjava.ru/data/hibernate/keshirovanie-v-hibernate/">Кэширование в Hibernate</a></p>
+</li>
+<li>
+<p><a href="https://proselyte.net/tutorials/hibernate-tutorial/caching/">Кэширование в Hibernate</a></p>
+</li>
+<li>
+<p><a href="https://www.youtube.com/watch?v=0s48OsEbIU0&amp;ab_channel=KataAcademy">YouTube: «HIBERNATE CACHING»: разбор всех уровней на примере чужих ошибок</a></p>
+</li>
+<li>
+<p><a href="https://www.youtube.com/watch?v=6mm3EE06ODE&amp;ab_channel=EPAMRUSSIA">YouTube: Секция JAVA: Кэширование в Hibernate</a></p>
+</li>
+<li>
+<p><a href="https://www.youtube.com/watch?v=qu9UygWQy7A&amp;ab_channel=SportmasterLab">YouTube: Как мы выбирали кеширование Java backend&#8217;а</a></p>
+</li>
+</ul>
 </div>
 </div>
 </div>
@@ -6987,7 +7349,7 @@ ssb   4096R/42B317FD4BA89E7A 2016-03-10</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-03-03 07:31:33 UTC
+Last updated 2022-03-03 07:32:45 UTC
 </div>
 </div>
 </body>

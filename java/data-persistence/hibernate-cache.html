@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.17">
-<title>Spring MVC</title>
+<title>Hibernate cache</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -438,499 +438,378 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article">
 <div id="header">
-<h1>Spring MVC</h1>
+<h1>Hibernate cache</h1>
 </div>
 <div id="content">
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p><strong>Spring MVC</strong> – это фреймворк для создания <strong>web</strong>-приложений на <strong>Java</strong>, в основе которого лежит шаблон проектирования <strong>MVC</strong>.</p>
+<p><strong>Кэш</strong> - это память с большей скоростью доступа, предназначенная для ускорения обращения к данным, содержащимся постоянно в памяти с меньшей скоростью доступа. Кэширование применяется <strong>ЦПУ</strong>, <strong>жёсткими дисками</strong>, <strong>браузерами</strong>, <strong>веб-серверами</strong>, <strong>службами DNS</strong> и <strong>WINS</strong>.</p>
+</div>
+<div class="paragraph">
+<p>Кэш состоит из набора записей. Каждая запись ассоциирована с элементом данных или блоком данных (небольшой части данных), которая является копией элемента данных в основной памяти. Каждая запись имеет идентификатор, часто называемый тегом, определяющий соответствие между элементами данных в кэше и их копиями в основной памяти.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../assets/img/java/data-persistence/hibernate-cache/cache.png" alt="cache"></span></p>
+</div>
+<div class="paragraph">
+<p>Когда клиент кэша (<strong>ЦПУ</strong>, <strong>веб-браузер</strong>, <strong>операционная система</strong>) обращается к данным, прежде всего исследуется кэш. Если в кэше найдена запись с идентификатором, совпадающим с идентификатором затребованного элемента данных, то используются элементы данных в кэше. Такой случай называется <strong>попаданием кэша</strong>. Если в кэше не найдена запись, содержащая затребованный элемент данных, то он читается из основной памяти в кэш, и становится доступным для последующих обращений. Такой случай называется <strong>промахом кэша</strong>.</p>
+</div>
+<div class="paragraph">
+<p>Кеширование является одним из способов оптимизации работы приложения, ключевой задачей которого является уменьшить количество прямых обращений к базе данных.</p>
+</div>
+<div class="paragraph">
+<p>Кэширование, как правило, есть смысл применять в больших, высоконагруженных проектах, с десятками тысяч запросов в минуту. В таких проектах, чтобы не перегружать базу, как правило, кэшируют обращения к репозиторию. Особенно если известно, что данные из какой-нибудь мастер-системы обновляются с некоторой периодичностью. Если же проект маленький и перегрузки ему не грозят, тогда, конечно, лучше ничего не кэшировать — всегда свежие данные всегда лучше периодически обновляемых.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../assets/img/java/data-persistence/hibernate-cache/app-hibernate-db.png" alt="app hibernate db"></span></p>
+</div>
+<div class="paragraph">
+<p>В <strong>Hibernate</strong> имеется 3 вида кеширования:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Spring MVC</strong> — это старый добрый <strong>MVC</strong>-фреймворк, который позволяет довольно легко писать <strong>web</strong>-сайты или <strong>web</strong>-сервисы.</p>
+<p><strong>First-level cache</strong> (<strong>Кеш первого уровня</strong>);</p>
 </li>
 <li>
-<p>Он прекрасно интегрируется со множеством шаблонных библиотек и библиотек преобразования данных, а также с остальной частью экосистемы <strong>Spring</strong>, такой, как <strong>Spring Boot</strong>.</p>
+<p><strong>Second-level cache</strong> (<strong>Кеш второго уровня</strong>);</p>
 </li>
 <li>
-<p>Главным образом он позволяет вам сосредоточиться на написании своей бизнес-логики, не беспокоясь о стандартном коде для Servlet, разборе <strong>HTTP</strong>-запросов/ответов и преобразовании данных.</p>
+<p><strong>Query cache</strong> (<strong>Кеш запросов</strong>);</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>Паттерн <strong>MVC</strong> разделяет аспекты приложения (логику ввода, бизнес-логику и логику <strong>UI</strong>), обеспечивая при этом свободную связь между ними.</p>
+<p><span class="image"><img src="../../assets/img/java/data-persistence/hibernate-cache/hibernate-first-and-second-level-cache.jpg" alt="hibernate first and second level cache"></span></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_кеш_первого_уровня">Кеш первого уровня</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>В <strong>Hibernate</strong> <strong>кэш первого уровня</strong> представлен интерфейсом <code>Session</code>, который является расширением к <strong>JPA</strong> <code>EntityManager</code>. В терминологии <strong>JPA</strong> <strong>кэш первого уровня</strong> называется <strong>Persistence Context</strong>, и он представлен интерфейсом <code>EntityManager</code>.</p>
+</div>
+<div class="paragraph">
+<p><strong>Кеш первого уровня</strong> всегда привязан к объекту <code>Session</code>. <strong>Hibernate</strong> по умолчанию использует этот кеш и его нельзя отключить.</p>
+</div>
+<div class="paragraph">
+<p>В <strong>JPA</strong> и <strong>Hibernate</strong> <strong>кэш первого уровня</strong> - это <strong>Java Map</strong>, в котором <strong>ключ</strong> представлен объектом, инкапсулирующим имя сущности и ее идентификатор, а <strong>значение</strong> - это сам объект сущности. Поэтому в <strong>JPA</strong> <code>EntityManager</code> или <strong>Hibernate</strong> <code>Session</code> может быть только одна сущность, хранящаяся с использованием одного и того же идентификатора и типа класса сущности. Причина, по которой невозможно иметь не более одного представления сущности, хранящегося в <strong>кэше первого уровня</strong>, заключается в том, что в противном случае мы можем получить различные отображения одной и той же строки базы данных, не зная, какая из них является правильной версией, синхронизируемой с соответствующей записью базы данных.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">Session session = sessionFactory.openSession();
+Pet pet = (Pet) session.load(Pet.class, id);
+pet = (Pet) session.load(Pet.class, id);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>В примере выше будет выполнен 1 запрос в базу, несмотря на то, что делается 2 вызова <code>load()</code>, так как эти вызовы происходят в контексте одной сессии. Во время второй попытки загрузить план с тем же идентификатором будет использован кеш сессии.</p>
+</div>
+<div class="paragraph">
+<p>Сначала <strong>Hibernate</strong> проверяет, хранится ли сущность в <strong>кэше первого уровня</strong>, и если да, то возвращается текущая управляемая ссылка на нее. Если сущность не найдена в <strong>кэше первого уровня</strong>, то <strong>Hibernate</strong> загрузит ее из базы данных с помощью <strong>SQL</strong>-запроса.</p>
+</div>
+<div class="paragraph">
+<p>При использовании методов <code>save()</code>, <code>update()</code>, <code>saveOrUpdate()</code>, <code>load()</code>, <code>get()</code>, <code>list()</code>, <code>iterate()</code>, <code>scroll()</code> всегда будет задействован <strong>кеш первого уровня</strong>.</p>
+</div>
+<div class="paragraph">
+<p>Для работы с данными кеша в сессии имеются следующие методы:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Model</strong> (<strong>Модель</strong>) инкапсулирует (объединяет) данные приложения, в целом они будут состоять из <strong>POJO</strong>.</p>
+<p><code>flush()</code> — обновляет объекты кеша с базой данных.</p>
 </li>
 <li>
-<p><strong>View</strong> (<strong>Отображение</strong>, <strong>Вид</strong>) отвечает за отображение данных <strong>Модели</strong>, — как правило, генерируя <strong>HTML</strong>, которые мы видим в своём браузере.</p>
+<p><code>evict()</code> — удаляет объект из кеша.</p>
 </li>
 <li>
-<p><strong>Controller</strong> (<strong>Контроллер</strong>) обрабатывает запрос пользователя, создаёт соответствующую <strong>Модель</strong> и передаёт её для отображения в <strong>Вид</strong>.</p>
+<p><code>contains()</code> — определяет, находится ли объект в кеше или нет.</p>
+</li>
+<li>
+<p><code>clear()</code> — очищает весь кеш.</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>Рабочий процесс обработки запроса проиллюстрирован на следующей диаграмме:</p>
+<p>При <strong>кеше первого уровня</strong> все активные сессии работает изолированно друг от друга, и у каждой сессии соответственно имеется свой кеш, который очищается при закрытии сессии.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_кеш_второго_уровня">Кеш второго уровня</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>Кеш второго уровня</strong> привязан к <code>SessionFactory</code>, поэтому видимость этого кеша гораздо шире <strong>кеша первого уровня</strong>. Данный вид кеша доступен на протяжении всего времени работы приложения.</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../../assets/img/java/spring/mvc/schema-working-dispatcher-servlet.png" alt="schema working dispatcher servlet"></span></p>
+<p>По умолчанию <strong>кеш второго уровня</strong> отключен. Для включения необходимо при конфигурировании настроек <strong>Hibernate</strong> в строке <code>hibernate.cache.use_second_level_cache</code> установить значение <code>true</code>.</p>
 </div>
 <div class="paragraph">
-<p>После получения <strong>HTTP</strong>-запроса <strong>DispatcherServlet</strong>  выполняет следующие действия.</p>
+<p>На самом деле, <strong>Hibernate</strong> сам не реализует кеширование как таковое, а лишь предоставляет структуру для его реализации. Поэтому подключить можно любую реализацию, которая соответствует спецификации <strong>ORM</strong> фреймворка.</p>
+</div>
+<div class="paragraph">
+<p>Из сказанного выше следует, что помимо <code>hibernate.cache.use_second_level_cache</code> еще необходимо в настройках указать провайдера кеша <code>hibernate.cache.region.factory_class: org.hibernate.cache.ehcache.EhCacheRegionFactory</code>, которого также нужно добавить в зависимости <strong>Maven</strong>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">spring:
+  jpa:
+    properties:
+      hibernate:
+        cache:
+          use_second_level_cache: true
+          region:
+            factory_class: org.hibernate.cache.ehcache.EhCacheRegionFactory</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Из популярных реализаций провайдеров можно выделить следующие:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>После получения <strong>HTTP</strong>-запроса <strong>DispatcherServlet</strong> даёт указание объекту <strong>HandlerMapping</strong> (<strong>обработка связывания</strong>), который вызывает следующий объект.</p>
+<p>EHCache</p>
 </li>
 <li>
-<p><strong>DispatcherServlet</strong> посылает запрос контроллеру и вызывает соответствующие методы. Эти методы возвращают объект, в соответствии с бизнес-логикой метода и передают название ссылки обратно в <strong>DispatcherServlet</strong>.</p>
+<p>OSCache</p>
 </li>
 <li>
-<p>C помощью <strong>ViewResolver</strong>, <strong>DispatcherServlet</strong> подбирает необходимый вид для запроса.</p>
+<p>SwarmCache</p>
 </li>
 <li>
-<p>Когда внешний вид сформирован, <strong>DispatcherServlet</strong> передаёт эти данные в модуль <strong>View</strong>, который обрабатывается браузером пользователя.</p>
+<p>JBoss TreeCache</p>
 </li>
 </ul>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_dispatcherservlet"><code>DispatcherServlet</code></h2>
-<div class="sectionbody">
 <div class="paragraph">
-<p>Вся логика работы <strong>Spring MVC</strong> построена вокруг <code>DispatcherServlet</code>.</p>
-</div>
-<div class="paragraph">
-<p><code>DispatcherServlet</code> — полностью интегрированный Servlet в <strong>Spring IoC</strong> контейнер и таким образом получает доступ ко всем возможностям <strong>Spring</strong>.</p>
-</div>
-<div class="paragraph">
-<p>При обработке запросов используется паттерн <strong>pattern-savvy reader</strong>, который распознает <code>DispatcherServlet</code> как выражение из шаблона проектирования <strong>Front Controller</strong>.</p>
-</div>
-<div class="paragraph">
-<p><span class="image"><img src="../../assets/img/java/spring/mvc/front-contreoller.png" alt="front contreoller"></span></p>
-</div>
-<div class="paragraph">
-<p><code>DispatcherServlet</code> является основным контроллером <strong>Spring MVC Application</strong>. Все входящие веб-запросы проходят через <code>DispatcherServlet</code> перед обработкой отдельными контроллерами <strong>Spring</strong>, то есть классами, аннотированными с помощью аннотации <code>@Controller</code>.</p>
-</div>
-<div class="paragraph">
-<p><code>DispatcherServlet</code> — это обычный Servlet (наследуется от базового класса <code>HttpServlet</code>). Как и любой другой Servlet, <code>DispatcherServlet</code> необходимо зарегистрировать и настроить. Сделать это можно или в файле <code>web.xml</code></p>
-</div>
-<div class="listingblock">
-<div class="title"><code>web.xml</code></div>
-<div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;web-app&gt;
-    &lt;servlet&gt;
-        &lt;servlet-name&gt;SpringMVC&lt;/servlet-name&gt;
-        &lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;
-        &lt;load-on-startup&gt;1&lt;/load-on-startup&gt;
-    &lt;/servlet&gt;
-    &lt;servlet-mapping&gt;
-        &lt;servlet-name&gt;SpringMVC&lt;/servlet-name&gt;
-        &lt;url-pattern&gt;*&lt;/url-pattern&gt;
-    &lt;/servlet-mapping&gt;
-&lt;/web-app&gt;</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Либо в <strong>Java</strong>-коде переопределив метод <code>onStartup()</code> интерфейса <code>WebApplicationInitializer</code>:</p>
+<p>Эти провайдеры дополнительно можно настраивать, например в файле <code>ehcache.xml</code>, который должен находиться в директории ресурсов. В данном файле, например, можно ограничить количество записей в кеше <code>maxElementsInMemory="500"</code>.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public class WebInitializer implements WebApplicationInitializer {
-    @Override
-    public void onStartup(ServletContext servletContext) throws ServletException {
-        AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
-        context.register(WebConfiguration.class);
-        DispatcherServlet servlet = new DispatcherServlet(context);
-        ServletRegistration.Dynamic dispatcher = servletContext.addServlet("dispatcher", servlet);
-        dispatcher.setLoadOnStartup(1);
-        dispatcher.addMapping("/");
-    }
-}</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p><code>WebApplicationInitializer</code> — интерфейс, предоставляемый <strong>Spring MVC</strong>, который гарантирует инициализацию при старте контейнера.</p>
-</div>
-<div class="paragraph">
-<p>Servlet диспетчера настроен как <code>load-on-startup = 1</code>, что означает, что этот Servlet должен создаваться контейнером Servlets при развертывании приложения, а не при получении запроса на этот запрос.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_handlermapping"><code>HandlerMapping</code></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Одним из важных интерфейсов в Spring является <code>HandlerMapping</code>.</p>
-</div>
-<div class="paragraph">
-<p><code>DispatcherServlet</code> с помощью <code>HandlerMapping</code> определяет какой контроллер он должен использовать для определенного <strong>request</strong>.</p>
-</div>
-<div class="paragraph">
-<p><span class="image"><img src="../../assets/img/java/spring/mvc/schema-spring-mvc-detail.png" alt="schema spring mvc detail"></span></p>
-</div>
-<div class="paragraph">
-<p>По определению <code>HandlerMapping</code> — интерфейс реализующийся объектами, которые определяют отображение между запросами и объектами обработчиков.</p>
-</div>
-<div class="paragraph">
-<p>Реализации <code>HandlerMapping</code> могут поддерживать перехватчики (<strong>interceptors</strong>), но не содержат их. Обработчик будет всегда обернут в экземпляре <code>HandlerExecutionChain</code>, возможно в сопровождении некоторых экземпляров <code>HandlerInterceptor</code>. <code>DispatcherServlet</code> сначала вызывает  метод <code>preHandle()</code> каждого <code>HandlerInterceptor</code> в заданном порядке, и в конце, внедряет обработчик, если все методы <code>preHandle()</code> вернули <code>true</code>.</p>
-</div>
-<div class="paragraph">
-<p>Возможность параметризации такого отображения является мощной и необычной способностью в рамках <strong>MVC</strong> фреймворка. Например, можно написать пользовательское отображение на основе состояния <strong>session</strong>, состояние <strong>cookie</strong> или многих других переменных.</p>
-</div>
-<div class="paragraph">
-<p>По умолчанию интерфейс <code>HandlerMapping</code> в <strong>Spring MVC</strong> реализуется классом <code>RequestMappingHandlerMapping</code>. Существуют другие реализации интерфейса, которые используют другие параметры для поиска контроллера, соответствующего запросу. В <strong>Spring MVC</strong> вы можете встретить реализацию интерфейса, когда применяете аннотацию <code>@RequestMapping</code></p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@RequestMapping(value = "/", method = RequestMethod.GET)
-public class Main{
-    public ModelAndView main() {
-        ModelAndView modelAndView = new ModelAndView();
-        return modelAndView;
-    }
-}</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_controller"><code>Controller</code></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p><code>DispatcherServlet</code> отправляет запрос контроллерам для выполнения определённых функций.</p>
-</div>
-<div class="paragraph">
-<p><span class="image"><img src="../../assets/img/java/spring/mvc/request-lifecycle.png" alt="Request Lifecycle"></span></p>
-</div>
-<div class="paragraph">
-<p>Аннотации <code>@Controller</code> или <code>@RestController</code> указывают, что конкретный класс является контроллером. Аннотация <code>@RestController</code> равна одновременно <code>@Controller</code> + <code>@ResponseBody</code>.</p>
-</div>
-<div class="paragraph">
-<p><code>@ResponseBody</code> - дает фреймворку понять, что объект, который вы вернули из метода надо прогнать через <code>HttpMessageConverter</code>, чтобы получить готовое представление к отправке клиенту.</p>
-</div>
-<div class="paragraph">
-<p>Аннотация <code>@RequestMapping</code> используется для <strong>mapping</strong> (<strong>связывания</strong>) с <strong>URL</strong> для всего класса или для конкретного метода обработчика.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Controller
-@RequestMapping("/hello")
-public class HelloController {
-   @RequestMapping(method = RequestMethod.GET)
-   public String printHello(ModelMap model) {
-      model.addAttribute("message", "Hello Spring MVC Framework!");
-      return "hello";
-   }
-}</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>В первом случае, <code>@RequestMapping</code> указывает, что все методы в данном <strong>Controller</strong> относятся к <strong>URL</strong>-адресу <code>/hello</code>, а во втором как дефолтного метода для обработки <strong>HTTP</strong>-запросов <strong>GET</strong> (в данном <strong>Controller</strong>). Также можно данную аннотацию объявить над методом <code>@RequestMapping(value = "/hello", method = RequestMethod.GET)</code>.</p>
-</div>
-<div class="paragraph">
-<p>Также в контроллере может использоваться аннотация <code>@ModelAttribute</code>, которая ставится над методом или в аргументах методов.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Controller
-public class HelloController {
-    @RequestMapping("/processForm")
-    public String processForm(@ModelAttribute("student") Student theStudent) {
-        System.out.println("theStudent :"+ theStudent.getLastName());
-        return "form-details";
-    }
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="ehcache.xsd" updateCheck="true"
+	monitoring="autodetect" dynamicConfig="true"&gt;
 
-    @ModelAttribute("object")
-    public Object checkOptions() {
-        return new Object();
-    }
-}</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-html" data-lang="html">&lt;form:form action="processForm" modelAttribute="student"&gt;
-    First Name : &lt;form:input path="firstName" /&gt;
-    &lt;br&gt;&lt;br&gt;
-    Last Name : &lt;form:input path="lastName" /&gt;
-    &lt;br&gt;&lt;br&gt;
-    &lt;input type="submit" value="submit"/&gt;
-&lt;/form:form&gt;</code></pre>
+    &lt;diskStore path="java.io.tmpdir"/&gt;
+    &lt;defaultCache
+        maxElementsInMemory="500"
+        eternal="false"
+        timeToIdleSeconds="60"
+        timeToLiveSeconds="60"
+        overflowToDisk="true"/&gt;
+    &lt;cache name="cache1"
+        maxElementsInMemory="500"
+        maxEntriesLocalHeap="10000"
+        maxEntriesLocalDisk="1000"
+        eternal="false"
+        diskSpoolBufferSizeMB="20"
+        timeToIdleSeconds="300" timeToLiveSeconds="600"
+        memoryStoreEvictionPolicy="LFU"
+        transactionalMode="off"&gt;
+        &lt;persistence strategy="localTempSwap"/&gt;
+    &lt;/cache&gt;
+&lt;/ehcache&gt;</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>В зависимости от места ее применения, работать она будет по-разному. В первом случае она позволяет связать <strong>html</strong>-форму с <strong>java</strong>-объектом. А во втором случае, добавит в модель каждого метода контроллера объект с ключ-значением - <code>object</code> и <code>new Object()</code>.</p>
-</div>
-<div class="sect2">
-<h3 id="_requestparam_и_pathvariable"><code>@RequestParam</code> и <code>@PathVariable</code></h3>
-<div class="paragraph">
-<p>Часто используются аннотации <code>@RequestParam</code> и <code>@PathVariable</code>.</p>
+<p>Помимо вышеуказанного нужно еще самому <strong>Hibernate</strong>, что именно кешировать. Делается это с помощью аннотаций <code>@Cacheable</code> и <code>@Cache</code>.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Controller
-@RequestMapping("api/test")
-public class HelloController {
-    @GetMapping(path = "/filter")
-    public Test getByFilter(@RequestParam(name = "text", required = false) String text) {
-        return testService.getByFilter(filterTest);
-    }
-
-    @GetMapping(path = "/{id}")
-    @ResponseBody
-    public Test findById(@PathVariable String id) {
-        return testService.findById(id);
-    }
+<pre class="highlight"><code class="language-java" data-lang="java">@Entity
+@Table(name = "shared_doc")
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+public class SharedDoc{
+    private Set&lt;User&gt; users;
 }</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>При использовании <code>@RequestParam</code> передача значений будет в виде <code><a href="http://localhost:8080/api/test/filter?id=abc" class="bare">http://localhost:8080/api/test/filter?id=abc</a></code>. В этом случае данный параметр является не обязательным, но при установке атрибута <code>required = true</code> (по умолчанию <code>false</code>) станет обязательным для заполнения.</p>
+<p><code>@Cacheable</code> это аннотация <strong>JPA</strong> и позволяет объекту быть закэшированным. <strong>Hibernate</strong> поддерживает эту аннотацию в том же ключе. <code>@Cache</code> это аннотация <strong>Hibernate</strong>, настраивающая тонкости кэширования объекта в <strong>кэше второго уровня</strong> <strong>Hibernate</strong>. Аннотации <code>@Cacheable</code>  достаточно, чтобы объект начал кэшироваться с настройками по умолчанию. При этом <code>@Cache</code>, использованная без <code>@Cacheable</code>, не разрешит кэширование объекта.</p>
 </div>
 <div class="paragraph">
-<p>При использовании <code>@PathVariable</code> передача значений будет в виде <code><a href="http://localhost:8080/api/test/abc" class="bare">http://localhost:8080/api/test/abc</a></code>. В этом случае данный параметр является обязательным, но при установке атрибута <code>required = false</code> (по умолчанию <code>true</code>) станет не обязательным для заполнения.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_viewresolver"><code>ViewResolver</code></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p><code>DispatcherServlet</code> с помощью <code>ViewResolver</code> определяет какое представление необходимо использовать на основании полученного имени.</p>
-</div>
-<div class="paragraph">
-<p><code>ViewResolver</code> — интерфейс, реализуемый объектами, которые способны находить представления <strong>View</strong> по имени <strong>View Name</strong></p>
-</div>
-<div class="paragraph">
-<p><strong>Spring MVC</strong> поддерживает множество типов <strong>View</strong> для различных технологий отображения страницы. В том числе — <strong>JSP</strong>, <strong>HTML</strong>, <strong>PDF</strong>, <strong>Excel</strong>, <strong>XML</strong>, <strong>Velocity</strong> <strong>templates</strong>, <strong>XSLT</strong>, <strong>JSON</strong>, каналы <strong>Atom</strong> и <strong>RSS</strong>, <strong>JasperReports</strong> и другие.</p>
-</div>
-<div class="paragraph">
-<p>По умолчанию реализацией интерфейса <code>ViewResolver</code> является класс <code>InternalResourceViewResolver</code>. Также могут использоваться <code>FreeMarkerViewResolver</code>, <code>BeanNameViewResolver</code>, <code>ResourceBundleViewResolver</code>, <code>TilesViewResolver</code> и многие другие.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Configuration
-public class WebConfiguration {
-    @Bean
-    public InternalResourceViewResolver internalResourceViewResolver() {
-        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-        resolver.setPrefix("/WEB-INF/views/");
-        resolver.setSuffix(".jsp");
-        return resolver;
-    }
-}</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p><span class="image"><img src="../../assets/img/java/spring/mvc/prefix-suffix.png" alt="prefix suffix"></span></p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public class Main{
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ModelAndView main() {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("userJSP", new User());
-        modelAndView.setViewName("index");
-        return modelAndView;
-    }
-}</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>После того как в модель <code>modelAndView</code> было записано имя представления <code>"index"</code> и произошел выход из метода, то в действие включается <strong>ViewResolver</strong>. Для этого примера согласно настройкам в класс <code>InternalResourceViewResolver</code> будет искать представление с именем <code>index</code>, у которого префикс <code>/WEB-INF/views/</code>, а суффикс <code>.jsp</code>. Другими словами он должен найти представление с именем <code>/WEB-INF/views/index.jsp</code>.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-html" data-lang="html">&lt;html lang=""&gt;
-   &lt;head&gt;
-      &lt;title&gt;Hello Spring MVC&lt;/title&gt;
-   &lt;/head&gt;
-
-   &lt;body&gt;
-      &lt;h2&gt;${userJSP}&lt;/h2&gt;
-   &lt;/body&gt;
-&lt;/html&gt;</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>В данном случае, переменная <code>${userJSP}</code> выводит тот самый атрибут, установленный в <strong>Controller</strong>. Внутри <strong>View</strong> можно отобразить любое количество атрибутов.</p>
-</div>
-<div class="paragraph">
-<p>Если представление найдено, то произойдет переход на эту страницу. В противном случае результат зависит от настроек реализации интерфейса <code>ViewResolver</code>. По умолчанию возвращается <code>null</code>, но можно возвращать имя или исключение, если вам это необходимо.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_exceptionhandler"><code>ExceptionHandler</code></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Для обработки ошибки существует три варианта обработки:</p>
+<p>Аннотация <code>@Cache</code> имеет несколько атрибутов:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>для каждого контроллера</p>
+<p><code>usage</code> - отвечает за стратегию кеширования.</p>
 </li>
 <li>
-<p>для каждого исключения</p>
+<p><code>region</code> - это логический разделитель памяти вашего кеша. Для каждого региона можно настроить свою политику кеширования (для <strong>EhCache</strong> в том же <code>ehcache.xml</code>). Если регион не указан, то используется регион по умолчанию, который имеет полное имя вашего класса для которого применяется кеширование.</p>
 </li>
 <li>
-<p>глобально</p>
+<p><code>include</code> - Могут ли свойства сущности, указанные с <code>lazy=true</code>, кэшироваться, когда разрешена
+"ленивая" выборка на уровне атрибутов. По-умолчанию <strong>all</strong> и может быть также <strong>non-lazy</strong></p>
 </li>
 </ul>
 </div>
-<div class="sect2">
-<h3 id="_уровень_контроллера">Уровень контроллера</h3>
 <div class="paragraph">
-<p>Изначально основными способами обработки исключений в приложении были <code>HandlerExceptionResolver</code> и аннотация <code>@ExceptionHandler</code>, которая позволяла обрабатывать исключения на уровне отдельного контроллера. Для этого достаточно было объявить метод, в котором будет содержаться вся логика обработки нужного исключения, и проаннотировать его.</p>
+<p>Стратегии кеширования определяют поведения кеша в определенных ситуациях. Выделяют четыре группы:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Read-only</strong> - используется только для сущностей, которые никогда не изменяются (выбрасывается исключение  при попытке обновить такую сущность). Это очень просто и эффективно. Очень подходит для некоторых статических эталонных данных, которые не меняются.</p>
+</li>
+<li>
+<p><strong>Nonstrict-read-write</strong> - кэш обновляется после фиксации транзакции, которая изменила затронутые данные. Таким образом, строгая согласованность не гарантируется, и существует небольшое временное окно, в течение которого устаревшие данные могут быть получены из кэша. Этот тип стратегии подходит для вариантов использования, которые могут допустить возможную согласованность.</p>
+</li>
+<li>
+<p><strong>Read-write</strong> - эта стратегия гарантирует строгую согласованность, которая достигается за счет использования «мягких» блокировок - когда кэшированный объект обновляется, программная блокировка также сохраняется в кэше для этого объекта, которая освобождается после фиксации транзакции. Все параллельные транзакции, которые обращаются к заблокированным записям, будут извлекать соответствующие данные непосредственно из базы данных.</p>
+</li>
+<li>
+<p><strong>Transactional</strong> - изменения кэша выполняются в распределенных транзакциях. Изменение в кэшированном объекте либо фиксируется, либо откатывается как в базе данных, так и в кэше в одной и той же транзакции.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Помимо вышесказанного, следует помнить — зависимости Вашего класса по умолчанию также не кешируются. Например, если рассмотреть класс выше — <code>SharedDoc</code>, то при выборке коллекция <code>users</code> будет доставаться из базы данных, а не из <strong>кеша второго уровня</strong>. Если Вы хотите также кешировать и зависимости, то необходимо также проаннотировать все необходимы объекты аннотацией <code>@Cache</code>.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@RestController
-public class ExampleController {
-    @GetMapping(value = "/testExceptionHandler", produces = APPLICATION_JSON_VALUE)
-    public Response testExceptionHandler() throws BusinessException {
-        throw new BusinessException("BusinessException in testExceptionHandler");
-    }
-
-    @ExceptionHandler(BusinessException.class)
-    public Response handleException(BusinessException e) {
-        return new Response(e.getMessage());
-    }
+<pre class="highlight"><code class="language-java" data-lang="java">@Entity
+@Table(name = "shared_doc")
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+public class SharedDoc{
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    private Set&lt;User&gt; users;
 }</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Метод <code>handleException()</code> предназначен для обработки ошибок. У него есть аннотация <code>@ExceptionHandler(BusinessException.class)</code>, которая говорит о том, что для последующей обработки будут перехвачены все исключения типа <code>BusinessException</code>. В аннотации <code>@ExceptionHandler</code> можно прописать сразу несколько типов исключений, например так: <code>@ExceptionHandler({BusinessException.class, ServiceException.class})</code>.</p>
+<p>Еще одна важная деталь про <strong>кеш второго уровня</strong>. <strong>Hibernate</strong> не хранит сами объекты классов. Он хранит информацию в разобранном (гидратированном) состоянии, в виде массивов строк, чисел и т. д.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Id</code> (первичный ключ) не сохраняется (он хранится как часть ключа кэша)</p>
+</li>
+<li>
+<p>Переходные свойства не сохраняются</p>
+</li>
+<li>
+<p>Коллекции не хранятся</p>
+</li>
+<li>
+<p>Значения свойств, не связанные с ассоциацией, хранятся в исходном виде</p>
+</li>
+<li>
+<p>Для отношений <strong>ToOne</strong> сохраняется только идентификатор (внешний ключ)</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
-<p>Основной недостаток <code>@ExceptionHandler</code> в том что он определяется для каждого контроллера отдельно, а не глобально для всего приложения.</p>
+<p>Идентификатор объекта выступает указателем на эту информацию. Концептуально это нечто вроде <strong>Map</strong>, в которой <code>id</code> объекта — ключ, а массивы данных — значение. Приблизительно можно представить себе это так - <code>1 &#8594; { "Pupkin", 1, null , {1,2,5} }</code>, что есть очень разумно, учитывая сколько лишней памяти занимает каждый объект.</p>
 </div>
 <div class="paragraph">
-<p>Также, на уровне контроллера можно формировать ответ путём выброса исключения <code>ResponseStatusException</code>.</p>
+<p>Как уже говорилось выше, сначала <strong>Hibernate</strong> проверяет, хранится ли сущность в <strong>кэше первого уровня</strong>, затем проверяется <strong>кеш второго уровня</strong>, и только после этого, если запрашиваемый объект не найден, <strong>Hibernate</strong> выполнит запрос в базу данных.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@RestController
-public class ExampleController {
-    @GetMapping(value = "/testResponseStatusException", produces = APPLICATION_JSON_VALUE)
-    public Response testResponseStatusException() {
-        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "ResponseStatusException in testResponseStatusException");
-    }
-}</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">Session session = factory.openSession();
+Pet pet = (Pet) session.load(Pet.class, 1L);
+session.close();
+session = factory.openSession();
+pet = (Pet) session.load(Pet.class, 1L);
+session.close();</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Выбрасывая <code>ResponseStatusException</code> можно также возвращать пользователю определённый код статуса, в зависимости от того, что произошло в логике приложения. При этом не нужно создавать собственное исключение и прописывать аннотацию <code>@ResponseStatus</code></p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_уровень_исключений">Уровень исключений</h3>
-<div class="paragraph">
-<p>Для обработки ошибок на уровне исключений используется <code>ResponseStatusExceptionResolver</code>. Он позволяет настроить код ответа для любого исключения с помощью аннотации <code>@ResponseStatus</code>.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
-public class ServiceException extends Exception {
-    public ServiceException(String message) {
-        super(message);
-    }
-}</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@RestController
-public class ExampleController {
-    @GetMapping(value = "/testResponseStatusExceptionResolver", produces = APPLICATION_JSON_VALUE)
-    public Response testResponseStatusExceptionResolver() throws ServiceException {
-        throw new ServiceException("ServiceException in testResponseStatusExceptionResolver");
-    }
-}</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Из недостатков такого подхода — как и в предыдущем случае отсутствует тело ответа.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_уровень_глобальной_обработки">Уровень глобальной обработки</h3>
-<div class="paragraph">
-<p>Глобально и централизованно обрабатывать исключения с помощью классов с аннотацией <code>@ControllerAdvice</code>.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@ControllerAdvice
-public class DefaultAdvice {
-    @ExceptionHandler(BusinessException.class)
-    public ResponseEntity&lt;Response&gt; handleException(BusinessException e) {
-        Response response = new Response(e.getMessage());
-        return new ResponseEntity&lt;&gt;(response, HttpStatus.OK);
-    }
-}</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Любой класс с аннотацией <code>@ControllerAdvice</code> является глобальным обработчиком исключений, который очень гибко настраивается. Метод <code>handleException()</code> имеет аннотацию <code>@ExceptionHandler</code>, в которой можно определить список обрабатываемых исключений.</p>
-</div>
-<div class="paragraph">
-<p>Так же можно в рамках <code>@ControllerAdvice</code> сделать сразу несколько методов с аннотациями <code>@ExceptionHandler</code> для обработки разных исключений.</p>
-</div>
+<p>В примере выше, если будет реализован <strong>кеш второго уровня</strong>, то к базе данных будет выполнен всего один запрос.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_links">Links</h2>
+<h2 id="_кеш_запросов">Кеш запросов</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>Кэш запросов</strong>, так же как и <strong>кэш второго уровня</strong>, существует на уровне <code>SessionFactory</code> и доступен во всех <strong>persistence context</strong>. Для <strong>кэша запросов</strong> требуются две дополнительные области физического кэша, в которых хранятся результаты кэшированного запроса и отметки времени последнего обновления таблицы.</p>
+</div>
+<div class="paragraph">
+<p><strong>Кэши первого</strong> и <strong>второго уровней</strong> работают с объектами загружаемыми по <code>id</code>. Но к базе данных чаще выполняются запросы с условиями, чем загружаются какие-то заранее известные объекты. И результат выполнения таких запросов тоже может потребоваться кэшировать. Например, если вы делаете поисковый сайт по автозапчастям, то можете кэшировать запросы пользователей, которые, скорее всего, ищут одни запчасти гораздо чаще других.</p>
+</div>
+<div class="paragraph">
+<p>У <strong>кэша запросов</strong> есть и своя цена — <strong>Hibernate</strong> будет вынужден отслеживать сущности закешированные с определённым запросом и выкидывать запрос из кэша, если кто-то поменяет значение сущности. То есть для <strong>кэша запросов</strong> стратегия параллельного доступа всегда <strong>read-only</strong>. По этим причинам, <strong>Hibernate</strong> по-умолчанию выключает <strong>кэширование запросов</strong>.</p>
+</div>
+<div class="paragraph">
+<p><strong>Кеш запросов</strong> похож на <strong>кеш второго уровня</strong>. Но в отличии от него — ключом к данным кеша выступает не идентификатор объекта, а совокупность параметров запроса. А сами данные — это идентификаторы объектов соответствующих критериям запроса. Таким образом, этот кеш рационально использовать с <strong>кешем второго уровня</strong>.</p>
+</div>
+<div class="paragraph">
+<p>Если у вас есть запросы, выполняющиеся снова и снова, с одними и теми же параметрами, <strong>кэширование запросов</strong> предоставит выигрыш в производительности.</p>
+</div>
+<div class="paragraph">
+<p>Для включения нужно добавить свойства <code>hibernate.cache.use_query_cache=true</code>. Установив свойства значение true, вы заставляете <strong>Hibernate</strong> создавать необходимые кеши в памяти для хранения наборов запросов и идентификаторов. Также надо установить <code>setCacheable(true)</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">spring:
+  jpa:
+    properties:
+      hibernate:
+        cache:
+          use_query_cache: true</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">Session session = SessionFactory.openSession();
+Query query = session.createQuery("FROM EMPLOYEE");
+query.setCacheable(true);
+query.setCacheRegion("employee");
+List users = query.list();
+SessionFactory.closeSession();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Hibernate</strong> также поддерживает очень тонкую поддержку кэша благодаря концепции области кэша. Регион кеша является частью кеша, которому дано имя. Пример выше использует метод, чтобы сообщить <strong>Hibernate</strong> хранить и искать запрос в области кэша сотрудников.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_link">Link</h2>
 <div class="sectionbody">
 <div class="ulist">
 <ul>
 <li>
-<p><a href="https://docs.spring.io/spring-framework/docs/3.2.x/spring-framework-reference/html/mvc.html">Web MVC framework</a></p>
+<p><a href="https://habr.com/ru/post/135176/">Hibernate cache</a></p>
 </li>
 <li>
-<p><a href="https://habr.com/ru/post/336816/">Spring MVC — основные принципы</a></p>
+<p><a href="https://habr.com/ru/post/465667/">Spring Cache: от подключения кэширования за 1 минуту до гибкой настройки кэш-менеджера</a></p>
 </li>
 <li>
-<p><a href="https://habr.com/ru/post/500572/">Spring MVC: создание веб-сайтов и RESTful сервисов</a></p>
+<p><a href="https://habr.com/ru/company/ruvds/blog/350310/">Кэширование и производительность веб-приложений</a></p>
 </li>
 <li>
-<p><a href="https://habr.com/ru/post/528116/">Обработка исключений в контроллерах Spring</a></p>
+<p><a href="https://habr.com/ru/company/otus/blog/596087/">Кэш первого уровня JPA и Hibernate</a></p>
 </li>
 <li>
-<p><a href="https://javastudy.ru/spring-mvc/spring-mvc-basic/">Spring MVC — основные понятия, архитектура</a></p>
+<p><a href="https://www.baeldung.com/hibernate-second-level-cache">Hibernate Second-Level Cache</a></p>
 </li>
 <li>
-<p><a href="https://javastudy.ru/spring-mvc/spring-mvc-webapplicationcontext/">Spring MVC — WebApplicationContext. Описание интерфейса</a></p>
+<p><a href="https://coderlessons.com/tutorials/java-tekhnologii/vyuchit-hibernate/hibernate-keshirovanie">Hibernate — Кэширование</a></p>
 </li>
 <li>
-<p><a href="https://javastudy.ru/spring-mvc/spring-mvc-handler-mapping/">Spring MVC — Handler Mapping. Описание интерфейса HandlerMapping</a></p>
+<p><a href="https://sysout.ru/kesh-pervogo-i-vtorogo-urovnya-v-hibernate-i-read_only-cacheconcurrencystrategy/">Кэш первого и второго уровня в Hibernate и READ_ONLY CacheConcurrencyStrategy</a></p>
 </li>
 <li>
-<p><a href="https://javastudy.ru/spring-mvc/spring-mvc-viewresolver/">Spring MVC — описание интерфейса ViewResolver</a></p>
+<p><a href="https://easyjava.ru/data/hibernate/keshirovanie-v-hibernate/">Кэширование в Hibernate</a></p>
 </li>
 <li>
-<p><a href="https://proselyte.net/tutorials/spring-tutorial-full-version/spring-mvc-framework/">Руководство по Spring. Spring MVC Framework (основы)</a></p>
+<p><a href="https://proselyte.net/tutorials/hibernate-tutorial/caching/">Кэширование в Hibernate</a></p>
 </li>
 <li>
-<p><a href="https://www.youtube.com/watch?v=1vyf-_5OkW8&amp;list=PLAma_mKffTOR5o0WNHnY0mTjKxnCgSXrZ&amp;index=14&amp;t=1s&amp;ab_channel=alishev">YouTube: Spring Framework. Урок 14: Spring MVC. Теория.</a></p>
+<p><a href="https://www.youtube.com/watch?v=0s48OsEbIU0&amp;ab_channel=KataAcademy">YouTube: «HIBERNATE CACHING»: разбор всех уровней на примере чужих ошибок</a></p>
 </li>
 <li>
-<p><a href="https://www.youtube.com/watch?v=JHTqKQgrVKE&amp;list=PLAma_mKffTOR5o0WNHnY0mTjKxnCgSXrZ&amp;index=18&amp;ab_channel=alishev">YouTube: Spring Framework. Урок 17: Контроллеры. Аннотация @Controller.</a></p>
+<p><a href="https://www.youtube.com/watch?v=6mm3EE06ODE&amp;ab_channel=EPAMRUSSIA">YouTube: Секция JAVA: Кэширование в Hibernate</a></p>
 </li>
 <li>
-<p><a href="https://www.youtube.com/watch?v=w1FjeTZxQrQ&amp;ab_channel=alishev">YouTube: Spring Framework. Урок 22: Аннотация @ModelAttribute. HTML Формы (Thymeleaf).</a></p>
+<p><a href="https://www.youtube.com/watch?v=qu9UygWQy7A&amp;ab_channel=SportmasterLab">YouTube: Как мы выбирали кеширование Java backend&#8217;а</a></p>
 </li>
 </ul>
 </div>
