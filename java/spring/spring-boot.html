@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.17">
-<title>GitHub keys</title>
+<title>Spring Boot</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -438,153 +438,504 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article">
 <div id="header">
-<h1>GitHub keys</h1>
+<h1>Spring Boot</h1>
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_ssh_key">SSH key</h2>
+<h2 id="_введение_в_spring_boot">Введение в Spring Boot</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>С помощью протокола <strong>SSH</strong> можно подключаться и проходить проверку подлинности на удаленных серверах и службах. С помощью ключей <strong>SSH</strong> вы можете подключаться к <strong>GitHub</strong> без предоставления своего имени пользователя и личного маркера доступа при каждом посещении.</p>
+<p><strong>Spring Boot</strong> — самый популярный фреймворк на основе Java, построенный на базе функций <strong>Spring Framework</strong>. Он используется для создания простых и понятных в понимании standalone (автономных) и web-based (веб) приложений.</p>
+</div>
+<div class="sect2">
+<h3 id="_что_такое_spring_boot">Что такое Spring Boot?</h3>
+<div class="paragraph">
+<p><strong>Spring Boot</strong> — это проект с открытым исходным кодом, разработанный командой <strong>Pivotal</strong> (команда <strong>Spring</strong>). Он построен на основе <strong>Spring Framework</strong> и предоставляет собой <strong>RAD</strong> (<strong>Rapid Application Development</strong>/<strong>Быстрая разработка приложений</strong>) на основе <strong>Spring Framework</strong>. Он комбинирует <strong>Spring Framework</strong> и third-party libraries (сторонние библиотеки), которые упрощают создание приложений и уменьшения усилия по разработке. В отличие от <strong>Spring Framework</strong>, <strong>Spring Boot</strong> не требует конфигурации на основе XML или аннотаций, поскольку он автоматически настраивает <strong>Spring</strong> и сторонние библиотеки.</p>
 </div>
 <div class="paragraph">
-<p>Для того чтобы использовать подключение с помощью протокола <strong>SSH</strong> необходимо сгенерировать <strong>SSH-KEY</strong>. В данном примере генерация происходит через <strong>GIT GUI</strong>.</p>
+<p>Целью платформы <strong>Spring Boot</strong> является полное удаление конфигураций на основе XML и сокращение времени разработки и интеграционного тестирования.</p>
 </div>
 <div class="paragraph">
-<p>Для генерации заходим <em>Git GUI Here</em>.</p>
+<p>Цели <strong>Spring Boot</strong> перечислены ниже:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Предложить полный <strong>Opinionated Development Approach</strong>.</p>
+</li>
+<li>
+<p>Обеспечить большую часть функционала неявно или по умолчанию.</p>
+</li>
+<li>
+<p>Избегать написания множества строк кода.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_необходимость_использования_spring_boot">Необходимость использования Spring Boot</h3>
+<div class="paragraph">
+<p>Некоторые из основных факторов использования среды Spring Boot перечислены ниже:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Он обеспечивает гибкость и простоту при разработке приложений на основе Java.</p>
+</li>
+<li>
+<p>Он позволяет создавать менее трудоемкие приложения, так как большинство вещей управляются им по умолчанию.</p>
+</li>
+<li>
+<p>Он не требует какой-либо конфигурации на основе XML или Java, поскольку он автоматически настраивает Spring и сторонние библиотеки.</p>
+</li>
+<li>
+<p>Он также обеспечивает мощную batch (пакетную) обработку и гибкие транзакции базы данных.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_компоненты_spring_boot">Компоненты Spring Boot</h3>
+<div class="imageblock">
+<div class="content">
+<img src="../../assets/img/java/spring/boot/components.png" alt="components">
+</div>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../assets/img/common/github-keys/ssh-generate1.png" alt="ssh generate1"></span></p>
+<p>As we have discussed, the Spring Boot framework is an upgraded project of the Spring framework with some additional features and components. There are four major components of Spring Boot that are listed below:</p>
 </div>
 <div class="paragraph">
-<p>В появившемся окне выбираем вкладку <em>Help</em> - <em>Show SSH Key</em></p>
+<p><strong>Spring Boot</strong> — это обновленный проект среды Spring с некоторыми дополнительными функциями и компонентами. Ниже перечислены четыре основных компонента <strong>Spring Boot</strong>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Spring Boot Starters</strong></p>
+</li>
+<li>
+<p><strong>Spring Boot AutoConfiguration</strong></p>
+</li>
+<li>
+<p><strong>Spring Boot CLI</strong></p>
+</li>
+<li>
+<p><strong>Spring Boot Actuator</strong></p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../assets/img/common/github-keys/ssh-generate2.png" alt="ssh generate2"></span></p>
+<p>Наряду с перечисленными выше основными компонентами в <strong>Spring Boot</strong> доступны еще два дополнительных компонента:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Spring Initializr</strong></p>
+</li>
+<li>
+<p><strong>Spring Boot IDEs</strong></p>
+</li>
+</ul>
+</div>
+<div class="sect3">
+<h4 id="_spring_boot_starters">Spring Boot Starters</h4>
+<div class="paragraph">
+<p><strong>Spring Boot Starters</strong> — один из основных компонентов среды <strong>Spring Boot</strong>. Он связывает более одной зависимости в группе. Это также уменьшает количество зависимостей, добавляемых вручную, путем объединения нескольких зависимостей в одну. Таким образом, он добавляет стартер вместо указания множества зависимостей.</p>
 </div>
 <div class="paragraph">
-<p>Если, ключ не обнаружен, то производим генерацию ключа <em>Generate Key</em></p>
+<p>Например, когда создается приложение <strong>Spring MVC</strong>, требуется множество зависимостей, таких как:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Spring Core</strong></p>
+</li>
+<li>
+<p><strong>Spring Web MVC</strong></p>
+</li>
+<li>
+<p><strong>Spring Web</strong></p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../assets/img/common/github-keys/ssh-generate3.png" alt="ssh generate3"></span></p>
+<p>Наряду с приведенными выше зависимостями необходимы еще некоторые зависимости. Ручное добавление зависимостей загромождает код. Spring Boot предложил решение этой проблемы.</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../assets/img/common/github-keys/ssh-generate4.png" alt="ssh generate4"></span></p>
+<p>Spring Boot упрощает задачу, поскольку добавляет только <strong>root dependency</strong> (корневую зависимость) или <strong>starter dependency</strong> (начальную зависимость). Когда добавляется starter зависимость в приложение, <strong>Spring Boot</strong> автоматически добавляет в приложение все необходимые зависимости.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_spring_boot_autoconfiguration">Spring Boot AutoConfiguration</h4>
+<div class="paragraph">
+<p><strong>Spring Boot AutoConfiguration</strong> также является важным компонентом <strong>Spring Boot</strong>. Когда создается любое приложение Spring, нам требуется много кода конфигурации, например конфигурации на основе XML, Java или аннотаций. В большинстве приложений это создает много путаницы и к трате большого количества времени на это.</p>
 </div>
 <div class="paragraph">
-<p>После того как ключ был сгенерирован или уже имелся, его нужно скопировать для установки в профиле. Для этого в настройки вашего профиля (<em>setting</em>).</p>
+<p>Поэтому для решения проблемы возник <strong>Spring Boot AutoConfiguration</strong>. Он отвечает за сокращение конфигурации Spring. При создании <strong>Spring Boot</strong> приложения  нет необходимости определять какую-либо конфигурацию (на основе XML) и сократить использование конфигурации на основе аннотаций. Использование <strong>Spring Boot AutoConfiguration</strong> делает разработку приложений простой и быстрой, поскольку ее настройка не отнимает много времени.</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../assets/img/common/github-keys/ssh-install-git1.png" alt="ssh install git1"></span></p>
+<p>Например, если использовать стартер <code>spring-boot-starter-web</code> в приложении, <strong>Spring Boot</strong> автоматически настраивает все bean-компоненты или классы необходимые для web-приложения.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_spring_boot_cli">Spring Boot CLI</h4>
+<div class="paragraph">
+<p><strong>Spring Boot CLI</strong> (<strong>Command Line Interface</strong>) — это интерфейс командной строки для приложений на основе <strong>Spring Boot</strong>. Он позволяет запустить приложение Spring Boot с помощью CLI. Он также используется для тестирования приложений Spring Boot из командной строки. Используя интерфейс командной строки Spring Boot, также можно выполнять Groovy код, который имеет аналогичный синтаксис, подобный Java.</p>
 </div>
 <div class="paragraph">
-<p>Далее ищем вкладку <em>SSH and GPG keys</em></p>
+<p>При запуске некоторых приложений <strong>Spring Boot</strong> через <strong>CLI</strong> он под капотом использует компоненты <strong>Spring Boot Starter</strong> и <strong>Spring Boot AutoConfiguration</strong> для решения всех зависимостей и запуску приложения.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_spring_boot_actuator">Spring Boot Actuator</h4>
+<div class="paragraph">
+<p><strong>Spring Boot Actuator</strong> также является важным компонентом <strong>Spring Boot</strong>. Он также разрабатывается как подпроект (инструмент) Spring Boot. Он предоставляет множество функций для среды Spring Boot, но в основном отвечает за две его основные функции:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Он предоставляет (HTTP) EndPoints для управления (HTTP) для приложения на Spring Boot.</p>
+</li>
+<li>
+<p>Он позволяет управлять работающим приложениям с помощью этих HTTP EndPoints.</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../assets/img/common/github-keys/ssh-install-git2.png" alt="ssh install git2"></span></p>
+<p><strong>Spring Boot Actuator</strong> автоматически предоставляет имя хоста как <code>localhost</code> и номер порта как <code>8080</code> всякий раз, когда развертывается приложение Spring Boot с помощью интерфейса командной строки Spring Boot. Здесь обычно используются HTTP-методы GET или POST для взаимодействия с HTTP EndPoints по средствам <strong>Spring Boot Actuator</strong>.</p>
 </div>
 <div class="paragraph">
-<p>Нажимаем <em>New SSH key</em></p>
+<p>Spring Boot Actuator в основном используется для доступа к внутренней информации приложения, такой как metrics (метрики), dump (дамп), health (работоспособность) и т.д.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_spring_initializr">Spring Initializr</h4>
+<div class="paragraph">
+<p><strong>Spring Initializr</strong> — это веб-интерфейс для создания, настройки и создания приложений на базе Spring. Другими словами, это инструмент, который используется для быстрого создания проекта на основе JVM. Он может создавать проекты на различных языках, таких как Java, Kotlin и Groovy. Он также предоставляет скрипт (<strong>Maven</strong> или <strong>Gradle</strong>) для создания приложений.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_spring_boot_ides">Spring Boot IDEs</h4>
+<div class="paragraph">
+<p><strong>Spring Boot</strong> поддерживает множество <strong>IDE</strong>, таких, как <strong>Eclipse</strong>, <strong>IntelliJ IDEA</strong>, <strong>Spring Tool Suite</strong> (<strong>STS</strong>) и т.д., которые используются для создания приложений.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_преимущества_spring_boot">Преимущества Spring Boot</h3>
+<div class="paragraph">
+<p>Основное преимущество Spring Boot заключается в том, что он состоит из фреймворка Spring и Embedded HTTP server. Но конфигурации на основе XML и аннотаций почти нет.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../../assets/img/java/spring/boot/advantages.png" alt="advantages">
+</div>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../assets/img/common/github-keys/ssh-install-git3.png" alt="ssh install git3"></span></p>
+<p>Другие преимущества среды Spring Boot приведены ниже:</p>
 </div>
-<div class="paragraph">
-<p>Вставляем имеющийся ключ и добавляем <em>Add SSH key</em></p>
+<div class="ulist">
+<ul>
+<li>
+<p>С ним легко разрабатывать приложения на основе Spring с помощью Groovy и Java.</p>
+</li>
+<li>
+<p>Он повышает производительность и сокращает время разработки, поскольку большинство вещей управляются по умолчанию.</p>
+</li>
+<li>
+<p>Он сводит к минимуму написание типичного длинного кода, такого как конфигурация на основе XML и аннотаций.</p>
+</li>
+<li>
+<p>Он делает простой и плавной интеграцию Spring Boot с другими экосистемами, такими как Spring Security, Spring Data, Spring JDBC и ORM.</p>
+</li>
+<li>
+<p>Он также предоставляет встроенные HTTP-серверы, такие, как <strong>Apache Tomcat</strong>, <strong>Apache Jetty</strong>, сервер приложений <strong>Undertow</strong> и многие другие, для развертывания и тестирования приложений на основе Spring.</p>
+</li>
+<li>
+<p>Он также предлагает несколько плагинов для простой разработки и тестирования приложений Spring Boot с использованием инструментов сборки, таких как Maven.</p>
+</li>
+</ul>
 </div>
+</div>
+<div class="sect2">
+<h3 id="_ограничения_spring_boot">Ограничения Spring Boot</h3>
 <div class="paragraph">
-<p><span class="image"><img src="../assets/img/common/github-keys/ssh-install-git4.png" alt="ssh install git4"></span></p>
+<p>Некоторые из ограничений Spring Boot перечислены ниже:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Он содержит некоторые дополнительные зависимости, которые могут быть бесполезны для конкретного приложения, поскольку используется <strong>Spring Boot Starters</strong> (root dependencies).</p>
+</li>
+<li>
+<p>Ненужные зависимости, используемые в приложениях, приводят к огромному размеру приложения.</p>
+</li>
+<li>
+<p>Преобразование приложений на <strong>Spring Framework</strong> в приложения на <strong>Spring Boot</strong> занимает немного времени.</p>
+</li>
+</ul>
+</div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_gpg_key">GPG key</h2>
+<h2 id="_spring_boot_features">Spring Boot Features</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>С помощью <strong>GPG</strong> или <strong>S/MIME</strong> можно подписывать теги и коммиты. Эти теги или коммиты помечаются как проверенные на <strong>GitHub</strong>, чтобы другие люди могли быть уверены, что изменения происходят из надежного источника.</p>
+<p>As we have discussed, the Spring Boot framework is built on the top of the Spring framework. It is an upgraded version of the Spring project, so it is capable of doing the things that the Spring framework can’t do.</p>
 </div>
 <div class="paragraph">
-<p>Сначала необходимо скачать и становить <a href="https://www.gnupg.org/download/"><strong>Gpg4win</strong></a></p>
+<p>Here, we are going to discuss the key features of the Spring Boot framework, which are listed below:</p>
 </div>
 <div class="paragraph">
-<p>Затем заходим в Git Bush и вводим команду:</p>
+<div class="title">Features of Spring Boot</div>
+<p><span class="image"><img src="../../assets/img/java/spring/boot/features.png" alt="features"></span></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>SpringApplication</p>
+</li>
+<li>
+<p>Lazy Initialization</p>
+</li>
+<li>
+<p>Admin Features</p>
+</li>
+<li>
+<p>Security</p>
+</li>
+<li>
+<p>Logging</p>
+</li>
+<li>
+<p>Caching</p>
+</li>
+<li>
+<p>Kotlin Support</p>
+</li>
+<li>
+<p>Validation</p>
+</li>
+<li>
+<p>JSON</p>
+</li>
+<li>
+<p>Testing</p>
+</li>
+<li>
+<p>Task Execution and Scheduling</p>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="_springapplication">SpringApplication</h3>
+<div class="paragraph">
+<p>The SpringApplication class is mainly used to bootstrap and launch a Spring application using the main method. In some cases, we can also use static <code>SpringApplication.run()</code> method, as shown below.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-shell script" data-lang="shell script">gpg --full-generate-key</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">public class MyFirstSpringApp {
+    public static void main(String[] args) {
+           SpringApplication.run(MyFirstSpringApp.class, args);
+    }
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../assets/img/common/github-keys/gpg-generate1.png" alt="gpg generate1"></span></p>
+<p>By default, the info logging messages are shown whenever a Spring application starts. This startup info logging messages can be turned off by setting spring.main.log-startup-info to false.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_lazy_initialization">Lazy Initialization</h3>
+<div class="paragraph">
+<p>In the Spring Boot framework, the SpringApplication helps in the lazy initialization of the Spring applications. After enabling the lazy initialization, beans are created as per the requirement rather than during the application startup, which results in faster execution of the application. When enabling lazy initialization in a web application, some web-related beans are not initialized until an HTTP request is received.</p>
 </div>
 <div class="paragraph">
-<p>Затем выбирая нужные настройки нажимаем <em>Enter</em> до тех пор, пока не попросит подтвердить корректность данных и если все верно подтверждаем набрав <code>Y</code></p>
+<p>We can enable lazy initialization in three ways:</p>
 </div>
-<div class="paragraph">
-<p><span class="image"><img src="../assets/img/common/github-keys/gpg-generate2.png" alt="gpg generate2"></span></p>
-</div>
-<div class="paragraph">
-<p>Далее вводим свои данные: имя, email.</p>
-</div>
-<div class="paragraph">
-<p><span class="image"><img src="../assets/img/common/github-keys/gpg-generate3.png" alt="gpg generate3"></span></p>
-</div>
-<div class="paragraph">
-<p>Если все верно - подтверждаем введенные данные набрав`О`.</p>
-</div>
-<div class="paragraph">
-<p><span class="image"><img src="../assets/img/common/github-keys/gpg-generate4.png" alt="gpg generate4"></span></p>
-</div>
-<div class="paragraph">
-<p>Вводим пароль(секретное поле) и затем его подтверждаем</p>
-</div>
-<div class="paragraph">
-<p><span class="image"><img src="../assets/img/common/github-keys/gpg-generate5.png" alt="gpg generate5"></span></p>
-</div>
-<div class="paragraph">
-<p>После этого наши GPG ключи сгенерированы.</p>
-</div>
-<div class="paragraph">
-<p><span class="image"><img src="../assets/img/common/github-keys/gpg-generate6.png" alt="gpg generate6"></span></p>
-</div>
-<div class="paragraph">
-<p>Чтобы посмотреть открытый и закрытый ключи необходимо ввести следующую команду:</p>
-</div>
-<div class="listingblock">
+<div class="literalblock">
 <div class="content">
-<pre class="highlight"><code class="language-shell script" data-lang="shell script">gpg --list-secret-keys --keyid-format=long
-/Users/hubot/.gnupg/secring.gpg
-------------------------------------
-sec   4096R/3AA5C34371567BD2 2016-03-10 [expires: 2017-03-10]
-uid                          Hubot
-ssb   4096R/42B317FD4BA89E7A 2016-03-10</code></pre>
+<pre>First, by using the method lazyInitialization() of the SpringApplicationBuilder class.
+Second, by using the setLazyInitialization() method of the SpringApplication class.
+Third, by using the property spring.main.lazy-initialization.</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Далее введя команду <strong>gpg --armor --export &#8230;&#8203;</strong>, и подставив место &#8230;&#8203; свое значение получим</p>
+<p>spring.main.lazy-initialization= true</p>
 </div>
-<div class="listingblock">
+</div>
+<div class="sect2">
+<h3 id="_admin_features">Admin Features</h3>
+<div class="paragraph">
+<p>In the Spring Boot framework, we can enable the admin-related features by specifying the spring.application.admin.enabled property. It displays the SpringApplicationAdminMXBean interface on the platform MBeanServer. It is used to implement the wrapper services and also administrate the Spring Boot applications.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_security">Security</h3>
+<div class="paragraph">
+<p>The Spring Boot applications are Spring-based applications. Therefore, the Spring Boot applications are highly secure, and it relies on the Spring Security strategies. The @EnableGlobalMethodSecurity annotation is used to add the method –level security in a web application.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_logging">Logging</h3>
+<div class="paragraph">
+<p>The Spring Boot framework uses the Commons-logging for all the internal loggings, which is a Java-based programming model service for logging and other toolkits. Some default configurations are also provided for Log4J2, Logback, and Java Util Logging.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_caching">Caching</h3>
+<div class="paragraph">
+<p>Caching is supported by the Spring Boot framework. It is also applied to the methods of the applications, that results in reducing the number of executions based on the information available to the cache. The Spring Boot auto-configures the cache as long as the support for caching is enabled by using the annotation @EnableCaching annotation.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_kotlin_support">Kotlin Support</h3>
+<div class="paragraph">
+<p>Kotlin is a programming language used for Android, server-side, mobile cross-platform, and web development. It targets the JVM and other platforms that allow writing short and simple code while providing interoperability with other existing libraries of Java.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_validation">Validation</h3>
+<div class="paragraph">
+<p>The method validation feature is automatically supported by the Spring Boot framework. It allows the bean methods to be annotated with javax.validation constraint on their fields and return values. The target classes are annotated with the @Validated annotation at level-type and searched by the validator for validation.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_json">JSON</h3>
+<div class="paragraph">
+<p>The Spring Boot framework offers integration with mainly three JSON mapping libraries:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Gson</strong><br>
+The Gson configuration is provided by default. Therefore, it is automatically configured when Gson is on the classpath. There are several <code>spring.gson.*</code> Configuration properties are available for modifying the configurations. The GsonBuilderCustomizer bean is also used for controlling configurations.</p>
+</li>
+<li>
+<p><strong>Jackson</strong><br>
+It is a part of the spring-boot-starter-json repository. Like Gson, the Jackson configuration is provided, by default. An ObjectMapper bean is automatically configured when Jackson is on the classpath. It also offers several configuration properties for customizing the configuration of the ObjectMapper.</p>
+</li>
+<li>
+<p><strong>JSON-B</strong><br>
+The auto-configuration for JSON-B is also provided by default. A Jsonb bean is automatically configured when the JSON-B API and its implementation are on the classpath.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Jackson is the default and most preferred JSON library.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_testing">Testing</h3>
+<div class="paragraph">
+<p>The Spring Boot framework provides a variety of utilities and annotations to help in testing the applications. There are two modules that provide test support, one is spring-boot-test that contains all the core items, and the other is spring-boot-test-autoconfigure that supports auto-configuration for tests.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_task_execution_and_scheduling">Task Execution and Scheduling</h3>
+<div class="paragraph">
+<p>If the Executor bean is absent in the context, the Spring Boot auto-configures a ThreadPoolTaskExecutor. According to the target, we can change the Executor bean to a ThreadPoolTaskExecutor or can define both ThreadPoolTaskExecutor and an AsyncConfiguration.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_spring_boot_architecture">Spring Boot Architecture</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Spring Boot Architecture: Spring Boot is an advanced version or project of the Spring framework. Along with the Spring framework, it also consists of third-party libraries and Embedded HTTP servers. It easily creates a production-grade, less time-consuming, and stand-alone applications based on the Spring framework.</p>
+</div>
+<div class="paragraph">
+<p>The aim of Spring Boot is to completely remove the use of XML-based and annotation-based configuration in the applications. Using Spring Boot, we can also create an application with minimal fuss (less time and effort). By default, it offers most of the things, such as functions, procedures, etc.</p>
+</div>
+<div class="paragraph">
+<p>In this tutorial, we are going to learn about the architecture of the Spring Boot framework. It follows the layered architecture and consists of four layers, as shown below.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Presentation Layer</strong></p>
+</li>
+<li>
+<p><strong>Business Layer</strong></p>
+</li>
+<li>
+<p><strong>Persistence Layer</strong></p>
+</li>
+<li>
+<p><strong>Database Layer</strong></p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
 <div class="content">
-<pre class="highlight"><code class="language-shell script" data-lang="shell script">gpg --armor --export 3AA5C34371567BD2</code></pre>
+<img src="../../assets/img/java/spring/boot/architecture-1.png" alt="architecture 1">
+</div>
+<div class="title">Figure 1. Spring Boot Architecture</div>
+</div>
+<div class="paragraph">
+<p>The above diagram shows that each layer of the architecture is directly communicating with the layer just above or below it, is because of the workflow. It means each layer only depends on its adjacent layer, so if we change the API of one layer, we just need to update the layers adjacent to it.</p>
+</div>
+<div class="paragraph">
+<p>The brief description of the layers is given below.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Presentation layer</strong><br>
+It is the front layer or top layer of the architecture, as it consists of views. It is used to translate the JSON fields to objects and vice-versa, and also handles authentication and HTTP requests. After completing the authentication, it passes it to the business layer for further processes.</p>
+</li>
+<li>
+<p><strong>Business Layer</strong><br>
+It handles all the business logic and also performs validation and authorization as it is a part of business logic. For example, only admins are allowed to modify the user’s account.</p>
+</li>
+<li>
+<p><strong>Persistence Layer</strong>+</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>It contains all the storage logic, such as database queries of the application. It also translates the business objects from and to database rows.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Database Layer</strong>+</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The database layer consists of the database such as MySQL, Postgre, MongoDB, etc. It may contain multiple databases. All the database related operations like CRUD (Create, Read/Retrieve, Update, and Delete) are performed in this layer.</p>
+</div>
+<div class="paragraph">
+<p>The implementation of the above layered architecture is performed in such a way:</p>
+</div>
+<div class="paragraph">
+<p>The HTTP request or web requests are handled by the Controllers in the presentation layer, the services control the business logic, and the repositories handle persistence (storage logic). A controller can handle multiple services, a service can handle multiple repositories, and a repository can handle multiple databases.
+Spring Boot Work Flow</p>
+</div>
+<div class="paragraph">
+<p>The Spring Boot architecture is based on the Spring framework. So, it mostly uses all the features and modules of Spring-like Spring MVC, Spring Core, etc., except that there is no need for the DAO and DAOImpl classes.</p>
+</div>
+<div class="paragraph">
+<p>The following diagram shows the workflow of Spring Boot.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../../assets/img/java/spring/boot/architecture-2.png" alt="architecture 2">
+</div>
+<div class="title">Figure 2. Spring Boot Architecture</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>The client makes an HTTP request (GET or POST).
+The request is forwarded to the controller, and it maps the request and processes it. It also calls the service logic if needed.
+The business logic is performed in the service layer, and the logic is performed on the data from the database that is mapped with the model or entity class through JPA.
+A JSP page is returned as a response to the client if no error has occurred.</pre>
 </div>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="../assets/img/common/github-keys/gpg-install-git1.png" alt="gpg install git1"></span></p>
-</div>
-<div class="paragraph">
-<p>После этого выделяем и копируем от <code>-----BEGIN PGP PUBLIC KEY BLOCK-----</code> до <code>-----END PGP PUBLIC KEY BLOCK-----</code></p>
-</div>
-<div class="paragraph">
-<p>Далее, как и при добавлении <strong>SSH</strong> ключей заходим в свой профиль - <em>setting</em> - <em>SSH and GPG keys</em> и выбираем уже <em>New GPG key</em></p>
-</div>
-<div class="paragraph">
-<p><span class="image"><img src="../assets/img/common/github-keys/gpg-install-git2.png" alt="gpg install git2"></span></p>
-</div>
-<div class="paragraph">
-<p>И в появившемся окне вставляем скопированный ключ и добавляем его.</p>
-</div>
-<div class="paragraph">
-<p><span class="image"><img src="../assets/img/common/github-keys/gpg-install-git3.png" alt="gpg install git3"></span></p>
+<p><a href="https://www.tutorialandexample.com/spring-boot-tutorial" class="bare">https://www.tutorialandexample.com/spring-boot-tutorial</a></p>
 </div>
 </div>
 </div>
