@@ -117,9 +117,9 @@ image::advantages.png[]
 
 == Spring Boot Features
 
-As we have discussed, the Spring Boot framework is built on the top of the Spring framework. It is an upgraded version of the Spring project, so it is capable of doing the things that the Spring framework can’t do.
+*Spring Boot* построена на основе *Spring Framework*. Фактически он является улучшенной версией проекта *Spring*, поэтому он способен делать то, что не может сделать *Spring Framework*.
 
-Here, we are going to discuss the key features of the Spring Boot framework, which are listed below:
+Ключевые особенности среды *Spring Boot* перечислены ниже:
 
 .Features of Spring Boot
 image:features.png[]
@@ -138,7 +138,7 @@ image:features.png[]
 
 === SpringApplication
 
-The SpringApplication class is mainly used to bootstrap and launch a Spring application using the main method. In some cases, we can also use static `SpringApplication.run()` method, as shown below.
+Класс `SpringApplication` в основном используется для начальной загрузки и запуска приложения Spring с использованием `main()` метода. В некоторых случаях можно использовать статический метод `SpringApplication.run()`.
 
 [source,java]
 ----
@@ -149,74 +149,73 @@ public class MyFirstSpringApp {
 }
 ----
 
-By default, the info logging messages are shown whenever a Spring application starts. This startup info logging messages can be turned off by setting spring.main.log-startup-info to false.
+По умолчанию в logs отображаются информация о запуске Spring приложения. Эти logs о запуске можно отключить, установив для `spring.main.log-startup-info` значение `false` в `application.properties`.
 
 === Lazy Initialization
 
-In the Spring Boot framework, the SpringApplication helps in the lazy initialization of the Spring applications. After enabling the lazy initialization, beans are created as per the requirement rather than during the application startup, which results in faster execution of the application. When enabling lazy initialization in a web application, some web-related beans are not initialized until an HTTP request is received.
+В Spring Boot `SpringApplication` помогает lazy (отложенной/ленивой) инициализации Spring приложений. После включения lazy (отложенной/ленивой) инициализации bean-компоненты создаются по мере необходимости, а не во время запуска приложения, что приводит к более быстрому старту приложения. При включении lazy (отложенной/ленивой) инициализации в веб-приложении некоторые веб-компоненты не инициализируются до тех пор, пока не будет получен HTTP-запрос.
 
-We can enable lazy initialization in three ways:
+Включить lazy (отложенной/ленивой) инициализацию тремя способами:
 
-    First, by using the method lazyInitialization() of the SpringApplicationBuilder class.
-    Second, by using the setLazyInitialization() method of the SpringApplication class.
-    Third, by using the property spring.main.lazy-initialization.
-
-spring.main.lazy-initialization= true
+1. С помощью метода `lazyInitialization()` класса `SpringApplicationBuilder`.
+2. С помощью метода `setLazyInitialization()` класса `SpringApplication`.
+3. С помощью свойства `spring.main.lazy-initialization=true`.
 
 === Admin Features
 
-In the Spring Boot framework, we can enable the admin-related features by specifying the spring.application.admin.enabled property. It displays the SpringApplicationAdminMXBean interface on the platform MBeanServer. It is used to implement the wrapper services and also administrate the Spring Boot applications.
+В Spring Boot можно включить функции, связанные с администрированием, указав свойство `spring.application.admin.enabled=true`. Это позволит использовать задействовать интерфейс `SpringApplicationAdminMXBean` на платформе `MBeanServer` . Он используется для реализации wrapper services (служб-оболочек), а также для администрирования Spring Boot приложений.
 
 === Security
 
-The Spring Boot applications are Spring-based applications. Therefore, the Spring Boot applications are highly secure, and it relies on the Spring Security strategies. The @EnableGlobalMethodSecurity annotation is used to add the method –level security in a web application.
+*Spring Boot* приложения — это приложения на основе Spring. Поэтому Spring Boot приложения очень безопасны и основаны на стратегиях безопасности Spring. Аннотация `@EnableGlobalMethodSecurity` используется для добавления безопасности на уровне метода в веб-приложение.
 
 === Logging
 
-The Spring Boot framework uses the Commons-logging for all the internal loggings, which is a Java-based programming model service for logging and other toolkits. Some default configurations are also provided for Log4J2, Logback, and Java Util Logging.
+*Spring Boot* использует *Commons-logging* для всех внутренних logs, который представляет собой Java-based programming model service для logging и других наборов инструментов. Некоторые конфигурации по умолчанию также предоставляются для *Log4J2*, *Logback* и *Java Util Logging*.
 
 === Caching
 
-Caching is supported by the Spring Boot framework. It is also applied to the methods of the applications, that results in reducing the number of executions based on the information available to the cache. The Spring Boot auto-configures the cache as long as the support for caching is enabled by using the annotation @EnableCaching annotation.
+*Кэширование* поддерживается Spring Boot. Кэширование также применяется и к методам приложений, что приводит к уменьшению количества выполнений на основе информации, доступной в кеше. Spring Boot автоматически настраивает кэш, а поддержка кэширования включается с помощью аннотации `@EnableCaching`.
 
 === Kotlin Support
 
-Kotlin is a programming language used for Android, server-side, mobile cross-platform, and web development. It targets the JVM and other platforms that allow writing short and simple code while providing interoperability with other existing libraries of Java.
+*Kotlin* — это язык программирования, используемый для Android, серверной, мобильной кроссплатформенной и веб-разработки. Он предназначен для JVM и других платформ, которые позволяют писать короткий и простой код, обеспечивая при этом взаимодействие с другими существующими библиотеками Java.
 
 === Validation
 
-The method validation feature is automatically supported by the Spring Boot framework. It allows the bean methods to be annotated with javax.validation constraint on their fields and return values. The target classes are annotated with the @Validated annotation at level-type and searched by the validator for validation.
+Validation (валидация) автоматически поддерживается Spring Boot. Spring Boot позволяет аннотировать методы bean-компонента ограничением `javax.validation` для их полей и возвращаемых значений. Целевые классы аннотируются аннотацией `@Validated` и просматриваются validator (валидатором) при validation (валидации).
 
 === JSON
 
-The Spring Boot framework offers integration with mainly three JSON mapping libraries:
-
-* *Gson* +
-The Gson configuration is provided by default. Therefore, it is automatically configured when Gson is on the classpath. There are several `spring.gson.*` Configuration properties are available for modifying the configurations. The GsonBuilderCustomizer bean is also used for controlling configurations.
+Spring Boot предлагает интеграцию с тремя основными библиотеками для JSON mapping:
 
 * *Jackson* +
-It is a part of the spring-boot-starter-json repository. Like Gson, the Jackson configuration is provided, by default. An ObjectMapper bean is automatically configured when Jackson is on the classpath. It also offers several configuration properties for customizing the configuration of the ObjectMapper.
+*Jackson* — это библиотека JSON по умолчанию и наиболее предпочтительная. Входит в стартер `spring-boot-starter-json`. Конфигурация *Jackson* предоставляется по умолчанию. Компонент `ObjectMapper` настраивается автоматически, когда *Jackson* находится в classpath. Он также предлагает несколько свойств конфигурации для настройки конфигурации `ObjectMapper`.
+
+* *Gson* +
+Конфигурация *Gson* предоставляется по умолчанию. Поэтому он автоматически настраивается, когда *Gson* находится в classpath. Существует несколько свойств конфигурации `spring.gson.*` для изменения конфигураций. Так же для управления конфигурациями используется компонент `GsonBuilderCustomizer`.
 
 * *JSON-B* +
-The auto-configuration for JSON-B is also provided by default. A Jsonb bean is automatically configured when the JSON-B API and its implementation are on the classpath.
-
-Jackson is the default and most preferred JSON library.
+Автоматическая настройка для *JSON-B* также предоставляется по умолчанию. Компонент *JSON-B* настраивается автоматически, когда API для JSON-B и его реализация находятся в classpath.
 
 === Testing
 
-The Spring Boot framework provides a variety of utilities and annotations to help in testing the applications. There are two modules that provide test support, one is spring-boot-test that contains all the core items, and the other is spring-boot-test-autoconfigure that supports auto-configuration for tests.
+*Spring Boot* предоставляет множество утилит и аннотаций, помогающих тестировать приложения. Есть два модуля, которые обеспечивают поддержку тестирования:
+
+** `spring-boot-test` - содержит все основные элементы,
+** `spring-boot-test-autoconfigure` - поддерживает автоматическую настройку для тестов.
 
 === Task Execution and Scheduling
 
-If the Executor bean is absent in the context, the Spring Boot auto-configures a ThreadPoolTaskExecutor. According to the target, we can change the Executor bean to a ThreadPoolTaskExecutor or can define both ThreadPoolTaskExecutor and an AsyncConfiguration.
+Если компонент `Executor` отсутствует в контексте, Spring Boot автоматически настраивает `ThreadPoolTaskExecutor`. В зависимости от цели можно изменить bean-компонент `Executor` на `ThreadPoolTaskExecutor` или определить как `ThreadPoolTaskExecutor`, так и `AsyncConfiguration`.
 
 ==  Spring Boot Architecture
 
-Spring Boot Architecture: Spring Boot is an advanced version or project of the Spring framework. Along with the Spring framework, it also consists of third-party libraries and Embedded HTTP servers. It easily creates a production-grade, less time-consuming, and stand-alone applications based on the Spring framework.
+*Spring Boot* — это расширенная версия или проект *Spring Framework*. Наряду с *Spring Framework* он также состоит из third-party libraries (сторонних библиотек) и Embedded HTTP servers. Он легко создает готовые к работе, менее трудоемкие и автономные приложения на основе *Spring Framework*.
 
-The aim of Spring Boot is to completely remove the use of XML-based and annotation-based configuration in the applications. Using Spring Boot, we can also create an application with minimal fuss (less time and effort). By default, it offers most of the things, such as functions, procedures, etc.
+Цель *Spring Boot* — полностью отказаться от использования конфигурации на основе XML и аннотаций в приложениях. Используя *Spring Boot*, можно создать приложение с минимальными усилиями (меньше времени и усилий). По умолчанию он предлагает большинство вещей, необходимых для разработки.
 
-In this tutorial, we are going to learn about the architecture of the Spring Boot framework. It follows the layered architecture and consists of four layers, as shown below.
+*Spring Boot* следует многоуровневой архитектуре и состоит из четырех слоев, как показано ниже.
 
 * *Presentation Layer*
 * *Business Layer*
@@ -226,39 +225,36 @@ In this tutorial, we are going to learn about the architecture of the Spring Boo
 .Spring Boot Architecture
 image::architecture-1.png[]
 
-The above diagram shows that each layer of the architecture is directly communicating with the layer just above or below it, is because of the workflow. It means each layer only depends on its adjacent layer, so if we change the API of one layer, we just need to update the layers adjacent to it.
+На приведенной выше диаграмме показано, что каждый уровень архитектуры напрямую взаимодействует с уровнем, расположенным чуть выше или ниже него, благодаря workflow (рабочему процессу). Это означает, что каждый уровень зависит только от соседнего с ним уровня, поэтому, если изменяется API (не реализация этого API) одного уровня, то просто нужно обновить смежные с ним слои.
 
-The brief description of the layers is given below.
+Краткое описание слоев приведено ниже.
 
 * *Presentation layer* +
-It is the front layer or top layer of the architecture, as it consists of views. It is used to translate the JSON fields to objects and vice-versa, and also handles authentication and HTTP requests. After completing the authentication, it passes it to the business layer for further processes.
+Это front layer или верхний слой архитектуры, так как он состоит из views (представлений). Он используется для преобразования полей JSON в объекты и наоборот, а также обрабатывает аутентификацию и HTTP запросы. После завершения аутентификации он передает ее на business layer (бизнес-уровень) для дальнейшей обработки.
 
 * *Business Layer* +
-It handles all the business logic and also performs validation and authorization as it is a part of business logic. For example, only admins are allowed to modify the user’s account.
+Обрабатывает всю бизнес-логику, а также выполняет validation и authorization, поскольку является частью бизнес-логики. Например, только администраторы могут изменять учетную запись пользователя.
 
 * *Persistence Layer*+
-
-It contains all the storage logic, such as database queries of the application. It also translates the business objects from and to database rows.
+Содержит всю логику хранилища, например, запросы к базе данных приложения. Он также переводит бизнес-объекты из/в записи в базе данных.
 
 * *Database Layer*+
+Уровень базы данных состоит из базы данных, такой как *MariaDB*, *PostgreSQL*, *MongoDB* и т.д. Он может содержать несколько баз данных. Все операции, связанные с базой данных, такие как CRUD (создание, чтение/извлечение, обновление и удаление), выполняются на этом уровне.
 
-The database layer consists of the database such as MySQL, Postgre, MongoDB, etc. It may contain multiple databases. All the database related operations like CRUD (Create, Read/Retrieve, Update, and Delete) are performed in this layer.
+Реализация вышеописанной многоуровневой архитектуры выполняется таким образом:
 
-The implementation of the above layered architecture is performed in such a way:
+HTTP-запросы или веб-запросы обрабатываются Controllers на presentation layer, services контролируют business logic, а repositories обрабатывают persistence (логику хранения). Controller может использовать несколько services, service может использовать несколько repositories, а репозиторий может использовать несколько баз данных.
 
-The HTTP request or web requests are handled by the Controllers in the presentation layer, the services control the business logic, and the repositories handle persistence (storage logic). A controller can handle multiple services, a service can handle multiple repositories, and a repository can handle multiple databases.
-Spring Boot Work Flow
+=== Spring Boot Workflow
 
-The Spring Boot architecture is based on the Spring framework. So, it mostly uses all the features and modules of Spring-like Spring MVC, Spring Core, etc., except that there is no need for the DAO and DAOImpl classes.
+Архитектура Spring Boot основана на *Spring Framework*. Таким образом, он в основном использует все функции и модули Spring-подобных *Spring MVC*, *Spring Core* и т.д., за исключением того, что нет необходимости в классах *DAO* и *DAOImpl*.
 
-The following diagram shows the workflow of Spring Boot.
+На следующей диаграмме показан workflow Spring Boot.
 
 .Spring Boot Architecture
 image::architecture-2.png[]
 
-    The client makes an HTTP request (GET or POST).
-    The request is forwarded to the controller, and it maps the request and processes it. It also calls the service logic if needed.
-    The business logic is performed in the service layer, and the logic is performed on the data from the database that is mapped with the model or entity class through JPA.
-    A JSP page is returned as a response to the client if no error has occurred.
-
-link:https://www.tutorialandexample.com/spring-boot-tutorial[]
+* Клиент делает HTTP-запрос (GET или POST).
+* Запрос пересылается Controller, который сопоставляет запрос и обрабатывает его. При необходимости он также вызывает логику Service.
+* Бизнес-логика выполняется на уровне Service, а логика выполняется с данными из базы данных, которые сопоставляются с Model или Entity class по средствам JPA.
+* Страница JSP возвращается в качестве ответа клиенту, если не произошло ошибки.
