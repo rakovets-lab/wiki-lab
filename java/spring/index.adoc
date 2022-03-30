@@ -6,6 +6,4 @@ include::spring-core.adoc[]
 
 include::spring-mvc.adoc[]
 
-include::spring-boot.adoc[]
-
 :leveloffset: -1
