@@ -1,4 +1,4 @@
-= Mockito
+= Testing: Mockito
 
 == Mockito: что это такое и зачем нужно
 

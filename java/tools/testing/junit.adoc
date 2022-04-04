@@ -1,4 +1,4 @@
-= JUnit
+= Testing: JUnit
 
 == Введение
 
