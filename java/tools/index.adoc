@@ -2,9 +2,9 @@
 
 :leveloffset: +1
 
-include::junit.adoc[]
+include::testing/junit.adoc[]
 
-include::mockito.adoc[]
+include::testing/mockito.adoc[]
 
 include::logging.adoc[]
 

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.17">
-<title>Mockito</title>
+<title>Testing: JUnit</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -438,400 +438,299 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article">
 <div id="header">
-<h1>Mockito</h1>
+<h1>Testing: JUnit</h1>
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_mockito_что_это_такое_и_зачем_нужно">Mockito: что это такое и зачем нужно</h2>
+<h2 id="_введение">Введение</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Говоря коротко, <strong>Mockito</strong> – фреймворк для работы с заглушками.</p>
+<p><strong>Тестирование</strong> – это процесс проверки функционала программы с целью подтверждения того, что она работает в соответствии с определёнными требованиями. <strong>Unit-тестирование</strong> – это тестирование с помощью тестов, которые пишутся, непосредственно, на уровне разработчика (тестирование определённой сущности – метод или класс). Это крайне важный этап разработки ПО, который помогает создавать качественный продукт.</p>
 </div>
 <div class="paragraph">
-<p>Как известно, при <strong>тестировании кода</strong> (прежде всего <strong>юнит-тестировании</strong>, но не только) тестируемому элементу часто требуется предоставить экземпляры классов, которыми он должен пользоваться при работе.
-При этом часто они не должны быть <strong>полнофункциональными</strong> – наоборот, от них требуется вести себя <strong>жёстко заданным образом</strong>, так, чтобы их поведение было <strong>простым и полностью предсказуемым</strong>.
-Они и называются <strong>заглушками</strong> (<strong>stub</strong>).
-Чтобы их получить, можно создавать альтернативные тестовые реализации интерфейсов, наследовать нужные классы с переопределением функционала и так далее, но всё это достаточно неудобно, избыточно и чревато ошибками.
-Более удобное во всех смыслах решение – <strong>специализированные фреймворки</strong> для создания заглушек.
-Одним из таковых (и, пожалуй, самым известным для <strong>Java</strong>) и является <strong>Mockito</strong>.</p>
-</div>
-<div class="paragraph">
-<p><strong>Mockito</strong> позволяет создать одной строчкой кода так называемый <strong>mock</strong> (что-то вроде основы для нужной заглушки) любого класса.
-Для такого <strong>mock</strong> сразу после создания характерно некое поведение по умолчанию (<strong>все методы возвращают заранее известные значения</strong> — обычно это <strong>null</strong> либо <strong>0</strong>).
-Можно переопределить это поведение желаемым образом, проконтролировать с нужной степенью детальности обращения к ним так далее.
-В результате <strong>mock</strong> и становится заглушкой с требуемыми свойствами.</p>
-</div>
-<div class="paragraph">
-<p>Также <strong>mock</strong> можно создать и для тех классов, новый экземпляр которых вообще-то так просто не создашь, в частности, классов с исключительно приватными конструкторами типа <strong>синглтонов</strong> и <strong>утилитных классов</strong>, а при минимальной настройке фреймворка — и перечислений (<strong>enums</strong>).</p>
-</div>
-<div class="paragraph">
-<p>Наибольшее распространение получили следующие возможности <strong>Mockito</strong> :</p>
+<p><strong>Unit-тестирование</strong> делится на две большие группы:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>создание заглушек для классов и интерфейсов;</p>
+<p>Ручное тестирование</p>
 </li>
 <li>
-<p>проверка вызова метода и значений передаваемых методу параметров;</p>
-</li>
-<li>
-<p>использование концепции «частичной заглушки», при которой заглушка создается на класс с определением поведения, требуемое для некоторых методов класса;</p>
-</li>
-<li>
-<p>подключение к реальному классу «шпиона» spy для контроля вызова методов.</p>
+<p>Автоматизированное тестирование</p>
 </li>
 </ul>
 </div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Ручное тестирование</th>
+<th class="tableblock halign-left valign-top">Автоматизированное тестирование</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Ручное выполнение тестов без помощи каких-либо средств.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Использование специальных средств для автоматизированного тестирования</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Не программируется</strong><br>
+Нет возможности для написания сложных тестов для тестирования сложных моделей поведения.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Программируется</strong><br>
+Тестировщики могут написать сложные тесты для тестирования сложных моделей программирования</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Низкая надёжность</strong><br>
+Ручное тестирование имеет низкую надёжность, так как крайне подвержено влиянию человеческого фактора.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Высокая надёжность</strong><br>
+Автоматизированное тестирование точное и надёжное.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Большие затраты времени</strong><br>
+Связано с тем, что человек имеет крайне ограниченные возможность в скорости работы.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Быстро</strong><br>
+Автоматизированные тесты выполняются на порядок быстрее, чем это может сделать человек.</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_mock_и_spy">Mock и Spy</h2>
+<h2 id="_junit">JUnit</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Центральный класс <strong>Mockito</strong>, через который предполагается обращаться к большей части функционала, — это, собственно, класс под названием <strong>Mockito</strong> (есть также класс <strong>BDDMockito</strong>, предоставляющий примерно те же возможности в форме, более подходящей для <a href="https://ru.wikipedia.org/wiki/BDD_(%D0%BF%D1%80%D0%BE%D0%B3%D1%80%D0%B0%D0%BC%D0%BC%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5)"><strong>BDD</strong></a>.
-Доступ к функционалу реализован через его <strong>статические методы</strong>.</p>
+<p><strong>JUnit</strong> – это фреймворк, разработанный для тестирования программ, написанных с использованием технологии <strong>Java</strong>. Он лежит в основе <strong>TDD</strong> (<strong>Test-Driven Development</strong>) и входит в семейство фреймворков для тестирования <strong>xUnit</strong>.</p>
 </div>
 <div class="paragraph">
-<p>Помните, что методы <strong>mock</strong> объекта возвращают значения по умолчанию: <strong>false</strong> для <strong>boolean</strong>, <strong>0</strong> для <strong>int</strong>, <strong>пустые коллекции</strong>, <strong>null</strong> для остальных объектов.
-Для <strong>spy</strong> — значение, возвращаемое методом реального объекта.</p>
-</div>
-<div class="paragraph">
-<p>Для того, чтобы отличить mock-объект от обычного в составе <strong>Mockito</strong> для этого есть инструмент — <strong>метод Mockito.mockingDetails</strong>.
-Передав ему произвольный объект, получим объект класса <strong>MockingDetails</strong>.
-Он содержит информацию о том, что этот объект представляет собой с точки зрения <strong>Mockito</strong>: является ли он <strong>mock</strong>, <strong>spy</strong> (см. ниже), как использовался, как был создан и прочее.</p>
-</div>
-<div class="paragraph">
-<p>Поведение по умолчанию (и не только его) можно изменить при помощи функционала класса <strong>MockSettings</strong>, но это нечасто бывает нужно.</p>
-</div>
-<div class="paragraph">
-<p>Чтобы создать <strong>Mockito</strong> объект можно использовать либо аннотацию <strong>@Mock</strong>, либо <strong>метод</strong> <strong>mock</strong>.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Mock
-ICalculator mcalc;
-
-ICalculator mcalc = Mockito.mock(ICalculator.class);</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Однако, что если необходимо использовать в качестве заглушки объект реального класса с имеющимся функционалом, переопределив работу только части его методов?
-На этот случай в <strong>Mockito</strong> есть так называемые <strong>spy</strong>, "шпионы".
-В отличие от <strong>mock&#8217;ов</strong>, их можно создавать на основе как класса, так и готового объекта.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">DataService dataServiceSpy = Mockito.spy(DataService.class);
-// or
-DataService dataService = new DataService();
-dataServiceSpy = Mockito.spy(dataService);</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>При создании <strong>spy</strong> на основе класса, если его тип — интерфейс, будет создан обычный <strong>mock-объект</strong>, а если тип — класс, то <strong>Mockito</strong> попытается создать экземпляр при помощи конструктора по умолчанию (без параметров).
-И только если такого конструктора нет, произойдёт ошибка и тест не сработает.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_управление_поведением">Управление поведением</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>В целом управление поведением <strong>mock-объекта</strong> сводится к одной очевидной концепции: когда на mock так-то воздействовали (то есть вызван такой-то метод с такими-то аргументами), он должен отреагировать так-то и так-то.
-У этой концепции существуют две реализации в рамках класса <strong>Mockito</strong> — основная, рекомендуемая разработчиками к использованию везде, где это возможно, и альтернативная, применяемая там, где основная не годится.</p>
-</div>
-<div class="paragraph">
-<p>Основная реализация базируется на методе <strong>Mockito.when</strong>.
-Этот метод принимает в качестве "параметра" вызов переопределяемого метода <strong>mock-объекта</strong> (таким образом фиксируется определяемое воздействие) и возвращает объект типа <strong>OngoingStubbing</strong>, позволяющий вызвать один из методов семейства <strong>Mockito.then</strong>&#8230;&#8203; (так задаётся реакция на это воздействие).</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">//when(mock).thenReturn(value)
-
-public interface DataService {
-    void saveData(List&lt;String&gt; dataToSave);
-    String getDataById(String id);
-    String getDataById(String id, Supplier&lt;String&gt; calculateIfAbsent);
-    List&lt;String&gt; getData();
-    List&lt;String&gt; getDataListByIds(List&lt;String&gt; idList);
-    List&lt;String&gt; getDataByRequest(DataSearchRequest request);
-}
------------------------------------------
-List&lt;String&gt; data = new ArrayList&lt;&gt;();
-data.add("dataItem");
-Mockito.when(dataService.getAllData()).thenReturn(data);</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>После этой операции, вызвав у объекта dataService метод getAllData(), получим объект, data.</p>
-</div>
-<div class="paragraph">
-<p>Альтернативная реализация связывания условия и результата вызова — методы семейства <strong>Mockito.do</strong>&#8230;&#8203;. Эти методы позволяют задать поведение начиная с результата вызова и возвращают объект класса <strong>Stubber</strong>, уже при помощи которого можно задать условие.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">//doReturn(value).when(mock).method(params)
-
-public interface DataService {
-    List&lt;String&gt; getData();
-}
------------------------------------------
-List&lt;String&gt; data = new ArrayList&lt;&gt;();
-data.add("dataItem");
-Mockito.doReturn(data).when(dataService).getData()</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Обратите внимание: в первой реализации при задании поведения метода (в данном случае <strong>getAllData()</strong>) сначала выполняется вызов ещё не переопределённой его версии, и только потом, в недрах <strong>Mockito</strong>, происходит переопределение.
-Во второй же такого вызова не происходит — методу <strong>Stubber.when</strong> передаётся непосредственно <strong>mock</strong>, а уже у возвращённого этим методом объекта того же типа, но другой природы совершается вызов переопределяемого метода.
-Эта разница всё и определяет.
-Связывание через <strong>Mockito.do&#8230;&#8203;</strong> никак не контролирует на стадии компиляции то, какой переопределяемый метод я вызову и совместим ли он по типу с заданным возвращаемым значением.</p>
+<p>Главная идея <strong>Test-Driven Development</strong> – <em>сначала тесты, потом код</em>. Это означает, что сначала определяется, что должно получиться в результате работы того или иного куска кода и пишем тесты. Тесты проверяют идентичность результата с требуемым, после чего пишем сам кусок кода, который и будет тестироваться. Данный подход увеличивает эффективность работы разработчика и позволяет писать более стабильный код. В результате этого получается меньшее количество времени, которое затрачивается на отладку программы.</p>
 </div>
 <div class="sect2">
-<h3 id="_задание_условий_вызова">Задание условий вызова</h3>
+<h3 id="_свойства_junit">Свойства JUnit</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Фреймворк с открытым исходным кодом, который используется для написания и выполнения тестов.</p>
+</li>
+<li>
+<p>Позволяет писать код более быстро и качественно.</p>
+</li>
+<li>
+<p>Крайне прост в использовании.</p>
+</li>
+<li>
+<p>Поддерживает аннотации для идентификации методов.</p>
+</li>
+<li>
+<p>Поддерживает утверждения для тестирования получаемых результатов.</p>
+</li>
+<li>
+<p>Тесты могут быть организованы в <strong>test suites</strong> (<strong>связки тестов</strong>).</p>
+</li>
+<li>
+<p>Имеет визуальную индикацию состояния тестов (красные – не пройдены, зелёные – пройдены).</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_тестовый_случай">Тестовый случай</h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>Пример выше касается метода без параметров, и связанное с ним условие вызова возможно одно — сам факт вызова.
-Как только появляются параметры, ситуация становится сложнее.
-Как минимум, для вызова метода, поведение которого я задаю, мне нужно что-то ему передать.
-Но важнее другое: может оказаться, что задаваемую реакцию я хочу получать не всегда, а только при вызове с параметрами, отвечающими определённым требованиям.
-Если нужно задать реакцию на любой вызов этого метода независимо от аргументов, можно воспользоваться методом <strong>Mockito.any</strong></p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public interface DataService {
-    String getDataItemById(String id);
------------------------------------------
-Mockito.when(dataService.getDataItemById(any()))
-       .thenReturn("dataItem");</code></pre>
-</div>
+<p><strong>Test Case</strong> (<strong>Тестовый случай</strong>) в <strong>unit-тестировании</strong> – это часть кода, которая проверяет, что другая часть кода, например метод, работает в соответствии с определёнными требованиями.</p>
 </div>
 <div class="paragraph">
-<p>Если же требуется, чтобы <strong>mock</strong> реагировал только на определённое значение аргумента, можно использовать непосредственно это значение или методы <strong>Mockito.eq</strong> (когда речь об эквивалентности) либо <strong>Mockito.same</strong> (когда требуется сравнение ссылок)</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">Mockito.when(dataService.getDataItemById("idValue"))
-       .thenReturn("dataItem");
-// or
-Mockito.when(dataService.getDataItemById(Mockito.eq("idValue")))
-       .thenReturn("dataItem");</code></pre>
-</div>
+<p>Формально описанный <strong>test case</strong> характеризуется известными входными данными и ожидаемым выводом программы, который известен до начала выполнения теста.</p>
 </div>
 <div class="paragraph">
-<p>При работе с методами с более чем одним аргументом заданные требования комбинируются в соответствии с логическим И, то есть для получения заданного результата КАЖДЫЙ из аргументов должен отвечать поставленному требованию.</p>
+<p>Необходимо создавать, как минимум, два <strong>test cases</strong> для каждого требования – положительный и отрицательный. Если требование имеет под-требования, каждое из них должно тестироваться отдельно.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_junit_5">JUnit 5</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>JUnit 5</strong> требует <strong>Java 8</strong> (или выше) для запуска. Однако все равно можно протестировать код, скомпилированный с предыдущими версиями <strong>JDK</strong>.</p>
 </div>
 <div class="paragraph">
-<p>Кроме того, при задании поведения такого метода нельзя комбинировать использующие матчеры статические методы Mockito и прямую передачу значений.
-Используйте <strong>Mockito.eq</strong> или Mockito.same</p>
+<p>В отличие от предыдущих версий <strong>JUnit</strong>, <strong>JUnit 5</strong> состоит из нескольких разных модулей из трех разных подпроектов.</p>
+</div>
+<div class="paragraph">
+<p><strong>JUnit 5</strong> = <strong>Platform JUnit</strong> + <strong>JUnit Jupiter</strong> + <strong>JUnit Vintage</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Platform JUnit</strong><br>
+Служит основой для запуска тестирования на <strong>JVM</strong>. Он также определяет <strong>Test Engine API</strong> для разработки инфраструктуры тестирования, работающей на платформе. Кроме того, платформа предоставляет инструменты для запуска тестов с помощью CLI и инструменты для запуска на основе <strong>JUnit 4</strong> для запуска любого <strong>Test Engine</strong>. Первоклассная поддержка  <strong>Platform JUnit</strong> также существует в популярных <strong>IDE</strong> (см. <strong>IntelliJ IDEA</strong>, <strong>Eclipse</strong>, <strong>NetBeans</strong> и <strong>Visual Studio Code</strong>) и инструментах сборки (см. <strong>Gradle</strong>, <strong>Maven</strong> и <strong>Ant</strong>).</p>
+</li>
+<li>
+<p><strong>JUnit Jupiter</strong><br>
+Является сочетанием новой модели программирования и модели расширения для написания тестов и расширений в <strong>JUnit 5</strong>. <strong>JUnit Jupiter</strong>  обеспечивает <strong>Test Engine</strong> для выполнения тестов на основе <strong>Jupiter</strong> на <strong>Platform JUnit</strong>.</p>
+</li>
+<li>
+<p><strong>JUnit Vintage</strong><br>
+Обеспечивает <strong>Test Engine</strong> запуск тестов на основе <strong>JUnit 3</strong> и <strong>JUnit 4</strong> на <strong>Platform JUnit</strong>.</p>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="_аннотации">Аннотации</h3>
+<div class="paragraph">
+<p><strong>JUnit Jupiter</strong> поддерживает следующие аннотации для настройки тестов и расширения фреймворка.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Аннотация</th>
+<th class="tableblock halign-left valign-top">Свойство</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>@Test</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Означает, что метод является методом тестирования. В отличие от аннотации <strong>JUnit 4</strong>, эта аннотация не объявляет никаких атрибутов, так как тестовые расширения в JUnit Jupiter работают на основе собственных специальных аннотаций. Такие методы наследуются, если они не переопределены.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>@ParameterizedTest</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Означает, что метод является параметризованным тестом. Такие методы наследуются, если они не переопределены.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>@RepeatedTest</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Означает, что метод является тестовым шаблоном для повторного теста. Такие методы наследуются, если они не переопределены.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>@TestFactory</code> (<strong>JUnit5</strong>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Означает, что метод является испытательным заводом для динамических тестов. Такие методы наследуются, если они не переопределены.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>@TestTemplate</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Означает, что метод является шаблоном для тестовых случаев, предназначенных для вызова несколько раз в зависимости от количества контекстов вызова, возвращенных зарегистрированными поставщиками. Такие методы наследуются, если они не переопределены.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>@TestMethodOrder</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Используется для настройки порядка выполнения тестового метода для аннотированного тестового класса; похож на <strong>JUnit 4&#8217;s</strong>. Такие аннотации наследуются.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>@TestInstance</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Используется для настройки жизненного цикла экземпляра теста для аннотированного тестового класса. Такие аннотации наследуются.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>@DisplayName</code> (<strong>JUnit5</strong>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Объявляет пользовательское имя дисплея для тестового класса или метода тестирования. Такие аннотации не наследуются.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>@DisplayNameGeneration</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Объявляет пользовательский генератор имен отображения для тестового класса. Такие аннотации наследуются.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>@BeforeEach</code> (<strong>JUnit5</strong>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Означает, что аннотированный метод должен быть выполнен перед каждым, или методом в текущем классе; по аналогии с <strong>JUnit 4&#8217;s</strong>. Такие методы наследуются, если они не переопределены.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>@AfterEach</code> (<strong>JUnit5</strong>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Означает, что аннотированный метод должен быть выполнен после каждого, или метода в текущем классе; по аналогии с <strong>JUnit 4&#8217;s</strong>. Такие методы наследуются, если они не переопределены.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>@BeforeAll</code> (<strong>JUnit5</strong>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Означает, что аннотированный метод должен быть выполнен прежде всего, и методы в текущем классе; по аналогии с <strong>JUnit 4&#8217;s</strong>. Такие методы наследуются (если они не скрыты или переопределены)и должны быть (если не используется жизненный цикл "в каждом классе" экземпляра теста).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>@AfterAll</code> (<strong>JUnit5</strong>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Означает, что аннотированный метод должен быть выполнен в конце концов, и методы в текущем классе; по аналогии с <strong>JUnit 4&#8217;s</strong>. Такие методы наследуются (если они не скрыты или переопределены)и должны быть (если не используется жизненный цикл "в каждом классе" экземпляра теста).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>@Nested</code> (<strong>JUnit5</strong>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Означает, что аннотированный класс является не статичным вложенным тестовым классом и методы не могут быть использованы непосредственно в тестовом классе, если не используется жизненный цикл экземпляра теста "на класс". Такие аннотации не наследуются.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>@Tag</code> (<strong>JUnit5</strong>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Используется для объявления тегов для фильтрации тестов, либо на уровне класса или метода; аналогично тестовым группам в <strong>TestNG</strong> или <strong>Categories</strong> в <strong>JUnit 4.</strong> Такие аннотации наследуются на уровне класса, но не на уровне метода.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>@Disabled</code> (<strong>JUnit5</strong>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Используется для отключения тестового класса или метода тестирования; по аналогии с <strong>JUnit 4&#8217;s</strong>. Такие аннотации не наследуются.@Ignore</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>@Timeout</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Используется для неудачи теста, испытательного завода, шаблона тестирования или метода жизненного цикла, если его выполнение превышает данный срок. Такие аннотации наследуются.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>@ExtendWith</code> (<strong>JUnit5</strong>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Используется для регистрации расширений декларативно. Такие аннотации наследуются.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>@RegisterExtension</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Используется для регистрации расширений программно через поля. Такие поля наследуются, если они не затенены.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>@TempDir</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Используется для поставки временного каталога с помощью инъекций поля или инъекций параметра в метод жизненного цикла или метод тестирования; расположен в пакете <code>org.junit.jupiter.api.io</code></p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Все основные аннотации находятся в <a href="https://junit-org.translate.goog/junit5/docs/current/api/org.junit.jupiter.api/org/junit/jupiter/api/package-summary.html?_x_tr_sl=en&amp;_x_tr_tl=ru&amp;_x_tr_hl=ru&amp;_x_tr_pto=ajax,elem,se"><strong>org.junit.jupiter.api</strong></a> пакете в <strong>junit-jupiter-api</strong> модуле.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_задание_результатов_вызова">Задание результатов вызова</h3>
+<h3 id="_assertions">Assertions</h3>
 <div class="paragraph">
-<p>После того, как метод <strong>mock-объекта</strong> вызван, объект должен отреагировать на вызов.
-Основные возможные последствия — возвращение результата и выбрасывание исключения, и именно на эти варианты в первую очередь рассчитан инструментарий <strong>Mockito</strong>.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">Mockito.when(dataService.getAllData()).thenReturn(data);</code></pre>
-</div>
+<p><strong>JUnit 5</strong> поставляется со многими стандартными <strong>Assertions</strong> (<strong>утверждениями</strong>), т.е. методами, которые проверяют результат работы кода на соответствие ожидаемому результату. Их можно найти в классе <a href="https://junit.org/junit5/docs/current/api/org.junit.jupiter.api/org/junit/jupiter/api/Assertions.html"><code>org.junit.jupiter.api.Assertions</code></a></p>
 </div>
 <div class="paragraph">
-<p>Также</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">Mockito.when(dataService.getDataById("invalidId"))
-       .thenThrow(new IllegalArgumentException());</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Есть и другой способ: можно создать объект исключения и бросить непосредственно его, а можно предоставить <strong>Mockito</strong> только класс исключения, чтобы оно было создано автоматически.
-В обоих случаях синтаксис позволяет использовать и <strong>checked</strong> исключения, однако <strong>Mockito</strong> не позволит запустить такой тест, если тип исключения не соответствует методу, который я хочу заставить бросить это исключение.</p>
-</div>
-<div class="paragraph">
-<p>Выше варианты реакции подходят, если в ответ на вызов с заданными условиями нужно всегда возвращать определённое, всегда одно и то же значение результата или выбрасывать всегда одинаковое исключение.
-Предположим, метод принимает коллекцию значений, а возвращает другую коллекцию значений, связанных с первыми одно к одному (например, это получение коллекции объектов данных по набору их ID), и в рамках теста необходимо использовать этот <strong>mock-объект</strong> неоднократно с разными наборами входных данных, получая каждый раз соответствующий результат.
-В Mockito есть метод <strong>Mockito.thenAnswer</strong>, он же <strong>Mockito.then</strong>.
-Он принимает реализацию функционального интерфейса <strong>Answer</strong>, единственный метод которого получает объект <strong>класса InvocationOnMock</strong>.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">Mockito.when(dataService.getDataByIds(Mockito.any()))
-       .thenAnswer(invocation -&gt; invocation
-                .&lt;List&lt;String&gt;&gt;getArgument(0).stream()
-                .map(id -&gt; {
-                    switch (id) {
-                        case "a":
-                            return "dataItemA";
-                        case "b":
-                            return "dataItemB";
-                        default:
-                            return null;
-                    }
-                })
-                .collect(Collectors.toList()));</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Обратите внимание: типобезопасности <strong>InvocationOnMock</strong> не обеспечивает — аргументы возвращаются либо в виде массива <strong>Object[]</strong>, либо <strong>generic</strong>-методом.</p>
-</div>
-<div class="paragraph">
-<p>Отдельно стоит упомянуть ещё один вариант реакции — <strong>thenCallRealMethod</strong>.
-Предназначение понятно из названия.
-Он действует как для <strong>mock</strong>-, так и для <strong>spy</strong>-объектов.
-В случае <strong>mock</strong> все поля объекта, к которым может обратиться код метода, будут опять-таки иметь значение <strong>null</strong>.
-Для <strong>spy</strong> же использование <strong>thenCallRealMethod</strong> означает возвращение к поведению <strong>spy</strong> по умолчанию.</p>
-</div>
-<div class="paragraph">
-<p>Методы <strong>thenReturn</strong> и <strong>thenThrow</strong> имеют перегруженные версии, принимающие <strong>varargs</strong>.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">Mockito.when(dataService.getDataById("a"))
-       .thenReturn("valueA1", "valueA2")
-       .thenThrow(IllegalArgumentException.class);</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Здесь первый вызов метода с заданным параметром вернёт "valueA1, второй — "valueA2, а третий (и все последующие) будет вызывать выбрасывание <strong>IllegalArgumentException</strong>.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_слежение_за_вызовами_методов">Слежение за вызовами методов</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Метод <strong>verify</strong> позволяет проверить, была ли выполнена проверка с определенными параметрами.
-Если проверка не выполнялась или выполнялась с другими параметрами, то <strong>verify</strong> вызовет исключение.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">Mockito.verify(dataService).getDataById(Mockito.any());</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Тест с такой конструкцией пройдёт успешно, если она находится после единственного за время выполнения теста вызова метода <strong>getDataById</strong>, и упадёт, если метод не был вызван или был вызван дважды и более.</p>
-</div>
-<div class="paragraph">
-<p>Для проверки количества вызовов определенных методов Mockito предоставляет следующие методы:</p>
+<p>Основные assertions:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>atLeast(int min) - не меньше min вызовов;</p>
+<p><code>assertEquals()</code>,</p>
 </li>
 <li>
-<p>atLeastOnce() - хотя бы один вызов;</p>
+<p><code>assertArrayEquals()</code>,</p>
 </li>
 <li>
-<p>atMost(int max) - не более max вызовов;</p>
+<p><code>assertSame()</code>,</p>
 </li>
 <li>
-<p>times(int cnt) - cnt вызовов;</p>
+<p><code>assertNotSame()</code>,</p>
 </li>
 <li>
-<p>never() - вызовов не было;</p>
+<p><code>assertTrue()</code>,</p>
+</li>
+<li>
+<p><code>assertFalse()</code>,</p>
+</li>
+<li>
+<p><code>assertNull()</code>,</p>
+</li>
+<li>
+<p><code>assertNotNull()</code>,</p>
+</li>
+<li>
+<p><code>assertLinesMatch()</code>,</p>
+</li>
+<li>
+<p><code>assertIterablesMatch()</code></p>
 </li>
 </ul>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">Mockito.verify(dataService, Mockito.times(1)).getDataById(Mockito.any());</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_mock_объекты_как_значения_полей_и_аннотации_mockito">Mock-объекты как значения полей и аннотации Mockito</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Если в классе теста есть поля, которым я хочу присвоить <strong>mock-объекты</strong> в качестве значений, это не обязательно делать вручную — достаточно снабдить его аннотацией <strong>@Mock</strong>.</p>
-</div>
-<div class="paragraph">
-<p>Для <strong>spy</strong> предусмотрена аннотация <strong>@Spy</strong> — она в целом аналогична <strong>@Mock</strong>… но для spy может использоваться объект, на основе которого он будет создан (несмотря на название, этот метод предназначен не только для <strong>mock&#8217;ов</strong>, а задействует также и все нижеперечисленные аннотации).
-Такой объект можно сразу указать в качестве значения аннотируемого поля, но можно и не указывать — тогда <strong>spy</strong> будет создан на основе класса.</p>
-</div>
-<div class="paragraph">
-<p>Есть аннотация <strong>@Captor</strong> для создания экземпляров <strong>ArgumentCaptor</strong>.</p>
-</div>
-<div class="paragraph">
-<p>Ещё существует <strong>@InjectMocks</strong>.
-Помеченное таким образом поле инициализируется настоящим объектом указанного класса.
-Его поля по возможности проинициализированы значениями <strong>mock-полей</strong>, помеченных соответствующей аннотацией.
-Для этого используется конструктор с наибольшим числом параметров, сеттеры и так далее.
-Если какого-то объектного параметра конструктора не хватает, вместо него будет использован <strong>null</strong>, а вот параметр-примитив просто не позволит тесту сработать.
-В целом это похоже на маленькую и простую (и всё равно не такую уж примитивную) реализацию <strong>dependency injection</strong>.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_откат_поведения_к_дефолтному_и_сессии_mockito">Откат поведения к дефолтному и сессии Mockito</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Чтобы привести все <strong>mock-объекты</strong> в состояние по умолчанию можно использовать методы <strong>Mockito.reset</strong> и <strong>Mockito.clearInvocations</strong>.
-Оба принимают <strong>varargs</strong>, и передавать им нужно соответствующие <strong>mock&#8217;и</strong>.</p>
-</div>
-<div class="paragraph">
-<p>Ещё одно решение — использовать так называемые <strong>сессии Mockito</strong>.
-Именно его рекомендуют авторы.
-В начале сессии все <strong>mock-объекты</strong> инициализируются, а после работы обязательно должно быть выполнено её окончание (хотя mock&#8217;и продолжают оставаться функциональными и после него).
-Если я хочу создавать отдельную сессию для каждого тестового метода, то удобно создать поле типа MockitoSession, присвоить ему значение до вызова тестового метода и завершить сессию после.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Mock
-DataService dataService;
-
-MockitoSession session;
-
-@BeforeMethod
-public void beforeMethod() {
-    session = Mockito.mockitoSession()
-            .initMocks(this)
-            .startMocking();
-}
-
-@Test
-public void testMethod() {
-    // some code using the dataService field
-}
-
-@AfterMethod
-public void afterMethod() {
-    session.finishMocking();
-}</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_links">Links</h2>
-<div class="sectionbody">
-<div class="ulist">
-<ul>
-<li>
-<p><a href="https://ru.wikipedia.org/wiki/BDD_(%D0%BF%D1%80%D0%BE%D0%B3%D1%80%D0%B0%D0%BC%D0%BC%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5)">Mockito и как его готовить</a></p>
-</li>
-<li>
-<p><a href="https://habr.com/ru/post/444982/">BDD (программирование)</a></p>
-</li>
-<li>
-<p><a href="https://www.javadoc.io/doc/org.mockito/mockito-core/2.7.10/org/mockito/Mockito.html">Официальная документация Mockito</a></p>
-</li>
-<li>
-<p><a href="https://habr.com/ru/search/?target_type=posts&amp;order=relevance&amp;q=%5B%D0%B0%D0%B2%D1%82%D0%BE%D1%82%D0%B5%D1%81%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5%5D">Автотестирование</a></p>
-</li>
-</ul>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-03-30 13:32:38 UTC
+Last updated 2022-04-04 03:14:40 UTC
 </div>
 </div>
 </body>

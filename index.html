@@ -668,8 +668,8 @@ pre.rouge {
 <li><a href="#_jakarta_servlet">4. Jakarta Servlet</a></li>
 <li><a href="#_java_tools">5. Java Tools</a>
 <ul class="sectlevel2">
-<li><a href="#_junit">5.1. JUnit</a></li>
-<li><a href="#_mockito">5.2. Mockito</a></li>
+<li><a href="#_testing_junit">5.1. Testing: JUnit</a></li>
+<li><a href="#_testing_mockito">5.2. Testing: Mockito</a></li>
 <li><a href="#_logging">5.3. Logging</a></li>
 </ul>
 </li>
@@ -2087,14 +2087,14 @@ pre.rouge {
 <h2 id="_java_tools">5. Java Tools</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_junit">5.1. JUnit</h3>
+<h3 id="_testing_junit">5.1. Testing: JUnit</h3>
 <div class="sect3">
 <h4 id="_введение">5.1.1. Введение</h4>
 <div class="paragraph">
-<p><strong>Тестирование</strong> – это процесс проверки функционала программы с целью подтверждения того, что она работает в соответствии с определёнными требованиями. Unit-тестирование – это тестирование, которые пишутся, непосредственно, на уровне разработчика (тестирование определённой сущности – метод или класс). Это крайне важный этап разработки ПО, который помогает создавать качественный продукт.</p>
+<p><strong>Тестирование</strong> – это процесс проверки функционала программы с целью подтверждения того, что она работает в соответствии с определёнными требованиями. <strong>Unit-тестирование</strong> – это тестирование с помощью тестов, которые пишутся, непосредственно, на уровне разработчика (тестирование определённой сущности – метод или класс). Это крайне важный этап разработки ПО, который помогает создавать качественный продукт.</p>
 </div>
 <div class="paragraph">
-<p><strong>Юнит-тестирование</strong> делится на две большие группы:</p>
+<p><strong>Unit-тестирование</strong> делится на две большие группы:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -2123,33 +2123,33 @@ pre.rouge {
 <td class="tableblock halign-left valign-top"><p class="tableblock">Использование специальных средств для автоматизированного тестирования</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Не программируется</p>
-<p class="tableblock">Нет возможности для написания сложных тестов для тестирования сложных моделей поведения.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Программируется</p>
-<p class="tableblock">Тестировщики могут написать сложные тесты для тестирования сложных моделей программирования</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Не программируется</strong><br>
+Нет возможности для написания сложных тестов для тестирования сложных моделей поведения.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Программируется</strong><br>
+Тестировщики могут написать сложные тесты для тестирования сложных моделей программирования</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Низкая надёжность</p>
-<p class="tableblock">Ручное тестирование имеет низкую надёжность, так как крайне подвержено влиянию человеческого фактора.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Высокая надёжность</p>
-<p class="tableblock">Автоматизированное тестирование точное и надёжное.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Низкая надёжность</strong><br>
+Ручное тестирование имеет низкую надёжность, так как крайне подвержено влиянию человеческого фактора.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Высокая надёжность</strong><br>
+Автоматизированное тестирование точное и надёжное.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Большие затраты времени</p>
-<p class="tableblock">Связано с тем, что человек имеет крайне ограниченные возможность в скорости работы.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Быстро</p>
-<p class="tableblock">Автоматизированные тесты выполняются на порядок быстрее, чем это может сделать человек.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Большие затраты времени</strong><br>
+Связано с тем, что человек имеет крайне ограниченные возможность в скорости работы.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Быстро</strong><br>
+Автоматизированные тесты выполняются на порядок быстрее, чем это может сделать человек.</p></td>
 </tr>
 </tbody>
 </table>
-<div class="sect4">
-<h5 id="_junit_2">JUnit</h5>
+</div>
+<div class="sect3">
+<h4 id="_junit">5.1.2. JUnit</h4>
 <div class="paragraph">
-<p><strong>JUnit</strong> – это фреймворк, разработанный для тестирования программ, написанных с использованием технологии <strong>Java</strong>. Он лежит в основе <strong>TDD</strong> (<strong>Test-Driven Development</strong>) и входит в семейство фрейморков для тестирования xUnit.</p>
+<p><strong>JUnit</strong> – это фреймворк, разработанный для тестирования программ, написанных с использованием технологии <strong>Java</strong>. Он лежит в основе <strong>TDD</strong> (<strong>Test-Driven Development</strong>) и входит в семейство фреймворков для тестирования <strong>xUnit</strong>.</p>
 </div>
 <div class="paragraph">
-<p>Главная идея данного фреймворка – “сначала тесты, потом код”. Это означает, что сначала мы определяем, что должно получиться в результате работы того или иного куска кода и пишем тесты, которые проверяют идентичность результата с требуемым, после чего пишем сам кусок кода, который и будем тестировать. Данный подход увеличивает эффективность работы разработчика и позволяет писать более стабильный код. В результате этого мы получаем меньшее количество времени, которое затрачивается на отладку программы.</p>
-</div>
+<p>Главная идея <strong>Test-Driven Development</strong> – <em>сначала тесты, потом код</em>. Это означает, что сначала определяется, что должно получиться в результате работы того или иного куска кода и пишем тесты. Тесты проверяют идентичность результата с требуемым, после чего пишем сам кусок кода, который и будет тестироваться. Данный подход увеличивает эффективность работы разработчика и позволяет писать более стабильный код. В результате этого получается меньшее количество времени, которое затрачивается на отладку программы.</p>
 </div>
 <div class="sect4">
 <h5 id="_свойства_junit">Свойства JUnit</h5>
@@ -2171,7 +2171,7 @@ pre.rouge {
 <p>Поддерживает утверждения для тестирования получаемых результатов.</p>
 </li>
 <li>
-<p>Тесты могут быть организованы  в связки тестов (<strong>test suites</strong>).</p>
+<p>Тесты могут быть организованы в <strong>test suites</strong> (<strong>связки тестов</strong>).</p>
 </li>
 <li>
 <p>Имеет визуальную индикацию состояния тестов (красные – не пройдены, зелёные – пройдены).</p>
@@ -2179,23 +2179,23 @@ pre.rouge {
 </ul>
 </div>
 </div>
-<div class="sect4">
-<h5 id="_тестовый_случай">Тестовый случай</h5>
+</div>
+<div class="sect3">
+<h4 id="_тестовый_случай">5.1.3. Тестовый случай</h4>
 <div class="paragraph">
-<p><strong>Тестовый случай</strong> (Test Case) в <strong>юнит тестировании</strong> – это часть кода, которая проверяет, что другая часть кода  (в частности – метод) работает в соответствии с определёнными требованиями.</p>
+<p><strong>Test Case</strong> (<strong>Тестовый случай</strong>) в <strong>unit-тестировании</strong> – это часть кода, которая проверяет, что другая часть кода, например метод, работает в соответствии с определёнными требованиями.</p>
 </div>
 <div class="paragraph">
-<p>Формально описанный тестовый случай характеризуется известными входными данными и ожидаемым выводом программы, который известен до начала выполнения теста.</p>
+<p>Формально описанный <strong>test case</strong> характеризуется известными входными данными и ожидаемым выводом программы, который известен до начала выполнения теста.</p>
 </div>
 <div class="paragraph">
-<p>Необходимо создавать, как минимум, два тестовых случая для каждого требования – положительный и отрицательный. Если требование имеет под требования, каждое из них должно тестироваться отдельно.</p>
-</div>
+<p>Необходимо создавать, как минимум, два <strong>test cases</strong> для каждого требования – положительный и отрицательный. Если требование имеет под-требования, каждое из них должно тестироваться отдельно.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_junit_5">5.1.2. JUnit 5</h4>
+<h4 id="_junit_5">5.1.4. JUnit 5</h4>
 <div class="paragraph">
-<p><strong>JUnit 5</strong> требует <strong>Java 8</strong> (или выше) во время выполнения. Однако вы все равно можете протестировать код, скомпилированный с предыдущими версиями <strong>JDK</strong>.</p>
+<p><strong>JUnit 5</strong> требует <strong>Java 8</strong> (или выше) для запуска. Однако все равно можно протестировать код, скомпилированный с предыдущими версиями <strong>JDK</strong>.</p>
 </div>
 <div class="paragraph">
 <p>В отличие от предыдущих версий <strong>JUnit</strong>, <strong>JUnit 5</strong> состоит из нескольких разных модулей из трех разных подпроектов.</p>
@@ -2203,37 +2203,19 @@ pre.rouge {
 <div class="paragraph">
 <p><strong>JUnit 5</strong> = <strong>Platform JUnit</strong> + <strong>JUnit Jupiter</strong> + <strong>JUnit Vintage</strong></p>
 </div>
-<div class="paragraph">
-<p><strong>JUnit платформа</strong> служит основой для запуска тестирования рамок на <strong>JVM</strong>. Он также определяет <strong>TestEngineAPI</strong> для разработки инфраструктуры тестирования, работающей на платформе. Кроме того, платформа предоставляет средство запуска консоли для запуска платформы из командной строки и средство запуска на основе <strong>JUnit 4</strong> для запуска любого <strong>TestEngine</strong> на платформе в среде на основе <strong>JUnit 4</strong>. Первоклассная поддержка <strong>платформы JUnit</strong> также существует в популярных <strong>IDE</strong> (см. <strong>IntelliJ IDEA</strong>, <strong>Eclipse</strong>, <strong>NetBeans</strong> и <strong>код Visual Studio</strong>) и инструментах сборки (см. <strong>Gradle</strong>, <strong>Maven</strong> и <strong>Ant</strong>).</p>
-</div>
-<div class="paragraph">
-<p><strong>JUnit Jupiter</strong> является сочетанием новой модели программирования и модели расширения для написания тестов и расширений в <strong>JUnit 5</strong>. Jupiter подпроекте обеспечивает <strong>TestEngine</strong> для выполнения тестов на основе <strong>Jupiter</strong> на платформе.</p>
-</div>
-<div class="paragraph">
-<p><strong>JUnit Vintage</strong> обеспечивает <strong>TestEngine</strong> запуск тестов на основе <strong>JUnit 3</strong> и <strong>JUnit 4</strong> на платформе.</p>
-</div>
-<div class="paragraph">
-<p>Получать помощь, а также задайте вопросы, связанные с <strong>JUnit 5</strong> можно на <a href="https://translate.google.com/website?sl=en&amp;tl=ru&amp;ajax=1&amp;elem=1&amp;se=1&amp;u=https://stackoverflow.com/questions/tagged/junit5"><strong>Stack Overflow</strong></a> или пообщайтесь с нами в <a href="https://translate.google.com/website?sl=en&amp;tl=ru&amp;ajax=1&amp;elem=1&amp;se=1&amp;u=https://gitter.im/junit-team/junit5"><strong>Gitter</strong></a>.</p>
-</div>
-<div class="paragraph">
-<p>В <a href="https://translate.google.com/website?sl=en&amp;tl=ru&amp;ajax=1&amp;elem=1&amp;se=1&amp;u=https://github.com/junit-team/junit5-samples"><strong>junit5-samples</strong></a> репозитории размещена коллекция примеров проектов, основанных на <strong>JUnit Jupiter</strong>, <strong>JUnit Vintage</strong> и других средах тестирования. Вы найдете подходящие сценарии сборки.</p>
-</div>
 <div class="ulist">
 <ul>
 <li>
-<p>Для <strong>Gradle</strong> и <strong>Java</strong> ознакомьтесь с <a href="https://translate.google.com/website?sl=en&amp;tl=ru&amp;ajax=1&amp;elem=1&amp;se=1&amp;u=https://github.com/junit-team/junit5-samples/tree/r5.7.2/junit5-jupiter-starter-gradle"><strong>junit5-jupiter-starter-gradle</strong></a> проектом.</p>
+<p><strong>Platform JUnit</strong><br>
+Служит основой для запуска тестирования на <strong>JVM</strong>. Он также определяет <strong>Test Engine API</strong> для разработки инфраструктуры тестирования, работающей на платформе. Кроме того, платформа предоставляет инструменты для запуска тестов с помощью CLI и инструменты для запуска на основе <strong>JUnit 4</strong> для запуска любого <strong>Test Engine</strong>. Первоклассная поддержка  <strong>Platform JUnit</strong> также существует в популярных <strong>IDE</strong> (см. <strong>IntelliJ IDEA</strong>, <strong>Eclipse</strong>, <strong>NetBeans</strong> и <strong>Visual Studio Code</strong>) и инструментах сборки (см. <strong>Gradle</strong>, <strong>Maven</strong> и <strong>Ant</strong>).</p>
 </li>
 <li>
-<p>Для <strong>Gradle</strong> и <strong>Kotlin</strong> ознакомьтесь с <a href="https://translate.google.com/website?sl=en&amp;tl=ru&amp;ajax=1&amp;elem=1&amp;se=1&amp;u=https://github.com/junit-team/junit5-samples/tree/r5.7.2/junit5-jupiter-starter-gradle-kotlin"><strong>junit5-jupiter-starter-gradle-kotlin</strong></a> проектом.</p>
+<p><strong>JUnit Jupiter</strong><br>
+Является сочетанием новой модели программирования и модели расширения для написания тестов и расширений в <strong>JUnit 5</strong>. <strong>JUnit Jupiter</strong>  обеспечивает <strong>Test Engine</strong> для выполнения тестов на основе <strong>Jupiter</strong> на <strong>Platform JUnit</strong>.</p>
 </li>
 <li>
-<p>Для <strong>Gradle</strong> и <strong>Groovy</strong> ознакомьтесь с <a href="https://translate.google.com/website?sl=en&amp;tl=ru&amp;ajax=1&amp;elem=1&amp;se=1&amp;u=https://github.com/junit-team/junit5-samples/tree/r5.7.2/junit5-jupiter-starter-gradle-groovy"><strong>junit5-jupiter-starter-gradle-groovy</strong></a> проектом.</p>
-</li>
-<li>
-<p>Для <strong>Maven</strong> проверьте <a href="https://translate.google.com/website?sl=en&amp;tl=ru&amp;ajax=1&amp;elem=1&amp;se=1&amp;u=https://github.com/junit-team/junit5-samples/tree/r5.7.2/junit5-jupiter-starter-maven"><strong>junit5-jupiter-starter-maven</strong></a> проект.</p>
-</li>
-<li>
-<p>Что касается <strong>Ant</strong>, ознакомьтесь с <a href="https://translate.google.com/website?sl=en&amp;tl=ru&amp;ajax=1&amp;elem=1&amp;se=1&amp;u=https://github.com/junit-team/junit5-samples/tree/r5.7.2/junit5-jupiter-starter-ant"><strong>junit5-jupiter-starter-ant</strong></a> проектом.</p>
+<p><strong>JUnit Vintage</strong><br>
+Обеспечивает <strong>Test Engine</strong> запуск тестов на основе <strong>JUnit 3</strong> и <strong>JUnit 4</strong> на <strong>Platform JUnit</strong>.</p>
 </li>
 </ul>
 </div>
@@ -2247,18 +2229,20 @@ pre.rouge {
 <col style="width: 50%;">
 <col style="width: 50%;">
 </colgroup>
-<tbody>
+<thead>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Аннотация</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Свойство</p></td>
+<th class="tableblock halign-left valign-top">Аннотация</th>
+<th class="tableblock halign-left valign-top">Свойство</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>@Test</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Означает, что метод является методом тестирования. В отличие от аннотации <strong>JUnit 4</strong>, эта аннотация не объявляет никаких атрибутов, так как тестовые расширения в JUnit Jupiter работают на основе собственных специальных аннотаций. Такие методы наследуются, если они не переопределены.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>@ParameterizedTest</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Означает, что метод является параметризированным тестом. Такие методы наследуются, если они не переопределены.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Означает, что метод является параметризованным тестом. Такие методы наследуются, если они не переопределены.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>@RepeatedTest</code></p></td>
@@ -2306,7 +2290,7 @@ pre.rouge {
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>@Nested</code> (<strong>JUnit5</strong>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Означает, что аннотированный класс является нестатичным вложенным тестовым классом. и методы не могут быть использованы непосредственно в тестовом классе, если не используется жизненный цикл экземпляра теста "на класс". Такие аннотации не наследуются.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Означает, что аннотированный класс является не статичным вложенным тестовым классом и методы не могут быть использованы непосредственно в тестовом классе, если не используется жизненный цикл экземпляра теста "на класс". Такие аннотации не наследуются.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>@Tag</code> (<strong>JUnit5</strong>)</p></td>
@@ -2339,12 +2323,12 @@ pre.rouge {
 </div>
 </div>
 <div class="sect4">
-<h5 id="_утверждения">Утверждения</h5>
+<h5 id="_assertions">Assertions</h5>
 <div class="paragraph">
-<p><strong>JUnit 5</strong> поставляется со многими стандартными утверждениями, которые можно найти в классе <a href="https://junit.org/junit5/docs/current/api/org.junit.jupiter.api/org/junit/jupiter/api/Assertions.html"><strong>org.junit.jupiter.api.Assertions</strong>.</a></p>
+<p><strong>JUnit 5</strong> поставляется со многими стандартными <strong>Assertions</strong> (<strong>утверждениями</strong>), т.е. методами, которые проверяют результат работы кода на соответствие ожидаемому результату. Их можно найти в классе <a href="https://junit.org/junit5/docs/current/api/org.junit.jupiter.api/org/junit/jupiter/api/Assertions.html"><code>org.junit.jupiter.api.Assertions</code></a></p>
 </div>
 <div class="paragraph">
-<p>Основные утверждения:</p>
+<p>Основные assertions:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -2384,7 +2368,7 @@ pre.rouge {
 </div>
 </div>
 <div class="sect2">
-<h3 id="_mockito">5.2. Mockito</h3>
+<h3 id="_testing_mockito">5.2. Testing: Mockito</h3>
 <div class="sect3">
 <h4 id="_mockito_что_это_такое_и_зачем_нужно">5.2.1. Mockito: что это такое и зачем нужно</h4>
 <div class="paragraph">
@@ -2762,13 +2746,16 @@ pre.rouge {
 <div class="sect2">
 <h3 id="_logging">5.3. Logging</h3>
 <div class="paragraph">
-<p><strong>Logging</strong> (<strong>логирование</strong>, <strong>журналирование</strong>) — это процесс записи куда-то (в файл, в сетевой сокет) данных о работе программы. Место, куда эти данные записываются, является <strong>log-файл</strong>, а само содержимое называют <strong>logs</strong> (<strong>логи</strong>). <strong>Log</strong> (<strong>лог</strong>) - это одна запись, которая делается в <strong>log-file</strong>. Так же само действие по отправке записи при logging называется <strong>log</strong> (<strong>логировать</strong>)</p>
+<p><strong>Logging</strong> (<strong>логирование</strong>, <strong>журналирование</strong>) — это процесс записи куда-то (в файл, в сетевой сокет) данных о работе программы. Место, куда эти данные записываются, чаще всего представляет собой <strong>log-файл</strong> или систему логирования (например: ELK stack). Само содержимое называют <strong>logs</strong> (<strong>логи</strong>). <strong>Log</strong> (<strong>лог</strong>) — это одна запись, которая делается в <strong>log-file</strong> или систему логирования. Само действие по отправке записи при logging называется <strong>log</strong> (<strong>логировать</strong>, <strong>журналировать</strong>, <strong>записывать в logs</strong>).</p>
 </div>
 <div class="paragraph">
-<p>Если в работе сервера, компьютера или программного обеспечения возникла неизвестная ошибка, в первую очередь смотрят логи. <strong>Log-файл</strong> — <strong>текстовый файл</strong> с информацией о действиях программного обеспечения или пользователей, который хранится на компьютере или передается на хранение в систему логирования. Это хронология событий и их источников, ошибок и причин, по которым они произошли. Читать и анализировать логи можно как с помощью обычного текстового редактора, так и с помощью специального ПО.</p>
+<p>Если в работе сервера, компьютера или программного обеспечения возникла неизвестная ошибка, в первую очередь смотрят logs. <strong>Log-файл</strong> — <strong>текстовый файл</strong> с информацией о действиях программного обеспечения или пользователей, который хранится на компьютере или передается на хранение в систему логирования. Это хронология событий и их источников, ошибок и причин, по которым они произошли. Читать и анализировать логи можно как с помощью обычного текстового редактора, так и с помощью специального ПО.</p>
 </div>
 <div class="paragraph">
-<p><strong>Logging</strong> позволяет ответить на вопросы, что происходило, когда и при каких обстоятельствах. Без логов сложно понять, из-за чего появляется ошибка, если она возникает периодически и только при определенных условиях. Чтобы облегчить задачу администраторам и программистам, в лог записывается информация не только об ошибках, но и о причинах их возникновения. Благодаря логам найденные ошибки можно быстро исправить.</p>
+<p><strong>Logging</strong> позволяет ответить на вопросы, что происходило, когда и при каких обстоятельствах. Без логов сложно понять, из-за чего появляется ошибка, если она возникает периодически и только при определенных условиях. Чтобы облегчить задачу администраторам и программистам, в logs записывается информация не только об ошибках, но и о причинах их возникновения. Благодаря logs найденные ошибки можно быстро исправить.</p>
+</div>
+<div class="paragraph">
+<p>Следует так же понимать, что logs - фактически единственный способ понять, что произошло с программой, установленной и работающей на production environment, к которому, чаще всего, разработчики не имеют доступ. Поэтому разработчикам стоит заботиться о том, что бы разработанное ПО осуществляло logging, которое позволит установить причины неполадки и т.д.</p>
 </div>
 <div class="paragraph">
 <p>Весь процесс логирования состоит из трех частей.</p>
@@ -2836,10 +2823,10 @@ pre.rouge {
 </ul>
 </div>
 <div class="paragraph">
-<p>Еще одним важным вопросом на который надо ответить - это что необходимо отправлять в log.</p>
+<p>Еще одним важным вопросом на который надо ответить — это что необходимо отправлять в log.</p>
 </div>
 <div class="paragraph">
-<p>Работа приложения - это происходящие в нем события, которые в свою очередь могут быть классифицированы на:</p>
+<p>Работа приложения — это происходящие в нем события, которые в свою очередь могут быть классифицированы на:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -2850,20 +2837,20 @@ pre.rouge {
 <p>события, связанные с безопасностью приложения;</p>
 </li>
 <li>
-<p>системные события, связанные с уже конкретикой реализации - вызовов ОС, использования библиотек, фреймворков и т.д.</p>
+<p>системные события, связанные с уже конкретикой реализации — вызовов ОС, использования библиотек, фреймворков и т.д.</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>Логировать обязательно необходимо:</p>
+<p>Записывать в logs обязательно необходимо:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Начало/конец работы приложения</strong>. Нужно знать, что приложение действительно запустилось, как мы и ожидали, и завершилось так же ожидаемо.</p>
+<p><strong>Начало/конец работы приложения</strong>. Нужно знать, что приложение действительно запустилось, как и ожидалось, и завершилось так же ожидаемо.</p>
 </li>
 <li>
-<p><strong>Вопросы безопасности</strong>. Здесь хорошо бы логировать попытки подбора пароля, логирование входа важных юзеров и т.д.</p>
+<p><strong>Вопросы безопасности</strong>. Здесь хорошо бы логировать попытки подбора пароля, логирование входа пользователей и т.д.</p>
 </li>
 <li>
 <p>Некоторые <strong>состояния приложения</strong>. Например, переход из одного состояния в другое в бизнес процессе.</p>
@@ -2886,8 +2873,7 @@ pre.rouge {
 <ul>
 <li>
 <p><strong>Избыток логирования</strong><br>
-Не стоит логировать каждый шаг, который чисто теоретически может быть важным.
-<strong>Есть правило</strong>: логи могут нагружать работоспособность не более, чем на <strong>10%</strong>. Иначе будут проблемы с производительностью.</p>
+Не стоит логировать каждый шаг, который чисто теоретически может быть важным. <strong>Есть правило</strong>: логи могут нагружать работоспособность не более, чем на <strong>10%</strong>. Иначе будут проблемы с производительностью.</p>
 </li>
 <li>
 <p><strong>Логирование всех данных в один файл</strong><br>
@@ -2911,7 +2897,7 @@ pre.rouge {
 <p><strong>Log4j</strong> - это первый набор инструментов для логирования Java, который появился еще в 1999-м году. Внутри себя имеет различные способы вывода логов, несколько форматов логирования и многое другое. Раньше данная библиотека активно применялась, но уже долгое время этот проект не развивается.</p>
 </li>
 <li>
-<p><strong>JUL</strong> — <code>java.util.logging</code>. Является частью <strong>JDK</strong>. Имеет множество уровней логирования, например, только для отладки у этого инструмента есть в арсенале 3 отладочных уровня вместо одного стандартного.</p>
+<p><strong>JUL</strong> — <code>java.util.logging</code>. Является частью <strong>JDK</strong>. Имеет множество уровней логирования, например, только для отладки у этого инструмента есть в арсенале 3 отладочных уровня вместо одного как у большинства библиотек.</p>
 </li>
 <li>
 <p><strong>JCL</strong> — <strong>Apache Commons Logging</strong>. Из-за того, что долгое время не было промышленного стандарта в logging и был период, когда многие создавали свой свои собственные библиотеки логирования, решили выпустить <strong>JCL</strong> — общую обертку, которая  использовалась бы над другими.</p>
@@ -2934,7 +2920,7 @@ pre.rouge {
 <p>Если в <strong>лог-файл</strong> записывать все действия программы, то там будет большое количество различных сведений. В некоторых ситуациях лог-файлы могут генерироваться очень быстро и в огромных размерах. В этом случае найти нужную информацию в логах будет очень нелегко. Поэтому, чтобы контролировать объемы записываемой информации, придумали различные уровни логирования.</p>
 </div>
 <div class="paragraph">
-<p><strong>Уровень логирования</strong> - это разделение событий по приоритетам, по степени важности. Например, <strong>error</strong> - пишем ошибки, <strong>debug</strong> - пишем более подробно в лог и т.д.</p>
+<p><strong>Уровень логирования</strong> — это разделение событий по приоритетам, по степени важности. Например, <strong>error</strong> - пишем ошибки, <strong>debug</strong> - пишем более подробно в лог и т.д.</p>
 </div>
 <div class="paragraph">
 <p>Практически все библиотеки логирования (кроме <strong>JUL</strong>) имеют следующие уровни логирования:</p>
@@ -2942,65 +2928,65 @@ pre.rouge {
 <div class="ulist">
 <ul>
 <li>
-<p><strong>OFF</strong>: никакие логи не записываются, все будут проигнорированы;</p>
+<p><strong>OFF</strong>: никакие логи не записываются, все будут проигнорированы</p>
 </li>
 <li>
-<p><strong>FATAL</strong>: ошибка, после которой приложение уже не сможет работать и будет остановлено, например, <strong>JVM out of memory error</strong>;</p>
+<p><strong>FATAL</strong>: ошибка, после которой приложение уже не сможет работать и будет остановлено, например, <strong>JVM out of memory error</strong></p>
 </li>
 <li>
-<p><strong>ERROR</strong>: уровень ошибок, когда есть проблемы, которые нужно решить. Ошибка не останавливает работу приложения в целом. Остальные запросы могут работать корректно;</p>
+<p><strong>ERROR</strong>: уровень ошибок, когда есть проблемы, которые нужно решить. Ошибка не останавливает работу приложения в целом. Остальные запросы могут работать корректно</p>
 </li>
 <li>
-<p><strong>WARN</strong>: обозначаются логи, которые содержат предостережение. Произошло неожиданное действие, несмотря на это система устояла и выполнила запрос;</p>
+<p><strong>WARN</strong>: обозначаются логи, которые содержат предостережение. Произошло неожиданное действие, несмотря на это система устояла и выполнила запрос</p>
 </li>
 <li>
-<p><strong>INFO</strong>: лог, который записывает важные действия в приложении. Это не ошибки, это не предостережение, это ожидаемые действия системы;</p>
+<p><strong>INFO</strong>: лог, который записывает важные действия в приложении. Это не ошибки, это не предостережение, это ожидаемые действия системы</p>
 </li>
 <li>
-<p><strong>DEBUG</strong>: логи, необходимые для отладки приложения. Для уверенности в том, что система делает именно то, что от нее ожидают, или описания действия системы: <code>method1 начал работу</code>;</p>
+<p><strong>DEBUG</strong>: логи, необходимые для отладки приложения. Для уверенности в том, что система делает именно то, что от нее ожидают, или описания действия системы: <code>method1 начал работу</code></p>
 </li>
 <li>
-<p><strong>TRACE</strong>: менее приоритетные логи для отладки, с наименьшим уровнем логирования;</p>
+<p><strong>TRACE</strong>: менее приоритетные логи для отладки, с наименьшим уровнем логирования</p>
 </li>
 <li>
-<p><strong>ALL</strong>: уровень, при котором будут записаны все логи из системы.</p>
+<p><strong>ALL</strong>: уровень, при котором будут записаны все логи из системы</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>Если в приложении в каком-то месте включен уровень логирования <strong>INFO</strong>, будут логироваться все уровни, начиная с <strong>INFO</strong> и до <strong>FATAL</strong>. Если будет уровень логирования <strong>FATAL</strong>, будут записаны <strong>только логи с этим уровнем</strong>.</p>
+<p>Если в приложении в каком-то месте включен уровень логирования <strong>INFO</strong>, будут записываться в logs все уровни, начиная с <strong>INFO</strong> и до <strong>FATAL</strong>. Если будет уровень логирования <strong>FATAL</strong>, будут записаны <strong>только logs с этим уровнем</strong>.</p>
 </div>
 <div class="paragraph">
-<p><strong>JUL</strong> имеет следующие уровни логирования:</p>
+<p><strong>JUL</strong> имеет следующие уровни логирования (по степени убывания приоритета):</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>FINEST</strong>,</p>
+<p><strong>OFF</strong></p>
 </li>
 <li>
-<p><strong>FINER</strong>,</p>
+<p><strong>ALL</strong></p>
 </li>
 <li>
-<p><strong>FINE</strong>,</p>
+<p><strong>SEVERE</strong></p>
 </li>
 <li>
-<p><strong>CONFIG</strong>,</p>
+<p><strong>WARNING</strong></p>
 </li>
 <li>
-<p><strong>INFO</strong>,</p>
+<p><strong>INFO</strong></p>
 </li>
 <li>
-<p><strong>WARNING</strong>,</p>
+<p><strong>CONFIG</strong></p>
 </li>
 <li>
-<p><strong>SEVERE</strong>,</p>
+<p><strong>FINE</strong></p>
 </li>
 <li>
-<p><strong>ALL</strong>,</p>
+<p><strong>FINER</strong></p>
 </li>
 <li>
-<p><strong>OFF</strong>.</p>
+<p><strong>FINEST</strong></p>
 </li>
 </ul>
 </div>
@@ -3026,11 +3012,15 @@ pre.rouge {
 <div class="sect4">
 <h5 id="_logger">Logger</h5>
 <div class="paragraph">
-<p><strong>Logger</strong> — это некий объект, который отвечает за запись информации в лог-файлы, опираясь на заданные уровни логирования. <strong>Logger</strong> создается с помощью фабрики и на этапе создания ему присваивается имя. Имя может быть любым, но по стандарту имя должно быть сопряжено с именем класса, в котором вы собираетесь что-то логировать.</p>
+<p><strong>Logger</strong> — это некий объект, который отвечает за запись информации в лог-файлы или систему логирования, опираясь на заданные уровни логирования. <strong>Logger</strong> создается с помощью <strong>Factory</strong> и на этапе создания ему присваивается имя. Имя может быть любым, но по стандарту имя должно быть сопряжено с именем класса, в котором собираются что-то логировать.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="java"><span class="nc">Logger</span> <span class="n">logger</span> <span class="o">=</span> <span class="nc">LoggerFactory</span><span class="o">.</span><span class="na">gerLogger</span><span class="o">(</span><span class="nc">SomeClass</span><span class="o">.</span><span class="na">class</span><span class="o">);</span></code></pre>
+<pre class="rouge highlight"><code data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Program</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="nc">Logger</span> <span class="n">logger</span> <span class="o">=</span> <span class="nc">LoggerFactory</span><span class="o">.</span><span class="na">gerLogger</span><span class="o">(</span><span class="nc">SomeClass</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+
+    <span class="c1">// ...</span>
+<span class="o">}</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -3038,22 +3028,33 @@ pre.rouge {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="java"><span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"Application started"</span><span class="o">);</span>
-<span class="n">logger</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">"Or not"</span><span class="o">);</span></code></pre>
+<pre class="rouge highlight"><code data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Program</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="nc">Logger</span> <span class="n">logger</span> <span class="o">=</span> <span class="nc">LoggerFactory</span><span class="o">.</span><span class="na">gerLogger</span><span class="o">(</span><span class="nc">SomeClass</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"Application started"</span><span class="o">);</span>
+        <span class="n">logger</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">"Or not"</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="c1">// ...</span>
+<span class="o">}</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Это событие по сути состоит из двух полей:</p>
+<p>Каждый log представляет собой событие, которое произошло. Событие по сути состоит из двух полей:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><code>message = "Application started"</code>;</p>
+<p><code>message</code></p>
 </li>
 <li>
-<p><code>level = Level.Info</code>.</p>
+<p><code>level</code></p>
 </li>
 </ul>
+</div>
+<div class="paragraph">
+<p>В примере выше, <code>level</code> - это <code>Level.Info</code>, а <code>message</code> - это <code>"Application started"</code>.</p>
 </div>
 </div>
 <div class="sect4">
@@ -3062,7 +3063,7 @@ pre.rouge {
 <p><strong>Appender</strong> — это конечная точка, куда «приходит» информация для логирования. В качестве <strong>appender</strong> могут выступать: <strong>файл</strong>, <strong>база данных</strong>, <strong>консоль</strong>, <strong>сокет</strong> и др. У <strong>appender</strong> нет каких-либо ограничений, куда записывать сообщения. Можно написать свой <strong>appender</strong>, который пишет сообщения куда-угодно. Если <strong>Logger</strong> — это начальная точка в logging, то <strong>Appender</strong> — это конечная точка.</p>
 </div>
 <div class="paragraph">
-<p><strong>Loggers</strong>  и <strong>appenders</strong> связаны в отношении <code>many-to-many</code>. При этом один <strong>logger</strong> может содержать несколько <strong>appenders</strong> и наоборот. Чтобы изменить поведение <strong>logger по умолчанию</strong>, нам нужно сконфигурировать свой <strong>файловый appender</strong>.</p>
+<p><strong>Loggers</strong>  и <strong>appenders</strong> связаны в отношении <code>many-to-many</code>. При этом один <strong>logger</strong> может содержать несколько <strong>appenders</strong> и наоборот. Чтобы изменить поведение <strong>logger по умолчанию</strong>, нам нужно произвести конфигурацию для logging.</p>
 </div>
 </div>
 <div class="sect4">
@@ -3072,15 +3073,15 @@ pre.rouge {
 </div>
 </div>
 <div class="sect4">
-<h5 id="_узлы_логирования">Узлы логирования</h5>
+<h5 id="_logging_nodes">Logging Nodes</h5>
 <div class="paragraph">
-<p>При создании logger используется класс, но по итогу записывается полное имя класса с пакетами. Это делается, чтобы потом можно было разделить логирование на узлы, и для каждого узла настроить уровень логирования и appender. Например, имя класса: <code>com.github.romankh3.logginglecture.MainDemo</code> — в нем создался logger. И вот таким образом его можно разделить на узлы логирования.</p>
+<p>При создании logger используется класс, но по итогу записывается полное имя класса с пакетами. Это делается, чтобы потом можно было разделить на <strong>logging nodes</strong> (<strong>узлы логирования</strong>), и для каждого узла настроить уровень логирования и appender. Например, имя класса: <code>com.github.romankh3.logginglecture.MainDemo</code> — в нем создался logger. И вот таким образом его можно разделить на <strong>logging nodes</strong>.</p>
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="../../assets/img/java/tools/logging/logging-nodes.png" alt="logging nodes"></span></p>
 </div>
 <div class="paragraph">
-<p>Каждый <strong>logger</strong> имеет имя, описывающее иерархию, к которой он принадлежит. Разделитель – точка. Принцип полностью аналогичен формированию имени пакета в <strong>Java</strong>. Например: <code>ru.aarexer.example.SomeClass</code>. Главный узел — нулевой <strong>RootLogger</strong>. Это узел, который принимает все логи всего приложения. Каждому <strong>logger</strong> можно выставить свой уровень. Установленный <strong>logger</strong> уровень вывода распространяется на все его дочерние <strong>loggers</strong>, для которых явно не выставлен уровень. Поэтому у всех <strong>loggers</strong> будет уровень логирования, даже если явно мы не прописали для <code>ru.aarexer.example.SomeClass</code> его, то он будет наследоваться от <strong>RootLogger</strong>.</p>
+<p>Каждый <strong>logger</strong> имеет имя, описывающее иерархию, к которой он принадлежит. Разделитель – точка. Принцип полностью аналогичен формированию имени пакета в <strong>Java</strong>. Например: <code>by.rakovets.example.SomeClass</code>. Главный узел — нулевой <strong>RootLogger</strong>. Это узел, который принимает все логи всего приложения. Каждому <strong>logger</strong> можно выставить свой уровень. Установленный <strong>logger</strong> уровень вывода распространяется на все его дочерние <strong>loggers</strong>, для которых явно не выставлен уровень. Поэтому у всех <strong>loggers</strong> будет уровень логирования, даже если явно мы не прописали для <code>by.rakovets.example.SomeClass</code> его, то он будет наследоваться от <strong>RootLogger</strong>.</p>
 </div>
 <div class="paragraph">
 <p><strong>Appenders</strong> настраивают свою работу именно на узлы логирования. Но такое наследование <strong>appenders</strong> можно отключить через конфигурацию, для этого стоит посмотреть в сторону выставления флага <code>additivity="false"</code> на <strong>loggers</strong>.</p>
@@ -3219,10 +3220,10 @@ pre.rouge {
 </div>
 </div>
 <div class="paragraph">
-<p>Здесь видно, что можно задать уровень, с которого будет обрабатывать именно <strong>appender</strong>. Реальная ситуация: сообщение с уровнем <strong>info</strong> принял узел логирования и передал <strong>appender</strong>, который к нему приписан, а вот уже <strong>appender</strong>, с уровнем <strong>warn</strong> и выше, лог этот принял, но ничего с ним не сделал.</p>
+<p>Здесь видно, что можно задать уровень, с которого будет обрабатывать именно <strong>appender</strong>. Реальная ситуация: сообщение с уровнем <code>info</code> принял узел логирования и передал <strong>appender</strong>, который к нему приписан, а вот уже <strong>appender</strong>, с уровнем <code>warn</code> и выше, лог этот принял, но ничего с ним не сделал.</p>
 </div>
 <div class="paragraph">
-<p>Далее нужно определиться с тем, какой шаблон будет в сообщении (<strong>PatternLayout</strong>).</p>
+<p>Далее нужно определиться с тем, какой шаблон будет в сообщении (<code>PatternLayout</code>).</p>
 </div>
 <div class="paragraph">
 <p>Пример настройки <code>FILE</code> <strong>appender</strong>:</p>
@@ -3248,7 +3249,7 @@ pre.rouge {
 </div>
 </div>
 <div class="paragraph">
-<p>Чтобы не было проблем с размером файла, можно настроить максимальный: в данном случае — 1МБ.</p>
+<p>Чтобы не было проблем с размером файла, можно настроить максимальный: в данном случае — <code>1МБ</code>.</p>
 </div>
 <div class="paragraph">
 <p><code>MaxBackupIndex</code> — говорит о том, сколько будет таких файлов. Если создается больше этого числа, то первый файл будет удален.</p>
@@ -3261,7 +3262,9 @@ pre.rouge {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="java"><span class="n">org</span><span class="o">.</span><span class="na">slf4j</span><span class="o">.</span><span class="na">Logger</span> <span class="n">logger</span> <span class="o">=</span> <span class="n">org</span><span class="o">.</span><span class="na">slf4j</span><span class="o">.</span><span class="na">LoggerFactory</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(</span><span class="nc">ClassName</span><span class="o">.</span><span class="na">class</span><span class="o">);</span></code></pre>
+<pre class="rouge highlight"><code data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Program</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="n">org</span><span class="o">.</span><span class="na">slf4j</span><span class="o">.</span><span class="na">Logger</span> <span class="n">logger</span> <span class="o">=</span> <span class="n">org</span><span class="o">.</span><span class="na">slf4j</span><span class="o">.</span><span class="na">LoggerFactory</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(</span><span class="nc">ClassName</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<span class="o">}</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -3269,11 +3272,17 @@ pre.rouge {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="java"><span class="n">logger</span><span class="o">.</span><span class="na">trace</span><span class="o">(</span><span class="s">"Method 1 started with argument={}"</span><span class="o">,</span> <span class="n">argument</span><span class="o">);</span>
-<span class="n">logger</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">"Database updated with script = {}"</span><span class="o">,</span> <span class="n">script</span><span class="o">);</span>
-<span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"Application has started on port = {}"</span><span class="o">,</span> <span class="n">port</span><span class="o">);</span>
-<span class="n">logger</span><span class="o">.</span><span class="na">warn</span><span class="o">(</span><span class="s">"Log4j didn't find log4j.properties.Please, provide them"</span><span class="o">);</span>
-<span class="n">logger</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="s">"Connection refused to host = {}"</span><span class="o">,</span> <span class="n">host</span><span class="o">);</span></code></pre>
+<pre class="rouge highlight"><code data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Program</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="n">org</span><span class="o">.</span><span class="na">slf4j</span><span class="o">.</span><span class="na">Logger</span> <span class="n">logger</span> <span class="o">=</span> <span class="n">org</span><span class="o">.</span><span class="na">slf4j</span><span class="o">.</span><span class="na">LoggerFactory</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(</span><span class="nc">ClassName</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">logger</span><span class="o">.</span><span class="na">trace</span><span class="o">(</span><span class="s">"Method 1 started with argument={}"</span><span class="o">,</span> <span class="n">argument</span><span class="o">);</span>
+        <span class="n">logger</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">"Database updated with script = {}"</span><span class="o">,</span> <span class="n">script</span><span class="o">);</span>
+        <span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"Application has started on port = {}"</span><span class="o">,</span> <span class="n">port</span><span class="o">);</span>
+        <span class="n">logger</span><span class="o">.</span><span class="na">warn</span><span class="o">(</span><span class="s">"Log4j didn't find log4j.properties.Please, provide them"</span><span class="o">);</span>
+        <span class="n">logger</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="s">"Connection refused to host = {}"</span><span class="o">,</span> <span class="n">host</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -3281,7 +3290,13 @@ pre.rouge {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="java"><span class="n">logger</span><span class="o">.</span><span class="na">log</span><span class="o">(</span><span class="nc">Level</span><span class="o">.</span><span class="na">INFO</span><span class="o">,</span> <span class="n">argument</span><span class="o">);</span></code></pre>
+<pre class="rouge highlight"><code data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Program</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="n">org</span><span class="o">.</span><span class="na">slf4j</span><span class="o">.</span><span class="na">Logger</span> <span class="n">logger</span> <span class="o">=</span> <span class="n">org</span><span class="o">.</span><span class="na">slf4j</span><span class="o">.</span><span class="na">LoggerFactory</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(</span><span class="nc">ClassName</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">logger</span><span class="o">.</span><span class="na">log</span><span class="o">(</span><span class="nc">Level</span><span class="o">.</span><span class="na">INFO</span><span class="o">,</span> <span class="n">argument</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span></code></pre>
 </div>
 </div>
 </div>
@@ -3336,28 +3351,40 @@ pre.rouge {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="java"><span class="nc">Logger</span> <span class="n">log</span> <span class="o">=</span> <span class="nc">LogManager</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(</span><span class="nc">LoggingLog4j</span><span class="o">.</span><span class="na">class</span><span class="o">);</span></code></pre>
+<pre class="rouge highlight"><code data-lang="java"><span class="kn">import</span> <span class="nn">org.apache.logging.log4j.Logger</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Program</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="nc">Logger</span> <span class="n">log</span> <span class="o">=</span> <span class="nc">LogManager</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(</span><span class="nc">LoggingLog4j</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+
+    <span class="c1">// ...</span>
+<span class="o">}</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Logger умеет принимать помимо привычных нам <code>String</code>, <code>Object</code> и <code>Throwable</code> еще два новых типа — <code>MapMessage</code> и <code>Marker</code>.</p>
+<p><strong>Logger</strong> умеет принимать помимо <code>String</code>, <code>Object</code> и <code>Throwable</code> еще два новых типа — <code>MapMessage</code> и <code>Marker</code>.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="java"><span class="c1">// Карта сообщений (напечатается как msg1="Сообщение 1” msg2="Сообщение 2”)</span>
-<span class="nc">MapMessage</span> <span class="n">mapMessage</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">MapMessage</span><span class="o">();</span>
-<span class="n">mapMessage</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"msg1"</span><span class="o">,</span> <span class="s">"Сообщение 1"</span><span class="o">);</span>
-<span class="n">mapMessage</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"msg2"</span><span class="o">,</span> <span class="s">"Сообщение 2"</span><span class="o">);</span>
-<span class="c1">// Маркер, объект по которому можно фильтровать сообщения</span>
-<span class="nc">Marker</span> <span class="n">marker</span> <span class="o">=</span> <span class="nc">MarkerManager</span><span class="o">.</span><span class="na">getMarker</span><span class="o">(</span><span class="s">"fileonly"</span><span class="o">);</span>
-<span class="c1">// Строковое сообщение</span>
-<span class="nc">String</span> <span class="n">stringMessage</span> <span class="o">=</span> <span class="s">"Сообщение"</span><span class="o">;</span>
-<span class="c1">// Строковое сообщение с параметрами</span>
-<span class="nc">String</span> <span class="n">stringMessageFormat</span> <span class="o">=</span> <span class="s">"Сообщение {}, от {}"</span><span class="o">;</span>
-<span class="c1">// Исключение</span>
-<span class="nc">Throwable</span> <span class="n">throwable</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Throwable</span><span class="o">();</span>
-<span class="c1">// Объект</span>
-<span class="nc">Object</span> <span class="n">object</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Object</span><span class="o">();</span></code></pre>
+<pre class="rouge highlight"><code data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Program</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="nc">Logger</span> <span class="n">log</span> <span class="o">=</span> <span class="nc">LogManager</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(</span><span class="nc">LoggingLog4j</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">){</span>
+        <span class="c1">// Карта сообщений (напечатается как msg1="Сообщение 1” msg2="Сообщение 2”)</span>
+        <span class="nc">MapMessage</span> <span class="n">mapMessage</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">MapMessage</span><span class="o">();</span>
+        <span class="n">mapMessage</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"msg1"</span><span class="o">,</span> <span class="s">"Сообщение 1"</span><span class="o">);</span>
+        <span class="n">mapMessage</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"msg2"</span><span class="o">,</span> <span class="s">"Сообщение 2"</span><span class="o">);</span>
+        <span class="c1">// Маркер, объект по которому можно фильтровать сообщения</span>
+        <span class="nc">Marker</span> <span class="n">marker</span> <span class="o">=</span> <span class="nc">MarkerManager</span><span class="o">.</span><span class="na">getMarker</span><span class="o">(</span><span class="s">"fileonly"</span><span class="o">);</span>
+        <span class="c1">// Строковое сообщение</span>
+        <span class="nc">String</span> <span class="n">stringMessage</span> <span class="o">=</span> <span class="s">"Сообщение"</span><span class="o">;</span>
+        <span class="c1">// Строковое сообщение с параметрами</span>
+        <span class="nc">String</span> <span class="n">stringMessageFormat</span> <span class="o">=</span> <span class="s">"Сообщение {}, от {}"</span><span class="o">;</span>
+        <span class="c1">// Исключение</span>
+        <span class="nc">Throwable</span> <span class="n">throwable</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Throwable</span><span class="o">();</span>
+        <span class="c1">// Объект</span>
+        <span class="nc">Object</span> <span class="n">object</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Object</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -3367,36 +3394,32 @@ pre.rouge {
 <ul>
 <li>
 <p>совпадающие с названием уровня логирования</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
+<div class="literalblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="java"><span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">((</span><span class="n">marker</span><span class="o">,</span> <span class="n">mapMessage</span><span class="o">,</span> <span class="n">throwable</span><span class="o">);</span>
-<span class="n">log</span><span class="o">.</span><span class="na">throwing</span><span class="o">(</span><span class="n">throwable</span><span class="o">);</span></code></pre>
+<pre>log.info((marker, mapMessage, throwable);
+log.throwing(throwable);</pre>
 </div>
 </div>
-<div class="ulist">
-<ul>
+</li>
 <li>
-<p>методы <code>log</code>, принимающие уровень логирования в качестве параметра.</p>
+<p>методы <code>log()</code>, принимающие уровень логирования в качестве параметра.</p>
+<div class="literalblock">
+<div class="content">
+<pre>log.log(Level.INFO, marker, stringMessage, throwable);
+log.throwing(Level.INFO, throwable);</pre>
+</div>
+</div>
 </li>
 </ul>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="java"><span class="n">log</span><span class="o">.</span><span class="na">log</span><span class="o">(</span><span class="nc">Level</span><span class="o">.</span><span class="na">INFO</span><span class="o">,</span> <span class="n">marker</span><span class="o">,</span> <span class="n">stringMessage</span><span class="o">,</span> <span class="n">throwable</span><span class="o">);</span>
-<span class="n">log</span><span class="o">.</span><span class="na">throwing</span><span class="o">(</span><span class="nc">Level</span><span class="o">.</span><span class="na">INFO</span><span class="o">,</span> <span class="n">throwable</span><span class="o">);</span></code></pre>
-</div>
+<div class="paragraph">
+<p>Если не определить конфигурацию, то при запуске <strong>log4j2</strong> выдаст гневное сообщение, о том, что конфигурация не задана и будет печатать сообщения на консоль уровнем не ниже <strong>ERROR</strong>. Конфигурация <strong>log4j2</strong> задается несколькими вариантами: <strong>xml</strong>, <strong>json</strong>, <strong>yaml</strong>. Файл с конфигурацией автоматически ищется <strong>classpath</strong>, должен иметь название <strong>log4j2</strong> и располагаться в пакете по умолчанию.</p>
 </div>
 <div class="paragraph">
-<p>Если не определить конфигурацию, то при запуске <strong>log4j2</strong> выдаст гневное сообщение, о том, что конфигурация не задана и будет печатать ваши сообщения на консоль уровнем не ниже <strong>ERROR</strong>. Конфигурация <strong>log4j2</strong> задается несколькими вариантами: <strong>xml</strong>, <strong>json</strong>, <strong>yaml</strong>. Файл с конфигурацией автоматически ищется <strong>classpath</strong>, должен иметь название <strong>log4j2</strong> и располагаться в пакете по умолчанию.</p>
+<p>Конфигурация <strong>log4j2</strong> состоит из описания loggers, appenders и filters.</p>
 </div>
 <div class="paragraph">
-<p>Конфигурация <strong>log4j2</strong> состоит из описания loggers, appenders и фильтров.</p>
-</div>
-<div class="paragraph">
-<p>Фильтры позволяют оценивать события журнала, чтобы определить, следует ли их публиковать и каким образом. Фильтр будет вызван одним из своих методов фильтра и вернет <strong>Result</strong>, который представляет собой <strong>Enum</strong> имеющий одно из 3 значений:</p>
+<p><strong>Filters</strong> позволяют оценивать события logging, чтобы определить, следует ли их публиковать и каким образом. <strong>Filter</strong> будет вызван одним из своих методов и вернет <strong>Result</strong>, который представляет собой <strong>Enum</strong> имеющий одно из 3 значений:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -3412,7 +3435,7 @@ pre.rouge {
 </ul>
 </div>
 <div class="paragraph">
-<p>Фильтры могут быть сконфигурированы в одном из четырех мест:</p>
+<p><strong>Filters</strong> могут быть сконфигурированы в одном из четырех мест:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -3508,10 +3531,10 @@ pre.rouge {
 <div class="ulist">
 <ul>
 <li>
-<p>корневой - которых пишет в файл <code>log.log</code></p>
+<p>корневой — которых пишет в файл <code>log.log</code></p>
 </li>
 <li>
-<p>для нашего класса - пишет в <code>log2.log</code> с использованием фильтрации по маркер.</p>
+<p>для нашего класса — пишет в <code>log2.log</code> с использованием фильтрации по маркер.</p>
 </li>
 </ul>
 </div>
@@ -3571,7 +3594,11 @@ pre.rouge {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="java"><span class="n">org</span><span class="o">.</span><span class="na">slf4j</span><span class="o">.</span><span class="na">Logger</span> <span class="n">log</span> <span class="o">=</span> <span class="n">org</span><span class="o">.</span><span class="na">slf4j</span><span class="o">.</span><span class="na">LoggerFactory</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(</span><span class="nc">LoggingLogback</span><span class="o">.</span><span class="na">class</span><span class="o">);</span></code></pre>
+<pre class="rouge highlight"><code data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Program</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="n">org</span><span class="o">.</span><span class="na">slf4j</span><span class="o">.</span><span class="na">Logger</span> <span class="n">log</span> <span class="o">=</span> <span class="n">org</span><span class="o">.</span><span class="na">slf4j</span><span class="o">.</span><span class="na">LoggerFactory</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(</span><span class="nc">LoggingLogback</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+
+    <span class="c1">// ...</span>
+<span class="o">}</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -3579,14 +3606,20 @@ pre.rouge {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="java"><span class="c1">// Строковое сообщение</span>
-<span class="nc">String</span> <span class="n">stringMessage</span> <span class="o">=</span> <span class="s">"Сообщение"</span><span class="o">;</span>
-<span class="c1">// Шаблон сообщения</span>
-<span class="nc">String</span> <span class="n">stringMessageFormat</span> <span class="o">=</span> <span class="s">"Сообщение {} {}"</span><span class="o">;</span>
-<span class="c1">// Ошибка</span>
-<span class="nc">Throwable</span> <span class="n">throwable</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Throwable</span><span class="o">();</span>
-<span class="c1">// Маркер</span>
-<span class="nc">Marker</span> <span class="n">marker</span> <span class="o">=</span> <span class="nc">MarkerFactory</span><span class="o">.</span><span class="na">getMarker</span><span class="o">(</span><span class="s">"marker"</span><span class="o">);</span></code></pre>
+<pre class="rouge highlight"><code data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Program</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="n">org</span><span class="o">.</span><span class="na">slf4j</span><span class="o">.</span><span class="na">Logger</span> <span class="n">log</span> <span class="o">=</span> <span class="n">org</span><span class="o">.</span><span class="na">slf4j</span><span class="o">.</span><span class="na">LoggerFactory</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(</span><span class="nc">LoggingLogback</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="c1">// Строковое сообщение</span>
+        <span class="nc">String</span> <span class="n">stringMessage</span> <span class="o">=</span> <span class="s">"Сообщение"</span><span class="o">;</span>
+        <span class="c1">// Шаблон сообщения</span>
+        <span class="nc">String</span> <span class="n">stringMessageFormat</span> <span class="o">=</span> <span class="s">"Сообщение {} {}"</span><span class="o">;</span>
+        <span class="c1">// Ошибка</span>
+        <span class="nc">Throwable</span> <span class="n">throwable</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Throwable</span><span class="o">();</span>
+        <span class="c1">// Маркер</span>
+        <span class="nc">Marker</span> <span class="n">marker</span> <span class="o">=</span> <span class="nc">MarkerFactory</span><span class="o">.</span><span class="na">getMarker</span><span class="o">(</span><span class="s">"marker"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -3609,7 +3642,7 @@ pre.rouge {
 </ul>
 </div>
 <div class="paragraph">
-<p>Основными элементами конфигурации являются loggers, appenders, layout, и фильтры.</p>
+<p>Основными элементами конфигурации являются <strong>loggers</strong>, <strong>appenders</strong>, <strong>layout</strong>, и <strong>filters</strong>.</p>
 </div>
 <div class="paragraph">
 <p><strong>Logback-classic</strong> предлагает два типа фильтров:</p>
@@ -6365,7 +6398,7 @@ ssb   4096R/42B317FD4BA89E7A 2016-03-10</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-03-30 13:32:38 UTC
+Last updated 2022-04-04 03:14:40 UTC
 </div>
 </div>
 </body>
