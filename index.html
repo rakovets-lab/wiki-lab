@@ -679,12 +679,21 @@ pre.rouge {
 <li><a href="#_hibernate_cache">6.2. Hibernate cache</a></li>
 </ul>
 </li>
-<li><a href="#_sql">7. SQL</a></li>
-<li><a href="#_common">8. Common</a>
+<li><a href="#_project_reactor">7. Project Reactor</a>
 <ul class="sectlevel2">
-<li><a href="#_github_keys">8.1. GitHub keys</a></li>
-<li><a href="#_тестирование">8.2. Тестирование</a></li>
-<li><a href="#_web_services">8.3. Web services</a></li>
+<li><a href="#_основные_понятия_об_асинхронном_коде">7.1. Основные понятия об асинхронном коде</a></li>
+<li><a href="#_недостатки_синхронного_программирования">7.2. Недостатки синхронного программирования</a></li>
+<li><a href="#_что_такое_реактивное_программирование">7.3. Что такое реактивное программирование</a></li>
+<li><a href="#_project_reactor_2">7.4. Project REACTOR</a></li>
+<li><a href="#_links_5">7.5. Links</a></li>
+</ul>
+</li>
+<li><a href="#_sql">8. SQL</a></li>
+<li><a href="#_common">9. Common</a>
+<ul class="sectlevel2">
+<li><a href="#_github_keys">9.1. GitHub keys</a></li>
+<li><a href="#_тестирование">9.2. Тестирование</a></li>
+<li><a href="#_web_services">9.3. Web services</a></li>
 </ul>
 </li>
 </ul>
@@ -5053,7 +5062,1108 @@ log.throwing(Level.INFO, throwable);</pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_sql">7. SQL</h2>
+<h2 id="_project_reactor">7. Project Reactor</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_основные_понятия_об_асинхронном_коде">7.1. Основные понятия об асинхронном коде</h3>
+<div class="paragraph">
+<p>Компьютерные программы часто имеют дело с длительными процессами. Например, получают данные из базы данных или производят сложные вычисления. Пока выполняется одна операция, можно завершить еще несколько. Асинхронное программирование увеличивает эффективность, потому что не позволяет блокировать основной поток выполнения.</p>
+</div>
+<div class="paragraph">
+<p>В синхронном коде каждая операция ожидает окончания предыдущей. Поэтому вся программа может зависнуть, если одна из команд выполняется очень долго. Асинхронный код убирает блокирующую операцию из основного потока программы, так что она продолжает выполняться, но где-то в другом месте, а обработчик может идти дальше. Проще говоря, главный процесс ставит задачу и передает ее другому независимому процессу.</p>
+</div>
+<div class="paragraph">
+<p>Возьмем для примера приложение, которое подбирает фильм по указанным критериям. После того как пользователь выбрал параметры, программа отправляет запрос на сервер, где происходит подбор подходящих картин. Обработка может длиться довольно долго. Если приложение работает синхронно, то пользователь не сможет взаимодействовать со страницей, пока не придет результат.</p>
+</div>
+<div class="paragraph">
+<p>Таким образом, асинхронность в программировании — выполнение процесса в неблокирующем режиме системного вызова, что позволяет потоку программы продолжить обработку.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_недостатки_синхронного_программирования">7.2. Недостатки синхронного программирования</h3>
+<div class="paragraph">
+<p>Рассмотрим основные недостатки синхронного программирования поподробнее.</p>
+</div>
+<div class="sect3">
+<h4 id="_модель_поток_на_запрос">7.2.1. Модель поток на запрос</h4>
+<div class="paragraph">
+<p>Чтобы понять, что такое реактивное программирование и какие преимущества оно дает, сначала рассмотрим традиционный способ разработки веб-приложения с помощью <strong>Spring</strong> - использование <strong>Spring MVC</strong> и его развертывание в контейнере сервлетов, таком как <strong>Tomcat</strong>: контейнер сервлетов имеет выделенный пул потоков для обработки <strong>HTTP</strong>-запросов, где каждому входящему запросу будет назначен поток, и этот поток будет обрабатывать весь жизненный цикл запроса. Это означает, что приложение сможет обрабатывать количество одновременных запросов, равное размеру пула потоков. Можно настроить размер пула потоков, но поскольку каждый поток резервирует некоторую память (обычно один мегабайт), чем больший размер пула потоков настраиваем, тем выше потребление памяти.</p>
+</div>
+<div class="paragraph">
+<p>Если приложение разработано в соответствии с архитектурой на основе микросервисов, у нас есть лучшие возможности для масштабирования в зависимости от нагрузки, но за высокое использование памяти по-прежнему приходится платить. Таким образом, модель потока на запрос может стать довольно дорогостоящей для приложений с большим количеством одновременных запросов.</p>
+</div>
+<div class="paragraph">
+<p>Важной характеристикой архитектур на основе микросервисов является то, что приложение распределено, выполняется большое количество отдельных процессов, обычно на нескольких серверах. Использование традиционного императивного программирования с синхронными вызовами запроса/ответа для взаимодействия между службами означает, что потоки часто блокируются в ожидании ответа от другой службы, что приводит к огромной трате ресурсов.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_ожидание_операций_вводавывода">7.2.2. Ожидание операций ввода/вывода</h4>
+<div class="paragraph">
+<p>При ожидании завершения операций ввода-вывода возникают потери. В таких ситуациях поток, выполняющий запрос ввода-вывода, будет заблокирован и будет ожидать, пока операция не будет завершена, это называется блокирующим вводом-выводом. Такие ситуации, когда выполняющийся поток блокируется, просто ожидая ответа, означает потерю потоков и, следовательно, потерю памяти.</p>
+</div>
+<div class="paragraph">
+<div class="title">Демонстрация заблокированного потока в ожидании ответа</div>
+<p><span class="image"><img src="../../assets/img/java/project-reactor/thread-bloking.jpeg" alt="thread bloking"></span></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_время_ответа">7.2.3. Время ответа</h4>
+<div class="paragraph">
+<p>Другой проблемой традиционного императивного программирования является время отклика, когда службе необходимо выполнить более одного запроса ввода-вывода. Например, службе <strong>A</strong> может потребоваться вызвать службы <strong>B</strong> и <strong>C</strong>, а также выполнить поиск в базе данных, а затем вернуть в результате некоторые агрегированные данные. Это будет означать, что время ответа службы <strong>A</strong>, помимо времени ее обработки, будет суммой следующих значений:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Время отклика услуги <strong>B</strong> (задержка сети + обработка).</p>
+</li>
+<li>
+<p>Время отклика службы <strong>C</strong> (задержка сети + обработка).</p>
+</li>
+<li>
+<p>Время ответа на запрос к базе данных (сетевая задержка + обработка).</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Если нет никакой реальной логической причины выполнять эти вызовы последовательно, то, безусловно, если эти вызовы будут выполняться параллельно, это очень положительно повлияет на время отклика службы <strong>А</strong>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_перегрузка_клиента">7.2.4. Перегрузка клиента</h4>
+<div class="paragraph">
+<p>Другой тип проблемы, которая может возникнуть в ландшафте микросервисов, - это когда сервис <strong>A</strong> запрашивает некоторую информацию у сервиса <strong>B</strong>, скажем, например, обо всех заказах, размещенных в течение последнего месяца.
+Если количество заказов окажется огромным, для службы <strong>А</strong> может возникнуть проблема получить всю эту информацию сразу.
+Служба <strong>A</strong> может быть перегружена большим объемом данных, что может привести к ошибке нехватки памяти.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_резюме">7.2.5. Резюме</h4>
+<div class="paragraph">
+<p>Различные проблемы, описанные выше - это проблемы, которые призвано решить реактивное программирование.
+Преимущества реактивного программирования заключаются в том, что разработчик может:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Отойти от модели поток на запрос и может обрабатывать больше запросов с небольшим количеством потоков.</p>
+</li>
+<li>
+<p>Предотвратить блокировку потоков при ожидании завершения операций ввода-вывода.</p>
+</li>
+<li>
+<p>Оптимизировать параллельные вызовы.</p>
+</li>
+<li>
+<p>Поддерживать <strong>обратное давление</strong>, давая клиенту возможность сообщить серверу, с какой нагрузкой он может справиться.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_что_такое_реактивное_программирование">7.3. Что такое реактивное программирование</h3>
+<div class="paragraph">
+<p>В документации <strong>Spring</strong> дано следующее краткое определение реактивного программирования:</p>
+</div>
+<div class="paragraph">
+<p><strong>Реактивное программирование</strong> - это неблокирующие приложения, которые являются асинхронными и управляемыми событиями, и требуют небольшого количества потоков для масштабирования. Ключевым аспектом этого определения является концепция противодавления (<strong>backpressure</strong>), которая является механизмом, гарантирующим, что производители не перегружают потребителей.</p>
+</div>
+<div class="paragraph">
+<p>Так как же всего этого достичь? Использовать асинхронные потоки данных!</p>
+</div>
+<div class="paragraph">
+<p>Допустим, служба <strong>A</strong> хочет получить некоторые данные из службы <strong>B</strong>. При подходе в стиле реактивного программирования служба <strong>A</strong> отправит запрос службе <strong>B</strong>, которая немедленно вернет управление (неблокирующий и асинхронный запрос). Затем запрошенные данные будут доступны службе <strong>A</strong> в виде потока данных, где служба <strong>B</strong> будет публиковать событие <strong>onNext()</strong> для каждого элемента данных один за другим. Когда все данные будут опубликованы, об этом просигнализирует событие <strong>onComplete()</strong>. В случае ошибки будет опубликовано событие <strong>onError()</strong> и больше никаких элементов не будет.</p>
+</div>
+<div class="paragraph">
+<div class="title">Реактивный поток событий</div>
+<p><span class="image"><img src="../../assets/img/java/project-reactor/reactive-event-stream.jpeg" alt="reactive event stream"></span></p>
+</div>
+<div class="paragraph">
+<p><strong>Реактивное программирование</strong> - важный метод реализации при разработке реактивных систем, концепция которого описана в <strong>Reactive Manifesto</strong> - манифесте реактивного программирования, подчеркивая требования к проектированию современных приложений, которые должны быть:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Responsive</strong> - отзывчивы (дают своевременный ответ).</p>
+</li>
+<li>
+<p><strong>Resilient</strong> - устойчивы (остаются отзывчивыми даже в аварийных ситуациях).</p>
+</li>
+<li>
+<p><strong>Elastic</strong> - эластичны (быстрая реакция при различной рабочей нагрузке).</p>
+</li>
+<li>
+<p><strong>Message Driven</strong> - управляются сообщениями (на основе асинхронной передачи сообщений).</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Но чтобы спроектировать систему реактивную в целом, также требуется архитектура, которая обеспечивает все эти аспекты.</p>
+</div>
+<div class="sect3">
+<h4 id="_архитектура_обеспечения_аспектов_reactive_manifesto">7.3.1. Архитектура обеспечения аспектов <strong>Reactive Manifesto</strong></h4>
+<div class="paragraph">
+<p>В основе подхода лежит идея разделения компонентов на два типа: источник событий <strong>Publisher</strong> и обработчик событий <strong>Subscriber</strong>.</p>
+</div>
+<div class="paragraph">
+<p><strong>Subscriber</strong> подписывается на события, которые создаёт <strong>Publisher</strong>, а затем каким-то образом их обрабатывает. У одного <strong>Publisher</strong> может быть много подписчиков.</p>
+</div>
+<div class="paragraph">
+<p>Существует еще одно понятие — <strong>Observer</strong>. Он может подписаться на событие объекта и выполнять какие-либо действия с полученным результатом.</p>
+</div>
+<div class="paragraph">
+<p>Общение между <strong>Publisher</strong> и <strong>Subscriber</strong> происходит через объект <strong>Subscription</strong>.</p>
+</div>
+<div class="paragraph">
+<div class="title">Модель взаимодействия <strong>Publisher</strong> и <strong>Subscriber</strong></div>
+<p><span class="image"><img src="../../assets/img/java/project-reactor/relationship-model.png" alt="relationship model"></span></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_спецификация_реактивных_потоков_для_java">7.3.2. Спецификация реактивных потоков для <strong>Java</strong></h4>
+<div class="paragraph">
+<p>Для <strong>Java</strong> был разработан стандарт спецификации <strong>Reactive Streams</strong>.</p>
+</div>
+<div class="paragraph">
+<p><strong>Reactive Streams</strong> - это небольшая спецификация, предназначенная для реализации реактивными библиотеками, созданными для <strong>JVM</strong>. Он определяет типы, которые необходимо реализовать для достижения взаимодействия между различными реализациями. Спецификация определяет взаимодействие между асинхронными компонентами с противодавлением. Реактивные потоки были реализованы в <strong>Java 9</strong> в виде <strong>Flow API</strong>.</p>
+</div>
+<div class="paragraph">
+<p>Спецификация <strong>Reactive Streams</strong> включает следующие интерфейсы:</p>
+</div>
+<div class="paragraph">
+<p><strong>Publisher</strong> - он представляет производителя данных, является их источником и имеет один метод, который позволяет подписчику зарегистрироваться (подписаться) на издателя.</p>
+</div>
+<div class="listingblock">
+<div class="title">Interface Publisher&lt;T&gt; в Java</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Publisher</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">subscribe</span><span class="o">(</span><span class="nc">Subscriber</span><span class="o">&lt;?</span> <span class="kd">super</span> <span class="no">T</span><span class="o">&gt;</span> <span class="n">s</span><span class="o">);</span>
+<span class="o">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Subscriber</strong> - он представляет потребителя и имеет следующие методы:</p>
+</div>
+<div class="listingblock">
+<div class="title">Interface Subscriber&lt;T&gt;  в Java</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Subscriber</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onSubscribe</span><span class="o">(</span><span class="nc">Subscription</span> <span class="n">s</span><span class="o">);</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onNext</span><span class="o">(</span><span class="no">T</span> <span class="n">t</span><span class="o">);</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onError</span><span class="o">(</span><span class="nc">Throwable</span> <span class="n">t</span><span class="o">);</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onComplete</span><span class="o">();</span>
+<span class="o">}</span></code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>onSubscribe()</code> - должен вызываться <strong>Publisher</strong> перед началом обработки и использоваться для передачи на <strong>Subscription</strong> объекта от <strong>Publisher</strong> до <strong>Subscriber</strong>.</p>
+</li>
+<li>
+<p><code>onNext()</code> - используется для того, чтобы сигнализировать о том, что был отправлен новый элемент.</p>
+</li>
+<li>
+<p><code>onError()</code> - используется для того, чтобы сигнализировать о том, что произошел сбой <strong>Publisher</strong> и больше никаких элементов не будет.</p>
+</li>
+<li>
+<p><code>onComplete()</code> - используется для того, чтобы сигнализировать, что все элементы были успешно отправлены.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Subscription</strong> в свою очередь, содержит методы, которые позволяют клиенту управлять выдачей элементов <strong>Publisher</strong> (т.е. обеспечивать поддержку противодавления).</p>
+</div>
+<div class="listingblock">
+<div class="title">Interface Subscription в Java</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Subscription</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">request</span><span class="o">(</span><span class="kt">long</span> <span class="n">n</span><span class="o">);</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">cancel</span><span class="o">();</span>
+<span class="o">}</span></code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>request()</code> - позволяет <strong>Subscriber</strong> сообщить, <strong>Publisher</strong> сколько дополнительных элементов будет опубликовано.</p>
+</li>
+<li>
+<p><code>cancel()</code> - позволяет подписчику отменить дальнейшую отправку элементов <strong>Publisher</strong>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Если объект должен преобразовывать входящие элементы, а затем передавать их другому <strong>Subscriber</strong>, требуется реализация интерфейса <strong>Processor</strong>. Он действует и как <strong>Subscriber</strong> и как <strong>Publisher</strong>.</p>
+</div>
+<div class="listingblock">
+<div class="title">Interface Processor в Java</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Processor</span><span class="o">&lt;</span><span class="no">T</span><span class="o">,</span> <span class="no">R</span><span class="o">&gt;</span> <span class="kd">extends</span> <span class="nc">Subscriber</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;,</span> <span class="nc">Publisher</span><span class="o">&lt;</span><span class="no">R</span><span class="o">&gt;</span> <span class="o">{</span>
+<span class="o">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Интерфейсы <strong>Publisher</strong>, <strong>Subscriber</strong> и <strong>Subscription</strong> находятся в пакете <strong>org.reactivestreams</strong>, который по умолчанию был добавлен в <strong>Java 9</strong>.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_project_reactor_2">7.4. Project REACTOR</h3>
+<div class="paragraph">
+<p><strong>Project Reactor</strong> - это библиотека <strong>Reactive</strong> для создания неблокирующих приложений на <strong>JVM</strong>, основанная на спецификации <strong>Reactive Streams</strong>.</p>
+</div>
+<div class="sect3">
+<h4 id="_возможности_reactor_core">7.4.1. Возможности <strong>Reactor Core</strong></h4>
+<div class="paragraph">
+<p><strong>Reactor Core</strong> определяет реактивные типы <strong>Flux</strong> и <strong>Mono</strong>.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Flux</strong> - это <strong>Publisher</strong>, который может испускать от <strong>0</strong> до <strong>N</strong> элементов.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<div class="title">Схема работы Flux</div>
+<p><span class="image"><img src="../../assets/img/java/project-reactor/flux.svg" alt="flux"></span></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Mono</strong> в свою очередь может испускать от <strong>0</strong> до <strong>1</strong> элемента.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<div class="title">Схема работы Mono</div>
+<p><span class="image"><img src="../../assets/img/java/project-reactor/mono.svg" alt="mono"></span></p>
+</div>
+<div class="paragraph">
+<p>Оба они завершаются либо сигналом завершения, либо ошибкой, и они вызывают методы <strong>onNext()</strong>, <strong>onComplete()</strong> и <strong>onError()</strong> нижестоящего подписчика. Помимо реализации функций, описанных в спецификации <strong>Reactive Streams</strong>, <strong>Flux</strong> и <strong>Mono</strong> предоставляют набор операторов для поддержки преобразований, фильтрации и обработки ошибок.</p>
+</div>
+<div class="paragraph">
+<p>Приведём пример создания объекта типа <strong>Flux</strong>. Создадим пустой <strong>Flux</strong>:</p>
+</div>
+<div class="listingblock">
+<div class="title">Создание объекта типа <strong>Mono</strong> с помощью <strong>empty()</strong></div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="kt">void</span> <span class="nf">getEmptyMono</span><span class="o">()</span> <span class="o">{</span>
+    <span class="nc">Mono</span><span class="o">.</span><span class="na">empty</span><span class="o">();</span>
+<span class="o">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Создадим <strong>Flux</strong> содержащий значения:</p>
+</div>
+<div class="listingblock">
+<div class="title">Создание объекта типа <strong>Mono</strong> с помощью <strong>just()</strong></div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="kt">void</span> <span class="nf">simpleFluxExample</span><span class="o">()</span> <span class="o">{</span>
+    <span class="nc">Flux</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">fluxColors</span> <span class="o">=</span> <span class="nc">Flux</span><span class="o">.</span><span class="na">just</span><span class="o">(</span><span class="s">"red"</span><span class="o">,</span> <span class="s">"green"</span><span class="o">,</span> <span class="s">"blue"</span><span class="o">);</span>
+    <span class="n">fluxColors</span><span class="o">.</span><span class="na">subscribe</span><span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
+<span class="o">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Создадим <strong>Flux</strong> который выведет в консоль значения от <code>1</code> до <code>5</code>:</p>
+</div>
+<div class="listingblock">
+<div class="title">Создание объекта типа <strong>Flux</strong> с помощью <strong>range()</strong></div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="kd">public</span> <span class="kt">void</span> <span class="nf">range</span><span class="o">()</span> <span class="o">{</span>
+    <span class="nc">Flux</span><span class="o">.</span><span class="na">range</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">5</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">subscribe</span><span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
+<span class="o">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Создадим <strong>Flux</strong>, который испускает эти же самые элементы из списка:</p>
+</div>
+<div class="listingblock">
+<div class="title">Создание объекта типа <strong>Flux</strong> с помощью <strong>fromIterable()</strong></div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">fooBarFluxFromList</span><span class="o">()</span> <span class="o">{</span>
+    <span class="nc">Flux</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">fluxFromList</span> <span class="o">=</span> <span class="nc">Flux</span><span class="o">.</span><span class="na">fromIterable</span><span class="o">(</span><span class="nc">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="s">"red"</span><span class="o">,</span> <span class="s">"green"</span><span class="o">));</span>
+    <span class="n">fluxFromList</span><span class="o">.</span><span class="na">subscribe</span><span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
+<span class="o">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Cоздадим <strong>Flux</strong>, который испускает числа от <code>1</code> до <code>10</code> каждые <code>100</code> мс:</p>
+</div>
+<div class="listingblock">
+<div class="title">Создание объекта типа <strong>Flux</strong> с помощью <strong>interval()</strong></div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">counter</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">InterruptedException</span> <span class="o">{</span>
+    <span class="nc">Flux</span><span class="o">&lt;</span><span class="nc">Long</span><span class="o">&gt;</span> <span class="n">flux</span> <span class="o">=</span> <span class="nc">Flux</span><span class="o">.</span><span class="na">interval</span><span class="o">(</span><span class="nc">Duration</span><span class="o">.</span><span class="na">ofMillis</span><span class="o">(</span><span class="mi">100</span><span class="o">)).</span><span class="na">take</span><span class="o">(</span><span class="mi">10</span><span class="o">);</span>
+    <span class="n">flux</span><span class="o">.</span><span class="na">subscribe</span><span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
+    <span class="nc">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">2000</span><span class="o">);</span>
+<span class="o">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Эти методы создают поток, который испускает предоставленные элементы, а затем завершается. Ничего не передается, пока кто-нибудь на это не подпишется. Чтобы подписаться на него, мы вызываем метод <strong>subscribe()</strong> и в этом случае просто распечатываем отправленные элементы.</p>
+</div>
+<div class="paragraph">
+<p>Создание <strong>Mono</strong> также может быть выполнено с помощью метода <strong>just</strong>, с той лишь разницей, что разрешен только один параметр.</p>
+</div>
+<div class="paragraph">
+<p>Методы класса <strong>Flux</strong> возвращают <strong>Flux</strong> или <strong>Mono</strong>, что означает, что операторы могут быть связаны.</p>
+</div>
+<div class="paragraph">
+<p>Мы можем создать <strong>Flux</strong> из <strong>Mono</strong> и наоборот:</p>
+</div>
+<div class="listingblock">
+<div class="title">Создание <strong>Flux</strong> из <strong>Mono</strong> и наоборот</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="nc">Flux</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">fluxFromMono</span> <span class="o">=</span> <span class="n">mono</span><span class="o">.</span><span class="na">flux</span><span class="o">();</span>
+<span class="nc">Mono</span><span class="o">&lt;</span><span class="nc">Boolean</span><span class="o">&gt;</span> <span class="n">monoFromFlux</span> <span class="o">=</span> <span class="n">flux</span><span class="o">.</span><span class="na">any</span><span class="o">(</span><span class="n">s</span> <span class="o">-&gt;</span> <span class="n">s</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="mi">1</span><span class="o">));</span>
+<span class="nc">Mono</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">integerMono</span> <span class="o">=</span> <span class="n">flux</span><span class="o">.</span><span class="na">elementAt</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_варианты_метода_subscribe">7.4.2. Варианты метода Subscribe()</h4>
+<div class="paragraph">
+<p>У программиста есть широкий выбор вариантов метода <strong>subscribe()</strong>, которые принимают лямбда-выражения для различных комбинаций обратных вызовов, как показано в следующих сигнатурах методах:</p>
+</div>
+<div class="listingblock">
+<div class="title">Варианты метода <strong>subscribe()</strong></div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="mi">1</span><span class="o">)</span> <span class="n">subscribe</span><span class="o">();</span>
+
+<span class="mi">2</span><span class="o">)</span> <span class="n">subscribe</span><span class="o">(</span><span class="nc">Consumer</span><span class="o">&lt;?</span> <span class="kd">super</span> <span class="no">T</span><span class="o">&gt;</span> <span class="n">consumer</span><span class="o">);</span>
+
+<span class="mi">3</span><span class="o">)</span> <span class="n">subscribe</span><span class="o">(</span><span class="nc">Consumer</span><span class="o">&lt;?</span> <span class="kd">super</span> <span class="no">T</span><span class="o">&gt;</span> <span class="n">consumer</span><span class="o">,</span>
+          <span class="nc">Consumer</span><span class="o">&lt;?</span> <span class="kd">super</span> <span class="nc">Throwable</span><span class="o">&gt;</span> <span class="n">errorConsumer</span><span class="o">);</span>
+
+<span class="mi">4</span><span class="o">)</span> <span class="n">subscribe</span><span class="o">(</span><span class="nc">Consumer</span><span class="o">&lt;?</span> <span class="kd">super</span> <span class="no">T</span><span class="o">&gt;</span> <span class="n">consumer</span><span class="o">,</span>
+          <span class="nc">Consumer</span><span class="o">&lt;?</span> <span class="kd">super</span> <span class="nc">Throwable</span><span class="o">&gt;</span> <span class="n">errorConsumer</span><span class="o">,</span>
+          <span class="nc">Runnable</span> <span class="n">completeConsumer</span><span class="o">);</span>
+
+<span class="mi">5</span><span class="o">)</span> <span class="n">subscribe</span><span class="o">(</span><span class="nc">Consumer</span><span class="o">&lt;?</span> <span class="kd">super</span> <span class="no">T</span><span class="o">&gt;</span> <span class="n">consumer</span><span class="o">,</span>
+          <span class="nc">Consumer</span><span class="o">&lt;?</span> <span class="kd">super</span> <span class="nc">Throwable</span><span class="o">&gt;</span> <span class="n">errorConsumer</span><span class="o">,</span>
+          <span class="nc">Runnable</span> <span class="n">completeConsumer</span><span class="o">,</span>
+          <span class="nc">Consumer</span><span class="o">&lt;?</span> <span class="kd">super</span> <span class="nc">Subscription</span><span class="o">&gt;</span> <span class="n">subscriptionConsumer</span><span class="o">);</span></code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>1) Подписаться и активировать последовательность.</p>
+</li>
+<li>
+<p>2) Сделайте что-нибудь с каждым полученным значением.</p>
+</li>
+<li>
+<p>3) Работать со значениями, но также реагировать на исключительные ситуации.</p>
+</li>
+<li>
+<p>4) Работать со значениями и ошибками, а также запускайте некоторый код после успешного завершения последовательности.</p>
+</li>
+<li>
+<p>5) Работать со значениями, ошибками и успешным завершением, а также делайте что-то с подпиской, созданной этим вызовом подписки.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_перечень_операторов_в_reactor">7.4.3. Перечень операторов в <strong>Reactor</strong></h4>
+<div class="paragraph">
+<p>Поиск подходящего оператора <strong>Reactor</strong> предоставляет длинный список операторов и в качестве помощи в поиске подходящего оператора для конкретного варианта использования есть специальное приложение в справочной документации <strong>Reactor</strong>.
+Он разделен на различные категории, как показано в таблице ниже.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 2. Каскадные операции</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Категория оператора</th>
+<th class="tableblock halign-left valign-top">Примеры</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Создание новой последовательности</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">just, fromArray, fromIterable, fromStream</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Преобразование существующей последовательности</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">map, flatMap, startWith, concatWith</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Заглядывать в последовательность</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">doOnNext, doOnComplete, doOnError, doOnCancel</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Фильтрация последовательности</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">filter, ignoreElements, distinct, elementAt, takeLast</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Обработка ошибок</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">onErrorReturn, onErrorResume, retry</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Работаем со временем</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">elapsed, interval, timestamp, timeout</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Расщепление потока</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">buffer, groupBy, window</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Возвращаясь к синхронному миру</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">block, blockFirst, blockLast, toIterable, toStream</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Многоадресная рассылка потока нескольким подписчикам</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">publish, cache, replay</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Например, преобразуем элементы, создаваемые путем применения синхронной функции к каждому элементу:</p>
+</div>
+<div class="listingblock">
+<div class="title">Использование функции <strong>map()</strong></div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="kt">void</span> <span class="nf">mapExample</span><span class="o">()</span> <span class="o">{</span>
+    <span class="nc">Flux</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">fluxColors</span> <span class="o">=</span> <span class="nc">Flux</span><span class="o">.</span><span class="na">just</span><span class="o">(</span><span class="s">"red"</span><span class="o">,</span> <span class="s">"green"</span><span class="o">,</span> <span class="s">"blue"</span><span class="o">);</span>
+    <span class="n">fluxColors</span><span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="n">color</span> <span class="o">-&gt;</span> <span class="n">color</span><span class="o">.</span><span class="na">charAt</span><span class="o">(</span><span class="mi">0</span><span class="o">)).</span><span class="na">subscribe</span><span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">print</span><span class="o">);</span>
+<span class="o">}</span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Результат использования функции <strong>map()</strong></div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="n">rgb</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Или функция <strong>zip()</strong>, который объединяет несколько источников вместе (ожидая, пока все источники испускают один элемент, и объединяет их в кортеж):</p>
+</div>
+<div class="listingblock">
+<div class="title">Пример использования функции <strong>zip()</strong></div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="kt">void</span> <span class="nf">zipExample</span><span class="o">()</span> <span class="o">{</span>
+    <span class="nc">Flux</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">fluxFruits</span> <span class="o">=</span> <span class="nc">Flux</span><span class="o">.</span><span class="na">just</span><span class="o">(</span><span class="s">"apple"</span><span class="o">,</span> <span class="s">"pear"</span><span class="o">,</span> <span class="s">"plum"</span><span class="o">);</span>
+    <span class="nc">Flux</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">fluxColors</span> <span class="o">=</span> <span class="nc">Flux</span><span class="o">.</span><span class="na">just</span><span class="o">(</span><span class="s">"red"</span><span class="o">,</span> <span class="s">"green"</span><span class="o">,</span> <span class="s">"blue"</span><span class="o">);</span>
+    <span class="nc">Flux</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">fluxAmounts</span> <span class="o">=</span> <span class="nc">Flux</span><span class="o">.</span><span class="na">just</span><span class="o">(</span><span class="mi">10</span><span class="o">,</span> <span class="mi">20</span><span class="o">,</span> <span class="mi">30</span><span class="o">);</span>
+    <span class="nc">Flux</span><span class="o">.</span><span class="na">zip</span><span class="o">(</span><span class="n">fluxFruits</span><span class="o">,</span> <span class="n">fluxColors</span><span class="o">,</span> <span class="n">fluxAmounts</span><span class="o">).</span><span class="na">subscribe</span><span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
+<span class="o">}</span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Результат использования функции <strong>zip()</strong></div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="o">[</span><span class="n">apple</span><span class="o">,</span> <span class="n">red</span><span class="o">,</span> <span class="mi">10</span><span class="o">]</span>
+<span class="o">[</span><span class="n">pear</span><span class="o">,</span> <span class="n">green</span><span class="o">,</span> <span class="mi">20</span><span class="o">]</span>
+<span class="o">[</span><span class="n">plum</span><span class="o">,</span> <span class="n">blue</span><span class="o">,</span> <span class="mi">30</span><span class="o">]</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_обработка_ошибок">7.4.4. Обработка ошибок</h4>
+<div class="paragraph">
+<p>Создадим <strong>Flux</strong>, который испускает ошибку. Для этого есть специальный сигнал, так как мы не можем просто выбросить исключение — оно может оказаться в другом треде:</p>
+</div>
+<div class="listingblock">
+<div class="title">Создание ошибки в объекте <strong>Flux</strong> с помощью метода <strong>error()</strong></div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">errorFlux</span><span class="o">()</span> <span class="o">{</span>
+    <span class="nc">Flux</span><span class="o">&lt;</span><span class="nc">Object</span><span class="o">&gt;</span> <span class="n">error</span> <span class="o">=</span> <span class="nc">Flux</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="k">new</span> <span class="nc">IllegalStateException</span><span class="o">());</span>
+    <span class="n">error</span><span class="o">.</span><span class="na">subscribe</span><span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
+<span class="o">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Ошибки</strong> - это терминальные события. При возникновении ошибки вся последовательность останавливается, и ошибка передается методу <strong>onError()</strong> подписчика, который всегда должен быть определен.
+Если не определено, <strong>onError</strong> вызовет исключение <strong>UnsupportedOperationException</strong>.</p>
+</div>
+<div class="paragraph">
+<p>Запустив следующий пример, третье значение никогда не генерируется, поскольку второе значение приводит к ошибке:</p>
+</div>
+<div class="listingblock">
+<div class="title">Генерация ошибки</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="kd">public</span> <span class="kt">void</span> <span class="nf">onErrorExample</span><span class="o">()</span> <span class="o">{</span>
+    <span class="nc">Flux</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">fluxCalc</span> <span class="o">=</span> <span class="nc">Flux</span><span class="o">.</span><span class="na">just</span><span class="o">(-</span><span class="mi">1</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">1</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="n">i</span> <span class="o">-&gt;</span> <span class="s">"10 / "</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="s">" = "</span> <span class="o">+</span> <span class="o">(</span><span class="mi">10</span> <span class="o">/</span> <span class="n">i</span><span class="o">));</span>
+
+    <span class="n">fluxCalc</span><span class="o">.</span><span class="na">subscribe</span><span class="o">(</span><span class="n">value</span> <span class="o">-&gt;</span> <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Next: "</span> <span class="o">+</span> <span class="n">value</span><span class="o">),</span>
+                       <span class="n">error</span> <span class="o">-&gt;</span> <span class="nc">System</span><span class="o">.</span><span class="na">err</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Error: "</span> <span class="o">+</span> <span class="n">error</span><span class="o">));</span>
+<span class="o">}</span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Результат генерации ошибки</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="nl">Next:</span> <span class="mi">10</span> <span class="o">/</span> <span class="o">-</span><span class="mi">1</span> <span class="o">=</span> <span class="o">-</span><span class="mi">10</span>
+<span class="nl">Error:</span> <span class="n">java</span><span class="o">.</span><span class="na">lang</span><span class="o">.</span><span class="na">ArithmeticException</span><span class="o">:</span> <span class="o">/</span> <span class="n">by</span> <span class="n">zero</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Также можно обрабатывать ошибки в середине реактивной цепочки, используя операторы обработки ошибок. Метод <strong>onErrorReturn()</strong> будет выдавать резервное значение, когда наблюдается ошибка указанного типа. Это можно сравнить с перехватом исключения и возвратом статического запасного значения в императивном программировании.</p>
+</div>
+<div class="listingblock">
+<div class="title">Пример обработки ошибки</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="kd">public</span> <span class="kt">void</span> <span class="nf">onErrorReturnExample</span><span class="o">()</span> <span class="o">{</span>
+    <span class="nc">Flux</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">fluxCalc</span> <span class="o">=</span> <span class="nc">Flux</span><span class="o">.</span><span class="na">just</span><span class="o">(-</span><span class="mi">1</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">1</span><span class="o">)</span>
+                                <span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="n">i</span> <span class="o">-&gt;</span> <span class="s">"10 / "</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="s">" = "</span> <span class="o">+</span> <span class="o">(</span><span class="mi">10</span> <span class="o">/</span> <span class="n">i</span><span class="o">))</span>
+                                <span class="o">.</span><span class="na">onErrorReturn</span><span class="o">(</span><span class="nc">ArithmeticException</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="s">"Division by 0 not allowed"</span><span class="o">);</span>
+    <span class="n">fluxCalc</span>
+            <span class="o">.</span><span class="na">subscribe</span><span class="o">(</span><span class="n">value</span> <span class="o">-&gt;</span> <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Next: "</span> <span class="o">+</span> <span class="n">value</span><span class="o">),</span>
+                       <span class="n">error</span> <span class="o">-&gt;</span> <span class="nc">System</span><span class="o">.</span><span class="na">err</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Error: "</span> <span class="o">+</span> <span class="n">error</span><span class="o">));</span>
+<span class="o">}</span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Результат</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="nl">Next:</span> <span class="mi">10</span> <span class="o">/</span> <span class="o">-</span><span class="mi">1</span> <span class="o">=</span> <span class="o">-</span><span class="mi">10</span>
+<span class="nl">Next:</span> <span class="nc">Division</span> <span class="n">by</span> <span class="mi">0</span> <span class="n">not</span> <span class="n">allowed</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Как видите, использование оператора обработки ошибок таким образом все еще не позволяет продолжить исходную реактивную последовательность (третье значение здесь также не генерируется), а скорее заменяет ее. Если недостаточно просто вернуть какое-то значение по умолчанию, вы можете использовать этот <strong>onErrorResume()</strong> метод, чтобы подписаться на резервного издателя при возникновении ошибки. Это можно сравнить с перехватом исключения и вызовом резервного метода в императивном программировании. Если, например, вызов внешней службы завершается неудачно, реализация <strong>onErrorResume()</strong> может быть связана с извлечением данных из локального кеша.</p>
+</div>
+<div class="listingblock">
+<div class="title">Перенаправление при возникновении ошибки</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">onErrorResume</span><span class="o">()</span> <span class="o">{</span>
+    <span class="nc">Flux</span><span class="o">&lt;</span><span class="nc">Object</span><span class="o">&gt;</span> <span class="n">error</span> <span class="o">=</span> <span class="nc">Flux</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="k">new</span> <span class="nc">IllegalStateException</span><span class="o">());</span>
+    <span class="nc">Flux</span><span class="o">&lt;</span><span class="nc">Object</span><span class="o">&gt;</span> <span class="n">objectFlux</span> <span class="o">=</span> <span class="n">error</span><span class="o">.</span><span class="na">onErrorResume</span><span class="o">(</span><span class="n">e</span> <span class="o">-&gt;</span> <span class="nc">Flux</span><span class="o">.</span><span class="na">just</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">3</span><span class="o">));</span>
+    <span class="n">objectFlux</span><span class="o">.</span><span class="na">subscribe</span><span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
+<span class="o">}</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_модель_параллелизма">7.4.5. Модель параллелизма</h4>
+<div class="paragraph">
+<p>До сих пор издатель выполнялся в основном потоке так же, как подписчик. Это связано с тем, что <strong>Reactor</strong> не применяет модель параллелизма. Вместо этого выполнение большинства операторов будет продолжено в том же потоке, оставляя выбор за разработчиком. Модель выполнения определяется тем <strong>Scheduler</strong>, что используется.</p>
+</div>
+<div class="paragraph">
+<p>С помощью <strong>Scheduler</strong> можно приказать потоку всегда выполняться в одном и том же thread или выделять новый thread при каждой подписке, или использовать собственный пул потоков и т.д.</p>
+</div>
+<div class="paragraph">
+<p>Есть два способа переключения контекста выполнения в реактивной цепочке: <strong>publishOn()</strong> и <strong>subscribeOn()</strong>. Отличается следующее:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>publishOn(Scheduler scheduler)</code>  - если мы хотим например часть операторов выполнить в одном thread, а часть в другом. В случае с <strong>publishOn()</strong> этот оператор применяется так же, как и любой другой, посреди цепочки вызовов. Все последующие <strong>Subscriber</strong> будут выполняться в контексте указанного <strong>Scheduler</strong>.</p>
+</li>
+<li>
+<p><code>subscribeOn(Scheduler scheduler)</code> — Чтобы изменить thread, в котором будет происходить выполнение реактивного потока. В случае с <strong>subscribeOn</strong> оператор «глобальный», срабатывает сразу на всю цепочку <strong>Subscriber</strong>. После вызова <strong>subscribe()</strong> контекстом выполнения будет указанный <strong>Scheduler</strong>. Далее контекст может изменяться с помощью оператора <strong>publishOn</strong>. Последующие вызовы <strong>subscribeOn</strong> игнорируются.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Класс <strong>Schedulers</strong> содержит статические методы, чтобы обеспечить контекст выполнения, например:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>parallel()</code> — работает с пулом рабочих потоков фиксированного размера (по умолчанию размер пула ограничивается числом ядер процессора). Хорошо подходит для вычислительных задач.</p>
+</li>
+<li>
+<p><code>single()</code> — выполнение в выделенном потоке. Он поддерживает планирование с учетом времени, поэтому может использоваться для планирования периодичес- ких событий с задержкой.</p>
+</li>
+<li>
+<p><code>boundedElastic()</code> — динамически создает рабочие потоки и кеширует пулы потоков выполнения. Максимальное число создаваемых пулов потоков выполнения не ограничивается, поэтому этот планировщик можно использовать для организации выполнения задач, связанных с вводом/выводом. При использовании — <strong>Schedulers.newElastic()</strong> — можно указать количество <strong>workers</strong>. Это хороший выбор для обертывания синхронных, блокирующих вызовов.</p>
+</li>
+<li>
+<p><code>immediate()</code> — выполнение будет происходить в текущем потоке.</p>
+</li>
+<li>
+<p><code>fromExecutorService(ExecutorService)</code> - может использоваться для создания Планировщика из любого существующего <strong>ExecutorService</strong>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Рассмотрим на примере:</p>
+</div>
+<div class="listingblock">
+<div class="title">Принцип работы <strong>newParallel()</strong></div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="kd">public</span> <span class="kt">void</span> <span class="nf">publishSubscribeExample</span><span class="o">()</span> <span class="o">{</span>
+    <span class="nc">Scheduler</span> <span class="n">schedulerA</span> <span class="o">=</span> <span class="nc">Schedulers</span><span class="o">.</span><span class="na">newParallel</span><span class="o">(</span><span class="s">"Scheduler A"</span><span class="o">);</span>
+    <span class="nc">Scheduler</span> <span class="n">schedulerB</span> <span class="o">=</span> <span class="nc">Schedulers</span><span class="o">.</span><span class="na">newParallel</span><span class="o">(</span><span class="s">"Scheduler B"</span><span class="o">);</span>
+    <span class="nc">Scheduler</span> <span class="n">schedulerC</span> <span class="o">=</span> <span class="nc">Schedulers</span><span class="o">.</span><span class="na">newParallel</span><span class="o">(</span><span class="s">"Scheduler C"</span><span class="o">);</span>
+
+    <span class="nc">Flux</span><span class="o">.</span><span class="na">just</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="n">i</span> <span class="o">-&gt;</span> <span class="o">{</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"First map: "</span> <span class="o">+</span> <span class="nc">Thread</span><span class="o">.</span><span class="na">currentThread</span><span class="o">().</span><span class="na">getName</span><span class="o">());</span>
+            <span class="k">return</span> <span class="n">i</span><span class="o">;</span>
+        <span class="o">})</span>
+        <span class="o">.</span><span class="na">subscribeOn</span><span class="o">(</span><span class="n">schedulerA</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="n">i</span> <span class="o">-&gt;</span> <span class="o">{</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Second map: "</span> <span class="o">+</span> <span class="nc">Thread</span><span class="o">.</span><span class="na">currentThread</span><span class="o">().</span><span class="na">getName</span><span class="o">());</span>
+            <span class="k">return</span> <span class="n">i</span><span class="o">;</span>
+        <span class="o">})</span>
+        <span class="o">.</span><span class="na">publishOn</span><span class="o">(</span><span class="n">schedulerB</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="n">i</span> <span class="o">-&gt;</span> <span class="o">{</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Third map: "</span> <span class="o">+</span> <span class="nc">Thread</span><span class="o">.</span><span class="na">currentThread</span><span class="o">().</span><span class="na">getName</span><span class="o">());</span>
+            <span class="k">return</span> <span class="n">i</span><span class="o">;</span>
+        <span class="o">})</span>
+        <span class="o">.</span><span class="na">subscribeOn</span><span class="o">(</span><span class="n">schedulerC</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="n">i</span> <span class="o">-&gt;</span> <span class="o">{</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Fourth map: "</span> <span class="o">+</span> <span class="nc">Thread</span><span class="o">.</span><span class="na">currentThread</span><span class="o">().</span><span class="na">getName</span><span class="o">());</span>
+            <span class="k">return</span> <span class="n">i</span><span class="o">;</span>
+        <span class="o">})</span>
+        <span class="o">.</span><span class="na">publishOn</span><span class="o">(</span><span class="n">schedulerA</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="n">i</span> <span class="o">-&gt;</span> <span class="o">{</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Fifth map: "</span> <span class="o">+</span> <span class="nc">Thread</span><span class="o">.</span><span class="na">currentThread</span><span class="o">().</span><span class="na">getName</span><span class="o">());</span>
+            <span class="k">return</span> <span class="n">i</span><span class="o">;</span>
+        <span class="o">})</span>
+        <span class="o">.</span><span class="na">blockLast</span><span class="o">();</span>
+<span class="o">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Взглянув на вывод можно увидеть, что первая и вторая операции <strong>map()</strong> выполняются в потоке из планировщика <strong>A</strong>, поскольку первый <strong>subscribeOn()</strong> в цепочке переключается на этот планировщик, и это влияет на всю цепочку. Перед третьей операцией <strong>map()</strong> выполняется <strong>publishOn()</strong>, переключающий контекст выполнения на <strong>Scheduler B</strong>, в результате чего третья и четвертая операции <strong>map()</strong> выполняются в этом контексте (поскольку вторая <strong>subscribeOn()</strong> не будет иметь никакого эффекта). И, наконец, есть новый метод <strong>publishOn()</strong>, который переключает обратно на планировщик <strong>A</strong> перед последней операцией <strong>map()</strong>.</p>
+</div>
+<div class="listingblock">
+<div class="title">Результат выполнения</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="nc">First</span> <span class="nl">map:</span> <span class="nc">Scheduler</span> <span class="no">A</span><span class="o">-</span><span class="mi">4</span>
+<span class="nc">Second</span> <span class="nl">map:</span> <span class="nc">Scheduler</span> <span class="no">A</span><span class="o">-</span><span class="mi">4</span>
+<span class="nc">Third</span> <span class="nl">map:</span> <span class="nc">Scheduler</span> <span class="no">B</span><span class="o">-</span><span class="mi">3</span>
+<span class="nc">Fourth</span> <span class="nl">map:</span> <span class="nc">Scheduler</span> <span class="no">B</span><span class="o">-</span><span class="mi">3</span>
+<span class="nc">Fifth</span> <span class="nl">map:</span> <span class="nc">Scheduler</span> <span class="no">A</span><span class="o">-</span><span class="mi">1</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Некоторые операторы из <strong>Flux</strong> и <strong>Mono</strong> запускаются сразу на конкретном <strong>Scheduler</strong> (но можно передать и свой). Например <strong>Flux.interval()</strong> по умолчанию запускается на <strong>Schedulers.parallel()</strong>, но можно передать свой.</p>
+</div>
+<div class="listingblock">
+<div class="title">Демонстрация установки собственного <strong>Schedulers</strong></div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="nc">Flux</span><span class="o">.</span><span class="na">interval</span><span class="o">(</span><span class="nc">Duration</span><span class="o">.</span><span class="na">ofMillis</span><span class="o">(</span><span class="mi">300</span><span class="o">),</span> <span class="nc">Schedulers</span><span class="o">.</span><span class="na">newSingle</span><span class="o">(</span><span class="s">"test"</span><span class="o">));</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_холодные_и_горячие_publisher">7.4.6. Холодные и горячие <strong>Publisher</strong></h4>
+<div class="paragraph">
+<p>Доступны два типа <strong>Publisher</strong> - <strong>cold</strong> и <strong>hot</strong> (холодные и горячие).</p>
+</div>
+<div class="paragraph">
+<p>Как заявляли ранее, ничего не происходит, пока не подпишемся - но на самом деле это верно только для холодных издателей. <strong>Холодный Publisher</strong> генерирует новые данные для каждой подписке. Если подписки нет, данные никогда не генерируются. Напротив, <strong>hot издатель</strong> не зависит от подписчиков. Он может начать публикацию данных без подписчиков. Если подписчик подписывается после того, как издатель начал передавать значения, он получит только значения, выпущенные после его подписки.</p>
+</div>
+<div class="paragraph">
+<p>Один из способов создания горячего <strong>Publisher</strong> - это вызвать <strong>publish()</strong> метод в <strong>Flux</strong>. Это вернет <strong>ConnectableFlux&lt;T&gt;</strong>, у которого есть метод <strong>connect()</strong> для запуска передачи значений. Подписчики должны затем подписаться на этот <strong>ConnectableFlux</strong> вместо исходного <strong>Flux</strong>.</p>
+</div>
+<div class="paragraph">
+<p>Рассмотрим холодный и горячий <strong>Publisher</strong>, чтобы увидеть различное поведение. В приведенном ниже примере <strong>coldPublisherExample</strong> оператор <strong>interval()</strong> используется для создания потока, который генерирует значения <code>long</code>, начинающиеся с <code>0</code>.</p>
+</div>
+<div class="listingblock">
+<div class="title">Пример использования <strong>interval()</strong></div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="kd">public</span> <span class="kt">void</span> <span class="nf">coldPublisherExample</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">InterruptedException</span> <span class="o">{</span>
+    <span class="nc">Flux</span><span class="o">&lt;</span><span class="nc">Long</span><span class="o">&gt;</span> <span class="n">intervalFlux</span> <span class="o">=</span> <span class="nc">Flux</span><span class="o">.</span><span class="na">interval</span><span class="o">(</span><span class="nc">Duration</span><span class="o">.</span><span class="na">ofSeconds</span><span class="o">(</span><span class="mi">1</span><span class="o">));</span>
+    <span class="nc">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">2000</span><span class="o">);</span>
+    <span class="n">intervalFlux</span><span class="o">.</span><span class="na">subscribe</span><span class="o">(</span><span class="n">i</span> <span class="o">-&gt;</span> <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="nc">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">"Subscriber A, value: %d"</span><span class="o">,</span> <span class="n">i</span><span class="o">)));</span>
+    <span class="nc">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">2000</span><span class="o">);</span>
+    <span class="n">intervalFlux</span><span class="o">.</span><span class="na">subscribe</span><span class="o">(</span><span class="n">i</span> <span class="o">-&gt;</span> <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="nc">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">"Subscriber B, value: %d"</span><span class="o">,</span> <span class="n">i</span><span class="o">)));</span>
+    <span class="nc">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">3000</span><span class="o">);</span>
+<span class="o">}</span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Результат выполнения</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="nc">Subscriber</span> <span class="no">A</span><span class="o">,</span> <span class="nl">value:</span> <span class="mi">0</span>
+<span class="nc">Subscriber</span> <span class="no">A</span><span class="o">,</span> <span class="nl">value:</span> <span class="mi">1</span>
+<span class="nc">Subscriber</span> <span class="no">A</span><span class="o">,</span> <span class="nl">value:</span> <span class="mi">2</span>
+<span class="nc">Subscriber</span> <span class="no">B</span><span class="o">,</span> <span class="nl">value:</span> <span class="mi">0</span>
+<span class="nc">Subscriber</span> <span class="no">A</span><span class="o">,</span> <span class="nl">value:</span> <span class="mi">3</span>
+<span class="nc">Subscriber</span> <span class="no">B</span><span class="o">,</span> <span class="nl">value:</span> <span class="mi">1</span>
+<span class="nc">Subscriber</span> <span class="no">A</span><span class="o">,</span> <span class="nl">value:</span> <span class="mi">4</span>
+<span class="nc">Subscriber</span> <span class="no">B</span><span class="o">,</span> <span class="nl">value:</span> <span class="mi">2</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Теперь можно задаться вопросом, почему что-то происходит, когда основной поток спит, но это потому, что оператор интервала по умолчанию выполняется в планировщике <strong>Schedulers.parallel()</strong>. Как можно заметить, оба подписчика получат значения, начинающиеся с <code>0</code>.</p>
+</div>
+<div class="paragraph">
+<p>Теперь давайте посмотрим, что происходит, когда используем <strong>ConnectableFlux</strong>:</p>
+</div>
+<div class="listingblock">
+<div class="title">Использование объета типа <strong>ConnectableFlux</strong></div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="kd">public</span> <span class="kt">void</span> <span class="nf">hotPublisherExample</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">InterruptedException</span> <span class="o">{</span>
+    <span class="nc">Flux</span><span class="o">&lt;</span><span class="nc">Long</span><span class="o">&gt;</span> <span class="n">intervalFlux</span> <span class="o">=</span> <span class="nc">Flux</span><span class="o">.</span><span class="na">interval</span><span class="o">(</span><span class="nc">Duration</span><span class="o">.</span><span class="na">ofSeconds</span><span class="o">(</span><span class="mi">1</span><span class="o">));</span>
+    <span class="nc">ConnectableFlux</span><span class="o">&lt;</span><span class="nc">Long</span><span class="o">&gt;</span> <span class="n">intervalCF</span> <span class="o">=</span> <span class="n">intervalFlux</span><span class="o">.</span><span class="na">publish</span><span class="o">();</span>
+    <span class="n">intervalCF</span><span class="o">.</span><span class="na">connect</span><span class="o">();</span>
+    <span class="nc">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">2000</span><span class="o">);</span>
+    <span class="n">intervalCF</span><span class="o">.</span><span class="na">subscribe</span><span class="o">(</span><span class="n">i</span> <span class="o">-&gt;</span> <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="nc">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">"Subscriber A, value: %d"</span><span class="o">,</span> <span class="n">i</span><span class="o">)));</span>
+    <span class="nc">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">2000</span><span class="o">);</span>
+    <span class="n">intervalCF</span><span class="o">.</span><span class="na">subscribe</span><span class="o">(</span><span class="n">i</span> <span class="o">-&gt;</span> <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="nc">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">"Subscriber B, value: %d"</span><span class="o">,</span> <span class="n">i</span><span class="o">)));</span>
+    <span class="nc">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">3000</span><span class="o">);</span>
+<span class="o">}</span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Результат выполнения</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="nc">Subscriber</span> <span class="no">A</span><span class="o">,</span> <span class="nl">value:</span> <span class="mi">2</span>
+<span class="nc">Subscriber</span> <span class="no">A</span><span class="o">,</span> <span class="nl">value:</span> <span class="mi">3</span>
+<span class="nc">Subscriber</span> <span class="no">A</span><span class="o">,</span> <span class="nl">value:</span> <span class="mi">4</span>
+<span class="nc">Subscriber</span> <span class="no">B</span><span class="o">,</span> <span class="nl">value:</span> <span class="mi">4</span>
+<span class="nc">Subscriber</span> <span class="no">A</span><span class="o">,</span> <span class="nl">value:</span> <span class="mi">5</span>
+<span class="nc">Subscriber</span> <span class="no">B</span><span class="o">,</span> <span class="nl">value:</span> <span class="mi">5</span>
+<span class="nc">Subscriber</span> <span class="no">A</span><span class="o">,</span> <span class="nl">value:</span> <span class="mi">6</span>
+<span class="nc">Subscriber</span> <span class="no">B</span><span class="o">,</span> <span class="nl">value:</span> <span class="mi">6</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Можно заметить, на этот раз ни один из подписчиков не получает исходные значения <code>0</code> и <code>1</code>. Они получают значения, которые отправляются после подписки. Вместо того чтобы вручную запускать публикацию, с помощью этого <strong>autoConnect(n)</strong> метода также можно настроить <strong>ConnectableFlux</strong> так, чтобы он запускался после <code>n</code> подписок.</p>
+</div>
+<div class="paragraph">
+<p>Напечатаем текст на каждое действие — подписку, получение нового элемента и завершающего сигнала:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="kd">public</span> <span class="kt">void</span> <span class="nf">fluxFruits</span><span class="o">()</span> <span class="o">{</span>
+    <span class="nc">Flux</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">fluxFruits</span> <span class="o">=</span> <span class="nc">Flux</span><span class="o">.</span><span class="na">just</span><span class="o">(</span><span class="s">"apple"</span><span class="o">,</span> <span class="s">"pear"</span><span class="o">,</span> <span class="s">"plum"</span><span class="o">);</span>
+
+    <span class="nc">Flux</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">flux</span> <span class="o">=</span> <span class="n">fluxFruits</span>
+        <span class="o">.</span><span class="na">doOnSubscribe</span><span class="o">(</span><span class="n">s</span> <span class="o">-&gt;</span> <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"start"</span><span class="o">))</span>
+        <span class="o">.</span><span class="na">doOnNext</span><span class="o">(</span><span class="n">user</span> <span class="o">-&gt;</span> <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"next value"</span><span class="o">))</span>
+        <span class="o">.</span><span class="na">doOnComplete</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"end!"</span><span class="o">));</span>
+
+    <span class="n">flux</span><span class="o">.</span><span class="na">subscribe</span><span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
+<span class="o">}</span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Результат выполнения</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="n">start</span>
+<span class="n">next</span> <span class="n">value</span>
+<span class="n">apple</span>
+<span class="n">next</span> <span class="n">value</span>
+<span class="n">pear</span>
+<span class="n">next</span> <span class="n">value</span>
+<span class="n">plum</span>
+<span class="n">end</span><span class="o">!</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_другие_операторы">7.4.7. Другие операторы</h4>
+<div class="sect4">
+<h5 id="_функция_firstwithvalue">Функция <code>firstWithValue()</code></h5>
+<div class="paragraph">
+<p>Надо вернуть <strong>Flux</strong>, который испускает значение быстрее:</p>
+</div>
+<div class="listingblock">
+<div class="title">Пример использования метода <strong>firstWithValue()</strong></div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="kd">public</span> <span class="kt">void</span> <span class="nf">getFirstWithValue</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">InterruptedException</span> <span class="o">{</span>
+    <span class="nc">Flux</span><span class="o">.</span><span class="na">firstWithValue</span><span class="o">(</span><span class="n">firstFlux</span><span class="o">(),</span> <span class="n">secondFlux</span><span class="o">())</span>
+        <span class="o">.</span><span class="na">subscribe</span><span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
+    <span class="nc">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">4000</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="nc">Flux</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="nf">firstFlux</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="nc">Flux</span><span class="o">.</span><span class="na">just</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">).</span><span class="na">delaySubscription</span><span class="o">(</span><span class="nc">Duration</span><span class="o">.</span><span class="na">ofMillis</span><span class="o">(</span><span class="mi">2000</span><span class="o">));</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="nc">Flux</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="nf">secondFlux</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="nc">Flux</span><span class="o">.</span><span class="na">just</span><span class="o">(</span><span class="mi">3</span><span class="o">,</span> <span class="mi">4</span><span class="o">).</span><span class="na">delaySubscription</span><span class="o">(</span><span class="nc">Duration</span><span class="o">.</span><span class="na">ofMillis</span><span class="o">(</span><span class="mi">1000</span><span class="o">));</span>
+<span class="o">}</span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Результат</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="mi">3</span>
+<span class="mi">4</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_функция_then">Функция <code>then()</code></h5>
+<div class="paragraph">
+<p>Преобразовать <strong>Flux</strong> в <strong>Mono</strong>, который испускает сигнал завершения тогда, когда приходит сигнал завершения в <strong>Flux</strong>:</p>
+</div>
+<div class="listingblock">
+<div class="title">Использование функции <strong>then()</strong></div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="kd">public</span> <span class="kt">void</span> <span class="nf">fluxToMono</span><span class="o">()</span> <span class="o">{</span>
+    <span class="nc">Flux</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">flux</span> <span class="o">=</span> <span class="nc">Flux</span><span class="o">.</span><span class="na">just</span><span class="o">(</span><span class="mi">10</span><span class="o">,</span> <span class="mi">20</span><span class="o">);</span>
+    <span class="nc">Mono</span><span class="o">&lt;</span><span class="nc">Void</span><span class="o">&gt;</span> <span class="n">then</span> <span class="o">=</span> <span class="n">flux</span><span class="o">.</span><span class="na">then</span><span class="o">();</span>
+<span class="o">}</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_генерация_с_помощью_функции_generate">Генерация с помощью функции <code>generate()</code></h5>
+<div class="paragraph">
+<p>Реализовать бесконечный генератор можно с помощью функции <strong>generate()</strong>.</p>
+</div>
+<div class="listingblock">
+<div class="title">Генератор для вывода бесконечного количество раз слова:</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="kd">public</span> <span class="kt">void</span> <span class="nf">generate</span><span class="o">()</span> <span class="o">{</span>
+    <span class="nc">Flux</span><span class="o">.&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="nf">generate</span><span class="o">(</span><span class="n">sink</span> <span class="o">-&gt;</span> <span class="o">{</span>
+        <span class="n">sink</span><span class="o">.</span><span class="na">next</span><span class="o">(</span><span class="s">"hello"</span><span class="o">);</span>
+    <span class="o">})</span>
+    <span class="o">.</span><span class="na">subscribe</span><span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
+<span class="o">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Мы можем ограничить количество генерируемых значений и установить период между ними:</p>
+</div>
+<div class="listingblock">
+<div class="title">Пример использования функции задержки с помощью метода <strong>delayElements()</strong></div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">generate</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">InterruptedException</span> <span class="o">{</span>
+    <span class="nc">Flux</span><span class="o">.&lt;</span><span class="nc">String</span><span class="o">&gt;</span><span class="n">generate</span><span class="o">(</span><span class="n">sink</span> <span class="o">-&gt;</span> <span class="o">{</span>
+        <span class="n">sink</span><span class="o">.</span><span class="na">next</span><span class="o">(</span><span class="s">"hello"</span><span class="o">);</span>
+    <span class="o">})</span>
+    <span class="o">.</span><span class="na">delayElements</span><span class="o">(</span><span class="nc">Duration</span><span class="o">.</span><span class="na">ofMillis</span><span class="o">(</span><span class="mi">500</span><span class="o">))</span>
+    <span class="o">.</span><span class="na">take</span><span class="o">(</span><span class="mi">4</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">subscribe</span><span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
+
+    <span class="nc">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">4000</span><span class="o">);</span>
+<span class="o">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>Thread.sleep(4000)</code> - заставляет основной поток заснуть на <code>4</code> секунды. Дело в том, что вывод в консоль осуществляется в отдельном потоке, в свою очередь без <strong>Thread.sleep(4000)</strong> основной поток прекратит свою работу, что убьёт и дочерний поток.</p>
+</div>
+<div class="paragraph">
+<p>Генераторы могут быть самыми разными, например такой генератор обладает интересной сигнатурой и может реализовывать самые интересные задумки:</p>
+</div>
+<div class="listingblock">
+<div class="title">Пример генератора</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="kd">public</span> <span class="kd">static</span> <span class="o">&lt;</span><span class="no">T</span><span class="o">,</span> <span class="no">S</span><span class="o">&gt;</span> <span class="nc">Flux</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="nf">generate</span><span class="o">(</span><span class="nc">Callable</span><span class="o">&lt;</span><span class="no">S</span><span class="o">&gt;</span> <span class="n">stateSupplier</span><span class="o">,</span> <span class="nc">BiFunction</span><span class="o">&lt;</span><span class="no">S</span><span class="o">,</span> <span class="nc">SynchronousSink</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;,</span> <span class="no">S</span><span class="o">&gt;</span> <span class="n">generator</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="nf">onAssembly</span><span class="o">(</span><span class="k">new</span> <span class="nc">FluxGenerate</span><span class="o">&lt;&gt;(</span><span class="n">stateSupplier</span><span class="o">,</span> <span class="n">generator</span><span class="o">));</span>
+<span class="o">}</span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Реализация генератора</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="kd">public</span> <span class="kt">void</span> <span class="nf">generateBiFunction</span><span class="o">()</span> <span class="o">{</span>
+    <span class="nc">Flux</span><span class="o">.</span><span class="na">generate</span><span class="o">(</span>
+         <span class="o">()</span> <span class="o">-&gt;</span> <span class="mi">2354</span><span class="o">,</span>
+         <span class="o">(</span><span class="n">state</span><span class="o">,</span> <span class="n">sink</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
+             <span class="k">if</span><span class="o">(</span><span class="n">state</span> <span class="o">&gt;</span> <span class="mi">2366</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">sink</span><span class="o">.</span><span class="na">complete</span><span class="o">();</span>
+             <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="n">sink</span><span class="o">.</span><span class="na">next</span><span class="o">(</span><span class="s">"Step: "</span> <span class="o">+</span> <span class="n">state</span><span class="o">);</span>
+             <span class="o">}</span>
+         <span class="k">return</span> <span class="n">state</span> <span class="o">+</span> <span class="mi">3</span><span class="o">;</span>
+    <span class="o">}).</span><span class="na">subscribe</span><span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
+<span class="o">}</span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Вывод в консоль:</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="nl">Step:</span> <span class="mi">2354</span>
+<span class="nl">Step:</span> <span class="mi">2357</span>
+<span class="nl">Step:</span> <span class="mi">2360</span>
+<span class="nl">Step:</span> <span class="mi">2363</span>
+<span class="nl">Step:</span> <span class="mi">2366</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Метод <strong>create()</strong> принимает потребителя <strong>FluxSink&lt;T&gt;</strong>. То есть вам будет предоставлен экземпляр <strong>FluxSink</strong>, с помощью которого вы сможете продолжать испускать <code>0&#8230;&#8203;N</code> элементов нижестоящим подписчикам. Каждый подписчик получит экземпляр <strong>FluxSink</strong> для генерации элементов.</p>
+</div>
+<div class="paragraph">
+<p>Следующий блок кода состоит из двух методов:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>generateSmth()</code> - генерирует и возвращает объект <strong>Flux&lt;String&gt;</strong>.</p>
+</li>
+<li>
+<p><code>createFlux()</code> - позволяет получить данные из другого <strong>Flux</strong> объекта с помощью подписки и манипулировать ими благодаря переопределенным методам.</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="kd">public</span> <span class="nc">Flux</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="nf">generateSmth</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="nc">Flux</span><span class="o">.</span><span class="na">generate</span><span class="o">(</span>
+        <span class="o">()</span> <span class="o">-&gt;</span> <span class="mi">2354</span><span class="o">,</span>
+        <span class="o">(</span><span class="n">state</span><span class="o">,</span> <span class="n">sink</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">state</span> <span class="o">&gt;</span> <span class="mi">2366</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">sink</span><span class="o">.</span><span class="na">complete</span><span class="o">();</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="n">sink</span><span class="o">.</span><span class="na">next</span><span class="o">(</span><span class="s">"Step: "</span> <span class="o">+</span> <span class="n">state</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="k">return</span> <span class="n">state</span> <span class="o">+</span> <span class="mi">3</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">);</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">createFlux</span><span class="o">()</span> <span class="o">{</span>
+    <span class="nc">Flux</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">sink</span> <span class="o">-&gt;</span> <span class="n">generateSmth</span><span class="o">().</span><span class="na">subscribe</span><span class="o">(</span><span class="k">new</span> <span class="nc">BaseSubscriber</span><span class="o">&lt;</span><span class="nc">Object</span><span class="o">&gt;()</span> <span class="o">{</span>
+    <span class="nd">@Override</span>
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">hookOnNext</span><span class="o">(</span><span class="nc">Object</span> <span class="n">value</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">sink</span><span class="o">.</span><span class="na">next</span><span class="o">(</span><span class="n">value</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">hookOnComplete</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">sink</span><span class="o">.</span><span class="na">complete</span><span class="o">();</span>
+    <span class="o">}</span>
+    <span class="o">}))</span>
+    <span class="o">.</span><span class="na">subscribe</span><span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
+<span class="o">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Это хорошо работает, когда необходимо обрабатывать приходящие данные, но что если работаем с Базой Данных? Такие источники информации делятся данными только при обращении к ним. В таком случае с помощью метода <strong>onRequest()</strong> мы можем обратиться в вымешенную базу данных и запросить элемент:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">onRequest</span><span class="o">()</span> <span class="o">{</span>
+    <span class="nc">Flux</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">sink</span> <span class="o">-&gt;</span> <span class="n">sink</span><span class="o">.</span><span class="na">onRequest</span><span class="o">(</span><span class="n">r</span> <span class="o">-&gt;</span> <span class="o">{</span>
+        <span class="n">sink</span><span class="o">.</span><span class="na">next</span><span class="o">(</span><span class="s">"DB returns: "</span> <span class="o">+</span> <span class="n">generateSmth</span><span class="o">().</span><span class="na">blockLast</span><span class="o">());</span>
+    <span class="o">}))</span>
+    <span class="o">.</span><span class="na">subscribe</span><span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
+<span class="o">}</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_класс_basesubscriber">7.4.8. Класс <code>BaseSubscriber</code></h4>
+<div class="paragraph">
+<p>Рассмотрим интересный класс:</p>
+</div>
+<div class="listingblock">
+<div class="title">Пример кода с наследованием от <strong>BaseSubscriber</strong></div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">innerClass</span><span class="o">()</span> <span class="o">{</span>
+    <span class="nc">SampleSubscriber</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">ss</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">SampleSubscriber</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;();</span>
+    <span class="nc">Flux</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">ints</span> <span class="o">=</span> <span class="nc">Flux</span><span class="o">.</span><span class="na">range</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">4</span><span class="o">);</span>
+    <span class="n">ints</span><span class="o">.</span><span class="na">subscribe</span><span class="o">(</span><span class="n">ss</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">SampleSubscriber</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="kd">extends</span> <span class="nc">BaseSubscriber</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">hookOnSubscribe</span><span class="o">(</span><span class="nc">Subscription</span> <span class="n">subscription</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Subscribed"</span><span class="o">);</span>
+        <span class="n">request</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
+<span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">hookOnNext</span><span class="o">(</span><span class="no">T</span> <span class="n">value</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">value</span><span class="o">);</span>
+        <span class="n">request</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Результат выполнения</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="nc">Subscribed</span>
+<span class="mi">1</span>
+<span class="mi">2</span>
+<span class="mi">3</span>
+<span class="mi">4</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Класс <strong>SampleSubscriber</strong> расширяет <strong>BaseSubscriber</strong>, который является рекомендуемым абстрактным классом для определяемых пользователем подписчиков в <strong>Reactor</strong>. Класс предлагает <strong>hooks</strong>, которые можно переопределить, чтобы настроить поведение подписчика. По умолчанию он инициирует неограниченный запрос и ведет себя точно так же, как <strong>subscribe()</strong>. Однако расширение <strong>BaseSubscriber</strong> гораздо полезнее, благодаря своей дополнительной настройкой.</p>
+</div>
+<div class="paragraph">
+<p>Абстрактный класс <strong>BaseSubscriber</strong> позволяет переопределить <strong>hooks</strong>-методы:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>hookOnSubscribe()</code> - действия при подписке на издателя.</p>
+</li>
+<li>
+<p><code>hookOnNext()</code> - действия с переданным объектом.</p>
+</li>
+<li>
+<p><code>hookOnComplete()</code> - действия по завершению обработки.</p>
+</li>
+<li>
+<p><code>hookOnError()</code> - действия при ошибке.</p>
+</li>
+<li>
+<p><code>hookOnCancel()</code> - выполняемые действия при отмене подписки путем вызова метода <strong>cancel()</strong> этого подписчика.</p>
+</li>
+<li>
+<p><code>hookFinally()</code> - необязательный хук, выполняемый после любого из событий завершения <strong>onError()</strong>, <strong>onComplete()</strong>, <strong>cancel()</strong>.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_reactor_test">7.4.9. Reactor Test</h4>
+<div class="paragraph">
+<p>Модуль <strong>Reactor Test</strong> предоставляет служебные программы, которые могут помочь в тестировании поведения <strong>Flux</strong> или <strong>Mono</strong>. С этим помогает <strong>StepVerifier</strong>. Вы создаете <strong>StepVerifier</strong> и передаете его издателю для тестирования. <strong>StepVerifier</strong> подписывается на <strong>Publisher</strong> при вызове метода <code>verify()</code>, а затем сравнивает выданные значения с вашими определенными ожиданиями.</p>
+</div>
+<div class="listingblock">
+<div class="title">Пример тестирования</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">stepVerifierTest</span><span class="o">()</span> <span class="o">{</span>
+    <span class="nc">Flux</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">fluxCalc</span> <span class="o">=</span> <span class="nc">Flux</span><span class="o">.</span><span class="na">just</span><span class="o">(-</span><span class="mi">1</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">1</span><span class="o">)</span>
+                                <span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="n">i</span> <span class="o">-&gt;</span> <span class="s">"10 / "</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="s">" = "</span> <span class="o">+</span> <span class="o">(</span><span class="mi">10</span> <span class="o">/</span> <span class="n">i</span><span class="o">));</span>
+
+    <span class="nc">StepVerifier</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">fluxCalc</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">expectNextCount</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">expectError</span><span class="o">(</span><span class="nc">ArithmeticException</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">verify</span><span class="o">();</span>
+<span class="o">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Для объекта создается <strong>StepVerifier</strong>, определяются два ожидания: сначала ожидается, что будет выдана одна строка, а затем должна быть выдана ошибка с типом <strong>ArithmeticException</strong>. С помощью вызова <code>verify()</code> <strong>StepVerifier</strong> начинает подписываться на <strong>Flux</strong>, и инициируется поток.</p>
+</div>
+<div class="paragraph">
+<p><strong>StepVerifier</strong> также имеет другие функции, такие как включение утверждений после выполнения и поддержка виртуального времени, чтобы избежать длительного времени выполнения тестов, связанных с операторами, основанными на времени. Эти функции можно найти в документации.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_links_5">7.5. Links</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://projectreactor.io/">Project reactor official</a></p>
+</li>
+<li>
+<p><a href="https://projectreactor.io/docs/core/release/reference/">Project reactor documentation</a></p>
+</li>
+<li>
+<p><a href="https://habr.com/ru/post/565050/">Рективное программирование со Spring</a></p>
+</li>
+<li>
+<p><a href="https://www.youtube.com/watch?v=77-wOZs2nPE&amp;ab_channel=letsCode">Project Reactor - реактивная Java</a></p>
+</li>
+<li>
+<p><a href="https://sysout.ru/razrabotka-reaktivnyh-prilozhenij-s-reactive-streams-i-java-8-chast-1/">Разработка реактивных приложений с Reactive Streams и Java</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_sql">8. SQL</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Moved to <a href="https://github.com/rakovets/wiki" class="bare">https://github.com/rakovets/wiki</a>.</p>
@@ -5061,12 +6171,12 @@ log.throwing(Level.INFO, throwable);</pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_common">8. Common</h2>
+<h2 id="_common">9. Common</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_github_keys">8.1. GitHub keys</h3>
+<h3 id="_github_keys">9.1. GitHub keys</h3>
 <div class="sect3">
-<h4 id="_ssh_key">8.1.1. SSH key</h4>
+<h4 id="_ssh_key">9.1.1. SSH key</h4>
 <div class="paragraph">
 <p>С помощью протокола <strong>SSH</strong> можно подключаться и проходить проверку подлинности на удаленных серверах и службах. С помощью ключей <strong>SSH</strong> вы можете подключаться к <strong>GitHub</strong> без предоставления своего имени пользователя и личного маркера доступа при каждом посещении.</p>
 </div>
@@ -5120,7 +6230,7 @@ log.throwing(Level.INFO, throwable);</pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_gpg_key">8.1.2. GPG key</h4>
+<h4 id="_gpg_key">9.1.2. GPG key</h4>
 <div class="paragraph">
 <p>С помощью <strong>GPG</strong> или <strong>S/MIME</strong> можно подписывать теги и коммиты. Эти теги или коммиты помечаются как проверенные на <strong>GitHub</strong>, чтобы другие люди могли быть уверены, что изменения происходят из надежного источника.</p>
 </div>
@@ -5210,7 +6320,7 @@ ssb   4096R/42B317FD4BA89E7A 2016-03-10</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_тестирование">8.2. Тестирование</h3>
+<h3 id="_тестирование">9.2. Тестирование</h3>
 <div class="paragraph">
 <p><strong>Тестирование</strong> (<strong>testing</strong>) <strong>программного обеспечения</strong> (<strong>ПО</strong>) – это процесс исследования ПО с целью выявления ошибок и определения соответствия между реальным и ожидаемым поведением ПО, осуществляемый на основе набора тестов, выбранных определённым образом. В более широком смысле, <strong>тестирование ПО</strong> – это техника контроля качества программного продукта, включающая в себя проектирование тестов, выполнение тестирования и анализ полученных результатов.</p>
 </div>
@@ -5218,7 +6328,7 @@ ssb   4096R/42B317FD4BA89E7A 2016-03-10</code></pre>
 <p>Очень часто современные программные продукты разрабатываются в сжатые сроки и при ограниченных бюджетах проектов. Программирование сегодня перешло из разряда искусства в разряд ремесел для многих миллионов специалистов. Но, к сожалению, в такой спешке разработчики зачастую игнорируют необходимость обеспечения защищённости своих продуктов, подвергая тем самым пользователей неоправданному риску. <strong>Контроль качества</strong> (<strong>тестирование</strong>) считается важным в <strong>процессе разработки ПО</strong>, потому что обеспечивает безопасность, надёжность, удобство создаваемого продукта. В настоящее время существует великое множество подходов и методик к решению задачи тестирования ПО, но эффективное тестирование сложных программных систем — процесс творческий, не сводящийся к следованию строгим и чётким правилам.</p>
 </div>
 <div class="sect3">
-<h4 id="_классификация_видов_тестирования">8.2.1. Классификация видов тестирования</h4>
+<h4 id="_классификация_видов_тестирования">9.2.1. Классификация видов тестирования</h4>
 <div class="paragraph">
 <p>Существует несколько признаков, по которым принято производить классификацию видов тестирования. Все <strong>виды тестирования</strong> программного обеспечения можно условно классифицировать по следующему виду:</p>
 </div>
@@ -5488,7 +6598,7 @@ ssb   4096R/42B317FD4BA89E7A 2016-03-10</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_уровни_тестирования">8.2.2. Уровни тестирования</h4>
+<h4 id="_уровни_тестирования">9.2.2. Уровни тестирования</h4>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
@@ -5567,7 +6677,7 @@ ssb   4096R/42B317FD4BA89E7A 2016-03-10</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_динамический_и_статический_анализ_кода">8.2.3. Динамический и статический анализ кода</h4>
+<h4 id="_динамический_и_статический_анализ_кода">9.2.3. Динамический и статический анализ кода</h4>
 <div class="paragraph">
 <p>По мере продвижения проекта стоимость устранения дефектов ПО может экспоненциально возрастать. Инструменты <strong>статического</strong> и <strong>динамического</strong> анализа помогают предотвратить эти затраты благодаря обнаружению программных ошибок на ранних этапах жизненного цикла ПО.</p>
 </div>
@@ -5598,7 +6708,7 @@ ssb   4096R/42B317FD4BA89E7A 2016-03-10</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_links_5">8.2.4. Links</h4>
+<h4 id="_links_6">9.2.4. Links</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -5726,7 +6836,7 @@ ssb   4096R/42B317FD4BA89E7A 2016-03-10</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_web_services">8.3. Web services</h3>
+<h3 id="_web_services">9.3. Web services</h3>
 <div class="paragraph">
 <p>В каждой отрасли бизнеса, каждой компании, как правило, используется огромное количество ПО, которым нужно взаимодействовать между собой. За десятилетия существования <strong>Web</strong> как отрасли сформировались следующие практики межсетевого взаимодействия:</p>
 </div>
@@ -5787,7 +6897,7 @@ ssb   4096R/42B317FD4BA89E7A 2016-03-10</code></pre>
 <p><strong>Главное отличие web service</strong> от других способов передачи данных: <strong>стандартизированность</strong>. Приняв решение использовать веб-сервисы, можно сразу переходить к структуре данных и доступным функциям. Например, В <strong>SOAP</strong> (как более строгом протоколе), уже решён вопрос уведомления об ошибках.</p>
 </div>
 <div class="sect3">
-<h4 id="_soap_web_services">8.3.1. SOAP web-services</h4>
+<h4 id="_soap_web_services">9.3.1. SOAP web-services</h4>
 <div class="paragraph">
 <p><strong>SOAP</strong> <strong>web-services</strong> ("<strong>Big web-service</strong>", классический <strong>web-service</strong>) - это протокол, предназначенный для обмена структурированной информацией в децентрализованной распределенной среде. Первоначально <strong>SOAP</strong> расшифровывался как <strong>Simple Object Access Protocol</strong> и предназначался в основном для реализации удалённого вызова процедур (<strong>RPC</strong>). Сейчас протокол используется для обмена произвольными сообщениями в формате <strong>XML</strong>, а не только для вызова процедур.</p>
 </div>
@@ -6144,7 +7254,7 @@ ssb   4096R/42B317FD4BA89E7A 2016-03-10</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_restful">8.3.2. RESTful</h4>
+<h4 id="_restful">9.3.2. RESTful</h4>
 <div class="paragraph">
 <p><strong>REST</strong> (<strong>Representational State Transfer</strong>) — на самом деле архитектурный стиль, а не протокол. Фактически, он основывается на соглашениях. Сервис построенный в стиле REST называется REST-сервисом. Веб-сервис, построенный с учетом всех требований и ограничений архитектурного стиля, можно назвать <strong>RESTful</strong> веб-сервисом.</p>
 </div>
@@ -6289,7 +7399,7 @@ ssb   4096R/42B317FD4BA89E7A 2016-03-10</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_отличия_rest_от_soap">8.3.3. Отличия <code>REST</code> от <code>SOAP</code></h4>
+<h4 id="_отличия_rest_от_soap">9.3.3. Отличия <code>REST</code> от <code>SOAP</code></h4>
 <div class="paragraph">
 <p><strong>REST</strong> и <strong>SOAP</strong> на самом деле не сопоставимы. <strong>REST</strong> — это архитектурный стиль. <strong>SOAP</strong> — это протокол отправки сообщения. Давайте сравним популярные реализации стилей <strong>REST</strong> и <strong>SOAP</strong>.</p>
 </div>
@@ -6329,7 +7439,7 @@ ssb   4096R/42B317FD4BA89E7A 2016-03-10</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_links_6">8.3.4. Links</h4>
+<h4 id="_links_7">9.3.4. Links</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -6398,7 +7508,7 @@ ssb   4096R/42B317FD4BA89E7A 2016-03-10</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-04-04 03:14:40 UTC
+Last updated 2022-05-12 07:51:36 UTC
 </div>
 </div>
 </body>
