@@ -8,4 +8,6 @@ include::testing.adoc[]
 
 include::web-services.adoc[]
 
+include::docker.adoc[]
+
 :leveloffset: -1

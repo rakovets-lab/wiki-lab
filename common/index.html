@@ -1777,10 +1777,951 @@ ssb   4096R/42B317FD4BA89E7A 2016-03-10</code></pre>
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="_docker">Docker</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>Docker</strong> - это сервис для запуска приложений в контейнерах. Другими словами, <strong>Docker</strong> - это инструмент, который использует контейнеры для упрощения создания, развертывания и запуска приложений. Он связывает приложение и его зависимости внутри контейнера. При этом <strong>Docker</strong> можно использовать как в процессе разработки приложений, так и для запуска приложений в продакшене.</p>
+</div>
+<div class="paragraph">
+<p>Основные характеристики <strong>Docker</strong>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Приложения запускаются в изолированной среде. Контейнер, в котором запускается приложение изолирован от других контейнеров и от хоста где он запускается.</p>
+</li>
+<li>
+<p>Легко запускать приложения на разных серверах и они будут работать абсолютно везде одинаково.</p>
+</li>
+<li>
+<p>Все зависимости, которые необходимы приложению устанавливаются внутри контейнеров, поэтому нет необходимости устанавливать их вне контейнеров на самих серверах, где эти контейнеры запускаются.</p>
+</li>
+<li>
+<p>Приложения, запущенные в контейнерах легко горизонтально масштабировать путем увеличения количества этих контейнеров.</p>
+</li>
+<li>
+<p>Очень удобно использовать в процессе разработки приложений, так как не нужно устанавливать дополнительные зависимости внутри контейнеров.</p>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="_отличие_docker_от_виртуальной_машины">Отличие Docker от виртуальной машины</h3>
+<div class="paragraph">
+<p><strong>Виртуальная машина</strong> (<strong>virtual machine</strong>)- это система, которая действует точно так же, как и компьютер. <strong>VM</strong> позволяют запускать операционную систему в приложении, которое ведет себя как полноценный отдельный компьютер.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../assets/img/common/docker/docker-vs-vm.png" alt="docker vs vm"></span></p>
+</div>
+<div class="sect3">
+<h4 id="_поддержка_операционной_системы">Поддержка операционной системы</h4>
+<div class="paragraph">
+<p>Поддержка операционной системы <strong>VM</strong> и <strong>контейнеры</strong> сильно отличается. Каждая <strong>VM</strong> имеет свою <strong>гостевую операционную систему</strong> над основной операционной системой, что делает <strong>VM</strong> тяжелыми. С другой стороны, <strong>контейнеры</strong> используют общую операционную систему хоста, и поэтому они легковесны.</p>
+</div>
+<div class="paragraph">
+<p>Совместное использование операционной системы хоста между <strong>контейнеры</strong> делает их очень легкими и помогает им загружаться всего за несколько секунд. Следовательно, накладные расходы на управление контейнерной системой очень низкие по сравнению с <strong>VM</strong>.</p>
+</div>
+<div class="paragraph">
+<p><strong>Контейнеры</strong> подходят для ситуаций, когда вы хотите запустить несколько приложений в одном ядре операционной системы. Но если у вас есть приложения или серверы, которые должны работать в разных версиях операционной системы, тогда требуются <strong>VM</strong>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_безопасность">Безопасность</h4>
+<div class="paragraph">
+<p><strong>VM</strong> не имеет общей операционной системы, и в ядре хоста существует сильная изоляция. Следовательно, они более <strong>безопасны</strong> по сравнению с контейнерами. <strong>Контейнер</strong> имеет много угроз безопасности и уязвимостей, поскольку <strong>контейнеры</strong> имеют общее ядро хоста.</p>
+</div>
+<div class="paragraph">
+<p>Кроме того, поскольку ресурсы <strong>Docker</strong> являются общими и не имеют пространства имен, злоумышленник может использовать все контейнеры в кластере, если он получает доступ даже к одному контейнеру. В <strong>VM</strong> вы не получаете прямого доступа к ресурсам, а гипервизор предназначен для ограничения использования ресурсов в виртуальной машине.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_портативность">Портативность</h4>
+<div class="paragraph">
+<p><strong>Контейнеры</strong> легко переносимы, поскольку у них нет отдельных операционных систем. <strong>Контейнер</strong> может быть перенесен на другую <strong>ОС</strong>, и он может запуститься немедленно. С другой стороны, <strong>VM</strong> имеют отдельную <strong>ОС</strong>, поэтому портирование <strong>VM</strong> затруднено по сравнению с <strong>контейнерами</strong>, а также требуется много времени для портирования <strong>VM</strong> из-за ее размера. Для целей разработки, где приложения должны разрабатываться и тестироваться на разных платформах, <strong>контейнеры</strong> являются идеальным выбором.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_производительность">Производительность</h4>
+<div class="paragraph">
+<p>Сравнение <strong>VM</strong> и контейнеров было бы несправедливым, поскольку они оба используются для разных целей. Но легкая архитектура <strong>контейнеров</strong> и его менее ресурсоемкая функция делают его лучшим выбором, чем <strong>VM</strong>. В результате <strong>контейнеры</strong> могут запускаться очень быстро по сравнению с <strong>VM</strong>, а использование ресурсов варьируется в зависимости от нагрузки или трафика в нем.</p>
+</div>
+<div class="paragraph">
+<p>В отличие от <strong>VM</strong>, нет необходимости постоянно выделять ресурсы для <strong>контейнеров</strong>. Масштабирование и дублирование <strong>контейнеров</strong> также является простой задачей по сравнению с <strong>VM</strong>, поскольку в них нет необходимости устанавливать операционную систему.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Virtual machine</th>
+<th class="tableblock halign-left valign-top">Контейнер</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Изоляция процесса на аппаратном уровне</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Изоляция процесса на уровне ОС</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Каждая <strong>VM</strong> имеет отдельную ОС</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Каждый <strong>контейнер</strong> может совместно использовать ОС</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Загружается в считанные минуты</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Загружается в считанные секунды</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>VM</strong> занимают несколько ГБ</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Контейнеры</strong> легкие (КБ / МБ)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Готовые <strong>VM</strong> трудно найти</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Готовые контейнеры легко доступны</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>VM</strong> могут легко перейти на новый хост</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Контейнеры</strong> уничтожаются и воссоздаются, а не перемещаются</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Создание <strong>VM</strong> занимает относительно больше времени</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Контейнеры</strong> могут быть созданы в считанные секунды</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Больше использования ресурса</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Меньшее использование ресурсов</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_компоненты_docker">Компоненты Docker</h3>
+<div class="paragraph">
+<p>В <strong>Docker</strong> имеются следующие компоненты:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Client</strong> (<strong>клиент</strong>) - запускается в командной строке и с помощью клиента можно подключаться к службе <strong>Docker</strong>, причем как локальной, так и удаленной.</p>
+</li>
+<li>
+<p><strong>Daemon</strong> <strong>(служба)</strong> - <strong>Docker</strong>-сервер, который отвечает за все задачи по созданию контейнеров и по обработке запросов от клиентов.</p>
+</li>
+<li>
+<p><strong>Host</strong> <strong>(хост)</strong> - компьютер, где запущен <strong>Docker</strong>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>С помощью клиента происходит взаимодействие со службой <strong>Docker</strong>, а служба <strong>Docker</strong> запущена на каком-то хосте/компьютере.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Container</strong> <strong>(контейнер)</strong> - это самый маленький элемент в <strong>Docker</strong>, где запускаются приложения. Обычно одно приложение - один контейнер.</p>
+</li>
+<li>
+<p><strong>Image</strong> (<strong>образ</strong>) - основа для создания контейнеров.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Причем с одного образа можно создавать любое множество контейнеров, и они будут все независимые друг от друга, но образ будет один и тот же.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Repository</strong> (<strong>репозиторий</strong>) - хранятся различные версии образов.</p>
+</li>
+<li>
+<p><strong>Registry</strong> (<strong>реестр</strong>) - находятся различные репозитории.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Реестр может быть как локальный, так и удаленный. Самый популярный удаленный реестр - <strong>Docker Hub</strong></p>
+</div>
+<div class="sect3">
+<h4 id="_image">Image</h4>
+<div class="paragraph">
+<p><strong>Образ</strong> - это набор файлов, образ статичен. С образа создаются контейнеры. Контейнер отличается от образа тем, что в контейнере есть запущенные процессы, которые выполняют задачи. Но информация о процессах, которые запустятся в контейнерах, находится в образе.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../assets/img/common/docker/image.png" alt="image"></span></p>
+</div>
+<div class="paragraph">
+<p>Образы можно скачивать из удаленных репозиториев, и после скачивания он будет находиться в кеше <strong>Docker</strong>.</p>
+</div>
+<div class="paragraph">
+<p>Каждый образ состоит из слоев. Каждый слой это набор файлов. У каждого образа есть базовый слой и другие слои, которые добавляются к базовому слою. Такая структура построения образа была создана для того, чтобы переиспользовать слои в разных образах, что позволяет не хранить копии. <strong>Docker</strong> в процессе создания контейнера будет собирать его из разных слоев, которые указаны определенном в образе. Также переиспользование слоев позволяет ускорить процесс создания кастомных образов.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../assets/img/common/docker/layers-image.png" alt="layers image"></span></p>
+</div>
+<div class="paragraph">
+<p>Характеристика образов:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Стоит понимать, что все слои в образе доступны только для чтения (<strong>read-only</strong>), то есть образ создан и слои соответствующие созданы в них нельзя вносить изменения.</p>
+</li>
+<li>
+<p>Образы можно перемещать и удалять.</p>
+</li>
+<li>
+<p>Образы хранятся в репозиториях.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Можно создавать свои собственные образы или использовать только те, которые созданы другими и опубликованы в реестре. Чтобы создать собственный образ, необходимо создать файл <code>Dockerfile</code> — без расширения, с простым синтаксисом для определения шагов, необходимых для создания образа и его запуска. Каждая инструкция в <code>Dockerfile</code> создает слой в образе. При изменении <code>Dockerfile</code> и перестроении образа перестраиваются только те слои, которые изменились. Это часть того, что делает образы такими легкими, маленькими и быстрыми по сравнению с другими технологиями виртуализации.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_repository">Repository</h4>
+<div class="paragraph">
+<p><strong>Репозиторий</strong> - это набор различных версий какого-то образа. У каждой версии конкретного образа могут быть различное теги.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../assets/img/common/docker/repository.png" alt="repository"></span></p>
+</div>
+<div class="paragraph">
+<p>Характеристика репозиториев:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>В репозиториях хранятся <strong>разные версии</strong> образа.</p>
+</li>
+<li>
+<p>Разные версии помечаются разными <strong>тегами</strong>.</p>
+</li>
+<li>
+<p>Одна версия образа может иметь <strong>несколько</strong> тегов.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Репозиторий можно сохранять локально, либо в любой удаленный реестр репозиториев.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_рабочий_процесс_в_docker">Рабочий процесс в Docker</h3>
+<div class="paragraph">
+<p>Как говорилось ранее, контейнеры создаются из образов, причем с одного образа можно запустить любое количество контейнеров.</p>
+</div>
+<div class="paragraph">
+<p>Контейнеры запускаются в <strong>Linux</strong>-системах. У любой <strong>Linux</strong>-системы имеется ядро (<strong>Linux Kernel</strong>), оперативная память (<strong>RAM</strong>), процессор (<strong>CPU</strong>), сеть (<strong>Network</strong>) и жесткий диск (<strong>Disk</strong>). Для того чтобы запустить контейнер необходим <strong>Docker Engine</strong>, который запускает <strong>docker</strong>-сервер.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../assets/img/common/docker/docker-host.png" alt="docker host"></span></p>
+</div>
+<div class="paragraph">
+<p>При запуске контейнера на диске для него создадутся файлы, которые будут доступны только этому контейнеру. Далее у контейнера запускается определенный процесс. И когда процесс в контейнере останавливается, контейнер тоже останавливается. При этом, если будет запущено несколько контейнеров все они будут использовать одни и те же ресурсы системы (<strong>ядро</strong>, <strong>RAM</strong>, <strong>CPU</strong>, <strong>Disk</strong>), но у каждого контейнера будет свое изолированное место на жестком диске, где будут храниться его файлы.</p>
+</div>
+<div class="paragraph">
+<p>Также стоит упомянуть, что если создаются контейнеры с одного и того же образа, то у этих контейнеров будут определенные общие файлы, причем эти файлы будут только в одном месте для всех контейнеров.</p>
+</div>
+<div class="paragraph">
+<p>После остановки контейнера, на диске удаляются все файлы, связанные с этим контейнером. <strong>Docker</strong> также автоматически останавливает контейнеры, в которых нет активных процессов.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_команды_docker">Команды Docker</h3>
+<div class="sect3">
+<h4 id="_команды_docker_для_управления_образами">Команды Docker для управления образами</h4>
+<div class="paragraph">
+<p>Для управления образами используются команды, которые выглядят так: <code>docker image <strong>my_command</strong></code>.</p>
+</div>
+<div class="paragraph">
+<p>Команды, которые могут быть подставлены вместо <strong>my_command</strong>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>build</code> — собирает образ с нуля.</p>
+</li>
+<li>
+<p><code>push</code> — отправляет образ в реестр.</p>
+</li>
+<li>
+<p><code>pull</code> — загружает готовый образ с необходимыми для работы параметрами.</p>
+</li>
+<li>
+<p><code>ls</code> — показывает все существующие образы.</p>
+</li>
+<li>
+<p><code>history</code> — показывает каждый слой образа в ретроспективе, отображая ряд полезных сведений.</p>
+</li>
+<li>
+<p><code>inspect</code> — рассказывает все, что известно об образе, включая данные, касающиеся отдельных слоев.</p>
+</li>
+<li>
+<p><code>rm</code> — удаляет образ Docker из системы.</p>
+</li>
+<li>
+<p><code>images</code> — списком показывает все образы <strong>Docker</strong>, найденные на диске.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_создание_образа">Создание образа</h4>
+<div class="paragraph">
+<p><code>Dockerfile</code> — это обычный конфигурационный файл, описывающий пошаговое создание среды вашего приложения. В этом файле подробно описывается инструкции по созданию образа, причем этих инструкций может быть несколько. Инструкции, при сборке образа, обрабатываются сверху вниз. Также описываются какие команды будут выполнены, какие образы задействованы, и какие настройки будут применены. При создании образа можно указать имя и тег для образа.</p>
+</div>
+<div class="paragraph">
+<p>Чтобы создать собственный образ, необходимо создать файл с названием <code>Dockerfile</code> без разрешения. Обычно <code>Dockerfile</code> помещают в корне папки приложения.</p>
+</div>
+<div class="paragraph">
+<p>Вот как выглядит <code>Dockerfile</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-dockerfile" data-lang="dockerfile">FROM openjdk:11-jre
+EXPOSE 8080 5005
+ARG JAR_FILE=target/project_name-0.0.1-SNAPSHOT.jar
+ADD ${JAR_FILE} app.jar
+ENV JAVA_TOOL_OPTIONS -agentlib:jdwp=transport=dt_socket,address=*:5005,server=y,suspend=n
+COPY ./cacerts /usr/local/openjdk-11/lib/security/cacerts
+ENTRYPOINT ["java","-jar","/app.jar"]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Список инструкций <code>Dockerfile</code>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>FROM</code> — задаёт базовый (родительский) образ.</p>
+</li>
+<li>
+<p><code>LABEL</code> — описывает метаданные. Например — сведения о том, кто создал и поддерживает образ.</p>
+</li>
+<li>
+<p><code>ENV</code> — устанавливает постоянные переменные среды.</p>
+</li>
+<li>
+<p><code>RUN</code> — выполняет команду и создаёт слой образа. Используется для установки в контейнер пакетов.</p>
+</li>
+<li>
+<p><code>COPY</code> — копирует в контейнер файлы и папки.</p>
+</li>
+<li>
+<p><code>ADD</code> — копирует файлы и папки в контейнер, может распаковывать локальные <code>.tar</code>-файлы.</p>
+</li>
+<li>
+<p><code>CMD</code> — описывает команду с аргументами, которую нужно выполнить, когда контейнер будет запущен. Аргументы могут быть переопределены при запуске контейнера. В файле может присутствовать лишь одна инструкция <code>CMD</code>.</p>
+</li>
+<li>
+<p><code>WORKDIR</code> — задаёт рабочую директорию для следующей инструкции.</p>
+</li>
+<li>
+<p><code>ARG</code> — задаёт переменные для передачи Docker во время сборки образа.</p>
+</li>
+<li>
+<p><code>ENTRYPOINT</code> — предоставляет команду с аргументами для вызова во время выполнения контейнера. Аргументы не переопределяются.</p>
+</li>
+<li>
+<p><code>EXPOSE</code> — указывает на необходимость открыть порт.</p>
+</li>
+<li>
+<p><code>VOLUME</code> — создаёт точку монтирования для работы с постоянным хранилищем.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Слои в итоговом образе создают только инструкции <code>FROM</code>, <code>RUN</code>, <code>COPY</code>, и <code>ADD</code>. Другие инструкции что-то настраивают, описывают метаданные, или сообщают <strong>Docker</strong> о том, что во время выполнения контейнера нужно что-то сделать, например — открыть какой-то порт или выполнить какую-то команду.</p>
+</div>
+<div class="paragraph">
+<p>Чтобы собрать образ, нужно ввести команду <code>docker build [OPTIONS] PATH | URL | -</code>.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>docker build .</code> - где <code>.</code> означает, что <code>Dockerfile</code> будет находиться в рутовой директории.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Если же <code>Dockerfile</code> файл лежит в другом месте или же он имеет другое имя, то нужно использовать флаг <code>-f</code> (<code>--file</code>):</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>docker build -f Dockerfile.debug .</code> - данная команда указывает, что вместо <code>Dockerfile</code> будет использоваться <code>Dockerfile.debug</code>.</p>
+</li>
+<li>
+<p><code>docker build -f ctx/Dockerfile</code> - данная команда указывает относительный путь согласно рутовой директории, где будет находиться <code>Dockerfile</code>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Чтобы указать название и тег образа, нужно использовать флаг <code>-t</code> (<code>--tag</code>)</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>docker build -t myname:2.0 .</code> - данная команда указывает, что у образа будет название <code>myname</code>, а версия <code>2.0</code>.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_команды_для_управления_контейнерами">Команды для управления контейнерами</h4>
+<div class="paragraph">
+<p>Общая схема команд для управления контейнерами выглядит так: <code>docker container <strong>my_command</strong></code></p>
+</div>
+<div class="paragraph">
+<p>Команды, которые могут быть подставлены вместо <strong>my_command</strong>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>create</code> — создание контейнера из образа.</p>
+</li>
+<li>
+<p><code>start</code> — запуск существующего контейнера.</p>
+</li>
+<li>
+<p><code>run</code> — создание контейнера и его запуск.</p>
+</li>
+<li>
+<p><code>ls</code> — вывод списка работающих контейнеров.</p>
+</li>
+<li>
+<p><code>inspect</code> — вывод подробной информации о контейнере.</p>
+</li>
+<li>
+<p><code>logs</code> — вывод логов.</p>
+</li>
+<li>
+<p><code>stop</code> — остановка работающего контейнера с отправкой главному процессу контейнера сигнала <strong>SIGTERM</strong>, и, через некоторое время, <strong>SIGKILL</strong>.</p>
+</li>
+<li>
+<p><code>kill</code> — остановка работающего контейнера с отправкой главному процессу контейнера сигнала <strong>SIGKILL</strong>.</p>
+</li>
+<li>
+<p><code>rm</code> — удаление остановленного контейнера.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>По-мимо вышеуказанных команд существуют следующие:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>docker ps</code> / <code>docker container ls</code>- показывает список запущенных контейнеров.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Также, эту команду можно использовать с флагом <code>-a</code>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>docker ps -a</code> / <code>docker container ls -a</code> -где флаг <code>-a</code> (--all) показывает список запущенных и остановленных контейнеров.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_запуск_контейнера">Запуск контейнера</h4>
+<div class="paragraph">
+<p>Чтобы запустить контейнер, нужно ввести команду</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>docker run name_image</code> - создает и запускает контейнер. Сначала <strong>Docker</strong> ищет данный образ локально, если не находит - идет в <strong>Docker Hub</strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Запуск контейнера и вход внутрь его:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>docker run -it image_name bash</code> - позволяет войти внутрь контейнера, где флаг <code>-i</code> (<code>--interactive</code>) - подключается к <strong>STDIN</strong>, <code>-t</code> (<code>--tty</code>) - запускает псевдотерминал.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Запуск контейнера в фоновом режиме:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>docker run -d name_image</code> - создает и запускает контейнер в фоновом режиме. По умолчанию, без флага <code>-d</code> (<code>--detach</code>) после запуска контейнера, происходит переход к <strong>STDOUT</strong>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Запуск дополнительного процесса внутри запущенного контейнера:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>docker exec -it name_container bash</code> - запускает дополнительный процесс в уже запущенном контейнере, где <code>bash</code> - название процесса, <code>-it</code> - опция подключения интерактивного терминала.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Установка своего имени контейнеру:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>docker run --name custom_name name_image</code> - где флаг <code>--name</code> дает имя для контейнера.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Проброс портов:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>docker run -d -p 8080:80 name_image</code> - где флаг <code>-p</code> (<code>--publish</code>) открывает порт на хосте 8080 (внешний порт) и пробрасывает его внутри контейнера 80 (порт контейнера).</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Маппинг томов</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>docker run -d -v ${PWD}:/usr/share/nginx/html name_image</code> - где флаг <code>-v</code> (<code>--volume</code>) подключает том, <code>${PWD}</code> - путь к локальной папке, <code>/usr/share/nginx/html name_image</code> - пусть в папке внутри контейнера.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Удаление контейнера сразу после остановки</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>docker run -d --rm name_image</code> - где флаг <code>--rm</code> указывает, что контейнер будет удален после остановки.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_сбор_логов">Сбор логов</h4>
+<div class="paragraph">
+<p>Логи получает командой <code>docker logs [OPTIONS] CONTAINER</code>.</p>
+</div>
+<div class="paragraph">
+<p>Команду <code>docker logs</code> можно использовать со следующими флагами:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>--details</code> - Отображение дополнительных сведений, предоставленных журналам.</p>
+</li>
+<li>
+<p><code>--follow</code>, <code>-f</code> - Отслеживание выходных данных журнала.</p>
+</li>
+<li>
+<p><code>--since</code> - Отображение журналов с отметки времени.</p>
+</li>
+<li>
+<p><code>--tail,</code> <code>-n</code> - Количество строк, отображаемых с конца журналов.</p>
+</li>
+<li>
+<p><code>--timestamps,</code> <code>-t</code> - Показать метки времени.</p>
+</li>
+<li>
+<p><code>--until</code> - Отображение журналов перед меткой времени.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Для просмотра логов необходима команда:</p>
+</div>
+<div class="paragraph">
+<p><code>docker logs name_container</code> - означает что будет выведена информация из <strong>STDOUT</strong> и <strong>STDERR</strong> имеющая только до текущего периода времени.</p>
+</div>
+<div class="paragraph">
+<p>Для того, следовать за журналом вывода логов, необходима команда:</p>
+</div>
+<div class="paragraph">
+<p><code>docker logs -f name_container</code> - где флаг <code>-f</code> (<code>--follow</code>) означает, что будет показана вся информация из <strong>STDOUT</strong> и <strong>STDERR</strong>, и плюс будут выводиться сообщения, которые еще будут получены.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_хранение_данных_в_docker">Хранение данных в Docker.</h4>
+<div class="paragraph">
+<p>Одна из главных особенностей <strong>контейнеров</strong> — эфемерность. Это означает, что контейнеры могут быть в любой момент остановлены, перезапущены или уничтожены. При этом все накопленные данные в контейнере будут потеряны. Поэтому приложения нужно разрабатывать так, чтобы они не полагались на хранилище данных в контейнере, это называется принципом <strong>Stateless</strong>.</p>
+</div>
+<div class="paragraph">
+<p>Данные в <strong>Docker</strong> могут храниться либо временно, либо постоянно.</p>
+</div>
+<div class="paragraph">
+<p>По умолчанию файлы, создаваемые приложением, работающим в контейнере, сохраняются в слое контейнера, поддерживающем запись.</p>
+</div>
+<div class="paragraph">
+<p>Для сохранения данных в контейнерах предусмотрены несколько способов:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Тома хранения данных (<strong>Docker  volumes</strong>) - это способ, при котором <strong>Docker</strong> сам создает директории для хранения данных. Их можно сделать доступными для разных контейнеров, чтобы они могли обмениваться данными. По умолчанию эти директории создаются на хост-машине, но можно использовать и удаленные хранилища: файловый сервер или объектное хранилище. Другими словами, тома служат для того, чтобы связать физическую папку хоста с папкой контейнера.</p>
+</li>
+<li>
+<p>Монтирование каталогов с хоста (<strong>bind mount</strong>) - в этом случае директория сначала создается в хост-системе, а уже потом монтируется в <strong>Docker</strong> контейнеры. Но этот способ не рекомендуется, потому что он усложняет резервное копирование, миграцию и совместное использование данных несколькими контейнерами.</p>
+</li>
+<li>
+<p>Монтирование <strong>tmpfs</strong> (только в <strong>Linux</strong>) - Временное файловое хранилище. Это некая специально отведённая область в оперативной памяти компьютера.<strong>Tmpfs</strong> нужно не для сохранения данных, а для безопасности, полученные в ходе работы приложения чувствительные данные безвозвратно исчезнут после завершения работы контейнера. Бонусом использования будет высокая скорость доступа к информации.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../assets/img/common/docker/data.png" alt="data"></span></p>
+</div>
+<div class="paragraph">
+<p>Ключ командной строки для <strong>Docker</strong> при работе с томами:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>--volume</code> (<code>-v</code>)</p>
+</li>
+<li>
+<p><code>--mount</code></p>
+</li>
+<li>
+<p><code>--tmpfs</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Например:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>docker container run --mount source=my_volume, target=/container/path/for/volume my_image</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Однако это не всегда удобно создавать тома с командой <code>run</code>. Поэтому существует команда</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>docker volume create --name volume-name</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Помимо <code>create</code> имеются и другие:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>create</code> - Создать том</p>
+</li>
+<li>
+<p><code>inspect</code> - Отобразить детальную информацию</p>
+</li>
+<li>
+<p><code>ls</code> - Вывести список томов</p>
+</li>
+<li>
+<p><code>prune</code> - Удалить все неиспользуемые тома</p>
+</li>
+<li>
+<p><code>rm</code> - Удалить один или несколько томов</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Надо отметить, что при использовании флага <code>--mount</code> увеличивается объём дополнительных данных, которые приходится указывать в команде, но, по нескольким причинам, лучше использовать именно этот флаг, а не <code>--volume</code>. Флаг <code>--mount</code> — это единственный механизм, который позволяет работать с сервисами или указывать параметры драйвера тома. Кроме того, работать с этим флагом проще. Учитывайте то, что флаги <code>--mount</code> и <code>--volume</code> используют различные форматы параметров.</p>
+</div>
+<div class="paragraph">
+<p>Главное различие между <code>--mount</code> и <code>--volume</code> заключается в том, что при использовании флага <code>--volume</code> все параметры собирают вместе, в одном поле, а при использовании <code>--mount</code> параметры разделяются.</p>
+</div>
+<div class="paragraph">
+<p>При работе с <code>--mount</code> параметры представлены как пары вида ключ-значение, а именно, это выглядит как <code>key=value</code>. Эти пары разделяют запятыми. Вот часто используемые параметры <code>--mount</code>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>type</code> — тип монтирования. Значением для соответствующего ключа могут выступать bind, volume или <code>tmpfs</code>. Мы тут говорим о томах, то есть — нас интересует значение volume.</p>
+</li>
+<li>
+<p><code>source</code> — источник монтирования. Для именованных томов это — имя тома. Для неименованных томов этот ключ не указывают. Он может быть сокращён до src.</p>
+</li>
+<li>
+<p><code>destination</code> — путь, к которому файл или папка монтируется в контейнере. Этот ключ может быть сокращён до dst или target.</p>
+</li>
+<li>
+<p><code>readonly</code> — монтирует том, который предназначен только для чтения. Использовать этот ключ необязательно, значение ему не назначают.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Пример использования <code>--mount</code> с множеством параметров:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>docker run --mount type=volume,source=volume_name,destination=/path/in/container,readonly my_image</code></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_docker_compose">Docker Compose</h3>
+<div class="paragraph">
+<p><strong>Docker Compose</strong> - инструмент для определения и запуска много-контейнерных приложений. Когда имеется большое количество образов, которые нужно запустить, <strong>Docker Compose</strong> позволяет это сделать всего одной командой, и точно также все эти контейнеры остановить.</p>
+</div>
+<div class="paragraph">
+<p><strong>Docker</strong> применяется для управления отдельными контейнерами (сервисами), из которых состоит приложение. <strong>Docker Compose</strong> используется для одновременного управления несколькими контейнерами, входящими в состав приложения. Этот инструмент предлагает те же возможности, что и <strong>Docker</strong>, но позволяет работать с более сложными приложениями.</p>
+</div>
+<div class="paragraph">
+<p>В основе лежит файл <code>docker-compose.yml</code>, расположенный в корневой папке проекта.</p>
+</div>
+<div class="paragraph">
+<p>Файл содержит следующие секции:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>version</code> — версия формата конфигурационного файла, скоро этот элемент должны исключить;</p>
+</li>
+<li>
+<p><code>services</code> — список контейнеров, которые нужно запустить в изолированной среде, это обязательный элемент;</p>
+</li>
+<li>
+<p><code>networks</code> — подсети Docker Network, которые объединяют группы контейнеров в локальную сеть, доступную из внешнего мира;</p>
+</li>
+<li>
+<p><code>volumes</code> — список томов, которыми будут пользоваться контейнеры, указанные в файле конфигурации;</p>
+</li>
+<li>
+<p><code>configs</code> — параметры, позволяющие запускать контейнеры в разных режимах без необходимости собирать их заново;</p>
+</li>
+<li>
+<p><code>secrets</code> — чувствительные с точки зрения безопасности параметры, по сути, то же, что и <code>configs</code>, но специального назначения.</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">version: '3.7'
+
+services:
+  frontend:
+    image: awesome/webapp
+    ports:
+      - "443:8043"
+    networks:
+      - front-tier
+      - back-tier
+    configs:
+      - httpd-config
+    secrets:
+      - server-certificate
+
+  db:
+    image: postgres
+
+  backend:
+    image: awesome/database
+    volumes:
+      - db-data:/etc/data
+    networks:
+      - back-tier
+    depends_on:
+      - db
+
+volumes:
+  db-data:
+    driver: flocker
+    driver_opts:
+      size: "10GiB"
+
+configs:
+  httpd-config:
+    external: true
+
+secrets:
+  server-certificate:
+    external: true
+
+networks:
+  front-tier: {}
+  back-tier: {}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Файл <code>docker-compose.yaml</code> должен начинаться с тега <code>version</code>. Далее идет секция <code>services</code>. Следует учитывать, что <strong>Docker Compose</strong> работает с сервисами. <code>1 сервис = 1 контейнер</code>. Сервисом может быть клиент, сервер, сервер баз данных и т.д.</p>
+</div>
+<div class="paragraph">
+<p>Краткое описание некоторых полей:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>container_name</code> - Определяет имя контейнера. Эквивалент <code>--name</code> опции.</p>
+</li>
+<li>
+<p><code>image</code> - Определяет, какое изображение извлекать из контейнера.</p>
+</li>
+<li>
+<p><code>restart</code> - Определяет политику перезапуска для контейнера. Эквивалентно <code>--restart</code>.</p>
+</li>
+<li>
+<p><code>networks</code> - Определяет сеть, к которой подключается контейнер. Эта сеть может быть создана, а может уже существовать. Это значение служит идентификатором <strong>docker-compose</strong>, а не фактическим именем сети (которое определено в разделе <code>networks</code> тегов).</p>
+</li>
+<li>
+<p><code>ports</code> - Определяет порты хоста, к которым может подключаться контейнер. Эквивалентно <code>--publish</code>.</p>
+</li>
+<li>
+<p><code>volumes</code> - Определяет объемы для контейнера. Эквивалентно <code>--volume</code>.</p>
+</li>
+<li>
+<p><code>environment</code> - Определяет переменные среды для контейнера. Эквивалентно <code>--env</code>. Эта опция поддерживает два типа синтаксиса. Первый — <code>variable: value</code> это то, что используется здесь. Другой вариант, который может быть более знакомым, если вы привыкли к синтаксису <strong>Docker CLI</strong>, — это - <code>variable=value</code>.</p>
+</li>
+<li>
+<p><code>depends_on</code> - Задает зависимости контейнера. Это используется, чтобы потребовать, чтобы контейнер не запускался до тех пор, пока не будут установлены его зависимости. Это принимает значения из списков контейнеров.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>При работе с <strong>Docker Compose</strong> можно выделить следующие команды:</p>
+</div>
+<div class="paragraph">
+<p><code>build</code> - Сборка или перестроение сервисов
+<code>create</code> - Создает сервисы
+<code>down</code> - Останавливает и удаляет контейнеры, сети, образы и тома
+<code>pause</code> - Приостанавливает сервисы
+<code>restart</code>  Перезапускает сервисы
+<code>start</code> - Запускает сервисы
+<code>stop</code> - Останавливает сервисы
+<code>unpause</code> - Восстановить сервисы
+<code>up</code> - Создает и запускает контейнеры
+<code>version</code> - Показывает информацию о версии <strong>Docker Compose</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>docker-compose up -d</code> - запускает все контейнеры в фоновом режиме, которые описаны в секции сервисы.</p>
+</li>
+<li>
+<p><code>docker-compose down</code> - останавливает все запущение контейнеры</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_оркестрация">Оркестрация</h3>
+<div class="paragraph">
+<p><strong>Контейнеры</strong> — отличный способ связать и запустить ваши приложения. В производственной среде необходимо управлять контейнерами, которые запускают приложения, и гарантировать отсутствие простоев. Например, если контейнер выходит из строя, необходимо запустить другой контейнер.</p>
+</div>
+<div class="paragraph">
+<p>Для обеспечения балансировки нагрузки, масштабируемости и повышения отказоустойчивости могут использоваться вспомогательные средства — <strong>оркестраторы</strong>.</p>
+</div>
+<div class="paragraph">
+<p>Оркестрация позволяет создавать информационные системы из множества контейнеров, каждый из которых отвечает только за одну определенную задачу, а общение осуществляется через сетевые порты и общие каталоги. При необходимости каждый такой контейнер можно заменить другим, что позволяет, например, быстро перейти на другую версию базы данных при необходимости.</p>
+</div>
+<div class="paragraph">
+<p><strong>Оркестрация контейнеров</strong> решает проблему за счет автоматизации планирования, развертывания, масштабируемости, балансировки нагрузки, доступности и организации сетей контейнеров. Оркестрация контейнеров - это автоматизация и управление жизненным циклом контейнеров и услуг.</p>
+</div>
+<div class="paragraph">
+<p>Можно выделить следующие системы оркестрации:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Kubernetes/k8s</strong></p>
+</li>
+<li>
+<p><strong>OpenShift</strong></p>
+</li>
+<li>
+<p><strong>Docker Swarm</strong></p>
+</li>
+<li>
+<p><strong>Apache Mesos</strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Kubernetes</strong> предоставляет:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Мониторинг сервисов и распределение нагрузки</strong>. <strong>Kubernetes</strong> может обнаружить контейнер, используя имя <strong>DNS</strong> или собственный <strong>IP</strong>-адрес. Если трафик в контейнере высокий, <strong>Kubernetes</strong> может сбалансировать нагрузку и распределить сетевой трафик, чтобы развертывание было стабильным.</p>
+</li>
+<li>
+<p><strong>Оркестрация хранилища</strong>. <strong>Kubernetes</strong> позволяет вам автоматически смонтировать систему хранения по вашему выбору, такую как локальное хранилище, провайдеры общедоступного облака и многое другое.</p>
+</li>
+<li>
+<p><strong>Автоматическое развертывание и откаты</strong>. Используя <strong>Kubernetes</strong> можно описать желаемое состояние развернутых контейнеров и изменить фактическое состояние на желаемое. Например, вы можете автоматизировать <strong>Kubernetes</strong> на создание новых контейнеров для развертывания, удаления существующих контейнеров и распределения всех их ресурсов в новый контейнер.</p>
+</li>
+<li>
+<p><strong>Автоматическое распределение нагрузки</strong> Вы предоставляете <strong>Kubernetes</strong> кластер узлов, который он может использовать для запуска контейнерных задач. Вы указываете <strong>Kubernetes</strong>, сколько ЦП и памяти (ОЗУ) требуется каждому контейнеру. <strong>Kubernetes</strong> может разместить контейнеры на ваших узлах так, чтобы наиболее эффективно использовать ресурсы.</p>
+</li>
+<li>
+<p><strong>Самоконтроль</strong>. <strong>Kubernetes</strong> перезапускает отказавшие контейнеры, заменяет и завершает работу контейнеров, которые не проходят определенную пользователем проверку работоспособности, и не показывает их клиентам, пока они не будут готовы к обслуживанию.</p>
+</li>
+<li>
+<p><strong>Управление конфиденциальной информацией и конфигурацией</strong>. <strong>Kubernetes</strong> может хранить и управлять конфиденциальной информацией, такой как пароли, <strong>OAuth</strong>-токены и ключи <strong>SSH</strong>. Вы можете развертывать и обновлять конфиденциальную информацию и конфигурацию приложения без изменений образов контейнеров и не раскрывая конфиденциальную информацию в конфигурации стека</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_links_3">Links</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://docs.docker.com/get-started/overview/">Официальная документация</a></p>
+</li>
+<li>
+<p><a href="https://habr.com/ru/post/310460/">Полное практическое руководство по Docker: с нуля до кластера на AWS</a></p>
+</li>
+<li>
+<p><a href="https://wiki.merionet.ru/servernye-resheniya/35/chem-docker-on-otlichaetsya-ot-virtualnoj-mashiny/">ЧЕМ DOCKER ОТЛИЧАЕТСЯ ОТ ВИРТУАЛЬНОЙ МАШИНЫ?</a></p>
+</li>
+<li>
+<p><a href="https://timeweb.com/ru/community/articles/osnovnye-komandy-docker">Основные команды Docker</a></p>
+</li>
+<li>
+<p><a href="https://habr.com/ru/company/flant/blog/336654/">Шпаргалка с командами Docker</a></p>
+</li>
+<li>
+<p><a href="https://gist.github.com/wtw24/66265a5707d5febd7ed51f570db94157">Шпаргалка с командами Docker</a></p>
+</li>
+<li>
+<p><a href="https://habr.com/ru/company/ruvds/blog/450312/">Руководство по Docker Compose для начинающих</a></p>
+</li>
+<li>
+<p><a href="https://www.youtube.com/watch?v=_uZQtRyF6Eg&amp;t=96s&amp;ab_channel=BogdanStashchuk">YouTube: Docker - Полный курс Docker Для Начинающих [3 ЧАСА</a>]</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-05-12 07:51:36 UTC
+Last updated 2022-05-12 14:02:33 UTC
 </div>
 </div>
 </body>
