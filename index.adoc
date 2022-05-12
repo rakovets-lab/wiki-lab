@@ -22,6 +22,8 @@ include::java/tools/index.adoc[]
 
 include::java/data-persistence/index.adoc[]
 
+include::java/project-reactor/project-reactor.adoc[]
+
 include::sql/index.adoc[]
 
 include::common/index.adoc[]
