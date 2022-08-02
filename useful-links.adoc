@@ -1,0 +1,60 @@
+= Useful links
+
+== Java
+
+* link:https://habrahabr.ru/post/128017/[Подробно о HashMap]
+
+== Logging
+
+** link:http://www.quizful.net/post/log4j-quickstart[c просторов www]
+** link:https://habrahabr.ru/post/247647/[c Habra]
+* link:http://www.codejava.net/coding/how-to-configure-log4j-as-logging-mechanism-in-java[Конфигурация и запуск на английском]
+* link:http://developer-remarks.blogspot.com.by/2012/10/log4j-sample.html[Конфигурация и запуск на английском]
+
+== Пулы потоков:
+
+* link:https://habrahabr.ru/post/260953/[]
+* link:https://habrahabr.ru/post/116363/[]
+
+== Stream API
+
+* link:https://habrahabr.ru/post/216431/[Новое в Java 8]
+* link:http://javadevblog.com/polnoe-rukovodstvo-po-java-8-stream.html[Руководство по Stream API]
+* link:https://habrahabr.ru/company/luxoft/blog/270383/[Шпаргалка по Stream API]
+
+== Сортировки
+
+* link:http://sorting.at/[Визуализация алгоритмов сортировки sorting.at]
+* link:https://habrahabr.ru/post/335920/[Реализация алгоритмов сортировки]
+* link:https://youtu.be/kPRA0W1kECg[Визуализация алгоритмов сортировки youtube]
+
+== BigDecimal
+
+* link:http://pr0java.blogspot.com.by/2015/05/biginteger-bigdecimal_70.html[BigDecimal & BigInteger]
+* link:http://dmilvdv.narod.ru/Translate/MISC/how_to_use_java_bigdecimal.html[BigDecimal]
+
+== Wrappers
+
+* link:https://vertex-academy.com/tutorials/ru/klassy-obolochki-v-java/[Wrappers]
+* link:http://pr0java.blogspot.com.by/2015/05/blog-post_97.html[Pro wrappers]
+* link:http://java-online.ru/java-lang-wrapper.xhtml[Additions with wrappers]
+
+== GC
+
+* link:https://www.youtube.com/watch?v=_e5hujoTkgY[Gil Tene — Understanding Java garbage collection and What you can do about it]
+* link:http://www.slideshare.net/iwanowww/g1-gc-12594776[G1 GC: Garbage-First Garbage Collector]
+* link:http://jeeconf.com/archive/jeeconf-2011/materials/garbage-collector/[Диагностирование проблем и настройка GC в HotSpot Java VM]
+
+== Intellij Idea
+
+* link:https://www.youtube.com/watch?v=KsVWdGOnHZU[Ускорение работы с кодом 1]
+* link:https://www.youtube.com/watch?v=EvXpgL2iho4[Ускорение работы с кодом 2]
+* link:https://www.youtube.com/watch?v=eq3KiAH4IBI[Ускорение работы с кодом 3]
+* link:http://color-themes.com/?view=index[Добавление цветовой схемы]
+
+== Interview
+
+* link:https://jsehelper.blogspot.com.by/2016/01/blog-post_59.html[К собеседованиям]
+* link:https://habrahabr.ru/company/mailru/blog/323696/[Лекции Технопарка. Курс «Алгоритмы и структуры данных» (осень 2016)]
+* link:http://jeeconf.com/archive/jeeconf-2013/materials/memory-reduce/[Уменьшение расхода оперативной памяти в Java-приложениях]
+* link:https://dzone.com/articles/how-to-improve-the-performance-of-a-java-applicati?edition=351093&utm_source=Weekly%20Digest&utm_medium=email&utm_campaign=Weekly%20Digest%202018-01-10[Java tunings]
