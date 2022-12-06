@@ -6,7 +6,9 @@ include::github-keys.adoc[]
 
 include::testing.adoc[]
 
-include::web-services.adoc[]
+= Web-services
+
+Moved to https://wiki.rakovets.by/web/web-service/.
 
 include::docker.adoc[]
 
