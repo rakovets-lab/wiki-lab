@@ -10,6 +10,8 @@ include::testing.adoc[]
 
 Moved to https://wiki.rakovets.by/web/web-service/.
 
+include::security.adoc[]
+
 include::docker.adoc[]
 
 :leveloffset: -1

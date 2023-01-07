@@ -663,6 +663,7 @@ pre.rouge {
 <ul class="sectlevel2">
 <li><a href="#_spring_core">3.1. Spring Core</a></li>
 <li><a href="#_spring_mvc">3.2. Spring MVC</a></li>
+<li><a href="#_spring_security">3.3. Spring Security</a></li>
 </ul>
 </li>
 <li><a href="#_jakarta_servlet">4. Jakarta Servlet</a></li>
@@ -694,7 +695,8 @@ pre.rouge {
 <li><a href="#_github_keys">9.1. GitHub keys</a></li>
 <li><a href="#_тестирование">9.2. Тестирование</a></li>
 <li><a href="#_web_services">9.3. Web-services</a></li>
-<li><a href="#_docker">9.4. Docker</a></li>
+<li><a href="#_security">9.4. Security</a></li>
+<li><a href="#_docker">9.5. Docker</a></li>
 </ul>
 </li>
 </ul>
@@ -2078,6 +2080,44 @@ pre.rouge {
 </li>
 <li>
 <p><a href="https://www.youtube.com/watch?v=w1FjeTZxQrQ&amp;ab_channel=alishev">YouTube: Spring Framework. Урок 22: Аннотация @ModelAttribute. HTML Формы (Thymeleaf).</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_spring_security">3.3. Spring Security</h3>
+<div class="paragraph">
+<p><strong>Spring Security</strong> — это мощный и настраиваемый фреймворк для <strong>authentication</strong> (<strong>аутентификации</strong>) и <strong>access-control</strong> (<strong>AC</strong>/<strong>контроля доступа</strong>). Он де-факто является стандартом для безопасности приложений на основе фреймворка Spring.</p>
+</div>
+<div class="paragraph">
+<p><strong>Spring Security</strong> — это фреймворк, ориентированный на обеспечение как <strong>authentication</strong> (<strong>аутентификации</strong>), так и <strong>authorization</strong> (<strong>авторизации</strong>) приложений на Java. Как и во всех проектах <strong>Spring</strong>, реальная сила <strong>Spring Security</strong> заключается в том, что его можно легко расширить для удовлетворения любых требований.</p>
+</div>
+<div class="paragraph">
+<p><strong>Spring Security</strong> обеспечивает всестороннюю поддержку:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>authentication</strong> (<strong>аутентификации</strong>)</p>
+</li>
+<li>
+<p><strong>authorization</strong> (<strong>авторизации</strong>)</p>
+</li>
+<li>
+<p>защиты от распространенных <strong>exploits</strong> (<strong>эксплойтов</strong>), т.е. фактически предотвращает проникновение в приложение злоумышленников</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Он также обеспечивает интеграцию с различными другими библиотеками, чтобы упростить его использование.</p>
+</div>
+<div class="sect3">
+<h4 id="_resources">3.3.1. Resources</h4>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://spring.io/projects/spring-security#overview">Spring Security</a></p>
 </li>
 </ul>
 </div>
@@ -6843,7 +6883,16 @@ ssb   4096R/42B317FD4BA89E7A 2016-03-10</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_docker">9.4. Docker</h3>
+<h3 id="_security">9.4. Security</h3>
+<div class="paragraph">
+<p>Аутентификация</p>
+</div>
+<div class="paragraph">
+<p>Авторизация</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_docker">9.5. Docker</h3>
 <div class="paragraph">
 <p><strong>Docker</strong> - это сервис для запуска приложений в контейнерах. Другими словами, <strong>Docker</strong> - это инструмент, который использует контейнеры для упрощения создания, развертывания и запуска приложений. Он связывает приложение и его зависимости внутри контейнера. При этом <strong>Docker</strong> можно использовать как в процессе разработки приложений, так и для запуска приложений в продакшене.</p>
 </div>
@@ -6870,7 +6919,7 @@ ssb   4096R/42B317FD4BA89E7A 2016-03-10</code></pre>
 </ul>
 </div>
 <div class="sect3">
-<h4 id="_отличие_docker_от_виртуальной_машины">9.4.1. Отличие Docker от виртуальной машины</h4>
+<h4 id="_отличие_docker_от_виртуальной_машины">9.5.1. Отличие Docker от виртуальной машины</h4>
 <div class="paragraph">
 <p><strong>Виртуальная машина</strong> (<strong>virtual machine</strong>)- это система, которая действует точно так же, как и компьютер. <strong>VM</strong> позволяют запускать операционную систему в приложении, которое ведет себя как полноценный отдельный компьютер.</p>
 </div>
@@ -6961,7 +7010,7 @@ ssb   4096R/42B317FD4BA89E7A 2016-03-10</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_компоненты_docker">9.4.2. Компоненты Docker</h4>
+<h4 id="_компоненты_docker">9.5.2. Компоненты Docker</h4>
 <div class="paragraph">
 <p>В <strong>Docker</strong> имеются следующие компоненты:</p>
 </div>
@@ -7074,7 +7123,7 @@ ssb   4096R/42B317FD4BA89E7A 2016-03-10</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_рабочий_процесс_в_docker">9.4.3. Рабочий процесс в Docker</h4>
+<h4 id="_рабочий_процесс_в_docker">9.5.3. Рабочий процесс в Docker</h4>
 <div class="paragraph">
 <p>Как говорилось ранее, контейнеры создаются из образов, причем с одного образа можно запустить любое количество контейнеров.</p>
 </div>
@@ -7095,7 +7144,7 @@ ssb   4096R/42B317FD4BA89E7A 2016-03-10</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_команды_docker">9.4.4. Команды Docker</h4>
+<h4 id="_команды_docker">9.5.4. Команды Docker</h4>
 <div class="sect4">
 <h5 id="_команды_docker_для_управления_образами">Команды Docker для управления образами</h5>
 <div class="paragraph">
@@ -7547,7 +7596,7 @@ ssb   4096R/42B317FD4BA89E7A 2016-03-10</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_docker_compose">9.4.5. Docker Compose</h4>
+<h4 id="_docker_compose">9.5.5. Docker Compose</h4>
 <div class="paragraph">
 <p><strong>Docker Compose</strong> - инструмент для определения и запуска много-контейнерных приложений. Когда имеется большое количество образов, которые нужно запустить, <strong>Docker Compose</strong> позволяет это сделать всего одной командой, и точно также все эти контейнеры остановить.</p>
 </div>
@@ -7691,7 +7740,7 @@ ssb   4096R/42B317FD4BA89E7A 2016-03-10</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_оркестрация">9.4.6. Оркестрация</h4>
+<h4 id="_оркестрация">9.5.6. Оркестрация</h4>
 <div class="paragraph">
 <p><strong>Контейнеры</strong> — отличный способ связать и запустить ваши приложения. В производственной среде необходимо управлять контейнерами, которые запускают приложения, и гарантировать отсутствие простоев. Например, если контейнер выходит из строя, необходимо запустить другой контейнер.</p>
 </div>
@@ -7750,7 +7799,7 @@ ssb   4096R/42B317FD4BA89E7A 2016-03-10</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_links_7">9.4.7. Links</h4>
+<h4 id="_links_7">9.5.7. Links</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -7786,7 +7835,7 @@ ssb   4096R/42B317FD4BA89E7A 2016-03-10</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-12-06 11:43:24 UTC
+Last updated 2023-01-07 11:21:32 UTC
 </div>
 </div>
 </body>
