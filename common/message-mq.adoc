@@ -1,0 +1,9 @@
+= Message MQ
+
+== _Ресурсы:
+
+* https://mcs.mail.ru/blog/zachem-nuzhny-ocheredi-soobshcheniy-v-mikroservisnoy-arkhitekture
+* https://habr.com/ru/company/southbridge/blog/550934/
+* https://habr.com/ru/post/466385/
+* https://habr.com/ru/post/471268/
+* https://it-chainik.ru/rabbitmq-i-docker/
