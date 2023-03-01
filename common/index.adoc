@@ -14,6 +14,6 @@ include::security.adoc[]
 
 include::docker.adoc[]
 
-include::message-mq.adoc[]
+include::message-queue.adoc[]
 
 :leveloffset: -1
